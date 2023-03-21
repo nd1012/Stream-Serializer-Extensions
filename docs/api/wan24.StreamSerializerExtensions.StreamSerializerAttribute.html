@@ -1,0 +1,513 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class StreamSerializerAttribute
+   | Stream-Serializer-Extensions </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class StreamSerializerAttribute
+   | Stream-Serializer-Extensions ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute">
+  
+  
+  <h1 id="wan24_StreamSerializerExtensions_StreamSerializerAttribute" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute" class="text-break">Class StreamSerializerAttribute
+  </h1>
+  <div class="markdown level0 summary"><p>Attribute for stream serializable classes and properties</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">StreamSerializerAttribute</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="wan24.StreamSerializerExtensions.html">wan24.StreamSerializerExtensions</a></h6>
+  <h6><strong>Assembly</strong>: StreamSerializerExtensions.dll</h6>
+  <h5 id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class StreamSerializerAttribute : Attribute</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializerAttribute__ctor_" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.#ctor*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializerAttribute__ctor_System_Int32_System_Int32_System_Int32_System_Boolean_wan24_StreamSerializerExtensions_StreamSerializerModes_" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.#ctor(System.Int32,System.Int32,System.Int32,System.Boolean,wan24.StreamSerializerExtensions.StreamSerializerModes)">StreamSerializerAttribute(Int32, Int32, Int32, Boolean, StreamSerializerModes)</h4>
+  <div class="markdown level1 summary"><p>Constructor (used for a property)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StreamSerializerAttribute(int fromVersion, int version = 0, int position = 0, bool skipPropertyNameChecksum = false, StreamSerializerModes mode = StreamSerializerModes.Auto)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">fromVersion</span></td>
+        <td><p>Start object version</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Last supported object version</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">position</span></td>
+        <td><p>Position</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">skipPropertyNameChecksum</span></td>
+        <td><p>Skip the property name checksum?</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerModes.html">StreamSerializerModes</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td><p>Property serializer mode (use <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerModes.html#wan24_StreamSerializerExtensions_StreamSerializerModes_Auto">Auto</a> to inherit from the type serializer mode)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializerAttribute__ctor_" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.#ctor*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializerAttribute__ctor_wan24_StreamSerializerExtensions_StreamSerializerModes_System_Int32_System_Boolean_" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.#ctor(wan24.StreamSerializerExtensions.StreamSerializerModes,System.Int32,System.Boolean)">StreamSerializerAttribute(StreamSerializerModes, Int32, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Constructor (used for a type)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StreamSerializerAttribute(StreamSerializerModes mode = StreamSerializerModes.OptOut, int version = 0, bool skipPropertyNameChecksum = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerModes.html">StreamSerializerModes</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td><p>Type serializer mode (can't be <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerModes.html#wan24_StreamSerializerExtensions_StreamSerializerModes_Auto">Auto</a>)</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Object version</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">skipPropertyNameChecksum</span></td>
+        <td><p>Skip the property name checksum?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_FromVersion_" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.FromVersion*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_FromVersion" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.FromVersion">FromVersion</h4>
+  <div class="markdown level1 summary"><p>Starting from object version</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int? FromVersion { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_Mode_" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.Mode*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_Mode" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.Mode">Mode</h4>
+  <div class="markdown level1 summary"><p>Serializer mode</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StreamSerializerModes Mode { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerModes.html">StreamSerializerModes</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_Position_" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.Position*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_Position" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.Position">Position</h4>
+  <div class="markdown level1 summary"><p>Value sequence position</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int? Position { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_SkipPropertyNameChecksum_" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.SkipPropertyNameChecksum*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_SkipPropertyNameChecksum" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.SkipPropertyNameChecksum">SkipPropertyNameChecksum</h4>
+  <div class="markdown level1 summary"><p>Skip the property name checksum?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SkipPropertyNameChecksum { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_Version_" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.Version*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_Version" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.Version">Version</h4>
+  <div class="markdown level1 summary"><p>Object version</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int? Version { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_GetReadProperties_" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetReadProperties*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_GetReadProperties_Type_System_Nullable_System_Int32__" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetReadProperties(Type,System.Nullable{System.Int32})">GetReadProperties(Type, Nullable&lt;Int32&gt;)</h4>
+  <div class="markdown level1 summary"><p>Get properties to read</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;PropertyInfo&gt; GetReadProperties(Type type, int? version)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Object version</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">System.Reflection.PropertyInfo</span>&gt;</td>
+        <td><p>Properties</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_GetWriteProperties_" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetWriteProperties*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_GetWriteProperties_Type_" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetWriteProperties(Type)">GetWriteProperties(Type)</h4>
+  <div class="markdown level1 summary"><p>Get properties to write</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;PropertyInfo&gt; GetWriteProperties(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">System.Reflection.PropertyInfo</span>&gt;</td>
+        <td><p>Properties</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_IsIncluded_" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.IsIncluded*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializerAttribute_IsIncluded_wan24_StreamSerializerExtensions_StreamSerializerModes_System_Int32_" data-uid="wan24.StreamSerializerExtensions.StreamSerializerAttribute.IsIncluded(wan24.StreamSerializerExtensions.StreamSerializerModes,System.Int32)">IsIncluded(StreamSerializerModes, Int32)</h4>
+  <div class="markdown level1 summary"><p>Determine if the property value is included in a specific object version</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool IsIncluded(StreamSerializerModes mode, int version)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerModes.html">StreamSerializerModes</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td><p>Type serializer mode mode</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Object version</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Value is included?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetNumberType_System_Object_System_Boolean_">SerializerHelper.GetNumberType(Object, Boolean)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetNumberAndType_System_Object_">SerializerHelper.GetNumberAndType(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetObjectSerializerInfo_System_Object_">SerializerHelper.GetObjectSerializerInfo(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            (c) 2023 Andreas Zimmermann, wan24.de
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

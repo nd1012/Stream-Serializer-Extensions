@@ -1,0 +1,1 @@
+{"message":"No metadata is generated for Stream-Serializer-Extensions Docs.","source":"MetadataCommand.ExtractMetadata","date_time":"2023-03-21T06:54:33.0415348Z","message_severity":"warning","correlation_id":"34F26194-04E8-4A8C-8DAA-F7839302D5E9.1.1.11"}

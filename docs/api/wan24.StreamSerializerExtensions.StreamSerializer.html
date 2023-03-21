@@ -1,0 +1,760 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class StreamSerializer
+   | Stream-Serializer-Extensions </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class StreamSerializer
+   | Stream-Serializer-Extensions ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="wan24.StreamSerializerExtensions.StreamSerializer">
+  
+  
+  <h1 id="wan24_StreamSerializerExtensions_StreamSerializer" data-uid="wan24.StreamSerializerExtensions.StreamSerializer" class="text-break">Class StreamSerializer
+  </h1>
+  <div class="markdown level0 summary"><p>Serializer</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">StreamSerializer</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="wan24.StreamSerializerExtensions.html">wan24.StreamSerializerExtensions</a></h6>
+  <h6><strong>Assembly</strong>: StreamSerializerExtensions.dll</h6>
+  <h5 id="wan24_StreamSerializerExtensions_StreamSerializer_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class StreamSerializer</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_AsyncDeserializer" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.AsyncDeserializer">AsyncDeserializer</h4>
+  <div class="markdown level1 summary"><p>Deserializer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ConcurrentDictionary&lt;Type, StreamSerializer.AsyncDeserialize_Delegate&gt; AsyncDeserializer</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Concurrent.ConcurrentDictionary</span>&lt;<span class="xref">Type</span>, <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.AsyncDeserialize_Delegate.html">StreamSerializer.AsyncDeserialize_Delegate</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_AsyncSerializer" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.AsyncSerializer">AsyncSerializer</h4>
+  <div class="markdown level1 summary"><p>Serializer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ConcurrentDictionary&lt;Type, StreamSerializer.AsyncSerialize_Delegate&gt; AsyncSerializer</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Concurrent.ConcurrentDictionary</span>&lt;<span class="xref">Type</span>, <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.AsyncSerialize_Delegate.html">StreamSerializer.AsyncSerialize_Delegate</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_SyncDeserializer" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.SyncDeserializer">SyncDeserializer</h4>
+  <div class="markdown level1 summary"><p>Deserializer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ConcurrentDictionary&lt;Type, StreamSerializer.Deserialize_Delegate&gt; SyncDeserializer</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Concurrent.ConcurrentDictionary</span>&lt;<span class="xref">Type</span>, <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.Deserialize_Delegate.html">StreamSerializer.Deserialize_Delegate</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_SyncObject" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.SyncObject">SyncObject</h4>
+  <div class="markdown level1 summary"><p>An object for thread locking</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly object SyncObject</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_SyncSerializer" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.SyncSerializer">SyncSerializer</h4>
+  <div class="markdown level1 summary"><p>Serializer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ConcurrentDictionary&lt;Type, StreamSerializer.Serialize_Delegate&gt; SyncSerializer</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Concurrent.ConcurrentDictionary</span>&lt;<span class="xref">Type</span>, <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.Serialize_Delegate.html">StreamSerializer.Serialize_Delegate</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_VERSION" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.VERSION">VERSION</h4>
+  <div class="markdown level1 summary"><p>Version number</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int VERSION = 1</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializer_Version_" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.Version*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_Version" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.Version">Version</h4>
+  <div class="markdown level1 summary"><p>Version number</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int Version { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializer_FindAsyncDeserializer_" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.FindAsyncDeserializer*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_FindAsyncDeserializer_Type_" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.FindAsyncDeserializer(Type)">FindAsyncDeserializer(Type)</h4>
+  <div class="markdown level1 summary"><p>Find a deserializer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static StreamSerializer.AsyncDeserialize_Delegate FindAsyncDeserializer(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.AsyncDeserialize_Delegate.html">StreamSerializer.AsyncDeserialize_Delegate</a></td>
+        <td><p>Deserializer</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializer_FindAsyncSerializer_" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.FindAsyncSerializer*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_FindAsyncSerializer_Type_" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.FindAsyncSerializer(Type)">FindAsyncSerializer(Type)</h4>
+  <div class="markdown level1 summary"><p>Find a serializer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static StreamSerializer.AsyncSerialize_Delegate FindAsyncSerializer(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.AsyncSerialize_Delegate.html">StreamSerializer.AsyncSerialize_Delegate</a></td>
+        <td><p>Serializer</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializer_FindDelegateType_" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.FindDelegateType*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_FindDelegateType_Type_IEnumerable_Type__" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.FindDelegateType(Type,IEnumerable{Type})">FindDelegateType(Type, IEnumerable&lt;Type&gt;)</h4>
+  <div class="markdown level1 summary"><p>Find a delegate type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type? FindDelegateType(Type type, IEnumerable&lt;Type&gt; types)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Type</span>&gt;</td>
+        <td><span class="parametername">types</span></td>
+        <td><p>Types</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Type</span>&gt;</td>
+        <td><p>Delegate type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializer_FindDeserializer_" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.FindDeserializer*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_FindDeserializer_Type_" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.FindDeserializer(Type)">FindDeserializer(Type)</h4>
+  <div class="markdown level1 summary"><p>Find a deserializer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static StreamSerializer.Deserialize_Delegate FindDeserializer(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.Deserialize_Delegate.html">StreamSerializer.Deserialize_Delegate</a></td>
+        <td><p>Deserializer</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializer_FindSerializer_" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.FindSerializer*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_FindSerializer_Type_" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.FindSerializer(Type)">FindSerializer(Type)</h4>
+  <div class="markdown level1 summary"><p>Find a serializer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static StreamSerializer.Serialize_Delegate FindSerializer(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.Serialize_Delegate.html">StreamSerializer.Serialize_Delegate</a></td>
+        <td><p>Serializer</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_StreamSerializer_LoadType_" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.LoadType*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_LoadType_System_String_" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.LoadType(System.String)">LoadType(String)</h4>
+  <div class="markdown level1 summary"><p>Load a type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type LoadType(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>Type name</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="events">Events
+  </h3>
+  
+  
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_OnFindAsyncDeserializer" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.OnFindAsyncDeserializer">OnFindAsyncDeserializer</h4>
+  <div class="markdown level1 summary"><p>Raised when finding a deserializer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static event StreamSerializer.FindAsyncDeserializer_Delegate OnFindAsyncDeserializer</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.FindAsyncDeserializer_Delegate.html">StreamSerializer.FindAsyncDeserializer_Delegate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_OnFindAsyncSerializer" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.OnFindAsyncSerializer">OnFindAsyncSerializer</h4>
+  <div class="markdown level1 summary"><p>Raised when finding a serializer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static event StreamSerializer.FindAsyncSerializer_Delegate OnFindAsyncSerializer</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.FindAsyncSerializer_Delegate.html">StreamSerializer.FindAsyncSerializer_Delegate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_OnFindSyncDeserializer" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.OnFindSyncDeserializer">OnFindSyncDeserializer</h4>
+  <div class="markdown level1 summary"><p>Raised when finding a deserializer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static event StreamSerializer.FindSyncDeserializer_Delegate OnFindSyncDeserializer</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.FindSyncDeserializer_Delegate.html">StreamSerializer.FindSyncDeserializer_Delegate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_OnFindSyncSerializer" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.OnFindSyncSerializer">OnFindSyncSerializer</h4>
+  <div class="markdown level1 summary"><p>Raised when finding a serializer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static event StreamSerializer.FindSyncSerializer_Delegate OnFindSyncSerializer</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.FindSyncSerializer_Delegate.html">StreamSerializer.FindSyncSerializer_Delegate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_OnInit" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.OnInit">OnInit</h4>
+  <div class="markdown level1 summary"><p>Raised on initialization</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static event StreamSerializer.Init_Delegate OnInit</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.Init_Delegate.html">StreamSerializer.Init_Delegate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="wan24_StreamSerializerExtensions_StreamSerializer_OnLoadType" data-uid="wan24.StreamSerializerExtensions.StreamSerializer.OnLoadType">OnLoadType</h4>
+  <div class="markdown level1 summary"><p>Raised on loading a type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static event StreamSerializer.LoadType_Delegate OnLoadType</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.LoadType_Delegate.html">StreamSerializer.LoadType_Delegate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            (c) 2023 Andreas Zimmermann, wan24.de
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

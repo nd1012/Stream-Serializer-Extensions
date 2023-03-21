@@ -1,0 +1,1216 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class SerializerHelper
+   | Stream-Serializer-Extensions </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class SerializerHelper
+   | Stream-Serializer-Extensions ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="wan24.StreamSerializerExtensions.SerializerHelper">
+  
+  
+  <h1 id="wan24_StreamSerializerExtensions_SerializerHelper" data-uid="wan24.StreamSerializerExtensions.SerializerHelper" class="text-break">Class SerializerHelper
+  </h1>
+  <div class="markdown level0 summary"><p>Helper</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">SerializerHelper</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="wan24.StreamSerializerExtensions.html">wan24.StreamSerializerExtensions</a></h6>
+  <h6><strong>Assembly</strong>: StreamSerializerExtensions.dll</h6>
+  <h5 id="wan24_StreamSerializerExtensions_SerializerHelper_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class SerializerHelper</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_ConvertEndian_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.ConvertEndian*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_ConvertEndian_Memory_System_Byte__" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.ConvertEndian(Memory{System.Byte})">ConvertEndian(Memory&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Convert the endian to be little endian for serializing, and big endian, if the system uses it</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Memory&lt;byte&gt; ConvertEndian(this Memory&lt;byte&gt; bytes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Memory</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">bytes</span></td>
+        <td><p>Bytes</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Memory</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><p>Converted bytes</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_ConvertEndian_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.ConvertEndian*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_ConvertEndian_Span_System_Byte__" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.ConvertEndian(Span{System.Byte})">ConvertEndian(Span&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Convert the endian to be little endian for serializing, and big endian, if the system uses it</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Span&lt;byte&gt; ConvertEndian(this Span&lt;byte&gt; bytes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Span</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">bytes</span></td>
+        <td><p>Bytes</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Span</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><p>Converted bytes</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureNotNull_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureNotNull*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureNotNull_System_Object_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureNotNull(System.Object)">EnsureNotNull(Object)</h4>
+  <div class="markdown level1 summary"><p>Ensure a non-null value</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static object EnsureNotNull(object value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>Value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><p>Non-null value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureValidLength_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureValidLength_System_Int32_System_Int32_System_Int32_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength(System.Int32,System.Int32,System.Int32)">EnsureValidLength(Int32, Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Ensure a valid length</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int EnsureValidLength(int len, int min = 0, int max = 2147483647)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">len</span></td>
+        <td><p>Length</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">min</span></td>
+        <td><p>Minimum value</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">max</span></td>
+        <td><p>Maximum value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>Length</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetNumberAndType_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetNumberAndType*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetNumberAndType_System_Object_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetNumberAndType(System.Object)">GetNumberAndType(Object)</h4>
+  <div class="markdown level1 summary"><p>Get the best matching number type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static (object Number, NumberTypes Type) GetNumberAndType(this object number)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">number</span></td>
+        <td><p>Number</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Object</span>, <a class="xref" href="wan24.StreamSerializerExtensions.NumberTypes.html">NumberTypes</a>&gt;</td>
+        <td><p>Number and type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetNumberType_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetNumberType*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetNumberType_System_Object_System_Boolean_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetNumberType(System.Object,System.Boolean)">GetNumberType(Object, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Get the type of a number</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static NumberTypes GetNumberType(this object number, bool useFlags = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">number</span></td>
+        <td><p>Number</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">useFlags</span></td>
+        <td><p>Use the flags?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.NumberTypes.html">NumberTypes</a></td>
+        <td><p>Number type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetObjectSerializerInfo_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetObjectSerializerInfo*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetObjectSerializerInfo_System_Object_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetObjectSerializerInfo(System.Object)">GetObjectSerializerInfo(Object)</h4>
+  <div class="markdown level1 summary"><p>Get object serializer informations</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static (Type Type, ObjectTypes ObjectType, bool WriteType, bool WriteObject) GetObjectSerializerInfo(this object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>Object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">Type</span>, <a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a>, <span class="xref">System.Boolean</span>, <span class="xref">System.Boolean</span>&gt;</td>
+        <td><p>Informations</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetResult_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetResult*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetResult_Task_Type_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetResult(Task,Type)">GetResult(Task, Type)</h4>
+  <div class="markdown level1 summary"><p>Get the result from a task</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static object GetResult(this Task task, Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><span class="parametername">task</span></td>
+        <td><p>Task</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Result type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><p>Result</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetResult_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetResult*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetResult__1_Task_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetResult``1(Task)">GetResult&lt;T&gt;(Task)</h4>
+  <div class="markdown level1 summary"><p>Get the result from a task</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T GetResult&lt;T&gt;(this Task task)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><span class="parametername">task</span></td>
+        <td><p>Task</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>Result</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Result type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetResultNullable_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetResultNullable*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetResultNullable_Task_Type_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetResultNullable(Task,Type)">GetResultNullable(Task, Type)</h4>
+  <div class="markdown level1 summary"><p>Get the result from a task</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static object GetResultNullable(this Task task, Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><span class="parametername">task</span></td>
+        <td><p>Task</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Result type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><p>Result</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetResultNullable_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetResultNullable*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetResultNullable__1_Task_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetResultNullable``1(Task)">GetResultNullable&lt;T&gt;(Task)</h4>
+  <div class="markdown level1 summary"><p>Get the result from a task</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T GetResultNullable&lt;T&gt;(this Task task)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><span class="parametername">task</span></td>
+        <td><p>Task</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>Result</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Result type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_InvokeAuto_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.InvokeAuto*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_InvokeAuto_System_Reflection_MethodInfo_System_Object_System_Object___" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.InvokeAuto(System.Reflection.MethodInfo,System.Object,System.Object[])">InvokeAuto(MethodInfo, Object, Object[])</h4>
+  <div class="markdown level1 summary"><p>Invoke a method and complete parameters with default values</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static object InvokeAuto(this MethodInfo mi, object obj, params object[] param)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodInfo</span></td>
+        <td><span class="parametername">mi</span></td>
+        <td><p>Method</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>Object</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span>[]</td>
+        <td><span class="parametername">param</span></td>
+        <td><p>Parameters</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><p>Return value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsEmpty_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsEmpty*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsEmpty_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsEmpty(wan24.StreamSerializerExtensions.ObjectTypes)">IsEmpty(ObjectTypes)</h4>
+  <div class="markdown level1 summary"><p>Is empty?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsEmpty(this ObjectTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Empty?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsMaxValue_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsMaxValue*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsMaxValue_wan24_StreamSerializerExtensions_NumberTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsMaxValue(wan24.StreamSerializerExtensions.NumberTypes)">IsMaxValue(NumberTypes)</h4>
+  <div class="markdown level1 summary"><p>Is max. value?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsMaxValue(this NumberTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.NumberTypes.html">NumberTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Max. value?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsMinValue_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsMinValue*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsMinValue_wan24_StreamSerializerExtensions_NumberTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsMinValue(wan24.StreamSerializerExtensions.NumberTypes)">IsMinValue(NumberTypes)</h4>
+  <div class="markdown level1 summary"><p>Is min. value?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsMinValue(this NumberTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.NumberTypes.html">NumberTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Min.value?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsNumber_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsNumber*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsNumber_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsNumber(wan24.StreamSerializerExtensions.ObjectTypes)">IsNumber(ObjectTypes)</h4>
+  <div class="markdown level1 summary"><p>Is a number?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsNumber(this ObjectTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>A number?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsUnsigned_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsUnsigned*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsUnsigned_wan24_StreamSerializerExtensions_NumberTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsUnsigned(wan24.StreamSerializerExtensions.NumberTypes)">IsUnsigned(NumberTypes)</h4>
+  <div class="markdown level1 summary"><p>Is unsigned?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsUnsigned(this NumberTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.NumberTypes.html">NumberTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Unsigned?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsUnsigned_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsUnsigned*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsUnsigned_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsUnsigned(wan24.StreamSerializerExtensions.ObjectTypes)">IsUnsigned(ObjectTypes)</h4>
+  <div class="markdown level1 summary"><p>Is unsigned?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsUnsigned(this ObjectTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Unsigned?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsZero_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsZero*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsZero_wan24_StreamSerializerExtensions_NumberTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsZero(wan24.StreamSerializerExtensions.NumberTypes)">IsZero(NumberTypes)</h4>
+  <div class="markdown level1 summary"><p>Is zero?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsZero(this NumberTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.NumberTypes.html">NumberTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Zero?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_RemoveFlags_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RemoveFlags*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_RemoveFlags_wan24_StreamSerializerExtensions_NumberTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RemoveFlags(wan24.StreamSerializerExtensions.NumberTypes)">RemoveFlags(NumberTypes)</h4>
+  <div class="markdown level1 summary"><p>Remove flags</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static NumberTypes RemoveFlags(this NumberTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.NumberTypes.html">NumberTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.NumberTypes.html">NumberTypes</a></td>
+        <td><p>Type without flags</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_RemoveFlags_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RemoveFlags*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_RemoveFlags_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RemoveFlags(wan24.StreamSerializerExtensions.ObjectTypes)">RemoveFlags(ObjectTypes)</h4>
+  <div class="markdown level1 summary"><p>Remove flags</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ObjectTypes RemoveFlags(this ObjectTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><p>Type without flags</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_RemoveValueFlags_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RemoveValueFlags*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_RemoveValueFlags_wan24_StreamSerializerExtensions_NumberTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RemoveValueFlags(wan24.StreamSerializerExtensions.NumberTypes)">RemoveValueFlags(NumberTypes)</h4>
+  <div class="markdown level1 summary"><p>Remove value flags</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static NumberTypes RemoveValueFlags(this NumberTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.NumberTypes.html">NumberTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.NumberTypes.html">NumberTypes</a></td>
+        <td><p>Type without value flags</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            (c) 2023 Andreas Zimmermann, wan24.de
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
