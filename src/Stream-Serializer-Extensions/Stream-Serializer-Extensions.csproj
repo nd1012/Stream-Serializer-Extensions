@@ -7,6 +7,37 @@
     <Nullable>enable</Nullable>
     <AssemblyName>StreamSerializerExtensions</AssemblyName>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageId>Stream-Serializer-Extensions</PackageId>
+    <Title>Stream-Serializer-Extensions</Title>
+    <Version>1.0.0</Version>
+    <Authors>nd1012</Authors>
+    <Company>Andreas Zimmermann, wan24.de</Company>
+    <Product>Stream-Serializer-Extensions</Product>
+    <Description>Serializer extensions for .NET Stream objects.</Description>
+    <Copyright>(c)2023 Andreas Zimmermann, wan24.de</Copyright>
+    <PackageProjectUrl>https://github.com/nd1012/Stream-Serializer-Extensions</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nd1012/Stream-Serializer-Extensions.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>serialization;extension;stream;serializer;extensions;binary-serialization;binary-serializers</PackageTags>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="copy /Y &quot;$(ProjectDir)..\..\README.md&quot; &quot;$(ProjectDir)README.md&quot;&#xD;&#xA;" />
+  </Target>
 
 </Project>

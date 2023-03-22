@@ -3,7 +3,7 @@
     /// <summary>
     /// Base class for a stream serializing type
     /// </summary>
-    public abstract class StreamSerializerBase : IStreamSerializer
+    public abstract class StreamSerializerBase : IStreamSerializerVersion
     {
         /// <summary>
         /// Object version
@@ -33,10 +33,10 @@
         }
 
         /// <inheritdoc/>
-        int? IStreamSerializer.ObjectVersion => _ObjectVersion;
+        int? IStreamSerializerVersion.ObjectVersion => _ObjectVersion;
 
         /// <inheritdoc/>
-        int? IStreamSerializer.SerializedObjectVersion => _SerializedObjectVersion;
+        int? IStreamSerializerVersion.SerializedObjectVersion => _SerializedObjectVersion;
 
         /// <summary>
         /// Serialize

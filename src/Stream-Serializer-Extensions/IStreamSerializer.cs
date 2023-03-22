@@ -6,14 +6,6 @@
     public interface IStreamSerializer
     {
         /// <summary>
-        /// Object version (if <see langword="null"/>, the object serializer doesn't support object versioning)
-        /// </summary>
-        int? ObjectVersion { get; }
-        /// <summary>
-        /// Serialized object version (if <see langword="null"/>, the object serializer doesn't support object versioning, or the instance wasn't deserialized)
-        /// </summary>
-        int? SerializedObjectVersion { get; }
-        /// <summary>
         /// Serialize
         /// </summary>
         /// <param name="stream">Stream</param>
