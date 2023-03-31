@@ -46,8 +46,7 @@
         "files": [
         ],
         "exclude": [
-          "obj/**",
-          "_site/**"
+          "obj/**"
         ]
       }
     ],
