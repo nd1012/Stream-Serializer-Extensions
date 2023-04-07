@@ -125,7 +125,7 @@ namespace wan24.StreamSerializerExtensions
         public static async Task<T> ReadObjectAsync<T>(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
         {
             if (typeof(IStreamSerializer).IsAssignableFrom(typeof(T)))
-                return (T)await ReadSerializedObjectAsync(stream, typeof(T), version, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                return (T)await ReadSerializedObjectAsync(stream, typeof(T), version, cancellationToken).DynamicContext();
             if (StreamSerializer.FindAsyncDeserializer(typeof(T)) is not StreamSerializer.AsyncDeserialize_Delegate deserializer)
             {
                 await Task.Yield();
@@ -134,7 +134,7 @@ namespace wan24.StreamSerializerExtensions
             try
             {
                 Task task = deserializer(stream, typeof(T), version ?? StreamSerializer.Version, cancellationToken);
-                await task.ConfigureAwait(continueOnCapturedContext: false);
+                await task.DynamicContext();
                 return task.GetResultNullable<T>() ?? throw new SerializerException($"{typeof(T)} deserialized to NULL");
             }
             catch (SerializerException)
@@ -166,8 +166,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<T?> ReadObjectNullableAsync<T>(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadObjectAsync<T>(stream, version, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
+                ? await ReadObjectAsync<T>(stream, version, cancellationToken).DynamicContext()
                 : default(T?);
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace wan24.StreamSerializerExtensions
             try
             {
                 ObjectTypes objType;
-                byte[] data = await ReadSerializedDataAsync(stream, len: 1, cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                byte[] data = await ReadSerializedDataAsync(stream, len: 1, cancellationToken: cancellationToken).DynamicContext();
                 try
                 {
                     objType = (ObjectTypes)data[0];
@@ -294,7 +294,7 @@ namespace wan24.StreamSerializerExtensions
                 {
                     ArrayPool<byte>.Shared.Return(data);
                 }
-                return await ReadAnyIntAsync(stream, version, objType, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                return await ReadAnyIntAsync(stream, version, objType, cancellationToken).DynamicContext();
             }
             catch (SerializerException)
             {
@@ -345,11 +345,11 @@ namespace wan24.StreamSerializerExtensions
                     };
                     break;
                 case ObjectTypes.String:
-                    return isEmpty ? string.Empty : await ReadStringAsync(stream, version, cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                    return isEmpty ? string.Empty : await ReadStringAsync(stream, version, cancellationToken: cancellationToken).DynamicContext();
                 case ObjectTypes.Bytes:
-                    return isEmpty ? Array.Empty<byte>() : (await ReadBytesAsync(stream, version, cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false)).Value;
+                    return isEmpty ? Array.Empty<byte>() : (await ReadBytesAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()).Value;
             }
-            type ??= StreamSerializer.LoadType(await ReadStringAsync(stream, version, pool: null, minLen: 1, maxLen: short.MaxValue, cancellationToken).ConfigureAwait(continueOnCapturedContext: false));
+            type ??= StreamSerializer.LoadType(await ReadStringAsync(stream, version, pool: null, minLen: 1, maxLen: short.MaxValue, cancellationToken).DynamicContext());
             switch (objType.RemoveFlags())
             {
                 case ObjectTypes.Byte:
@@ -379,11 +379,11 @@ namespace wan24.StreamSerializerExtensions
                     task = (Task)ReadObjectAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version, cancellationToken)!;
                     break;
                 case ObjectTypes.Serializable:
-                    return await ReadSerializedObjectAsync(stream, type, version, cancellationToken)!.ConfigureAwait(continueOnCapturedContext: false);
+                    return await ReadSerializedObjectAsync(stream, type, version, cancellationToken)!.DynamicContext();
                 default:
                     throw new InvalidProgramException();
             }
-            await task.ConfigureAwait(continueOnCapturedContext: false);
+            await task.DynamicContext();
             return task.GetResult(type);
         }
 
@@ -431,7 +431,7 @@ namespace wan24.StreamSerializerExtensions
             try
             {
                 ObjectTypes objType;
-                byte[] data = await ReadSerializedDataAsync(stream, len: 1, cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                byte[] data = await ReadSerializedDataAsync(stream, len: 1, cancellationToken: cancellationToken).DynamicContext();
                 try
                 {
                     objType = (ObjectTypes)data[0];
@@ -440,7 +440,7 @@ namespace wan24.StreamSerializerExtensions
                 {
                     ArrayPool<byte>.Shared.Return(data);
                 }
-                return objType == ObjectTypes.Null ? null : await ReadAnyIntAsync(stream, version, objType, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                return objType == ObjectTypes.Null ? null : await ReadAnyIntAsync(stream, version, objType, cancellationToken).DynamicContext();
             }
             catch (SerializerException)
             {
@@ -486,7 +486,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static async Task<bool> ReadBoolAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
         {
-            byte[] data = await ReadSerializedDataAsync(stream, len: 1, pool, cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            byte[] data = await ReadSerializedDataAsync(stream, len: 1, pool, cancellationToken: cancellationToken).DynamicContext();
             try
             {
                 return data[0] == 1;
@@ -520,8 +520,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<bool?> ReadBoolNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
                 : default(bool?);
 
         /// <summary>
@@ -572,8 +572,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<sbyte?> ReadOneSByteNullableAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadOneSByteAsync(stream, version, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
+                ? await ReadOneSByteAsync(stream, version, cancellationToken).DynamicContext()
                 : default(sbyte?);
 
         /// <summary>
@@ -626,8 +626,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<ushort?> ReadOneByteNullableAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadOneByteAsync(stream, version, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
+                ? await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext()
                 : default(ushort?);
 
         /// <summary>
@@ -664,7 +664,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static async Task<short> ReadShortAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
         {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(short), pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(short), pool, cancellationToken).DynamicContext();
             try
             {
                 return data.AsSpan().ToShort();
@@ -698,8 +698,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<short?> ReadShortNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadShortAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadShortAsync(stream, version, pool, cancellationToken).DynamicContext()
                 : default(short?);
 
         /// <summary>
@@ -736,7 +736,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static async Task<ushort> ReadUShortAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
         {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(ushort), pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(ushort), pool, cancellationToken).DynamicContext();
             try
             {
                 return data.AsSpan().ToUShort();
@@ -770,8 +770,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<ushort?> ReadUShortNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadUShortAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadUShortAsync(stream, version, pool, cancellationToken).DynamicContext()
                 : default(ushort?);
 
         /// <summary>
@@ -808,7 +808,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static async Task<int> ReadIntAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
         {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(int), pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(int), pool, cancellationToken).DynamicContext();
             try
             {
                 return data.AsSpan().ToInt();
@@ -842,8 +842,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<int?> ReadIntNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadIntAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadIntAsync(stream, version, pool, cancellationToken).DynamicContext()
                 : default(int?);
 
         /// <summary>
@@ -880,7 +880,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static async Task<uint> ReadUIntAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
         {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(uint), pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(uint), pool, cancellationToken).DynamicContext();
             try
             {
                 return data.AsSpan().ToUInt();
@@ -914,8 +914,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<uint?> ReadUIntNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadUIntAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadUIntAsync(stream, version, pool, cancellationToken).DynamicContext()
                 : default(uint?);
 
         /// <summary>
@@ -952,7 +952,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static async Task<long> ReadLongAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
         {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(long), pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(long), pool, cancellationToken).DynamicContext();
             try
             {
                 return data.AsSpan().ToLong();
@@ -986,8 +986,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<long?> ReadLongNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadLongAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadLongAsync(stream, version, pool, cancellationToken).DynamicContext()
                 : default(long?);
 
         /// <summary>
@@ -1024,7 +1024,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static async Task<ulong> ReadULongAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
         {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(ulong), pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(ulong), pool, cancellationToken).DynamicContext();
             try
             {
                 return data.AsSpan().ToULong();
@@ -1058,8 +1058,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<ulong?> ReadULongNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadULongAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadULongAsync(stream, version, pool, cancellationToken).DynamicContext()
                 : default(ulong?);
 
         /// <summary>
@@ -1096,7 +1096,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static async Task<float> ReadFloatAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
         {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(float), pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(float), pool, cancellationToken).DynamicContext();
             try
             {
                 return data.AsSpan().ToFloat();
@@ -1130,8 +1130,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<float?> ReadFloatNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadFloatAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadFloatAsync(stream, version, pool, cancellationToken).DynamicContext()
                 : default(float?);
 
         /// <summary>
@@ -1168,7 +1168,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static async Task<double> ReadDoubleAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
         {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(double), pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(double), pool, cancellationToken).DynamicContext();
             try
             {
                 return data.AsSpan().ToDouble();
@@ -1202,8 +1202,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<double?> ReadDoubleNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadDoubleAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadDoubleAsync(stream, version, pool, cancellationToken).DynamicContext()
                 : default(double?);
 
         /// <summary>
@@ -1240,7 +1240,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static async Task<decimal> ReadDecimalAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
         {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(int) << 4, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(int) << 4, pool, cancellationToken).DynamicContext();
             try
             {
                 return data.AsSpan().ToDecimal();
@@ -1274,8 +1274,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<decimal?> ReadDecimalNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadDecimalAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadDecimalAsync(stream, version, pool, cancellationToken).DynamicContext()
                 : default(decimal?);
 
         /// <summary>
@@ -1303,7 +1303,7 @@ namespace wan24.StreamSerializerExtensions
                                 return (T)(object)sbyte.MaxValue;
                         }
                         if (stream.Read(data.AsSpan(0, 1)) != 1) throw new SerializerException("Failed to read serialized data (1 bytes)");
-                        return (T)Convert.ChangeType((sbyte)data[0], typeof(T));
+                        return data[0].ConvertType<T>();
                     case NumberTypes.Byte | NumberTypes.Unsigned:
                         switch (type)
                         {
@@ -1311,82 +1311,67 @@ namespace wan24.StreamSerializerExtensions
                                 return (T)(object)byte.MaxValue;
                         }
                         if (stream.Read(data.AsSpan(0, 1)) != 1) throw new SerializerException("Failed to read serialized data (1 bytes)");
-                        return (T)Convert.ChangeType(data[0], typeof(T));
+                        return data[0].ConvertType<T>();
                     case NumberTypes.Short:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Short | NumberTypes.MinValue:
-                                return (T)(object)short.MinValue;
-                            case NumberTypes.Short | NumberTypes.MaxValue:
-                                return (T)(object)short.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(ReadShort(stream, version, pool), typeof(T));
+                            NumberTypes.Short | NumberTypes.MinValue => (T)(object)short.MinValue,
+                            NumberTypes.Short | NumberTypes.MaxValue => (T)(object)short.MaxValue,
+                            _ => ReadShort(stream, version, pool).ConvertType<T>()
+                        };
                     case NumberTypes.Short | NumberTypes.Unsigned:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Short | NumberTypes.MaxValue | NumberTypes.Unsigned:
-                                return (T)(object)ushort.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(ReadUShort(stream, version, pool), typeof(T));
+                            NumberTypes.Short | NumberTypes.MaxValue | NumberTypes.Unsigned => (T)(object)ushort.MaxValue,
+                            _ => ReadUShort(stream, version, pool).ConvertType<T>()
+                        };
                     case NumberTypes.Int:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Int | NumberTypes.MinValue:
-                                return (T)(object)int.MinValue;
-                            case NumberTypes.Int | NumberTypes.MaxValue:
-                                return (T)(object)int.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(ReadInt(stream, version, pool), typeof(T));
+                            NumberTypes.Int | NumberTypes.MinValue => (T)(object)int.MinValue,
+                            NumberTypes.Int | NumberTypes.MaxValue => (T)(object)int.MaxValue,
+                            _ => ReadInt(stream, version, pool).ConvertType<T>()
+                        };
                     case NumberTypes.Int | NumberTypes.Unsigned:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Int | NumberTypes.MaxValue | NumberTypes.Unsigned:
-                                return (T)(object)uint.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(ReadUInt(stream, version, pool), typeof(T));
+                            NumberTypes.Int | NumberTypes.MaxValue | NumberTypes.Unsigned => (T)(object)uint.MaxValue,
+                            _ => ReadUInt(stream, version, pool).ConvertType<T>()
+                        };
                     case NumberTypes.Long:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Long | NumberTypes.MinValue:
-                                return (T)(object)long.MinValue;
-                            case NumberTypes.Long | NumberTypes.MaxValue:
-                                return (T)(object)long.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(ReadLong(stream, version, pool), typeof(T));
+                            NumberTypes.Long | NumberTypes.MinValue => (T)(object)long.MinValue,
+                            NumberTypes.Long | NumberTypes.MaxValue => (T)(object)long.MaxValue,
+                            _ => ReadLong(stream, version, pool).ConvertType<T>()
+                        };
                     case NumberTypes.Long | NumberTypes.Unsigned:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Long | NumberTypes.MaxValue | NumberTypes.Unsigned:
-                                return (T)(object)ulong.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(ReadULong(stream, version, pool), typeof(T));
+                            NumberTypes.Long | NumberTypes.MaxValue | NumberTypes.Unsigned => (T)(object)ulong.MaxValue,
+                            _ => ReadULong(stream, version, pool).ConvertType<T>()
+                        };
                     case NumberTypes.Float:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Float | NumberTypes.MinValue:
-                                return (T)(object)float.MinValue;
-                            case NumberTypes.Float | NumberTypes.MaxValue:
-                                return (T)(object)float.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(ReadFloat(stream, version, pool), typeof(T));
+                            NumberTypes.Float | NumberTypes.MinValue => (T)(object)float.MinValue,
+                            NumberTypes.Float | NumberTypes.MaxValue => (T)(object)float.MaxValue,
+                            _ => ReadFloat(stream, version, pool).ConvertType<T>()
+                        };
                     case NumberTypes.Double:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Double | NumberTypes.MinValue:
-                                return (T)(object)double.MinValue;
-                            case NumberTypes.Double | NumberTypes.MaxValue:
-                                return (T)(object)double.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(ReadDouble(stream, version, pool), typeof(T));
+                            NumberTypes.Double | NumberTypes.MinValue => (T)(object)double.MinValue,
+                            NumberTypes.Double | NumberTypes.MaxValue => (T)(object)double.MaxValue,
+                            _ => ReadDouble(stream, version, pool).ConvertType<T>()
+                        };
                     case NumberTypes.Decimal:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Decimal | NumberTypes.MinValue:
-                                return (T)(object)decimal.MinValue;
-                            case NumberTypes.Decimal | NumberTypes.MaxValue:
-                                return (T)(object)decimal.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(ReadDecimal(stream, version, pool), typeof(T));
+                            NumberTypes.Decimal | NumberTypes.MinValue => (T)(object)decimal.MinValue,
+                            NumberTypes.Decimal | NumberTypes.MaxValue => (T)(object)decimal.MaxValue,
+                            _ => ReadDecimal(stream, version, pool).ConvertType<T>()
+                        };
                     default:
                         throw new SerializerException($"Unknown numeric type {type}");
                 }
@@ -1412,7 +1397,7 @@ namespace wan24.StreamSerializerExtensions
         public static async Task<T> ReadNumberAsync<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             where T : struct, IConvertible
         {
-            byte[] data = await ReadSerializedDataAsync(stream, len: 1, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            byte[] data = await ReadSerializedDataAsync(stream, len: 1, pool, cancellationToken).DynamicContext();
             try
             {
                 NumberTypes type = (NumberTypes)data[0];
@@ -1427,93 +1412,78 @@ namespace wan24.StreamSerializerExtensions
                             case NumberTypes.Byte | NumberTypes.MaxValue:
                                 return (T)(object)sbyte.MaxValue;
                         }
-                        if (await stream.ReadAsync(data.AsMemory(0, 1), cancellationToken).ConfigureAwait(continueOnCapturedContext: false) != 1)
+                        if (await stream.ReadAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext() != 1)
                             throw new SerializerException("Failed to read serialized data (1 bytes)");
-                        return (T)Convert.ChangeType((sbyte)data[0], typeof(T));
+                        return data[0].ConvertType<T>();
                     case NumberTypes.Byte | NumberTypes.Unsigned:
                         switch (type)
                         {
                             case NumberTypes.Byte | NumberTypes.MaxValue | NumberTypes.Unsigned:
                                 return (T)(object)byte.MaxValue;
                         }
-                        if (await stream.ReadAsync(data.AsMemory(0, 1), cancellationToken).ConfigureAwait(continueOnCapturedContext: false) != 1)
+                        if (await stream.ReadAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext() != 1)
                             throw new SerializerException("Failed to read serialized data (1 bytes)");
-                        return (T)Convert.ChangeType(data[0], typeof(T));
+                        return data[0].ConvertType<T>();
                     case NumberTypes.Short:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Short | NumberTypes.MinValue:
-                                return (T)(object)short.MinValue;
-                            case NumberTypes.Short | NumberTypes.MaxValue:
-                                return (T)(object)short.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(await ReadShortAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false), typeof(T));
+                            NumberTypes.Short | NumberTypes.MinValue => (T)(object)short.MinValue,
+                            NumberTypes.Short | NumberTypes.MaxValue => (T)(object)short.MaxValue,
+                            _ => (await ReadShortAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
+                        };
                     case NumberTypes.Short | NumberTypes.Unsigned:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Short | NumberTypes.MaxValue | NumberTypes.Unsigned:
-                                return (T)(object)ushort.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(await ReadUShortAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false), typeof(T));
+                            NumberTypes.Short | NumberTypes.MaxValue | NumberTypes.Unsigned => (T)(object)ushort.MaxValue,
+                            _ => (await ReadUShortAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
+                        };
                     case NumberTypes.Int:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Int | NumberTypes.MinValue:
-                                return (T)(object)int.MinValue;
-                            case NumberTypes.Int | NumberTypes.MaxValue:
-                                return (T)(object)int.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(await ReadIntAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false), typeof(T));
+                            NumberTypes.Int | NumberTypes.MinValue => (T)(object)int.MinValue,
+                            NumberTypes.Int | NumberTypes.MaxValue => (T)(object)int.MaxValue,
+                            _ => (await ReadIntAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
+                        };
                     case NumberTypes.Int | NumberTypes.Unsigned:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Int | NumberTypes.MaxValue | NumberTypes.Unsigned:
-                                return (T)(object)uint.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(await ReadUIntAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false), typeof(T));
+                            NumberTypes.Int | NumberTypes.MaxValue | NumberTypes.Unsigned => (T)(object)uint.MaxValue,
+                            _ => (await ReadUIntAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
+                        };
                     case NumberTypes.Long:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Long | NumberTypes.MinValue:
-                                return (T)(object)long.MinValue;
-                            case NumberTypes.Long | NumberTypes.MaxValue:
-                                return (T)(object)long.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(await ReadLongAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false), typeof(T));
+                            NumberTypes.Long | NumberTypes.MinValue => (T)(object)long.MinValue,
+                            NumberTypes.Long | NumberTypes.MaxValue => (T)(object)long.MaxValue,
+                            _ => (await ReadLongAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
+                        };
                     case NumberTypes.Long | NumberTypes.Unsigned:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Long | NumberTypes.MaxValue | NumberTypes.Unsigned:
-                                return (T)(object)ulong.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(await ReadULongAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false), typeof(T));
+                            NumberTypes.Long | NumberTypes.MaxValue | NumberTypes.Unsigned => (T)(object)ulong.MaxValue,
+                            _ => (await ReadULongAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
+                        };
                     case NumberTypes.Float:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Float | NumberTypes.MinValue:
-                                return (T)(object)float.MinValue;
-                            case NumberTypes.Float | NumberTypes.MaxValue:
-                                return (T)(object)float.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(await ReadFloatAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false), typeof(T));
+                            NumberTypes.Float | NumberTypes.MinValue => (T)(object)float.MinValue,
+                            NumberTypes.Float | NumberTypes.MaxValue => (T)(object)float.MaxValue,
+                            _ => (await ReadFloatAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
+                        };
                     case NumberTypes.Double:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Double | NumberTypes.MinValue:
-                                return (T)(object)double.MinValue;
-                            case NumberTypes.Double | NumberTypes.MaxValue:
-                                return (T)(object)double.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(await ReadDoubleAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false), typeof(T));
+                            NumberTypes.Double | NumberTypes.MinValue => (T)(object)double.MinValue,
+                            NumberTypes.Double | NumberTypes.MaxValue => (T)(object)double.MaxValue,
+                            _ => (await ReadDoubleAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
+                        };
                     case NumberTypes.Decimal:
-                        switch (type)
+                        return type switch
                         {
-                            case NumberTypes.Decimal | NumberTypes.MinValue:
-                                return (T)(object)decimal.MinValue;
-                            case NumberTypes.Decimal | NumberTypes.MaxValue:
-                                return (T)(object)decimal.MaxValue;
-                        }
-                        return (T)Convert.ChangeType(await ReadDecimalAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false), typeof(T));
+                            NumberTypes.Decimal | NumberTypes.MinValue => (T)(object)decimal.MinValue,
+                            NumberTypes.Decimal | NumberTypes.MaxValue => (T)(object)decimal.MaxValue,
+                            _ => (await ReadDecimalAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
+                        };
                     default:
                         throw new SerializerException($"Unknown numeric type {type}");
                 }
@@ -1548,8 +1518,8 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static async Task<T?> ReadNumberNullableAsync<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             where T : struct, IConvertible
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadNumberAsync<T>(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadNumberAsync<T>(stream, version, pool, cancellationToken).DynamicContext()
                 : default(T?);
 
         /// <summary>
@@ -1593,7 +1563,7 @@ namespace wan24.StreamSerializerExtensions
             {
                 Type type = typeof(T).GetEnumUnderlyingType();
                 Task task = (Task)ReadNumberAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version, pool, cancellationToken)!;
-                await task.ConfigureAwait(continueOnCapturedContext: false);
+                await task.DynamicContext();
                 T res = (T)Enum.ToObject(typeof(T), task.GetResult(type));
                 if (!Enum.IsDefined(res)) throw new SerializerException($"Unknown enumeration value {res} for {typeof(T)}");
                 return res;
@@ -1630,8 +1600,8 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static async Task<T?> ReadEnumNullableAsync<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             where T : struct, Enum
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadEnumAsync<T>(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadEnumAsync<T>(stream, version, pool, cancellationToken).DynamicContext()
                 : default(T?);
 
         /// <summary>
@@ -1693,12 +1663,12 @@ namespace wan24.StreamSerializerExtensions
             bool rented = false;
             try
             {
-                int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
                 SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                 if (len == 0 && buffer == null) buffer = Array.Empty<byte>();
                 rented = buffer == null && pool != null;
                 buffer ??= rented ? pool!.Rent(len) : new byte[len];
-                if (len != 0 && await stream.ReadAsync(buffer.AsMemory(0, len), cancellationToken).ConfigureAwait(continueOnCapturedContext: false) != len)
+                if (len != 0 && await stream.ReadAsync(buffer.AsMemory(0, len), cancellationToken).DynamicContext() != len)
                     throw new SerializerException($"Failed to read serialized data ({len} bytes)");
                 return (buffer, len);
             }
@@ -1754,8 +1724,8 @@ namespace wan24.StreamSerializerExtensions
             int maxLen = int.MaxValue,
             CancellationToken cancellationToken = default
             )
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadBytesAsync(stream, version, buffer, pool, minLen, maxLen, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadBytesAsync(stream, version, buffer, pool, minLen, maxLen, cancellationToken).DynamicContext()
                 : default((byte[] Value, int Length)?);
 
         /// <summary>
@@ -1806,7 +1776,7 @@ namespace wan24.StreamSerializerExtensions
             CancellationToken cancellationToken = default
             )
         {
-            (byte[] data, int len) = await ReadBytesAsync(stream, version, buffer: null, pool, minLen, maxLen, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            (byte[] data, int len) = await ReadBytesAsync(stream, version, buffer: null, pool, minLen, maxLen, cancellationToken).DynamicContext();
             try
             {
                 char[] res = new char[len];
@@ -1854,8 +1824,8 @@ namespace wan24.StreamSerializerExtensions
             int maxLen = int.MaxValue,
             CancellationToken cancellationToken = default
             )
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadStringAsync(stream, version, pool, minLen, maxLen, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadStringAsync(stream, version, pool, minLen, maxLen, cancellationToken).DynamicContext()
                 : default(string?);
 
         /// <summary>
@@ -1910,13 +1880,13 @@ namespace wan24.StreamSerializerExtensions
             )
         {
             if (typeof(T) == typeof(byte))
-                return (await ReadBytesAsync(stream, version, buffer: null, pool, minLen, maxLen, cancellationToken).ConfigureAwait(continueOnCapturedContext: false) as T[])!;
+                return (await ReadBytesAsync(stream, version, buffer: null, pool, minLen, maxLen, cancellationToken).DynamicContext() as T[])!;
             try
             {
-                int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
                 SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                 T[] res = new T[len];
-                for (int i = 0; i < len; res[i] = await ReadObjectAsync<T>(stream, version, cancellationToken).ConfigureAwait(continueOnCapturedContext: false), i++) ;
+                for (int i = 0; i < len; res[i] = await ReadObjectAsync<T>(stream, version, cancellationToken).DynamicContext(), i++) ;
                 return res;
             }
             catch (SerializerException)
@@ -1961,8 +1931,8 @@ namespace wan24.StreamSerializerExtensions
             int maxLen = int.MaxValue,
             CancellationToken cancellationToken = default
             )
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadArrayAsync<T>(stream, version, pool, minLen, maxLen, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadArrayAsync<T>(stream, version, pool, minLen, maxLen, cancellationToken).DynamicContext()
                 : default(T[]?);
 
         /// <summary>
@@ -2017,13 +1987,13 @@ namespace wan24.StreamSerializerExtensions
             )
         {
             if (typeof(T) == typeof(byte))
-                return new List<T>((await ReadBytesAsync(stream, version, buffer: null, pool, minLen, maxLen, cancellationToken).ConfigureAwait(continueOnCapturedContext: false) as T[])!);
+                return new List<T>((await ReadBytesAsync(stream, version, buffer: null, pool, minLen, maxLen, cancellationToken).DynamicContext() as T[])!);
             try
             {
-                int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
                 SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                 List<T> res = new(len);
-                for (int i = 0; i < len; res.Add(await ReadObjectAsync<T>(stream, version, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)), i++) ;
+                for (int i = 0; i < len; res.Add(await ReadObjectAsync<T>(stream, version, cancellationToken).DynamicContext()), i++) ;
                 return res;
             }
             catch (SerializerException)
@@ -2068,8 +2038,8 @@ namespace wan24.StreamSerializerExtensions
             int maxLen = int.MaxValue,
             CancellationToken cancellationToken = default
             )
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadListAsync<T>(stream, version, pool, minLen, maxLen, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadListAsync<T>(stream, version, pool, minLen, maxLen, cancellationToken).DynamicContext()
                 : default(List<T>?);
 
         /// <summary>
@@ -2130,12 +2100,12 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
                 SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                 Dictionary<tKey, tValue> res = new(len);
                 for (int i = 0; i < len; i++)
-                    res[await ReadObjectAsync<tKey>(stream, version, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)]
-                        = await ReadObjectAsync<tValue>(stream, version, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                    res[await ReadObjectAsync<tKey>(stream, version, cancellationToken).DynamicContext()]
+                        = await ReadObjectAsync<tValue>(stream, version, cancellationToken).DynamicContext();
                 return res;
             }
             catch (SerializerException)
@@ -2184,8 +2154,8 @@ namespace wan24.StreamSerializerExtensions
             CancellationToken cancellationToken = default
             )
             where tKey : notnull
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadDictAsync<tKey, tValue>(stream, version, pool, minLen, maxLen, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadDictAsync<tKey, tValue>(stream, version, pool, minLen, maxLen, cancellationToken).DynamicContext()
                 : default(Dictionary<tKey, tValue>?);
 
         /// <summary>
@@ -2249,7 +2219,7 @@ namespace wan24.StreamSerializerExtensions
                                   ?? throw new SerializerException($"Failed to find the serializer constructor of type {type}");
             bool serializerConstructor = ci.GetParameters().Length > 0;
             T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
-            if (!serializerConstructor) await res.DeserializeAsync(stream, version ?? StreamSerializer.Version, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            if (!serializerConstructor) await res.DeserializeAsync(stream, version ?? StreamSerializer.Version, cancellationToken).DynamicContext();
             return res.ValidateObject();
         }
 
@@ -2264,7 +2234,7 @@ namespace wan24.StreamSerializerExtensions
         public static async Task<object> ReadSerializedObjectAsync(this Stream stream, Type type, int? version = null, CancellationToken cancellationToken = default)
         {
             Task task = (Task)ReadSerializedAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version, cancellationToken)!;
-            await task.ConfigureAwait(continueOnCapturedContext: false);
+            await task.DynamicContext();
             return task.GetResult(type);
         }
 
@@ -2287,8 +2257,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Object</returns>
         public static async Task<T?> ReadSerializedNullableAsync<T>(this Stream stream, int? version = null, CancellationToken cancellationToken = default) where T : class, IStreamSerializer
-            => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadSerializedAsync<T>(stream, version, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
+                ? await ReadSerializedAsync<T>(stream, version, cancellationToken).DynamicContext()
                 : default(T?);
 
         /// <summary>
@@ -2341,7 +2311,7 @@ namespace wan24.StreamSerializerExtensions
             if (typeof(IStreamSerializer).IsAssignableFrom(type))
             {
                 task = (Task)ReadSerializedAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version, cancellationToken)!;
-                await task.ConfigureAwait(continueOnCapturedContext: false);
+                await task.DynamicContext();
                 return task.GetResult<T>();
             }
             StreamSerializerAttribute? attr = type.GetCustomAttribute<StreamSerializerAttribute>(),
@@ -2363,7 +2333,7 @@ namespace wan24.StreamSerializerExtensions
                 task = (Task)(isNullable
                         ? ReadAnyAsyncMethod.InvokeAuto(obj: null, stream, version)
                         : ReadAnyNullableAsyncMethod.InvokeAuto(obj: null, stream, version))!;
-                await task.ConfigureAwait(continueOnCapturedContext: false);
+                await task.DynamicContext();
                 pis[done].SetValue(res, isNullable ? task.GetResultNullable<object>() : task.GetResult<object>());
             }
             return res.ValidateObject();
@@ -2389,8 +2359,8 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Object</returns>
         public static async Task<T?> ReadAnyObjectNullableAsync<T>(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
             where T : class, new()
-            => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                ? await ReadAnyObjectAsync<T>(stream, version, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
+                ? await ReadAnyObjectAsync<T>(stream, version, cancellationToken).DynamicContext()
                 : null;
 
         /// <summary>
@@ -2428,7 +2398,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] res = (pool ?? ArrayPool<byte>.Shared).Rent(len);
             try
             {
-                if (await stream.ReadAsync(res.AsMemory(0, len), cancellationToken).ConfigureAwait(continueOnCapturedContext: false) != len)
+                if (await stream.ReadAsync(res.AsMemory(0, len), cancellationToken).DynamicContext() != len)
                     throw new SerializerException($"Failed to read serialized data ({len} bytes)");
                 return res;
             }

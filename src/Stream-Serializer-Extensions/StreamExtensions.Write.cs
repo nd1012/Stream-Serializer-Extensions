@@ -152,18 +152,18 @@ namespace wan24.StreamSerializerExtensions
             if (obj == null) throw new ArgumentNullException(nameof(obj));
             if (typeof(IStreamSerializer).IsAssignableFrom(obj.GetType()))
             {
-                await WriteSerializedAsync(stream, (IStreamSerializer)obj, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await WriteSerializedAsync(stream, (IStreamSerializer)obj, cancellationToken).DynamicContext();
                 return;
             }
             if (StreamSerializer.FindAsyncSerializer(obj.GetType()) is not StreamSerializer.AsyncSerialize_Delegate serializer)
             {
                 Task task = (Task)WriteAnyObjectAsyncMethod.MakeGenericMethod(typeof(T)).InvokeAuto(obj: null, stream, obj, cancellationToken)!;
-                await task.ConfigureAwait(continueOnCapturedContext: false);
+                await task.DynamicContext();
                 return;
             }
             try
             {
-                await serializer(stream, obj, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await serializer(stream, obj, cancellationToken).DynamicContext();
             }
             catch (SerializerException)
             {
@@ -199,8 +199,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteObjectNullableAsync<T>(this Stream stream, T? obj, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, obj != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (obj != null) await WriteObjectAsync(stream, obj, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, obj != null, cancellationToken).DynamicContext();
+            if (obj != null) await WriteObjectAsync(stream, obj, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -262,13 +262,13 @@ namespace wan24.StreamSerializerExtensions
                 try
                 {
                     data[0] = (byte)objType;
-                    await stream.WriteAsync(data.AsMemory(0, 1), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                    await stream.WriteAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext();
                 }
                 finally
                 {
                     ArrayPool<byte>.Shared.Return(data);
                 }
-                if (writeType) await WriteStringAsync(stream, type.ToString(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                if (writeType) await WriteStringAsync(stream, type.ToString(), cancellationToken).DynamicContext();
                 if (writeObject)
                 {
                     Task task;
@@ -280,7 +280,7 @@ namespace wan24.StreamSerializerExtensions
                     {
                         task = (Task)WriteObjectAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, obj, cancellationToken)!;
                     }
-                    await task.ConfigureAwait(continueOnCapturedContext: false);
+                    await task.DynamicContext();
                 }
             }
             catch (SerializerException)
@@ -349,7 +349,7 @@ namespace wan24.StreamSerializerExtensions
                     try
                     {
                         data[0] = (byte)ObjectTypes.Null;
-                        await stream.WriteAsync(data.AsMemory(0, 1), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                        await stream.WriteAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext();
                     }
                     finally
                     {
@@ -358,7 +358,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 else
                 {
-                    await WriteAnyAsync(stream, obj, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                    await WriteAnyAsync(stream, obj, cancellationToken).DynamicContext();
                 }
             }
             catch (SerializerException)
@@ -409,7 +409,7 @@ namespace wan24.StreamSerializerExtensions
             try
             {
                 data[0] = (byte)(value ? 1 : 0);
-                await stream.WriteAsync(data.AsMemory(0, 1), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -443,8 +443,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteNullableAsync(this Stream stream, bool? value, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -477,7 +477,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync((byte)value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync((byte)value, cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -507,8 +507,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteNullableAsync(this Stream stream, sbyte? value, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -565,8 +565,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteNullableAsync(this Stream stream, byte? value, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -599,7 +599,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -629,8 +629,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteNullableAsync(this Stream stream, short? value, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -663,7 +663,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -693,8 +693,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteNullableAsync(this Stream stream, ushort? value, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -727,7 +727,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -757,8 +757,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteNullableAsync(this Stream stream, int? value, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -791,7 +791,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -821,8 +821,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteNullableAsync(this Stream stream, uint? value, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -855,7 +855,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -885,8 +885,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteNullableAsync(this Stream stream, long? value, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -919,7 +919,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -949,8 +949,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteNullableAsync(this Stream stream, ulong? value, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -983,7 +983,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -1013,8 +1013,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteNullableAsync(this Stream stream, float? value, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -1047,7 +1047,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -1077,8 +1077,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteNullableAsync(this Stream stream, double? value, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -1111,7 +1111,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -1141,8 +1141,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteNullableAsync(this Stream stream, decimal? value, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteAsync(stream, value.Value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -1167,35 +1167,35 @@ namespace wan24.StreamSerializerExtensions
                 {
                     case NumberTypes.Byte:
                     case NumberTypes.Byte | NumberTypes.Unsigned:
-                        data[0] = (byte)Convert.ChangeType(number, typeof(byte));
+                        data[0] = number.ChangeType<byte>();
                         stream.Write(data.AsSpan(0, 1));
                         break;
                     case NumberTypes.Short:
-                        Write(stream, (short)Convert.ChangeType(number, typeof(short)));
+                        Write(stream, number.ChangeType<short>());
                         break;
                     case NumberTypes.Short | NumberTypes.Unsigned:
-                        Write(stream, (ushort)Convert.ChangeType(number, typeof(ushort)));
+                        Write(stream, number.ChangeType<ushort>());
                         break;
                     case NumberTypes.Int:
-                        Write(stream, (int)Convert.ChangeType(number, typeof(int)));
+                        Write(stream, number.ChangeType<int>());
                         break;
                     case NumberTypes.Int | NumberTypes.Unsigned:
-                        Write(stream, (uint)Convert.ChangeType(number, typeof(uint)));
+                        Write(stream, number.ChangeType<uint>());
                         break;
                     case NumberTypes.Long:
-                        Write(stream, (long)Convert.ChangeType(number, typeof(long)));
+                        Write(stream, number.ChangeType<long>());
                         break;
                     case NumberTypes.Long | NumberTypes.Unsigned:
-                        Write(stream, (ulong)Convert.ChangeType(number, typeof(ulong)));
+                        Write(stream, number.ChangeType<ulong>());
                         break;
                     case NumberTypes.Float:
-                        Write(stream, (float)Convert.ChangeType(number, typeof(float)));
+                        Write(stream, number.ChangeType<float>());
                         break;
                     case NumberTypes.Double:
-                        Write(stream, (double)Convert.ChangeType(number, typeof(double)));
+                        Write(stream, number.ChangeType<double>());
                         break;
                     case NumberTypes.Decimal:
-                        Write(stream, (decimal)Convert.ChangeType(number, typeof(decimal)));
+                        Write(stream, number.ChangeType<decimal>());
                         break;
                 }
             }
@@ -1221,40 +1221,40 @@ namespace wan24.StreamSerializerExtensions
             try
             {
                 data[0] = (byte)type;
-                await stream.WriteAsync(data.AsMemory(0, 1), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext();
                 switch (type)
                 {
                     case NumberTypes.Byte:
                     case NumberTypes.Byte | NumberTypes.Unsigned:
-                        data[0] = (byte)Convert.ChangeType(number, typeof(byte));
-                        await stream.WriteAsync(data.AsMemory(0, 1), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                        data[0] = number.ChangeType<byte>();
+                        await stream.WriteAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Short:
-                        await WriteAsync(stream, (short)Convert.ChangeType(number, typeof(short)), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                        await WriteAsync(stream, number.ChangeType<short>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Short | NumberTypes.Unsigned:
-                        await WriteAsync(stream, (ushort)Convert.ChangeType(number, typeof(ushort)), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                        await WriteAsync(stream, number.ChangeType<ushort>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Int:
-                        await WriteAsync(stream, (int)Convert.ChangeType(number, typeof(int)), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                        await WriteAsync(stream, number.ChangeType<int>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Int | NumberTypes.Unsigned:
-                        await WriteAsync(stream, (uint)Convert.ChangeType(number, typeof(uint)), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                        await WriteAsync(stream, number.ChangeType<uint>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Long:
-                        await WriteAsync(stream, (long)Convert.ChangeType(number, typeof(long)), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                        await WriteAsync(stream, number.ChangeType<long>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Long | NumberTypes.Unsigned:
-                        await WriteAsync(stream, (ulong)Convert.ChangeType(number, typeof(ulong)), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                        await WriteAsync(stream, number.ChangeType<ulong>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Float:
-                        await WriteAsync(stream, (float)Convert.ChangeType(number, typeof(float)), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                        await WriteAsync(stream, number.ChangeType<float>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Double:
-                        await WriteAsync(stream, (double)Convert.ChangeType(number, typeof(double)), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                        await WriteAsync(stream, number.ChangeType<double>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Decimal:
-                        await WriteAsync(stream, (decimal)Convert.ChangeType(number, typeof(decimal)), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                        await WriteAsync(stream, number.ChangeType<decimal>(), cancellationToken).DynamicContext();
                         break;
                 }
             }
@@ -1291,8 +1291,8 @@ namespace wan24.StreamSerializerExtensions
         public static async Task WriteNumberNullableAsync<T>(this Stream stream, T? value, CancellationToken cancellationToken = default)
             where T : struct, IConvertible
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteNumberAsync(stream, value.Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteNumberAsync(stream, value.Value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -1333,7 +1333,7 @@ namespace wan24.StreamSerializerExtensions
             {
                 Type type = typeof(T).GetEnumUnderlyingType();
                 Task task = (Task)WriteNumberAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, Convert.ChangeType(value, type), cancellationToken)!;
-                await task.ConfigureAwait(continueOnCapturedContext: false);
+                await task.DynamicContext();
             }
             catch (Exception ex)
             {
@@ -1368,8 +1368,8 @@ namespace wan24.StreamSerializerExtensions
         public static async Task WriteEnumNullableAsync<T>(this Stream stream, T? value, CancellationToken cancellationToken = default)
             where T : struct, Enum
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteEnumAsync(stream, value.Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteEnumAsync(stream, value.Value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -1403,8 +1403,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await WriteNumberAsync(stream, value.Length, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-                if (value.Length > 0) await stream.WriteAsync(value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await WriteNumberAsync(stream, value.Length, cancellationToken).DynamicContext();
+                if (value.Length > 0) await stream.WriteAsync(value, cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -1434,8 +1434,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteBytesNullableAsync(this Stream stream, byte[]? value, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteBytesAsync(stream, value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteBytesAsync(stream, value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -1468,7 +1468,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await WriteBytesAsync(stream, Encoding.UTF8.GetBytes(value), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await WriteBytesAsync(stream, Encoding.UTF8.GetBytes(value), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -1498,8 +1498,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteStringNullableAsync(this Stream stream, string? value, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteStringAsync(stream, value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteStringAsync(stream, value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -1541,14 +1541,14 @@ namespace wan24.StreamSerializerExtensions
         {
             if (typeof(T) == typeof(byte))
             {
-                await WriteBytesAsync(stream, (value as byte[])!, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await WriteBytesAsync(stream, (value as byte[])!, cancellationToken).DynamicContext();
                 return;
             }
             try
             {
-                await WriteNumberAsync(stream, value.Length, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await WriteNumberAsync(stream, value.Length, cancellationToken).DynamicContext();
                 if (value.Length == 0) return;
-                foreach (T element in value) await WriteObjectAsync(stream, element, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                foreach (T element in value) await WriteObjectAsync(stream, element, cancellationToken).DynamicContext();
             }
             catch (SerializerException)
             {
@@ -1584,8 +1584,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteArrayNullableAsync<T>(this Stream stream, T[]? value, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteArrayAsync(stream, value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteArrayAsync(stream, value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -1627,14 +1627,14 @@ namespace wan24.StreamSerializerExtensions
         {
             if (typeof(T) == typeof(byte))
             {
-                await WriteBytesAsync(stream, (value as byte[])!, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await WriteBytesAsync(stream, (value as byte[])!, cancellationToken).DynamicContext();
                 return;
             }
             try
             {
-                await WriteNumberAsync(stream, value.Count, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await WriteNumberAsync(stream, value.Count, cancellationToken).DynamicContext();
                 if (value.Count == 0) return;
-                foreach (T element in value) await WriteObjectAsync(stream, element, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                foreach (T element in value) await WriteObjectAsync(stream, element, cancellationToken).DynamicContext();
             }
             catch (SerializerException)
             {
@@ -1670,8 +1670,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteListNullableAsync<T>(this Stream stream, List<T>? value, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteListAsync(stream, value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteListAsync(stream, value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -1721,12 +1721,12 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await WriteNumberAsync(stream, value.Count, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await WriteNumberAsync(stream, value.Count, cancellationToken).DynamicContext();
                 if (value.Count == 0) return;
                 foreach (KeyValuePair<tKey, tValue> kvp in value)
                 {
-                    await WriteObjectAsync(stream, kvp.Key, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-                    await WriteObjectAsync(stream, kvp.Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                    await WriteObjectAsync(stream, kvp.Key, cancellationToken).DynamicContext();
+                    await WriteObjectAsync(stream, kvp.Value, cancellationToken).DynamicContext();
                 }
             }
             catch (SerializerException)
@@ -1768,8 +1768,8 @@ namespace wan24.StreamSerializerExtensions
         public static async Task WriteDictNullableAsync<tKey, tValue>(this Stream stream, Dictionary<tKey, tValue>? value, CancellationToken cancellationToken = default)
             where tKey : notnull
         {
-            await WriteAsync(stream, value != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (value != null) await WriteDictAsync(stream, value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteDictAsync(stream, value, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -1792,7 +1792,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="obj">Object</param>
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteSerializedAsync(this Stream stream, IStreamSerializer obj, CancellationToken cancellationToken = default)
-            => await obj.SerializeAsync(stream, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            => await obj.SerializeAsync(stream, cancellationToken).DynamicContext();
 
         /// <summary>
         /// Write
@@ -1816,8 +1816,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteSerializedNullableAsync(this Stream stream, IStreamSerializer? obj, CancellationToken cancellationToken = default)
         {
-            await WriteAsync(stream, obj != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (obj != null) await obj.SerializeAsync(stream, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, obj != null, cancellationToken).DynamicContext();
+            if (obj != null) await obj.SerializeAsync(stream, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -1868,7 +1868,7 @@ namespace wan24.StreamSerializerExtensions
         {
             if (obj is IStreamSerializer serializable)
             {
-                await WriteSerializedAsync(stream, serializable, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await WriteSerializedAsync(stream, serializable, cancellationToken).DynamicContext();
                 return;
             }
             Type type = obj.GetType();
@@ -1876,20 +1876,20 @@ namespace wan24.StreamSerializerExtensions
             StreamSerializerAttribute? attr = type.GetCustomAttribute<StreamSerializerAttribute>(),
                 objAttr;
             bool useChecksum = !(attr?.SkipPropertyNameChecksum ?? false);
-            await WriteNumberNullableAsync(stream, attr?.Version, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            await WriteNumberAsync(stream, pis.Length, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteNumberNullableAsync(stream, attr?.Version, cancellationToken).DynamicContext();
+            await WriteNumberAsync(stream, pis.Length, cancellationToken).DynamicContext();
             foreach (PropertyInfo pi in pis)
             {
                 objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>();
                 if (useChecksum && !(objAttr?.SkipPropertyNameChecksum ?? false))
-                    await WriteAsync(stream, Encoding.UTF8.GetBytes(pi.Name).Aggregate((c, b) => (byte)(c ^ b)), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                    await WriteAsync(stream, Encoding.UTF8.GetBytes(pi.Name).Aggregate((c, b) => (byte)(c ^ b)), cancellationToken).DynamicContext();
                 if (Nullable.GetUnderlyingType(pi.PropertyType) == null)
                 {
-                    await WriteAnyAsync(stream, pi.GetValue(obj)!, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                    await WriteAnyAsync(stream, pi.GetValue(obj)!, cancellationToken).DynamicContext();
                 }
                 else
                 {
-                    await WriteAnyNullableAsync(stream, pi.GetValue(obj)).ConfigureAwait(continueOnCapturedContext: false);
+                    await WriteAnyNullableAsync(stream, pi.GetValue(obj)).DynamicContext();
                 }
             }
         }
@@ -1920,8 +1920,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteAnyObjectNullableAsync<T>(this Stream stream, T? obj, CancellationToken cancellationToken = default) where T : class, new()
         {
-            await WriteAsync(stream, obj != null, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            if (obj != null) await WriteAnyObjectAsync(stream, obj, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await WriteAsync(stream, obj != null, cancellationToken).DynamicContext();
+            if (obj != null) await WriteAnyObjectAsync(stream, obj, cancellationToken).DynamicContext();
         }
     }
 }

@@ -214,7 +214,7 @@ namespace wan24.StreamSerializerExtensions
                     break;
                 case NumberTypes.Double:
                     {
-                        double value = (double)Convert.ChangeType(number, typeof(double));
+                        double value = number.ConvertType<double>();
                         if (double.IsNaN(value) || double.IsInfinity(value) || double.IsSubnormal(value) || value < float.MinValue || value > float.MaxValue)
                         {
                             num = value;
@@ -234,7 +234,7 @@ namespace wan24.StreamSerializerExtensions
                 default:
                     if (origin.IsUnsigned())
                     {
-                        ulong value = (ulong)Convert.ChangeType(number, typeof(ulong));
+                        ulong value = number.ConvertType<ulong>();
                         if (value > long.MaxValue)
                         {
                             num = value;
@@ -278,7 +278,7 @@ namespace wan24.StreamSerializerExtensions
                     }
                     else
                     {
-                        long value = (long)Convert.ChangeType(number, typeof(long));
+                        long value = number.ConvertType<long>();
                         if (value < 0)
                         {
                             if (value < int.MinValue)

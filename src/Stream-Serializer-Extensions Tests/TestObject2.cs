@@ -13,7 +13,7 @@ namespace Stream_Serializer_Extensions_Tests
         protected override void Serialize(Stream stream) => stream.Write(Value);
 
         protected override async Task SerializeAsync(Stream stream, CancellationToken cancellationToken)
-            => await stream.WriteAsync(Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            => await stream.WriteAsync(Value, cancellationToken).DynamicContext();
 
         protected override void Deserialize(Stream stream, int version)
         {
@@ -24,7 +24,7 @@ namespace Stream_Serializer_Extensions_Tests
         protected override async Task DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken)
         {
             if (((IStreamSerializerVersion)this).SerializedObjectVersion != 1) throw new SerializerException("Invalid serialized object version");
-            Value = await stream.ReadBoolAsync(version, cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            Value = await stream.ReadBoolAsync(version, cancellationToken: cancellationToken).DynamicContext();
         }
     }
 }

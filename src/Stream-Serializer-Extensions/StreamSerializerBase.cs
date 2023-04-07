@@ -72,8 +72,8 @@
         /// <param name="cancellationToken">Cancellation token</param>
         private async Task SerializeIntAsync(Stream stream, CancellationToken cancellationToken)
         {
-            if (_ObjectVersion != null) await stream.WriteNumberAsync(_ObjectVersion.Value, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            await SerializeAsync(stream, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            if (_ObjectVersion != null) await stream.WriteNumberAsync(_ObjectVersion.Value, cancellationToken).DynamicContext();
+            await SerializeAsync(stream, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -120,10 +120,10 @@
         {
             if (_ObjectVersion != null)
             {
-                _SerializedObjectVersion = await stream.ReadNumberAsync<int>(version, cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                _SerializedObjectVersion = await stream.ReadNumberAsync<int>(version, cancellationToken: cancellationToken).DynamicContext();
                 if (_SerializedObjectVersion > _ObjectVersion) throw new SerializerException($"Unsupported object version {_SerializedObjectVersion} for {GetType()} version {_ObjectVersion}");
             }
-            await DeserializeAsync(stream, version, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+            await DeserializeAsync(stream, version, cancellationToken).DynamicContext();
         }
 
         /// <inheritdoc/>
