@@ -1,6 +1,7 @@
 ﻿using System.Buffers;
 using System.Reflection;
 using System.Text;
+using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -641,7 +642,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] data = ReadSerializedData(stream, len: sizeof(short), pool);
             try
             {
-                return BitConverter.ToInt16(data.AsSpan(0, sizeof(short)).ConvertEndian());
+                return data.AsSpan().ToShort();
             }
             catch (Exception ex)
             {
@@ -666,7 +667,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(short), pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             try
             {
-                return BitConverter.ToInt16(data.AsSpan(0, sizeof(short)).ConvertEndian());
+                return data.AsSpan().ToShort();
             }
             catch (Exception ex)
             {
@@ -713,7 +714,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] data = ReadSerializedData(stream, len: sizeof(ushort), pool);
             try
             {
-                return BitConverter.ToUInt16(data.AsSpan(0, sizeof(ushort)).ConvertEndian());
+                return data.AsSpan().ToUShort();
             }
             catch (Exception ex)
             {
@@ -738,7 +739,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(ushort), pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             try
             {
-                return BitConverter.ToUInt16(data.AsSpan(0, sizeof(ushort)).ConvertEndian());
+                return data.AsSpan().ToUShort();
             }
             catch (Exception ex)
             {
@@ -785,7 +786,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] data = ReadSerializedData(stream, len: sizeof(int), pool);
             try
             {
-                return BitConverter.ToInt32(data.AsSpan(0, sizeof(int)).ConvertEndian());
+                return data.AsSpan().ToInt();
             }
             catch (Exception ex)
             {
@@ -810,7 +811,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(int), pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             try
             {
-                return BitConverter.ToInt32(data.AsSpan(0, sizeof(int)).ConvertEndian());
+                return data.AsSpan().ToInt();
             }
             catch (Exception ex)
             {
@@ -857,7 +858,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] data = ReadSerializedData(stream, len: sizeof(uint), pool);
             try
             {
-                return BitConverter.ToUInt32(data.AsSpan(0, sizeof(uint)).ConvertEndian());
+                return data.AsSpan().ToUInt();
             }
             catch (Exception ex)
             {
@@ -882,7 +883,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(uint), pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             try
             {
-                return BitConverter.ToUInt32(data.AsSpan(0, sizeof(uint)).ConvertEndian());
+                return data.AsSpan().ToUInt();
             }
             catch (Exception ex)
             {
@@ -929,7 +930,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] data = ReadSerializedData(stream, len: sizeof(long), pool);
             try
             {
-                return BitConverter.ToInt64(data.AsSpan(0, sizeof(long)).ConvertEndian());
+                return data.AsSpan().ToLong();
             }
             catch (Exception ex)
             {
@@ -954,7 +955,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(long), pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             try
             {
-                return BitConverter.ToInt64(data.AsSpan(0, sizeof(long)).ConvertEndian());
+                return data.AsSpan().ToLong();
             }
             catch (Exception ex)
             {
@@ -1001,7 +1002,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] data = ReadSerializedData(stream, len: sizeof(ulong), pool);
             try
             {
-                return BitConverter.ToUInt64(data.AsSpan(0, sizeof(ulong)).ConvertEndian());
+                return data.AsSpan().ToULong();
             }
             catch (Exception ex)
             {
@@ -1026,7 +1027,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(ulong), pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             try
             {
-                return BitConverter.ToUInt64(data.AsSpan(0, sizeof(ulong)).ConvertEndian());
+                return data.AsSpan().ToULong();
             }
             catch (Exception ex)
             {
@@ -1073,7 +1074,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] data = ReadSerializedData(stream, len: sizeof(float), pool);
             try
             {
-                return BitConverter.ToSingle(data.AsSpan(0, sizeof(float)).ConvertEndian());
+                return data.AsSpan().ToFloat();
             }
             catch (Exception ex)
             {
@@ -1098,7 +1099,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(float), pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             try
             {
-                return BitConverter.ToSingle(data.AsSpan(0, sizeof(float)).ConvertEndian());
+                return data.AsSpan().ToFloat();
             }
             catch (Exception ex)
             {
@@ -1145,7 +1146,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] data = ReadSerializedData(stream, len: sizeof(double), pool);
             try
             {
-                return BitConverter.ToDouble(data.AsSpan(0, sizeof(double)).ConvertEndian());
+                return data.AsSpan().ToDouble();
             }
             catch (Exception ex)
             {
@@ -1170,7 +1171,7 @@ namespace wan24.StreamSerializerExtensions
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(double), pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             try
             {
-                return BitConverter.ToDouble(data.AsSpan(0, sizeof(double)).ConvertEndian());
+                return data.AsSpan().ToDouble();
             }
             catch (Exception ex)
             {
@@ -1214,15 +1215,18 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static decimal ReadDecimal(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
         {
-            int[] bits = new int[4];
-            for (int i = 0; i < bits.Length; bits[i] = ReadInt(stream, version, pool), i++) ;
+            byte[] data = ReadSerializedData(stream, len: sizeof(int) << 2, pool);
             try
             {
-                return new decimal(bits);
+                return data.AsSpan().ToDecimal();
             }
             catch (Exception ex)
             {
                 throw new SerializerException(message: null, ex);
+            }
+            finally
+            {
+                (pool ?? ArrayPool<byte>.Shared).Return(data);
             }
         }
 
@@ -1236,15 +1240,18 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static async Task<decimal> ReadDecimalAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
         {
-            int[] bits = new int[4];
-            for (int i = 0; i < bits.Length; bits[i] = await ReadIntAsync(stream, version, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false), i++) ;
+            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(int) << 4, pool, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             try
             {
-                return new decimal(bits);
+                return data.AsSpan().ToDecimal();
             }
             catch (Exception ex)
             {
                 throw new SerializerException(message: null, ex);
+            }
+            finally
+            {
+                (pool ?? ArrayPool<byte>.Shared).Return(data);
             }
         }
 
@@ -2205,7 +2212,7 @@ namespace wan24.StreamSerializerExtensions
             bool serializerConstructor = ci.GetParameters().Length > 0;
             T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
             if (!serializerConstructor) res.Deserialize(stream, version ?? StreamSerializer.Version);
-            return res;
+            return res.ValidateObject();
         }
 
         /// <summary>
@@ -2243,7 +2250,7 @@ namespace wan24.StreamSerializerExtensions
             bool serializerConstructor = ci.GetParameters().Length > 0;
             T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
             if (!serializerConstructor) await res.DeserializeAsync(stream, version ?? StreamSerializer.Version, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
-            return res;
+            return res.ValidateObject();
         }
 
         /// <summary>
@@ -2316,7 +2323,7 @@ namespace wan24.StreamSerializerExtensions
                         : ReadAnyNullableMethod.InvokeAuto(obj: null, stream, version)
                     );
             }
-            return res;
+            return res.ValidateObject();
         }
 
         /// <summary>
@@ -2359,7 +2366,7 @@ namespace wan24.StreamSerializerExtensions
                 await task.ConfigureAwait(continueOnCapturedContext: false);
                 pis[done].SetValue(res, isNullable ? task.GetResultNullable<object>() : task.GetResult<object>());
             }
-            return res;
+            return res.ValidateObject();
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
 {

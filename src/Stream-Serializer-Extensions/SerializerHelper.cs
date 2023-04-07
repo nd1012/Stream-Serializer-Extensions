@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -8,11 +8,6 @@ namespace wan24.StreamSerializerExtensions
     /// </summary>
     public static class SerializerHelper
     {
-        /// <summary>
-        /// Task result property name
-        /// </summary>
-        private const string RESULT_PROPERTY_NAME = "Result";
-
         /// <summary>
         /// Remove flags
         /// </summary>
@@ -93,39 +88,15 @@ namespace wan24.StreamSerializerExtensions
         };
 
         /// <summary>
-        /// Convert the endian to be little endian for serializing, and big endian, if the system uses it
-        /// </summary>
-        /// <param name="bytes">Bytes</param>
-        /// <returns>Converted bytes</returns>
-        public static Span<byte> ConvertEndian(this Span<byte> bytes)
-        {
-            if (!BitConverter.IsLittleEndian) bytes.Reverse();
-            return bytes;
-        }
-
-        /// <summary>
-        /// Convert the endian to be little endian for serializing, and big endian, if the system uses it
-        /// </summary>
-        /// <param name="bytes">Bytes</param>
-        /// <returns>Converted bytes</returns>
-        public static Memory<byte> ConvertEndian(this Memory<byte> bytes)
-        {
-            bytes.Span.ConvertEndian();
-            return bytes;
-        }
-
-        /// <summary>
         /// Get the type of a number
         /// </summary>
         /// <param name="number">Number</param>
         /// <param name="useFlags">Use the flags?</param>
         /// <returns>Number type</returns>
         public static NumberTypes GetNumberType(this object number, bool useFlags = true)
-        {
-            NumberTypes res = NumberTypes.None;
-            Type type = number.GetType();
-            if (type == typeof(sbyte))
-                res = useFlags
+            => number switch
+            {
+                sbyte => useFlags
                     ? (sbyte)number switch
                     {
                         0 => NumberTypes.Zero,
@@ -133,18 +104,16 @@ namespace wan24.StreamSerializerExtensions
                         sbyte.MaxValue => NumberTypes.Byte | NumberTypes.MaxValue,
                         _ => NumberTypes.Byte
                     }
-                    : NumberTypes.Byte;
-            else if (type == typeof(byte))
-                res = useFlags
+                    : NumberTypes.Byte,
+                byte => useFlags
                     ? (byte)number switch
                     {
                         0 => NumberTypes.Zero,
                         byte.MaxValue => NumberTypes.Byte | NumberTypes.MaxValue | NumberTypes.Unsigned,
                         _ => NumberTypes.Byte | NumberTypes.Unsigned
                     }
-                    : NumberTypes.Byte | NumberTypes.Unsigned;
-            else if (type == typeof(short))
-                res = useFlags
+                    : NumberTypes.Byte | NumberTypes.Unsigned,
+                short => useFlags
                     ? (short)number switch
                     {
                         0 => NumberTypes.Zero,
@@ -152,18 +121,16 @@ namespace wan24.StreamSerializerExtensions
                         short.MaxValue => NumberTypes.Short | NumberTypes.MaxValue,
                         _ => NumberTypes.Short
                     }
-                    : NumberTypes.Short;
-            else if (type == typeof(ushort))
-                res = useFlags
+                    : NumberTypes.Short,
+                ushort => useFlags
                     ? (ushort)number switch
                     {
                         0 => NumberTypes.Zero,
                         ushort.MaxValue => NumberTypes.Short | NumberTypes.MaxValue | NumberTypes.Unsigned,
                         _ => NumberTypes.Short | NumberTypes.Unsigned
                     }
-                    : NumberTypes.Short | NumberTypes.Unsigned;
-            else if (type == typeof(int))
-                res = useFlags
+                    : NumberTypes.Short | NumberTypes.Unsigned,
+                int => useFlags
                     ? (int)number switch
                     {
                         0 => NumberTypes.Zero,
@@ -171,18 +138,16 @@ namespace wan24.StreamSerializerExtensions
                         int.MaxValue => NumberTypes.Int | NumberTypes.MaxValue,
                         _ => NumberTypes.Int
                     }
-                    : NumberTypes.Int;
-            else if (type == typeof(uint))
-                res = useFlags
+                    : NumberTypes.Int,
+                uint => useFlags
                     ? (uint)number switch
                     {
                         0 => NumberTypes.Zero,
                         uint.MaxValue => NumberTypes.Int | NumberTypes.MaxValue | NumberTypes.Unsigned,
                         _ => NumberTypes.Int | NumberTypes.Unsigned
                     }
-                    : NumberTypes.Int | NumberTypes.Unsigned;
-            else if (type == typeof(long))
-                res = useFlags
+                    : NumberTypes.Int | NumberTypes.Unsigned,
+                long => useFlags
                     ? (long)number switch
                     {
                         0 => NumberTypes.Zero,
@@ -190,18 +155,16 @@ namespace wan24.StreamSerializerExtensions
                         long.MaxValue => NumberTypes.Long | NumberTypes.MaxValue,
                         _ => NumberTypes.Long
                     }
-                    : NumberTypes.Long;
-            else if (type == typeof(ulong))
-                res = useFlags
+                    : NumberTypes.Long,
+                ulong => useFlags
                     ? (ulong)number switch
                     {
                         0 => NumberTypes.Zero,
                         ulong.MaxValue => NumberTypes.Long | NumberTypes.MaxValue | NumberTypes.Unsigned,
                         _ => NumberTypes.Long | NumberTypes.Unsigned
                     }
-                    : NumberTypes.Long | NumberTypes.Unsigned;
-            else if (type == typeof(float))
-                res = useFlags
+                    : NumberTypes.Long | NumberTypes.Unsigned,
+                float => useFlags
                     ? (float)number switch
                     {
                         0 => NumberTypes.Zero,
@@ -209,9 +172,8 @@ namespace wan24.StreamSerializerExtensions
                         float.MaxValue => NumberTypes.Float | NumberTypes.MaxValue,
                         _ => NumberTypes.Float
                     }
-                    : NumberTypes.Float;
-            else if (type == typeof(double))
-                res = useFlags
+                    : NumberTypes.Float,
+                double => useFlags
                     ? (double)number switch
                     {
                         0 => NumberTypes.Zero,
@@ -219,9 +181,8 @@ namespace wan24.StreamSerializerExtensions
                         double.MaxValue => NumberTypes.Double | NumberTypes.MaxValue,
                         _ => NumberTypes.Double
                     }
-                    : NumberTypes.Double;
-            else if (type == typeof(decimal))
-                res = useFlags
+                    : NumberTypes.Double,
+                decimal => useFlags
                     ? (decimal)number switch
                     {
                         0 => NumberTypes.Zero,
@@ -229,9 +190,9 @@ namespace wan24.StreamSerializerExtensions
                         decimal.MaxValue => NumberTypes.Decimal | NumberTypes.MaxValue,
                         _ => NumberTypes.Decimal
                     }
-                    : NumberTypes.Decimal;
-            return res;
-        }
+                    : NumberTypes.Decimal,
+                _ => NumberTypes.None
+            };
 
         /// <summary>
         /// Get the best matching number type
@@ -393,83 +354,42 @@ namespace wan24.StreamSerializerExtensions
         public static (Type Type, ObjectTypes ObjectType, bool WriteType, bool WriteObject) GetObjectSerializerInfo(this object obj)
         {
             Type type = obj.GetType();
-            ObjectTypes objType;
-            if (type == typeof(bool))
+            ObjectTypes objType = obj switch
             {
-                objType = ObjectTypes.Bool;
-            }
-            else if (type == typeof(sbyte))
-            {
-                objType = ObjectTypes.Byte;
-            }
-            else if (type == typeof(byte))
-            {
-                objType = ObjectTypes.Byte | ObjectTypes.Unsigned;
-            }
-            else if (type == typeof(short))
-            {
-                objType = ObjectTypes.Short;
-            }
-            else if (type == typeof(ushort))
-            {
-                objType = ObjectTypes.Short | ObjectTypes.Unsigned;
-            }
-            else if (type == typeof(int))
-            {
-                objType = ObjectTypes.Int;
-            }
-            else if (type == typeof(uint))
-            {
-                objType = ObjectTypes.Int | ObjectTypes.Unsigned;
-            }
-            else if (type == typeof(long))
-            {
-                objType = ObjectTypes.Long;
-            }
-            else if (type == typeof(ulong))
-            {
-                objType = ObjectTypes.Long | ObjectTypes.Unsigned;
-            }
-            else if (type == typeof(float))
-            {
-                objType = ObjectTypes.Float;
-            }
-            else if (type == typeof(double))
-            {
-                objType = ObjectTypes.Double;
-            }
-            else if (type == typeof(decimal))
-            {
-                objType = ObjectTypes.Decimal;
-            }
-            else if (type == typeof(string))
-            {
-                objType = ObjectTypes.String;
-            }
-            else if (type == typeof(byte[]))
-            {
-                objType = ObjectTypes.Bytes;
-            }
-            else if (type.IsArray)
-            {
-                objType = ObjectTypes.Array;
-            }
-            else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
-            {
-                objType = ObjectTypes.List;
-            }
-            else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
-            {
-                objType = ObjectTypes.Dict;
-            }
-            else if (typeof(IStreamSerializer).IsAssignableFrom(type))
-            {
-                objType = ObjectTypes.Serializable;
-            }
-            else
-            {
-                objType = ObjectTypes.Object;
-            }
+                bool => ObjectTypes.Bool,
+                sbyte => ObjectTypes.Byte,
+                byte => ObjectTypes.Byte | ObjectTypes.Unsigned,
+                short => ObjectTypes.Short,
+                ushort => ObjectTypes.Short | ObjectTypes.Unsigned,
+                int => ObjectTypes.Int,
+                uint => ObjectTypes.Int | ObjectTypes.Unsigned,
+                long => ObjectTypes.Long,
+                ulong => ObjectTypes.Long | ObjectTypes.Unsigned,
+                float => ObjectTypes.Float,
+                double => ObjectTypes.Double,
+                decimal => ObjectTypes.Decimal,
+                string => ObjectTypes.String,
+                byte[] => ObjectTypes.Bytes,
+                IStreamSerializer => ObjectTypes.Serializable,
+                _ => ObjectTypes.Null
+            };
+            if (objType == ObjectTypes.Null)
+                if (type.IsArray)
+                {
+                    objType = ObjectTypes.Array;
+                }
+                else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+                {
+                    objType = ObjectTypes.List;
+                }
+                else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+                {
+                    objType = ObjectTypes.Dict;
+                }
+                else
+                {
+                    objType = ObjectTypes.Object;
+                }
             bool writeType = false,
                 writeObject = true;
             switch (objType.RemoveFlags())
@@ -573,73 +493,18 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <summary>
-        /// Get the result from a task
+        /// Validate an object and throw an exception, if the validation failed
         /// </summary>
-        /// <typeparam name="T">Result type</typeparam>
-        /// <param name="task">Task</param>
-        /// <returns>Result</returns>
-        public static T GetResult<T>(this Task task) => (T)GetTaskResult(task, typeof(T))!;
-
-        /// <summary>
-        /// Get the result from a task
-        /// </summary>
-        /// <typeparam name="T">Result type</typeparam>
-        /// <param name="task">Task</param>
-        /// <returns>Result</returns>
-        public static T? GetResultNullable<T>(this Task task) => (T?)GetTaskResult(task, typeof(T));
-
-        /// <summary>
-        /// Get the result from a task
-        /// </summary>
-        /// <param name="task">Task</param>
-        /// <param name="type">Result type</param>
-        /// <returns>Result</returns>
-        public static object GetResult(this Task task, Type type) => GetTaskResult(task, type)!;
-
-        /// <summary>
-        /// Get the result from a task
-        /// </summary>
-        /// <param name="task">Task</param>
-        /// <param name="type">Result type</param>
-        /// <returns>Result</returns>
-        public static object? GetResultNullable(this Task task, Type type) => GetTaskResult(task, type);
-
-        /// <summary>
-        /// Get the task result
-        /// </summary>
-        /// <param name="task">Task</param>
-        /// <param name="type">Result type</param>
-        /// <returns>Result</returns>
-        private static object? GetTaskResult(Task task, Type type)
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="value">Value</param>
+        /// <returns>Value</returns>
+        public static T ValidateObject<T>(this T value) where T : notnull
         {
-            try
-            {
-                return typeof(Task<>).MakeGenericType(type).GetProperty(RESULT_PROPERTY_NAME, BindingFlags.Instance | BindingFlags.Public)!.GetValue(task);
-            }
-            catch(Exception ex)
-            {
-                throw new SerializerException($"Failed to get task {task.GetType()} result of type {type}", ex);
-            }
-        }
-
-        /// <summary>
-        /// Invoke a method and complete parameters with default values
-        /// </summary>
-        /// <param name="mi">Method</param>
-        /// <param name="obj">Object</param>
-        /// <param name="param">Parameters</param>
-        /// <returns>Return value</returns>
-        public static object? InvokeAuto(this MethodInfo mi, object? obj, params object?[] param)
-        {
-            List<object?> par = new(param);
-            ParameterInfo[] pis = mi.GetParameters();
-            for (int i = par.Count; i < pis.Length; i++)
-            {
-                if (!pis[i].HasDefaultValue)
-                    throw new SerializerException($"Missing required parameter #{i} ({pis[i].Name}) for invoking method {mi.DeclaringType}.{mi.Name}");
-                par.Add(pis[i].DefaultValue);
-            }
-            return mi.Invoke(obj, par.ToArray());
+            List<ValidationResult> results = new();
+            if (!Validator.TryValidateObject(value, new(value, serviceProvider: null, items: null), results, validateAllProperties: true) ||
+                !Validator.TryValidateObject(value, new(value, serviceProvider: null, items: null), results, validateAllProperties: false))
+                throw new SerializerException($"Object validation found {results.Count} errors with the deserialized object");
+            return value;
         }
     }
 }

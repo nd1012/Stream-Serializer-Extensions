@@ -92,7 +92,7 @@ The type needs to have a constructor without parameters. Properties with a
 public getter and setter can be serialized:
 
 ```cs
-[StreamSerializer(StreamSerializerModes.OutOut)]
+[StreamSerializer(StreamSerializerModes.OptOut)]
 public class YourType
 {
 	public YourType() { }
@@ -263,7 +263,7 @@ The `SerializedObjectVersion` property will have a non-null value, if the
 object was deserialized, and the `StreamSerializerBase` base constructor got a 
 object version as `objectVersion` parameter. Based on the serialized object 
 version you can switch and handle the binary sequence in the required way. To 
-access the vrsioning information of an object, you can use the optional 
+access the versioning information of an object, you can use the optional 
 `IStreamSerializerVersion` interface, which is implemented by 
 `StreamSerializerBase`, too.
 
@@ -325,3 +325,6 @@ The job of the serializer is to write and read objects to/from a binary
 sequence. There's no compression, encryption or hashing built in. If you want 
 to compress/protect a created binary sequence, you can apply compression, 
 encryption and hashing on the result as you want.
+
+Object validation will be applied to deserialized objects to ensure their 
+validity.

@@ -1,6 +1,7 @@
 ﻿using System.Buffers;
 using System.Reflection;
 using System.Text;
+using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -579,7 +580,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(BitConverter.GetBytes(value).AsSpan().ConvertEndian());
+                stream.Write(value.GetBytes());
                 return stream;
             }
             catch (Exception ex)
@@ -598,7 +599,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(BitConverter.GetBytes(value).AsMemory().ConvertEndian(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             }
             catch (Exception ex)
             {
@@ -643,7 +644,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(BitConverter.GetBytes(value).AsSpan().ConvertEndian());
+                stream.Write(value.GetBytes());
                 return stream;
             }
             catch (Exception ex)
@@ -662,7 +663,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(BitConverter.GetBytes(value).AsMemory().ConvertEndian(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             }
             catch (Exception ex)
             {
@@ -707,7 +708,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(BitConverter.GetBytes(value).AsSpan().ConvertEndian());
+                stream.Write(value.GetBytes());
                 return stream;
             }
             catch (Exception ex)
@@ -726,7 +727,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(BitConverter.GetBytes(value).AsMemory().ConvertEndian(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             }
             catch (Exception ex)
             {
@@ -771,7 +772,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(BitConverter.GetBytes(value).AsSpan().ConvertEndian());
+                stream.Write(value.GetBytes());
                 return stream;
             }
             catch (Exception ex)
@@ -790,7 +791,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(BitConverter.GetBytes(value).AsMemory().ConvertEndian(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             }
             catch (Exception ex)
             {
@@ -835,7 +836,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(BitConverter.GetBytes(value).AsSpan().ConvertEndian());
+                stream.Write(value.GetBytes());
                 return stream;
             }
             catch (Exception ex)
@@ -854,7 +855,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(BitConverter.GetBytes(value).AsMemory().ConvertEndian(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             }
             catch (Exception ex)
             {
@@ -899,7 +900,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(BitConverter.GetBytes(value).AsSpan().ConvertEndian());
+                stream.Write(value.GetBytes());
                 return stream;
             }
             catch (Exception ex)
@@ -918,7 +919,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(BitConverter.GetBytes(value).AsMemory().ConvertEndian(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             }
             catch (Exception ex)
             {
@@ -963,7 +964,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(BitConverter.GetBytes(value).AsSpan().ConvertEndian());
+                stream.Write(value.GetBytes());
                 return stream;
             }
             catch (Exception ex)
@@ -982,7 +983,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(BitConverter.GetBytes(value).AsMemory().ConvertEndian(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             }
             catch (Exception ex)
             {
@@ -1027,7 +1028,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(BitConverter.GetBytes(value).AsSpan().ConvertEndian());
+                stream.Write(value.GetBytes());
                 return stream;
             }
             catch (Exception ex)
@@ -1046,7 +1047,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(BitConverter.GetBytes(value).AsMemory().ConvertEndian(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             }
             catch (Exception ex)
             {
@@ -1091,7 +1092,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                foreach (int digits in decimal.GetBits(value)) Write(stream, digits);
+                stream.Write(value.GetBytes());
                 return stream;
             }
             catch (Exception ex)
@@ -1110,7 +1111,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                foreach (int digits in decimal.GetBits(value)) await WriteAsync(stream, digits, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+                await stream.WriteAsync(value.GetBytes(), cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
             }
             catch (Exception ex)
             {
