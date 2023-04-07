@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.Data;
 using System.Reflection;
 using System.Text;
 using wan24.Core;
@@ -215,15 +216,10 @@ namespace wan24.StreamSerializerExtensions
             try
             {
                 (Type type, ObjectTypes objType, bool writeType, bool writeObject) = obj.GetObjectSerializerInfo();
-                byte[] data = ArrayPool<byte>.Shared.Rent(1);
-                try
+                using(RentedArray<byte> poolData = new(1))
                 {
-                    data[0] = (byte)objType;
-                    stream.Write(data.AsSpan(0, 1));
-                }
-                finally
-                {
-                    ArrayPool<byte>.Shared.Return(data);
+                    poolData[0] = (byte)objType;
+                    stream.Write(poolData.Span);
                 }
                 if (writeType) WriteString(stream, type.ToString());
                 if (writeObject)
@@ -258,15 +254,10 @@ namespace wan24.StreamSerializerExtensions
             try
             {
                 (Type type, ObjectTypes objType, bool writeType, bool writeObject) = obj.GetObjectSerializerInfo();
-                byte[] data = ArrayPool<byte>.Shared.Rent(1);
-                try
+                using (RentedArray<byte> poolData = new(1))
                 {
-                    data[0] = (byte)objType;
-                    await stream.WriteAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext();
-                }
-                finally
-                {
-                    ArrayPool<byte>.Shared.Return(data);
+                    poolData[0] = (byte)objType;
+                    await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
                 }
                 if (writeType) await WriteStringAsync(stream, type.ToString(), cancellationToken).DynamicContext();
                 if (writeObject)
@@ -306,15 +297,10 @@ namespace wan24.StreamSerializerExtensions
             {
                 if (obj == null)
                 {
-                    byte[] data = ArrayPool<byte>.Shared.Rent(1);
-                    try
+                    using (RentedArray<byte> poolData = new(1))
                     {
-                        data[0] = (byte)ObjectTypes.Null;
-                        stream.Write(data.AsSpan(0, 1));
-                    }
-                    finally
-                    {
-                        ArrayPool<byte>.Shared.Return(data);
+                        poolData[0] = (byte)ObjectTypes.Null;
+                        stream.Write(poolData.Span);
                     }
                 }
                 else
@@ -345,15 +331,10 @@ namespace wan24.StreamSerializerExtensions
             {
                 if (obj == null)
                 {
-                    byte[] data = ArrayPool<byte>.Shared.Rent(1);
-                    try
+                    using (RentedArray<byte> poolData = new(1))
                     {
-                        data[0] = (byte)ObjectTypes.Null;
-                        await stream.WriteAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext();
-                    }
-                    finally
-                    {
-                        ArrayPool<byte>.Shared.Return(data);
+                        poolData[0] = (byte)ObjectTypes.Null;
+                        await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
                     }
                 }
                 else
@@ -380,21 +361,12 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Stream</returns>
         public static T Write<T>(this T stream, bool value) where T : Stream
         {
-            byte[] data = ArrayPool<byte>.Shared.Rent(1);
-            try
+            using (RentedArray<byte> poolData = new(1))
             {
-                data[0] = (byte)(value ? 1 : 0);
-                stream.Write(data.AsSpan(0, 1));
-                return stream;
+                poolData[0] = (byte)(value ? 1 : 0);
+                stream.Write(poolData.Span);
             }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                ArrayPool<byte>.Shared.Return(data);
-            }
+            return stream;
         }
 
         /// <summary>
@@ -405,19 +377,10 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteAsync(this Stream stream, bool value, CancellationToken cancellationToken = default)
         {
-            byte[] data = ArrayPool<byte>.Shared.Rent(1);
-            try
+            using (RentedArray<byte> poolData = new(1))
             {
-                data[0] = (byte)(value ? 1 : 0);
-                await stream.WriteAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                ArrayPool<byte>.Shared.Return(data);
+                poolData[0] = (byte)(value ? 1 : 0);
+                await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
             }
         }
 
@@ -1158,17 +1121,16 @@ namespace wan24.StreamSerializerExtensions
             where tNumber : struct, IConvertible
         {
             (object number, NumberTypes type) = value.GetNumberAndType();
-            byte[] data = ArrayPool<byte>.Shared.Rent(1);
-            try
+            using (RentedArray<byte> poolData = new(1))
             {
-                data[0] = (byte)type;
-                stream.Write(data.AsSpan(0, 1));
+                poolData[0] = (byte)type;
+                stream.Write(poolData.Span);
                 switch (type)
                 {
                     case NumberTypes.Byte:
                     case NumberTypes.Byte | NumberTypes.Unsigned:
-                        data[0] = number.ChangeType<byte>();
-                        stream.Write(data.AsSpan(0, 1));
+                        poolData[0] = number.ChangeType<byte>();
+                        stream.Write(poolData.Span);
                         break;
                     case NumberTypes.Short:
                         Write(stream, number.ChangeType<short>());
@@ -1199,10 +1161,6 @@ namespace wan24.StreamSerializerExtensions
                         break;
                 }
             }
-            finally
-            {
-                ArrayPool<byte>.Shared.Return(data);
-            }
             return stream;
         }
 
@@ -1217,17 +1175,16 @@ namespace wan24.StreamSerializerExtensions
             where T : struct, IConvertible
         {
             (object number, NumberTypes type) = value.GetNumberAndType();
-            byte[] data = ArrayPool<byte>.Shared.Rent(1);
-            try
+            using (RentedArray<byte> poolData = new(1))
             {
-                data[0] = (byte)type;
-                await stream.WriteAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext();
+                poolData[0] = (byte)type;
+                await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
                 switch (type)
                 {
                     case NumberTypes.Byte:
                     case NumberTypes.Byte | NumberTypes.Unsigned:
-                        data[0] = number.ChangeType<byte>();
-                        await stream.WriteAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext();
+                        poolData[0] = number.ChangeType<byte>();
+                        await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Short:
                         await WriteAsync(stream, number.ChangeType<short>(), cancellationToken).DynamicContext();
@@ -1257,10 +1214,6 @@ namespace wan24.StreamSerializerExtensions
                         await WriteAsync(stream, number.ChangeType<decimal>(), cancellationToken).DynamicContext();
                         break;
                 }
-            }
-            finally
-            {
-                ArrayPool<byte>.Shared.Return(data);
             }
         }
 
