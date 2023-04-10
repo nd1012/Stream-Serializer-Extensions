@@ -1,4 +1,6 @@
-﻿namespace wan24.StreamSerializerExtensions
+﻿using wan24.Core;
+
+namespace wan24.StreamSerializerExtensions
 {
     /// <summary>
     /// Base class for a stream serializing type

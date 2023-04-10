@@ -1129,35 +1129,35 @@ namespace wan24.StreamSerializerExtensions
                 {
                     case NumberTypes.Byte:
                     case NumberTypes.Byte | NumberTypes.Unsigned:
-                        poolData[0] = number.ChangeType<byte>();
+                        poolData[0] = number.ConvertType<byte>();
                         stream.Write(poolData.Span);
                         break;
                     case NumberTypes.Short:
-                        Write(stream, number.ChangeType<short>());
+                        Write(stream, number.ConvertType<short>());
                         break;
                     case NumberTypes.Short | NumberTypes.Unsigned:
-                        Write(stream, number.ChangeType<ushort>());
+                        Write(stream, number.ConvertType<ushort>());
                         break;
                     case NumberTypes.Int:
-                        Write(stream, number.ChangeType<int>());
+                        Write(stream, number.ConvertType<int>());
                         break;
                     case NumberTypes.Int | NumberTypes.Unsigned:
-                        Write(stream, number.ChangeType<uint>());
+                        Write(stream, number.ConvertType<uint>());
                         break;
                     case NumberTypes.Long:
-                        Write(stream, number.ChangeType<long>());
+                        Write(stream, number.ConvertType<long>());
                         break;
                     case NumberTypes.Long | NumberTypes.Unsigned:
-                        Write(stream, number.ChangeType<ulong>());
+                        Write(stream, number.ConvertType<ulong>());
                         break;
                     case NumberTypes.Float:
-                        Write(stream, number.ChangeType<float>());
+                        Write(stream, number.ConvertType<float>());
                         break;
                     case NumberTypes.Double:
-                        Write(stream, number.ChangeType<double>());
+                        Write(stream, number.ConvertType<double>());
                         break;
                     case NumberTypes.Decimal:
-                        Write(stream, number.ChangeType<decimal>());
+                        Write(stream, number.ConvertType<decimal>());
                         break;
                 }
             }
@@ -1183,35 +1183,35 @@ namespace wan24.StreamSerializerExtensions
                 {
                     case NumberTypes.Byte:
                     case NumberTypes.Byte | NumberTypes.Unsigned:
-                        poolData[0] = number.ChangeType<byte>();
+                        poolData[0] = number.ConvertType<byte>();
                         await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Short:
-                        await WriteAsync(stream, number.ChangeType<short>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, number.ConvertType<short>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Short | NumberTypes.Unsigned:
-                        await WriteAsync(stream, number.ChangeType<ushort>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, number.ConvertType<ushort>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Int:
-                        await WriteAsync(stream, number.ChangeType<int>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, number.ConvertType<int>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Int | NumberTypes.Unsigned:
-                        await WriteAsync(stream, number.ChangeType<uint>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, number.ConvertType<uint>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Long:
-                        await WriteAsync(stream, number.ChangeType<long>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, number.ConvertType<long>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Long | NumberTypes.Unsigned:
-                        await WriteAsync(stream, number.ChangeType<ulong>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, number.ConvertType<ulong>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Float:
-                        await WriteAsync(stream, number.ChangeType<float>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, number.ConvertType<float>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Double:
-                        await WriteAsync(stream, number.ChangeType<double>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, number.ConvertType<double>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Decimal:
-                        await WriteAsync(stream, number.ChangeType<decimal>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, number.ConvertType<decimal>(), cancellationToken).DynamicContext();
                         break;
                 }
             }

@@ -1,4 +1,5 @@
-﻿using wan24.StreamSerializerExtensions;
+﻿using wan24.Core;
+using wan24.StreamSerializerExtensions;
 
 namespace Stream_Serializer_Extensions_Tests
 {

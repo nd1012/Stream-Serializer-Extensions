@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
+using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
 {
