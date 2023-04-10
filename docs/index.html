@@ -82,28 +82,58 @@ binary stream sequence.</p>
 serializers, too.</p>
 <h2 id="methods">Methods</h2>
 <p>The <code>Write</code> and <code>WriteAsync</code> methods will be extended with supported types,
-while serializing</p>
-<ul>
-<li>strings is being done with <code>WriteString*</code></li>
-<li>enumerations is being done with <code>WriteEnum*</code></li>
-<li>arrays is being done with <code>WriteArray*</code></li>
-<li>lists is being done with <code>WriteList*</code></li>
-<li>dictionaries is being done with <code>WriteDict*</code></li>
-<li><code>IStreamSerializer</code> objects is being done with <code>WriteSerialized*</code></li>
-<li>byte arrays is being done with <code>WriteBytes*</code></li>
-<li>any other object is being done with <code>WriteAnyObject*</code></li>
-</ul>
-<p>For deserialization:</p>
-<ul>
-<li><code>ReadString*</code></li>
-<li><code>ReadEnum*</code></li>
-<li><code>ReadArray*</code></li>
-<li><code>ReadList*</code></li>
-<li><code>ReadDict*</code></li>
-<li><code>ReadSerialized*</code></li>
-<li><code>ReadBytes*</code></li>
-<li><code>ReadAnyObject*</code></li>
-</ul>
+while serializing some types is being done with specialized methods:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Serialization method</th>
+<th>Deserialization method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>string</code></td>
+<td><code>WriteString*</code></td>
+<td><code>ReadString*</code></td>
+</tr>
+<tr>
+<td><code>Enum</code></td>
+<td><code>WriteEnum*</code></td>
+<td><code>ReadEnum*</code></td>
+</tr>
+<tr>
+<td><code>Array</code></td>
+<td><code>WriteArray*</code></td>
+<td><code>ReadArray*</code></td>
+</tr>
+<tr>
+<td><code>List&lt;T&gt;</code></td>
+<td><code>WriteList*</code></td>
+<td><code>ReadList*</code></td>
+</tr>
+<tr>
+<td><code>Dictionary&lt;tKey, tValue&gt;</code></td>
+<td><code>WriteDict*</code></td>
+<td><code>ReadDict*</code></td>
+</tr>
+<tr>
+<td><code>IStreamSerializer</code></td>
+<td><code>WriteSerialized*</code></td>
+<td><code>ReadSerialized*</code></td>
+</tr>
+<tr>
+<td><code>byte[]</code></td>
+<td><code>WriteBytes*</code></td>
+<td><code>ReadBytes*</code></td>
+</tr>
+<tr>
+<td>(any other)</td>
+<td><code>WriteAnyObject*</code></td>
+<td><code>ReadAnyObject*</code></td>
+</tr>
+</tbody>
+</table>
 <p>Using the <code>WriteObject*</code> and <code>ReadObject*</code> methods you can let the library
 decide which method to use for the given object type.</p>
 <p>Using the <code>WriteAny*</code> and <code>ReadAny*</code> methods, you can write and read an object
@@ -120,13 +150,32 @@ They'll add an extra byte for <code>null</code> value detection.</p>
 sequence that you've used for writing it!</p>
 <p>Most methods are designed specially for one type, while other methods work
 more generic. This is when to choose which method:</p>
-<ul>
-<li><code>*Serialized*</code>: The fixed type is a stream serializer base object</li>
-<li><code>*Object*</code>: The fixed type has a specialized serializer</li>
-<li><code>*AnyObject*</code>: The type uses attributes (or no serializer contract
-information at all) and doesn't have a specialized serializer</li>
-<li><code>*Any*</code>: The dynamic type is unknown when (de)serializing</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*Serialized*</code></td>
+<td>The fixed type is a stream serializer base object</td>
+</tr>
+<tr>
+<td><code>*Object*</code></td>
+<td>The fixed type has a specialized serializer</td>
+</tr>
+<tr>
+<td><code>*AnyObject*</code></td>
+<td>The type uses attributes (or no serializer contract information at all) and doesn't have a specialized serializer</td>
+</tr>
+<tr>
+<td><code>*Any*</code></td>
+<td>The dynamic type is unknown when (de)serializing</td>
+</tr>
+</tbody>
+</table>
 <h2 id="number-serialization">Number serialization</h2>
 <p>The <code>WriteNumber*</code> and <code>ReadNumber*</code> methods will find the best matching
 serialization method for a given number. For example, if you give an Int32
@@ -138,7 +187,7 @@ used numeric type in an extra byte).</p>
 <h3 id="using-the-streamserializerattribute-attribute">Using the <code>StreamSerializerAttribute</code> attribute</h3>
 <p>The type needs to have a constructor without parameters. Properties with a
 public getter and setter can be serialized:</p>
-<pre><code class="lang-cs">[StreamSerializer(StreamSerializerModes.OutOut)]
+<pre><code class="lang-cs">[StreamSerializer(StreamSerializerModes.OptOut)]
 public class YourType
 {
 	public YourType() { }
@@ -261,7 +310,16 @@ interface. Then you can use the <code>WriteSerialized*</code>, <code>WriteObject
 <p>When deserializing using the <code>ReadAny*</code> methods, the target type needs to be
 loaded from the environment, using <code>Type.GetType</code>. Since this might fail, you
 can add your own type loading handler using the <code>StreamSerializer.OnLoadType</code>
-event.</p>
+event. The library uses the <code>wan24-Core</code> NuGet package. If you want to use the
+<code>wan24-Core</code> type helper for loading types:</p>
+<pre><code class="lang-cs">StreamSerializer.OnInit += (e) =&gt; StreamSerializer.OnLoadType += (s, e) =&gt;
+{
+    if(e.Type != null) return;
+    e.Type = TypeHelper.GetType(e.Name);
+};
+</code></pre>
+<p><strong>CAUTION</strong>: By adding the <code>wan24-Core</code> type helper like this, any type may be
+deserialized, which may be a security issue!</p>
 <p>When using the <code>StreamSerializerBase</code> base class, you can also give a value
 for the parameter <code>objectVersion</code> to the base constructor to enable object
 versioning. This makes it possible that newer object versions are able to
@@ -289,7 +347,10 @@ deserialization you can get the serialized object version like this:</p>
 <p>The <code>SerializedObjectVersion</code> property will have a non-null value, if the
 object was deserialized, and the <code>StreamSerializerBase</code> base constructor got a
 object version as <code>objectVersion</code> parameter. Based on the serialized object
-version you can switch and handle the binary sequence in the required way.</p>
+version you can switch and handle the binary sequence in the required way. To
+access the versioning information of an object, you can use the optional
+<code>IStreamSerializerVersion</code> interface, which is implemented by
+<code>StreamSerializerBase</code>, too.</p>
 <h2 id="deserializer-limitations">Deserializer limitations</h2>
 <p>When deserializing variable length objects (like arrays or strings), you can
 limit the allowed number of items/bytes (or request a minimum count) using the
@@ -335,6 +396,12 @@ could harm your computer!</p>
 sequence. There's no compression, encryption or hashing built in. If you want
 to compress/protect a created binary sequence, you can apply compression,
 encryption and hashing on the result as you want.</p>
+<p>Object validation will be applied to deserialized objects to ensure their
+validity.</p>
+<h2 id="roadmap">Roadmap</h2>
+<ul>
+<li>[ ] Enumerate objects from a stream</li>
+</ul>
 </article>
           </div>
           
@@ -342,6 +409,9 @@ encryption and hashing on the result as you want.</p>
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/main/src/Stream-Serializer-Extensions Docs/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

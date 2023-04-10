@@ -24,27 +24,18 @@ serializers, too.
 ## Methods
 
 The `Write` and `WriteAsync` methods will be extended with supported types, 
-while serializing 
+while serializing some types is being done with specialized methods:
 
-- strings is being done with `WriteString*`
-- enumerations is being done with `WriteEnum*`
-- arrays is being done with `WriteArray*`
-- lists is being done with `WriteList*`
-- dictionaries is being done with `WriteDict*`
-- `IStreamSerializer` objects is being done with `WriteSerialized*`
-- byte arrays is being done with `WriteBytes*`
-- any other object is being done with `WriteAnyObject*`
-
-For deserialization:
-
-- `ReadString*`
-- `ReadEnum*`
-- `ReadArray*`
-- `ReadList*`
-- `ReadDict*`
-- `ReadSerialized*`
-- `ReadBytes*`
-- `ReadAnyObject*`
+| Type | Serialization method | Deserialization method |
+| --- | --- | --- |
+| `string` | `WriteString*` | `ReadString*` |
+| `Enum` | `WriteEnum*` | `ReadEnum*` |
+| `Array` | `WriteArray*` | `ReadArray*` |
+| `List<T>` | `WriteList*` | `ReadList*` |
+| `Dictionary<tKey, tValue>` | `WriteDict*` | `ReadDict*` |
+| `IStreamSerializer` | `WriteSerialized*` | `ReadSerialized*` |
+| `byte[]` | `WriteBytes*` | `ReadBytes*` |
+| (any other) | `WriteAnyObject*` | `ReadAnyObject*` |
 
 Using the `WriteObject*` and `ReadObject*` methods you can let the library 
 decide which method to use for the given object type.
@@ -68,11 +59,12 @@ sequence that you've used for writing it!
 Most methods are designed specially for one type, while other methods work 
 more generic. This is when to choose which method:
 
-- `*Serialized*`: The fixed type is a stream serializer base object
-- `*Object*`: The fixed type has a specialized serializer
-- `*AnyObject*`: The type uses attributes (or no serializer contract 
-information at all) and doesn't have a specialized serializer
-- `*Any*`: The dynamic type is unknown when (de)serializing
+| Method | Condition |
+| --- | --- |
+| `*Serialized*` | The fixed type is a stream serializer base object |
+| `*Object*` | The fixed type has a specialized serializer |
+| `*AnyObject*` | The type uses attributes (or no serializer contract information at all) and doesn't have a specialized serializer |
+| `*Any*` | The dynamic type is unknown when (de)serializing |
 
 ## Number serialization
 
@@ -92,7 +84,7 @@ The type needs to have a constructor without parameters. Properties with a
 public getter and setter can be serialized:
 
 ```cs
-[StreamSerializer(StreamSerializerModes.OutOut)]
+[StreamSerializer(StreamSerializerModes.OptOut)]
 public class YourType
 {
 	public YourType() { }
@@ -230,7 +222,19 @@ public class YourType : StreamSerializerBase
 When deserializing using the `ReadAny*` methods, the target type needs to be 
 loaded from the environment, using `Type.GetType`. Since this might fail, you 
 can add your own type loading handler using the `StreamSerializer.OnLoadType` 
-event.
+event. The library uses the `wan24-Core` NuGet package. If you want to use the 
+`wan24-Core` type helper for loading types:
+
+```cs
+StreamSerializer.OnInit += (e) => StreamSerializer.OnLoadType += (s, e) =>
+{
+    if(e.Type != null) return;
+    e.Type = TypeHelper.GetType(e.Name);
+};
+```
+
+**CAUTION**: By adding the `wan24-Core` type helper like this, any type may be 
+deserialized, which may be a security issue!
 
 When using the `StreamSerializerBase` base class, you can also give a value 
 for the parameter `objectVersion` to the base constructor to enable object 
@@ -262,7 +266,10 @@ deserialization you can get the serialized object version like this:
 The `SerializedObjectVersion` property will have a non-null value, if the 
 object was deserialized, and the `StreamSerializerBase` base constructor got a 
 object version as `objectVersion` parameter. Based on the serialized object 
-version you can switch and handle the binary sequence in the required way.
+version you can switch and handle the binary sequence in the required way. To 
+access the versioning information of an object, you can use the optional 
+`IStreamSerializerVersion` interface, which is implemented by 
+`StreamSerializerBase`, too.
 
 ## Deserializer limitations
 
@@ -322,3 +329,10 @@ The job of the serializer is to write and read objects to/from a binary
 sequence. There's no compression, encryption or hashing built in. If you want 
 to compress/protect a created binary sequence, you can apply compression, 
 encryption and hashing on the result as you want.
+
+Object validation will be applied to deserialized objects to ensure their 
+validity.
+
+## Roadmap
+
+- [ ] Enumerate objects from a stream

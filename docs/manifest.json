@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "api/index.html",
-          "hash": "i8fqSetaVMATDumxOnYj80EpZ8TvYKITHoSzJwDvSPg="
+          "hash": "iaDQ2FRHczD0iPd2yVIlRKUoqfnQLmYodya/rKUyPxE="
         }
       },
       "is_incremental": false,
@@ -21,7 +21,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "mMNvdTDPQGBLBWHLeqwnIRZ8wufGCh4PjNlG/nMRi4s="
+          "hash": "6daPbAzY3JaUUw/D9KMi5s3suAyYfS+3d5VzRm038X4="
         }
       },
       "is_incremental": false,
@@ -33,7 +33,19 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.IStreamSerializer.html",
-          "hash": "Eye4HLbeoEgjtCkIeMB28DdJMK3pR/3rBsI7nO+uYWs="
+          "hash": "TZEm7AJQZKNhfNHnY92MIYVzZtQmxfv/g6uaHGfgVGw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/wan24.StreamSerializerExtensions.IStreamSerializerVersion.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/wan24.StreamSerializerExtensions.IStreamSerializerVersion.html",
+          "hash": "UNmcArxVfD7TYOdWMaFrK11bxSTiloLN7kHeGZoY3R4="
         }
       },
       "is_incremental": false,
@@ -45,7 +57,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.NumberTypes.html",
-          "hash": "2xhu3guGwS3VoNRz/Oy82DBu6oPaIFBL6h2Pou1qIUw="
+          "hash": "nDvRMcDmMIJ+oZi1zVR0k/fMwbcLjyoelByB/iRvdhI="
         }
       },
       "is_incremental": false,
@@ -57,7 +69,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.ObjectTypes.html",
-          "hash": "Fm+n0xOE5wc3zMG1KwuStKQs/GpBuqD8Tpylhg2cyr0="
+          "hash": "dR+KpPTgPnAWcjiboZ5smVglhHa8nJdL8EkkSOnNK2Y="
         }
       },
       "is_incremental": false,
@@ -69,7 +81,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.SerializerEventArgs-1.html",
-          "hash": "b3TrVMg0vPZa5pq2Mqq61mMy5Sw4ODLWCudo+JRWakY="
+          "hash": "ogJd778IE26fu33fwfMPbp0PLDw9E9BwI5/sB58xDXM="
         }
       },
       "is_incremental": false,
@@ -81,7 +93,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.SerializerException.html",
-          "hash": "qCFPdGfducGu+8+Tqk/12+VOnqglbxIfu05kdGeovPw="
+          "hash": "tQ9JwIeAvN5Q9DttLiwHnCTS6Gows2AU6SWo5pqgumQ="
         }
       },
       "is_incremental": false,
@@ -93,7 +105,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.SerializerHelper.html",
-          "hash": "qcTDr9n6OkEy0fnjaQiqoEdqVvwqN0zRk2AsiqvNp/Y="
+          "hash": "JChC4odkz95FpiWVnd6McCjQzJAdSbMRKmNs/YrXfo8="
         }
       },
       "is_incremental": false,
@@ -105,7 +117,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamExtensions.html",
-          "hash": "jiEZ8bU9xbYm3/JWSp3ki+muobOnoavACtqjsZDgIPc="
+          "hash": "95ZWy4OYALS4W0CFy7mc1vdkcOs5HHpd56b7Xb3LE+o="
         }
       },
       "is_incremental": false,
@@ -117,7 +129,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.AsyncDeserialize_Delegate.html",
-          "hash": "WfjbluOdLLbzRPioVlK8U3VJMRPIBd6uLKvmJDEu7CE="
+          "hash": "moBXt10drgUxvBf5/YhPOwmLvY5c5dGuH2mMYrKsSBQ="
         }
       },
       "is_incremental": false,
@@ -129,7 +141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.AsyncSerialize_Delegate.html",
-          "hash": "SO/kCSgrPXLQGBf+nYG56waWtyX82i+zLN3Pk57RHzw="
+          "hash": "WlIG12/KwfWy+gsx0AQu8P2xLUC+V+czFLGFo1bIbHo="
         }
       },
       "is_incremental": false,
@@ -141,7 +153,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.Deserialize_Delegate.html",
-          "hash": "lwoy0B/7MKtn0//XeXKIWdl78V9/EK4/IWVBfKJf+zM="
+          "hash": "D0tNeZ2X/4SxxF2Y5IjLu8Fd48+ZiBR56YMOwC9hAQ8="
         }
       },
       "is_incremental": false,
@@ -153,7 +165,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.FindAsyncDeserializer_Delegate.html",
-          "hash": "eDe1kxE4eG29v7DhV2W7mADZAEhXFv0flVJ6biUmxxE="
+          "hash": "rjXOD3hX9MiQOOLfhcQZr6U4Tu8CrL5ekD90E/yAlVo="
         }
       },
       "is_incremental": false,
@@ -165,7 +177,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.FindAsyncSerializer_Delegate.html",
-          "hash": "JBgARC/NUNEG30i6V4ZAoOEub2IX469ePN2kMPKxY58="
+          "hash": "aN/6hWm/vURbta48K51yiPdqm5tbgl9u1QckcyGm0Ew="
         }
       },
       "is_incremental": false,
@@ -177,7 +189,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.FindSyncDeserializer_Delegate.html",
-          "hash": "EpJ8dHKCsXQI/rd+VsG/oMUWNXNcQFuhD3yl1c8WKf8="
+          "hash": "ZfoIO3tKXqNJI9mdt80HPue5sTuQFLHMZz5MrDKOVx8="
         }
       },
       "is_incremental": false,
@@ -189,7 +201,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.FindSyncSerializer_Delegate.html",
-          "hash": "3E5dGiaG7vORRTJNbMifRItfS7yaxAJgQKhKnPFd2Ic="
+          "hash": "ve6MWgSNZRRLwU0hzTS9OP1tds+29Wl3ZpKGFeit0P4="
         }
       },
       "is_incremental": false,
@@ -201,7 +213,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.Init_Delegate.html",
-          "hash": "oqB8FOdSXX6IUgBXBW+QEjQ6VIwzg5dpW+maYWH4FTw="
+          "hash": "bjU1TqvNDHN5kneNFzkhmlLLNUCR80TDTYanmVAmKuo="
         }
       },
       "is_incremental": false,
@@ -213,7 +225,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.LoadType_Delegate.html",
-          "hash": "mcWjDytdlHdCl5SwUDevzv0MUwGIF/DjZsPUPHFtagc="
+          "hash": "ip8eAekOACuASeQ36XVMRK9OovFeTgwvaP0YjWEOb8Y="
         }
       },
       "is_incremental": false,
@@ -225,7 +237,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.Serialize_Delegate.html",
-          "hash": "SDGWfZpotT8HFUXbDF9XnFhNvnEP8J2YSMEij/AJX+E="
+          "hash": "dLz+3iDEUVEV2RpwEibK9vA1EjPF8uXCCSUWS+VzSe0="
         }
       },
       "is_incremental": false,
@@ -237,7 +249,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.html",
-          "hash": "lAWLR2sJ6jehbpCfC8RmU9XPRQ0OyCtzCnxa9MM+9xc="
+          "hash": "h8EeM4I9/AqxvFU/jsTBt+qS3wPKVgxP7gK/Su5OLRk="
         }
       },
       "is_incremental": false,
@@ -249,7 +261,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.html",
-          "hash": "2NGcVXNH1jI1iGHRR8pUsBVCMWOalj09UEWUkbA23QU="
+          "hash": "rPraymXmfgzA9nV84c0L6hGUSY/Du141mPNpx/Eizas="
         }
       },
       "is_incremental": false,
@@ -261,7 +273,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializerBase.html",
-          "hash": "XqHo56Y1KAhE6YnpXNhRzWiliJWxRV8p2iPilkHc3JU="
+          "hash": "OHeFFUfhpq97xJyYz1o6ADPn+iTBobjssOLA9L3mj0A="
         }
       },
       "is_incremental": false,
@@ -273,7 +285,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializerModes.html",
-          "hash": "BgXc/Io6ii1n19WXlakqrZNHnJ1QROtkwJb2YERrQY4="
+          "hash": "/nXQKEunw5FvXNLvRNnLfMTlYbVGRn1qcFF6EVDL35U="
         }
       },
       "is_incremental": false,
@@ -285,7 +297,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.TypeLoadEventArgs.html",
-          "hash": "H/ps+c5pLpz+e3l15Fok74L4hKGaqFGDr4Cavxl3Lbc="
+          "hash": "uyOOWZjXKNn83NOU3hDYiNCFnB0vapYNS8G+oW1KzHs="
         }
       },
       "is_incremental": false,
@@ -297,7 +309,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.html",
-          "hash": "lFPHyaYYZ/tDPPQbGYkSY92DoOMIhR4w6hBPVa5vVQA="
+          "hash": "XaFZSmtYNDJx5tWs/pEo7/75/vpENHOkqY8brIrI3EQ="
         }
       },
       "is_incremental": false,
@@ -309,7 +321,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/intro.html",
-          "hash": "Wp8MlNCY2O9Hh2a8nSPxHcJ+2HwnkdiZkXTuPdqbDRk="
+          "hash": "fGf/3SXH2GwI+eAgGZr1nC4zkdZP+dOYeolgIONWzs4="
         }
       },
       "is_incremental": false,
@@ -333,7 +345,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "NYHfxXl3yLTZJNjeA5/4A2cKvVDl2tIUj1lfzbDtYz4="
+          "hash": "yAcYpRbzNQP4yvGG5/4qcPDFJZgi74K1m5o+MzZ5QGE="
         }
       },
       "is_incremental": false,
@@ -356,11 +368,11 @@
     {
       "status": {
         "can_incremental": false,
-        "details": "Cannot build incrementally because config changed.",
+        "details": "Disable incremental build by force rebuild option.",
         "incrementalPhase": "build",
         "total_file_count": 0,
         "skipped_file_count": 0,
-        "full_build_reason_code": "ConfigChanged"
+        "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
         "ConceptualDocumentProcessor": {
@@ -372,7 +384,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 23,
+          "total_file_count": 24,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
@@ -386,8 +398,8 @@
     },
     {
       "status": {
-        "can_incremental": true,
-        "details": "Can support incremental post processing.",
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: it's disabled.",
         "incrementalPhase": "postProcessing",
         "total_file_count": 0,
         "skipped_file_count": 0
