@@ -52,6 +52,13 @@ namespace wan24.StreamSerializerExtensions
         public static bool IsZero(this NumberTypes type) => type == NumberTypes.Zero;
 
         /// <summary>
+        /// Determine if the number type has value flags
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>Has value flags?</returns>
+        public static bool HasValueFlags(this NumberTypes type) => (type & NumberTypes.VALUE_FLAGS) != 0;
+
+        /// <summary>
         /// Remove flags
         /// </summary>
         /// <param name="type">Type</param>

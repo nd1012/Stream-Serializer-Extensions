@@ -1240,7 +1240,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static async Task<decimal> ReadDecimalAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
         {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(int) << 4, pool, cancellationToken).DynamicContext();
+            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(int) << 2, pool, cancellationToken).DynamicContext();
             try
             {
                 return data.AsSpan().ToDecimal();

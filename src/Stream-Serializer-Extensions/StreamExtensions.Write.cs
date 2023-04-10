@@ -1121,10 +1121,10 @@ namespace wan24.StreamSerializerExtensions
             where tNumber : struct, IConvertible
         {
             (object number, NumberTypes type) = value.GetNumberAndType();
-            using (RentedArray<byte> poolData = new(1))
-            {
-                poolData[0] = (byte)type;
-                stream.Write(poolData.Span);
+            using RentedArray<byte> poolData = new(1);
+            poolData[0] = (byte)type;
+            stream.Write(poolData.Span);
+            if(!type.IsZero() && !type.HasValueFlags())
                 switch (type)
                 {
                     case NumberTypes.Byte:
@@ -1160,7 +1160,6 @@ namespace wan24.StreamSerializerExtensions
                         Write(stream, number.ConvertType<decimal>());
                         break;
                 }
-            }
             return stream;
         }
 
@@ -1175,10 +1174,10 @@ namespace wan24.StreamSerializerExtensions
             where T : struct, IConvertible
         {
             (object number, NumberTypes type) = value.GetNumberAndType();
-            using (RentedArray<byte> poolData = new(1))
-            {
-                poolData[0] = (byte)type;
-                await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
+            using RentedArray<byte> poolData = new(1);
+            poolData[0] = (byte)type;
+            await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
+            if (!type.IsZero() && !type.HasValueFlags())
                 switch (type)
                 {
                     case NumberTypes.Byte:
@@ -1214,7 +1213,6 @@ namespace wan24.StreamSerializerExtensions
                         await WriteAsync(stream, number.ConvertType<decimal>(), cancellationToken).DynamicContext();
                         break;
                 }
-            }
         }
 
         /// <summary>
