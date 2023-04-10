@@ -336,3 +336,4 @@ validity.
 ## Roadmap
 
 - [ ] Enumerate objects from a stream
+- [ ] Serializing object references
