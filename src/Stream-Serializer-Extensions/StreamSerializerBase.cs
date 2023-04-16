@@ -1,11 +1,12 @@
 ﻿using wan24.Core;
+using wan24.ObjectValidation;
 
 namespace wan24.StreamSerializerExtensions
 {
     /// <summary>
     /// Base class for a stream serializing type
     /// </summary>
-    public abstract class StreamSerializerBase : IStreamSerializerVersion
+    public abstract class StreamSerializerBase : ValidatableObject, IStreamSerializerVersion
     {
         /// <summary>
         /// Object version
@@ -20,7 +21,7 @@ namespace wan24.StreamSerializerExtensions
         /// Constructor
         /// </summary>
         /// <param name="objectVersion">Object version</param>
-        protected StreamSerializerBase(int? objectVersion = null) => _ObjectVersion = objectVersion;
+        protected StreamSerializerBase(int? objectVersion = null) : base() => _ObjectVersion = objectVersion;
 
         /// <summary>
         /// Constructor
@@ -28,7 +29,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <param name="objectVersion">Object version</param>
-        protected StreamSerializerBase(Stream stream, int version, int? objectVersion = null)
+        protected StreamSerializerBase(Stream stream, int version, int? objectVersion = null) : base()
         {
             _ObjectVersion = objectVersion;
             Deserialize(stream, version);

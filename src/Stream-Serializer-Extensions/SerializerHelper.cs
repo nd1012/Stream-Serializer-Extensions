@@ -501,6 +501,19 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <summary>
+        /// Ensure a valid length
+        /// </summary>
+        /// <param name="len">Length</param>
+        /// <param name="min">Minimum value</param>
+        /// <param name="max">Maximum value</param>
+        /// <returns>Length</returns>
+        public static long EnsureValidLength(long len, long min = 0, long max = long.MaxValue)
+        {
+            if (len < min || len > max) throw new InvalidDataException($"Invalid length {len}");
+            return len;
+        }
+
+        /// <summary>
         /// Validate an object and throw an exception, if the validation failed
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>

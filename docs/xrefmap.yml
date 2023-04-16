@@ -423,6 +423,12 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength(System.Int32,System.Int32,System.Int32)
   fullName: wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength(System.Int32, System.Int32, System.Int32)
   nameWithType: SerializerHelper.EnsureValidLength(Int32, Int32, Int32)
+- uid: wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength(System.Int64,System.Int64,System.Int64)
+  name: EnsureValidLength(Int64, Int64, Int64)
+  href: api/wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_EnsureValidLength_System_Int64_System_Int64_System_Int64_
+  commentId: M:wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength(System.Int64,System.Int64,System.Int64)
+  fullName: wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength(System.Int64, System.Int64, System.Int64)
+  nameWithType: SerializerHelper.EnsureValidLength(Int64, Int64, Int64)
 - uid: wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength*
   name: EnsureValidLength
   href: api/wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_EnsureValidLength_
