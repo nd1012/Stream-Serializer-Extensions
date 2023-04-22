@@ -21,7 +21,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "6daPbAzY3JaUUw/D9KMi5s3suAyYfS+3d5VzRm038X4="
+          "hash": "xN+9PBZwBx65pbpBFhUn4ZIRuuA2bkDPWtn+/I/GRQE="
         }
       },
       "is_incremental": false,
@@ -257,6 +257,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializerAdapter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializerAdapter.html",
+          "hash": "8vQEGuoljO6qjIAz85/110wy/Bm6kNZjYTSH6dOrh+g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.yml",
       "output": {
         ".html": {
@@ -273,7 +285,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializerBase.html",
-          "hash": "gi/mLEYeOOihly9W95IaqG2wDxfG28/wtR5V5clyYb4="
+          "hash": "OrVg3MFcsqK6dGNqSosOfGM9XvlkEJpwWFSRUMTizho="
         }
       },
       "is_incremental": false,
@@ -309,7 +321,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.html",
-          "hash": "XaFZSmtYNDJx5tWs/pEo7/75/vpENHOkqY8brIrI3EQ="
+          "hash": "6Z2BEiFnu6QTe11gjQEQuEBu7uzZl1wkI3Sf4BELmOY="
         }
       },
       "is_incremental": false,
@@ -384,7 +396,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 24,
+          "total_file_count": 25,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
