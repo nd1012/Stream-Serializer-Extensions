@@ -1400,7 +1400,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                WriteBytes(stream, Encoding.UTF8.GetBytes(value));//TODO Use extensions
+                WriteBytes(stream, value.GetBytes());
                 return stream;
             }
             catch (Exception ex)
@@ -1419,7 +1419,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await WriteBytesAsync(stream, Encoding.UTF8.GetBytes(value), cancellationToken).DynamicContext();//TODO Use extensions
+                await WriteBytesAsync(stream, value.GetBytes(), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {

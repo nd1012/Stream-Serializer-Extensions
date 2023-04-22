@@ -105,11 +105,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         private void DeserializeInt(Stream stream, int version)
         {
-            if (_ObjectVersion != null)
-            {
-                _SerializedObjectVersion = stream.ReadNumber<int>(version);
-                if (_SerializedObjectVersion > _ObjectVersion) throw new SerializerException($"Unsupported object version {_SerializedObjectVersion} for {GetType()} version {_ObjectVersion}");
-            }
+            if (_ObjectVersion != null) _SerializedObjectVersion = StreamSerializerAdapter.ReadSerializedObjectVersion(stream, version, _ObjectVersion.Value);
             Deserialize(stream, version);
         }
 
@@ -122,10 +118,7 @@ namespace wan24.StreamSerializerExtensions
         private async Task DeserializeIntAsync(Stream stream, int version, CancellationToken cancellationToken)
         {
             if (_ObjectVersion != null)
-            {
-                _SerializedObjectVersion = await stream.ReadNumberAsync<int>(version, cancellationToken: cancellationToken).DynamicContext();
-                if (_SerializedObjectVersion > _ObjectVersion) throw new SerializerException($"Unsupported object version {_SerializedObjectVersion} for {GetType()} version {_ObjectVersion}");
-            }
+                _SerializedObjectVersion = await StreamSerializerAdapter.ReadSerializedObjectVersionAsync(stream, version, _ObjectVersion.Value, cancellationToken).DynamicContext();
             await DeserializeAsync(stream, version, cancellationToken).DynamicContext();
         }
 

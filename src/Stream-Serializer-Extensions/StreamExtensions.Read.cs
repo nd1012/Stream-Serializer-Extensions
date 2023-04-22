@@ -1535,7 +1535,7 @@ namespace wan24.StreamSerializerExtensions
             try
             {
                 T res = (T)Enum.ToObject(typeof(T), ReadNumberMethod.MakeGenericMethod(typeof(T).GetEnumUnderlyingType()).InvokeAuto(obj: null, stream, version, pool)!);
-                if (!Enum.IsDefined(res)) throw new SerializerException($"Unknown enumeration value {res} for {typeof(T)}");
+                if (!res.IsValid()) throw new SerializerException($"Unknown enumeration value {res} for {typeof(T)}");
                 return res;
             }
             catch (SerializerException)
@@ -1565,7 +1565,7 @@ namespace wan24.StreamSerializerExtensions
                 Task task = (Task)ReadNumberAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version, pool, cancellationToken)!;
                 await task.DynamicContext();
                 T res = (T)Enum.ToObject(typeof(T), task.GetResult(type));
-                if (!Enum.IsDefined(res)) throw new SerializerException($"Unknown enumeration value {res} for {typeof(T)}");
+                if (!res.IsValid()) throw new SerializerException($"Unknown enumeration value {res} for {typeof(T)}");
                 return res;
             }
             catch (SerializerException)

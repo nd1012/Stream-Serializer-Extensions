@@ -3715,6 +3715,38 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.StreamSerializer.Version
   nameWithType: StreamSerializer.Version
+- uid: wan24.StreamSerializerExtensions.StreamSerializerAdapter
+  name: StreamSerializerAdapter
+  href: api/wan24.StreamSerializerExtensions.StreamSerializerAdapter.html
+  commentId: T:wan24.StreamSerializerExtensions.StreamSerializerAdapter
+  fullName: wan24.StreamSerializerExtensions.StreamSerializerAdapter
+  nameWithType: StreamSerializerAdapter
+- uid: wan24.StreamSerializerExtensions.StreamSerializerAdapter.ReadSerializedObjectVersion(Stream,System.Int32,System.Int32)
+  name: ReadSerializedObjectVersion(Stream, Int32, Int32)
+  href: api/wan24.StreamSerializerExtensions.StreamSerializerAdapter.html#wan24_StreamSerializerExtensions_StreamSerializerAdapter_ReadSerializedObjectVersion_Stream_System_Int32_System_Int32_
+  commentId: M:wan24.StreamSerializerExtensions.StreamSerializerAdapter.ReadSerializedObjectVersion(Stream,System.Int32,System.Int32)
+  fullName: wan24.StreamSerializerExtensions.StreamSerializerAdapter.ReadSerializedObjectVersion(Stream, System.Int32, System.Int32)
+  nameWithType: StreamSerializerAdapter.ReadSerializedObjectVersion(Stream, Int32, Int32)
+- uid: wan24.StreamSerializerExtensions.StreamSerializerAdapter.ReadSerializedObjectVersion*
+  name: ReadSerializedObjectVersion
+  href: api/wan24.StreamSerializerExtensions.StreamSerializerAdapter.html#wan24_StreamSerializerExtensions_StreamSerializerAdapter_ReadSerializedObjectVersion_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamSerializerAdapter.ReadSerializedObjectVersion
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamSerializerAdapter.ReadSerializedObjectVersion
+  nameWithType: StreamSerializerAdapter.ReadSerializedObjectVersion
+- uid: wan24.StreamSerializerExtensions.StreamSerializerAdapter.ReadSerializedObjectVersionAsync(Stream,System.Int32,System.Int32,CancellationToken)
+  name: ReadSerializedObjectVersionAsync(Stream, Int32, Int32, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamSerializerAdapter.html#wan24_StreamSerializerExtensions_StreamSerializerAdapter_ReadSerializedObjectVersionAsync_Stream_System_Int32_System_Int32_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamSerializerAdapter.ReadSerializedObjectVersionAsync(Stream,System.Int32,System.Int32,CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamSerializerAdapter.ReadSerializedObjectVersionAsync(Stream, System.Int32, System.Int32, CancellationToken)
+  nameWithType: StreamSerializerAdapter.ReadSerializedObjectVersionAsync(Stream, Int32, Int32, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamSerializerAdapter.ReadSerializedObjectVersionAsync*
+  name: ReadSerializedObjectVersionAsync
+  href: api/wan24.StreamSerializerExtensions.StreamSerializerAdapter.html#wan24_StreamSerializerExtensions_StreamSerializerAdapter_ReadSerializedObjectVersionAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamSerializerAdapter.ReadSerializedObjectVersionAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamSerializerAdapter.ReadSerializedObjectVersionAsync
+  nameWithType: StreamSerializerAdapter.ReadSerializedObjectVersionAsync
 - uid: wan24.StreamSerializerExtensions.StreamSerializerAttribute
   name: StreamSerializerAttribute
   href: api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.html
