@@ -604,6 +604,35 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.SerializerHelper.RemoveValueFlags
   nameWithType: SerializerHelper.RemoveValueFlags
+- uid: wan24.StreamSerializerExtensions.SerializerHelper.ToBytes(wan24.StreamSerializerExtensions.IStreamSerializer,System.Boolean)
+  name: ToBytes(IStreamSerializer, Boolean)
+  href: api/wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ToBytes_wan24_StreamSerializerExtensions_IStreamSerializer_System_Boolean_
+  commentId: M:wan24.StreamSerializerExtensions.SerializerHelper.ToBytes(wan24.StreamSerializerExtensions.IStreamSerializer,System.Boolean)
+  fullName: wan24.StreamSerializerExtensions.SerializerHelper.ToBytes(wan24.StreamSerializerExtensions.IStreamSerializer, System.Boolean)
+  nameWithType: SerializerHelper.ToBytes(IStreamSerializer, Boolean)
+- uid: wan24.StreamSerializerExtensions.SerializerHelper.ToBytes*
+  name: ToBytes
+  href: api/wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ToBytes_
+  commentId: Overload:wan24.StreamSerializerExtensions.SerializerHelper.ToBytes
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.SerializerHelper.ToBytes
+  nameWithType: SerializerHelper.ToBytes
+- uid: wan24.StreamSerializerExtensions.SerializerHelper.ToObject*
+  name: ToObject
+  href: api/wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ToObject_
+  commentId: Overload:wan24.StreamSerializerExtensions.SerializerHelper.ToObject
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.SerializerHelper.ToObject
+  nameWithType: SerializerHelper.ToObject
+- uid: wan24.StreamSerializerExtensions.SerializerHelper.ToObject``1(System.Byte[],System.Boolean)
+  name: ToObject<T>(Byte[], Boolean)
+  href: api/wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ToObject__1_System_Byte___System_Boolean_
+  commentId: M:wan24.StreamSerializerExtensions.SerializerHelper.ToObject``1(System.Byte[],System.Boolean)
+  name.vb: ToObject(Of T)(Byte(), Boolean)
+  fullName: wan24.StreamSerializerExtensions.SerializerHelper.ToObject<T>(System.Byte[], System.Boolean)
+  fullName.vb: wan24.StreamSerializerExtensions.SerializerHelper.ToObject(Of T)(System.Byte(), System.Boolean)
+  nameWithType: SerializerHelper.ToObject<T>(Byte[], Boolean)
+  nameWithType.vb: SerializerHelper.ToObject(Of T)(Byte(), Boolean)
 - uid: wan24.StreamSerializerExtensions.SerializerHelper.ValidateObject*
   name: ValidateObject
   href: api/wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ValidateObject_

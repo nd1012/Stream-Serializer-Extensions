@@ -317,6 +317,7 @@ namespace Stream_Serializer_Extensions_Tests
             }
             Assert.IsNull(ms.ReadAnyObjectNullable<TestObject3>());
             Assert.AreEqual(ms.Length, ms.Position);
+            new TestObject2().ToBytes().ToObject<TestObject2>();
         }
 
         [TestMethod]
