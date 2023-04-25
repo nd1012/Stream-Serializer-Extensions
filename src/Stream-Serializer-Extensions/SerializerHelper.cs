@@ -527,5 +527,40 @@ namespace wan24.StreamSerializerExtensions
                 throw new SerializerException($"Object validation found {results.Count} errors with the deserialized object");
             return value;
         }
+
+        /// <summary>
+        /// Get bytes from a serializable object
+        /// </summary>
+        /// <param name="obj">Object</param>
+        /// <param name="includeSerializerVersion">Include the serializer version number?</param>
+        /// <returns>Bytes</returns>
+        public static byte[] ToBytes(this IStreamSerializer obj, bool includeSerializerVersion = true)
+        {
+            using MemoryStream ms = new();
+            if (includeSerializerVersion) ms.WriteNumber(StreamSerializer.VERSION);
+            ms.WriteSerialized(obj);
+            return ms.ToArray();
+        }
+
+        /// <summary>
+        /// Deserialize an object
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="bytes">Bytes</param>
+        /// <param name="includesSerializerVersion">Serializer version number included?</param>
+        /// <returns>Object</returns>
+        public static T ToObject<T>(this byte[] bytes, bool includesSerializerVersion = true) where T : class, IStreamSerializer, new()
+        {
+            using MemoryStream ms = new(bytes);
+            int serializerVersion = StreamSerializer.VERSION;
+            if (includesSerializerVersion)
+            {
+                serializerVersion = ms.ReadNumber<int>();
+                if (serializerVersion < 1 || serializerVersion > StreamSerializer.VERSION) throw new SerializerException($"Invalid serializer version {serializerVersion}");
+            }
+            T res = new();
+            res.Deserialize(ms, serializerVersion);
+            return res;
+        }
     }
 }
