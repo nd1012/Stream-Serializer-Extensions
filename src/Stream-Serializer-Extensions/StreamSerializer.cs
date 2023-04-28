@@ -203,8 +203,7 @@ namespace wan24.StreamSerializerExtensions
         public static Serialize_Delegate? FindSerializer(Type type)
         {
             Type? serializer = FindDelegateType(type, SyncSerializer.Keys);
-            Serialize_Delegate? res = null;
-            if (serializer == null || !SyncSerializer.TryGetValue(serializer, out res))
+            if (serializer == null || !SyncSerializer.TryGetValue(serializer, out Serialize_Delegate? res))
             {
                 SerializerEventArgs<Serialize_Delegate> e = new(type);
                 OnFindSyncSerializer?.Invoke(e);
@@ -221,8 +220,7 @@ namespace wan24.StreamSerializerExtensions
         public static AsyncSerialize_Delegate? FindAsyncSerializer(Type type)
         {
             Type? serializer = FindDelegateType(type, AsyncSerializer.Keys);
-            AsyncSerialize_Delegate? res = null;
-            if (serializer == null || !AsyncSerializer.TryGetValue(serializer, out res))
+            if (serializer == null || !AsyncSerializer.TryGetValue(serializer, out AsyncSerialize_Delegate? res))
             {
                 SerializerEventArgs<AsyncSerialize_Delegate> e = new(type);
                 OnFindAsyncSerializer?.Invoke(e);
@@ -239,8 +237,7 @@ namespace wan24.StreamSerializerExtensions
         public static Deserialize_Delegate? FindDeserializer(Type type)
         {
             Type? serializer = FindDelegateType(type, SyncSerializer.Keys);
-            Deserialize_Delegate? res = null;
-            if (serializer == null || !SyncDeserializer.TryGetValue(serializer, out res))
+            if (serializer == null || !SyncDeserializer.TryGetValue(serializer, out Deserialize_Delegate? res))
             {
                 SerializerEventArgs<Deserialize_Delegate> e = new(type);
                 OnFindSyncDeserializer?.Invoke(e);
@@ -257,8 +254,7 @@ namespace wan24.StreamSerializerExtensions
         public static AsyncDeserialize_Delegate? FindAsyncDeserializer(Type type)
         {
             Type? serializer = FindDelegateType(type, AsyncSerializer.Keys);
-            AsyncDeserialize_Delegate? res = null;
-            if (serializer == null || !AsyncDeserializer.TryGetValue(serializer, out res))
+            if (serializer == null || !AsyncDeserializer.TryGetValue(serializer, out AsyncDeserialize_Delegate? res))
             {
                 SerializerEventArgs<AsyncDeserialize_Delegate> e = new(type);
                 OnFindAsyncDeserializer?.Invoke(e);

@@ -110,6 +110,22 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <summary>
+        /// Write the serializer version
+        /// </summary>
+        /// <typeparam name="T">Stream type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <returns>Stream</returns>
+        public static T WriteSerializerVersion<T>(this T stream) where T : Stream => WriteNumber(stream, StreamSerializer.VERSION);
+
+        /// <summary>
+        /// Write the serializer version
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        public static async Task WriteSerializerVersionAsync(this Stream stream, CancellationToken cancellationToken = default)
+            => await WriteNumberAsync(stream, StreamSerializer.VERSION, cancellationToken).DynamicContext();
+
+        /// <summary>
         /// Write
         /// </summary>
         /// <typeparam name="tStream">Stream type</typeparam>
@@ -297,11 +313,9 @@ namespace wan24.StreamSerializerExtensions
             {
                 if (obj == null)
                 {
-                    using (RentedArray<byte> poolData = new(1))
-                    {
-                        poolData[0] = (byte)ObjectTypes.Null;
-                        stream.Write(poolData.Span);
-                    }
+                    using RentedArray<byte> poolData = new(1);
+                    poolData[0] = (byte)ObjectTypes.Null;
+                    stream.Write(poolData.Span);
                 }
                 else
                 {
@@ -331,11 +345,9 @@ namespace wan24.StreamSerializerExtensions
             {
                 if (obj == null)
                 {
-                    using (RentedArray<byte> poolData = new(1))
-                    {
-                        poolData[0] = (byte)ObjectTypes.Null;
-                        await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
-                    }
+                    using RentedArray<byte> poolData = new(1);
+                    poolData[0] = (byte)ObjectTypes.Null;
+                    await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
                 }
                 else
                 {
@@ -377,11 +389,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteAsync(this Stream stream, bool value, CancellationToken cancellationToken = default)
         {
-            using (RentedArray<byte> poolData = new(1))
-            {
-                poolData[0] = (byte)(value ? 1 : 0);
-                await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
-            }
+            using RentedArray<byte> poolData = new(1);
+            poolData[0] = (byte)(value ? 1 : 0);
+            await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -500,7 +510,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static async Task WriteAsync(this Stream stream, byte value, CancellationToken cancellationToken = default)
+#pragma warning restore IDE0060
         {
             await Task.Yield();
             Write(stream, value);
@@ -1840,7 +1852,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 else
                 {
-                    await WriteAnyNullableAsync(stream, pi.GetValue(obj)).DynamicContext();
+                    await WriteAnyNullableAsync(stream, pi.GetValue(obj), cancellationToken).DynamicContext();
                 }
             }
         }
