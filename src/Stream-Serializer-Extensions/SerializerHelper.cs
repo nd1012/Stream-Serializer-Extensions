@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -524,7 +525,7 @@ namespace wan24.StreamSerializerExtensions
             List<ValidationResult> results = new();
             if (!Validator.TryValidateObject(value, new(value, serviceProvider: null, items: null), results, validateAllProperties: true) ||
                 !Validator.TryValidateObject(value, new(value, serviceProvider: null, items: null), results, validateAllProperties: false))
-                throw new SerializerException($"Object validation found {results.Count} errors with the deserialized object");
+                throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");
             return value;
         }
 
