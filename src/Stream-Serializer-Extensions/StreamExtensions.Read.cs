@@ -1817,10 +1817,7 @@ namespace wan24.StreamSerializerExtensions
             (byte[] data, int len) = ReadBytes(stream, version, buffer: null, pool, minLen, maxLen);
             try
             {
-                char[] res = new char[len];//TODO Use extensions
-                new UTF8Encoding(encoderShouldEmitUTF8Identifier: true).GetDecoder().Convert(data.AsSpan(0, len), res, flush: true, out int used, out int characters, out bool completed);
-                if (!completed || used != len) throw new SerializerException("Invalid UTF-8 string data");
-                return new string(res, 0, characters);
+                return data.AsSpan(0, len).ToUtf8String();
             }
             catch (Exception ex)
             {
@@ -1854,10 +1851,7 @@ namespace wan24.StreamSerializerExtensions
             (byte[] data, int len) = await ReadBytesAsync(stream, version, buffer: null, pool, minLen, maxLen, cancellationToken).DynamicContext();
             try
             {
-                char[] res = new char[len];//TODO Use extensions
-                new UTF8Encoding(encoderShouldEmitUTF8Identifier: true).GetDecoder().Convert(data.AsSpan(0, len), res, flush: true, out int used, out int characters, out bool completed);
-                if (!completed || used != len) throw new SerializerException("Invalid UTF-8 string data");
-                return new string(res, 0, characters);
+                return data.AsSpan(0, len).ToUtf8String();
             }
             catch (Exception ex)
             {
