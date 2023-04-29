@@ -90,6 +90,31 @@ namespace wan24.StreamSerializerExtensions
         public static bool AnyObjectAttributeRequired { get; set; } = true;
 
         /// <summary>
+        /// Read the serializer version
+        /// </summary>
+        /// <param name="stream">Steam</param>
+        /// <returns>Serializer version</returns>
+        public static int ReadSerializerVersion(this Stream stream)
+        {
+            int res = ReadNumber<int>(stream, version: 1);
+            if (res < 1 || res > StreamSerializer.VERSION) throw new InvalidDataException($"Invalid or unsupported stream serializer version #{res}");
+            return res;
+        }
+
+        /// <summary>
+        /// Read the serializer version
+        /// </summary>
+        /// <param name="stream">Steam</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Serializer version</returns>
+        public static async Task<int> ReadSerializerVersionAsync(this Stream stream, CancellationToken cancellationToken = default)
+        {
+            int res = await ReadNumberAsync<int>(stream, version: 1, cancellationToken: cancellationToken).DynamicContext();
+            if (res < 1 || res > StreamSerializer.VERSION) throw new InvalidDataException($"Invalid or unsupported stream serializer version #{res}");
+            return res;
+        }
+
+        /// <summary>
         /// Read
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
@@ -155,7 +180,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <returns>Value</returns>
         public static T? ReadObjectNullable<T>(this Stream stream, int? version = null)
+#pragma warning disable IDE0034 // default expression can be simplified
             => ReadBool(stream, version) ? ReadObject<T>(stream, version) : default(T?);
+#pragma warning restore IDE0034 // default expression can be simplified
 
         /// <summary>
         /// Read
@@ -168,7 +195,9 @@ namespace wan24.StreamSerializerExtensions
         public static async Task<T?> ReadObjectNullableAsync<T>(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
             => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
                 ? await ReadObjectAsync<T>(stream, version, cancellationToken).DynamicContext()
+#pragma warning disable IDE0034 // default expression can be simplified
                 : default(T?);
+#pragma warning restore IDE0034 // default expression can be simplified
 
         /// <summary>
         /// Read any object
@@ -459,7 +488,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static bool ReadBool(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
+#pragma warning restore IDE0060
         {
             byte[] data = ReadSerializedData(stream, len: 1, pool);
             try
@@ -484,7 +515,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static async Task<bool> ReadBoolAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = await ReadSerializedDataAsync(stream, len: 1, pool, cancellationToken: cancellationToken).DynamicContext();
             try
@@ -549,7 +582,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static async Task<sbyte> ReadOneSByteAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             await Task.Yield();
             return ReadOneSByte(stream, version);
@@ -582,7 +617,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static byte ReadOneByte(this Stream stream, int? version = null)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             try
             {
@@ -603,7 +640,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static async Task<byte> ReadOneByteAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             await Task.Yield();
             return ReadOneByte(stream, version);
@@ -637,7 +676,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static short ReadShort(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = ReadSerializedData(stream, len: sizeof(short), pool);
             try
@@ -662,7 +703,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static async Task<short> ReadShortAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(short), pool, cancellationToken).DynamicContext();
             try
@@ -709,7 +752,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static ushort ReadUShort(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = ReadSerializedData(stream, len: sizeof(ushort), pool);
             try
@@ -734,7 +779,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static async Task<ushort> ReadUShortAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(ushort), pool, cancellationToken).DynamicContext();
             try
@@ -781,7 +828,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static int ReadInt(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = ReadSerializedData(stream, len: sizeof(int), pool);
             try
@@ -806,7 +855,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static async Task<int> ReadIntAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(int), pool, cancellationToken).DynamicContext();
             try
@@ -853,7 +904,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static uint ReadUInt(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = ReadSerializedData(stream, len: sizeof(uint), pool);
             try
@@ -878,7 +931,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static async Task<uint> ReadUIntAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(uint), pool, cancellationToken).DynamicContext();
             try
@@ -925,7 +980,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static long ReadLong(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = ReadSerializedData(stream, len: sizeof(long), pool);
             try
@@ -950,7 +1007,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static async Task<long> ReadLongAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(long), pool, cancellationToken).DynamicContext();
             try
@@ -997,7 +1056,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static ulong ReadULong(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = ReadSerializedData(stream, len: sizeof(ulong), pool);
             try
@@ -1022,7 +1083,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static async Task<ulong> ReadULongAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(ulong), pool, cancellationToken).DynamicContext();
             try
@@ -1069,7 +1132,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static float ReadFloat(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = ReadSerializedData(stream, len: sizeof(float), pool);
             try
@@ -1094,7 +1159,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static async Task<float> ReadFloatAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(float), pool, cancellationToken).DynamicContext();
             try
@@ -1141,7 +1208,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static double ReadDouble(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = ReadSerializedData(stream, len: sizeof(double), pool);
             try
@@ -1166,7 +1235,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static async Task<double> ReadDoubleAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(double), pool, cancellationToken).DynamicContext();
             try
@@ -1213,7 +1284,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static decimal ReadDecimal(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = ReadSerializedData(stream, len: sizeof(int) << 2, pool);
             try
@@ -1238,7 +1311,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static async Task<decimal> ReadDecimalAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(int) << 2, pool, cancellationToken).DynamicContext();
             try
@@ -1742,10 +1817,7 @@ namespace wan24.StreamSerializerExtensions
             (byte[] data, int len) = ReadBytes(stream, version, buffer: null, pool, minLen, maxLen);
             try
             {
-                char[] res = new char[len];//TODO Use extensions
-                new UTF8Encoding(encoderShouldEmitUTF8Identifier: true).GetDecoder().Convert(data.AsSpan(0, len), res, flush: true, out int used, out int characters, out bool completed);
-                if (!completed || used != len) throw new SerializerException("Invalid UTF-8 string data");
-                return new string(res, 0, characters);
+                return data.AsSpan(0, len).ToUtf8String();
             }
             catch (Exception ex)
             {
@@ -1779,10 +1851,7 @@ namespace wan24.StreamSerializerExtensions
             (byte[] data, int len) = await ReadBytesAsync(stream, version, buffer: null, pool, minLen, maxLen, cancellationToken).DynamicContext();
             try
             {
-                char[] res = new char[len];//TODO Use extensions
-                new UTF8Encoding(encoderShouldEmitUTF8Identifier: true).GetDecoder().Convert(data.AsSpan(0, len), res, flush: true, out int used, out int characters, out bool completed);
-                if (!completed || used != len) throw new SerializerException("Invalid UTF-8 string data");
-                return new string(res, 0, characters);
+                return data.AsSpan(0, len).ToUtf8String();
             }
             catch (Exception ex)
             {
@@ -1804,7 +1873,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <returns>Value</returns>
         public static string? ReadStringNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
+#pragma warning disable IDE0034 // default expression can be simplified
             => ReadBool(stream, version, pool) ? ReadString(stream, version, pool, minLen, maxLen) : default(string?);
+#pragma warning restore IDE0034 // default expression can be simplified
 
         /// <summary>
         /// Read
@@ -1826,7 +1897,9 @@ namespace wan24.StreamSerializerExtensions
             )
             => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
                 ? await ReadStringAsync(stream, version, pool, minLen, maxLen, cancellationToken).DynamicContext()
+#pragma warning disable IDE0034 // default expression can be simplified
                 : default(string?);
+#pragma warning restore IDE0034 // default expression can be simplified
 
         /// <summary>
         /// Read
@@ -1910,7 +1983,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length</param>
         /// <returns>Value</returns>
         public static T[]? ReadArrayNullable<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
+#pragma warning disable IDE0034 // default expression can be simplified
             => ReadBool(stream, version, pool) ? ReadArray<T>(stream, version, pool, minLen, maxLen) : default(T[]?);
+#pragma warning restore IDE0034 // default expression can be simplified
 
         /// <summary>
         /// Read
@@ -2017,7 +2092,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length</param>
         /// <returns>Value</returns>
         public static List<T>? ReadListNullable<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
+#pragma warning disable IDE0034 // default expression can be simplified
             => ReadBool(stream, version, pool) ? ReadList<T>(stream, version, pool, minLen, maxLen) : default(List<T>?);
+#pragma warning restore IDE0034 // default expression can be simplified
 
         /// <summary>
         /// Read
@@ -2131,7 +2208,9 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static Dictionary<tKey, tValue>? ReadDictNullable<tKey, tValue>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
             where tKey : notnull
+#pragma warning disable IDE0034 // default expression can be simplified
             => ReadBool(stream, version, pool) ? ReadDict<tKey, tValue>(stream, version, pool, minLen, maxLen) : default(Dictionary<tKey, tValue>?);
+#pragma warning restore IDE0034 // default expression can be simplified
 
         /// <summary>
         /// Read
@@ -2246,7 +2325,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <returns>Object</returns>
         public static T? ReadSerializedNullable<T>(this Stream stream, int? version = null) where T : class, IStreamSerializer
+#pragma warning disable IDE0034 // default expression can be simplified
             => ReadBool(stream, version) ? ReadSerialized<T>(stream, version) : default(T?);
+#pragma warning restore IDE0034 // default expression can be simplified
 
         /// <summary>
         /// Read
@@ -2259,7 +2340,9 @@ namespace wan24.StreamSerializerExtensions
         public static async Task<T?> ReadSerializedNullableAsync<T>(this Stream stream, int? version = null, CancellationToken cancellationToken = default) where T : class, IStreamSerializer
             => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
                 ? await ReadSerializedAsync<T>(stream, version, cancellationToken).DynamicContext()
+#pragma warning disable IDE0034 // default expression can be simplified
                 : default(T?);
+#pragma warning restore IDE0034 // default expression can be simplified
 
         /// <summary>
         /// Read any object

@@ -537,7 +537,7 @@ namespace wan24.StreamSerializerExtensions
         public static byte[] ToBytes(this IStreamSerializer obj, bool includeSerializerVersion = true)
         {
             using MemoryStream ms = new();
-            if (includeSerializerVersion) ms.WriteNumber(StreamSerializer.VERSION);
+            if (includeSerializerVersion) ms.WriteSerializerVersion();
             ms.WriteSerialized(obj);
             return ms.ToArray();
         }
@@ -553,14 +553,8 @@ namespace wan24.StreamSerializerExtensions
         {
             using MemoryStream ms = new(bytes);
             int serializerVersion = StreamSerializer.VERSION;
-            if (includesSerializerVersion)
-            {
-                serializerVersion = ms.ReadNumber<int>();
-                if (serializerVersion < 1 || serializerVersion > StreamSerializer.VERSION) throw new SerializerException($"Invalid serializer version {serializerVersion}");
-            }
-            T res = new();
-            res.Deserialize(ms, serializerVersion);
-            return res;
+            if (includesSerializerVersion) serializerVersion = ms.ReadSerializerVersion();
+            return ms.ReadSerialized<T>(serializerVersion);
         }
     }
 }
