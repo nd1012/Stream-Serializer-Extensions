@@ -1,7 +1,10 @@
 ﻿using System.Buffers;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using wan24.Core;
+using wan24.ObjectValidation;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -2261,7 +2264,10 @@ namespace wan24.StreamSerializerExtensions
             bool serializerConstructor = ci.GetParameters().Length > 0;
             T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
             if (!serializerConstructor) res.Deserialize(stream, version ?? StreamSerializer.Version);
-            return res.ValidateObject();
+            List<ValidationResult> results = new();
+            if (!res.TryValidateObject(results))
+                throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");
+            return res;
         }
 
         /// <summary>
@@ -2299,7 +2305,10 @@ namespace wan24.StreamSerializerExtensions
             bool serializerConstructor = ci.GetParameters().Length > 0;
             T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
             if (!serializerConstructor) await res.DeserializeAsync(stream, version ?? StreamSerializer.Version, cancellationToken).DynamicContext();
-            return res.ValidateObject();
+            List<ValidationResult> results = new();
+            if (!res.TryValidateObject(results))
+                throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");
+            return res;
         }
 
         /// <summary>
@@ -2376,7 +2385,10 @@ namespace wan24.StreamSerializerExtensions
                         : ReadAnyNullableMethod.InvokeAuto(obj: null, stream, version)
                     );
             }
-            return res.ValidateObject();
+            List<ValidationResult> results = new();
+            if (!res.TryValidateObject(results))
+                throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");
+            return res;
         }
 
         /// <summary>
@@ -2419,7 +2431,10 @@ namespace wan24.StreamSerializerExtensions
                 await task.DynamicContext();
                 pis[done].SetValue(res, isNullable ? task.GetResultNullable<object>() : task.GetResult<object>());
             }
-            return res.ValidateObject();
+            List<ValidationResult> results = new();
+            if (!res.TryValidateObject(results))
+                throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");
+            return res;
         }
 
         /// <summary>
