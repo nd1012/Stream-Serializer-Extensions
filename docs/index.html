@@ -308,18 +308,18 @@ interface. Then you can use the <code>WriteSerialized*</code>, <code>WriteObject
 }
 </code></pre>
 <p>When deserializing using the <code>ReadAny*</code> methods, the target type needs to be
-loaded from the environment, using <code>Type.GetType</code>. Since this might fail, you
-can add your own type loading handler using the <code>StreamSerializer.OnLoadType</code>
-event. The library uses the <code>wan24-Core</code> NuGet package. If you want to use the
-<code>wan24-Core</code> type helper for loading types:</p>
+loaded from the environment. You can add your own type loading handler using
+the <code>StreamSerializer.OnLoadType</code> event. The library uses the <code>wan24-Core</code>
+NuGet package. If you want to use the <code>wan24-Core</code> type helper for loading
+types:</p>
 <pre><code class="lang-cs">StreamSerializer.OnInit += (e) =&gt; StreamSerializer.OnLoadType += (s, e) =&gt;
 {
     if(e.Type != null) return;
-    e.Type = TypeHelper.GetType(e.Name);
+    e.Type = TypeHelper.Instance.GetType(e.Name);
 };
 </code></pre>
 <p><strong>CAUTION</strong>: By adding the <code>wan24-Core</code> type helper like this, any type may be
-deserialized, which may be a security issue!</p>
+deserialized, which <del>may be</del> is a security issue!</p>
 <p>When using the <code>StreamSerializerBase</code> base class, you can also give a value
 for the parameter <code>objectVersion</code> to the base constructor to enable object
 versioning. This makes it possible that newer object versions are able to

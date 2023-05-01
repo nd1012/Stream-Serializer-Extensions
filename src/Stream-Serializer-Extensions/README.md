@@ -229,7 +229,7 @@ types:
 StreamSerializer.OnInit += (e) => StreamSerializer.OnLoadType += (s, e) =>
 {
     if(e.Type != null) return;
-    e.Type = TypeHelper.GetType(e.Name);
+    e.Type = TypeHelper.Instance.GetType(e.Name);
 };
 ```
 

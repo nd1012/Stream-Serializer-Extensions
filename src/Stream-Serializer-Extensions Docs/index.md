@@ -220,21 +220,21 @@ public class YourType : StreamSerializerBase
 ```
 
 When deserializing using the `ReadAny*` methods, the target type needs to be 
-loaded from the environment, using `Type.GetType`. Since this might fail, you 
-can add your own type loading handler using the `StreamSerializer.OnLoadType` 
-event. The library uses the `wan24-Core` NuGet package. If you want to use the 
-`wan24-Core` type helper for loading types:
+loaded from the environment. You can add your own type loading handler using 
+the `StreamSerializer.OnLoadType` event. The library uses the `wan24-Core` 
+NuGet package. If you want to use the `wan24-Core` type helper for loading 
+types:
 
 ```cs
 StreamSerializer.OnInit += (e) => StreamSerializer.OnLoadType += (s, e) =>
 {
     if(e.Type != null) return;
-    e.Type = TypeHelper.GetType(e.Name);
+    e.Type = TypeHelper.Instance.GetType(e.Name);
 };
 ```
 
 **CAUTION**: By adding the `wan24-Core` type helper like this, any type may be 
-deserialized, which may be a security issue!
+deserialized, which ~~may be~~ is a security issue!
 
 When using the `StreamSerializerBase` base class, you can also give a value 
 for the parameter `objectVersion` to the base constructor to enable object 
