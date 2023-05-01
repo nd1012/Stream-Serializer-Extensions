@@ -75,7 +75,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         private async Task SerializeIntAsync(Stream stream, CancellationToken cancellationToken)
         {
-            if (_ObjectVersion != null) await stream.WriteNumberAsync(_ObjectVersion.Value, cancellationToken).DynamicContext();
+            if (_ObjectVersion != null)
+                await stream.WriteNumberAsync(_ObjectVersion.Value, cancellationToken).DynamicContext();
             await SerializeAsync(stream, cancellationToken).DynamicContext();
         }
 

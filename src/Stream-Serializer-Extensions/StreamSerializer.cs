@@ -301,15 +301,10 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                Type? res = Type.GetType(name);
-                if (res == null)
-                {
-                    TypeLoadEventArgs e = new(name);
-                    OnLoadType?.Invoke(e);
-                    if (e.Type == null) throw new SerializerException($"Failed to load type \"{name}\"");
-                    res = e.Type;
-                }
-                return res;
+                TypeLoadEventArgs e = new(name);
+                OnLoadType?.Invoke(e);
+                if (e.Type == null) throw new SerializerException($"Failed to load type \"{name}\"");
+                return e.Type;
             }
             catch (SerializerException)
             {
