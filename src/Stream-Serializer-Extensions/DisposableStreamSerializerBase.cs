@@ -1,12 +1,11 @@
 ﻿using wan24.Core;
-using wan24.ObjectValidation;
 
 namespace wan24.StreamSerializerExtensions
 {
     /// <summary>
-    /// Base class for a stream serializing type
+    /// Base class for a disposable stream serializing type
     /// </summary>
-    public abstract class StreamSerializerBase : ValidatableObject, IStreamSerializerVersion
+    public abstract class DisposableStreamSerializerBase : DisposableBase, IStreamSerializerVersion
     {
         /// <summary>
         /// Object version
@@ -21,7 +20,7 @@ namespace wan24.StreamSerializerExtensions
         /// Constructor
         /// </summary>
         /// <param name="objectVersion">Object version</param>
-        protected StreamSerializerBase(int? objectVersion = null) : base() => _ObjectVersion = objectVersion;
+        protected DisposableStreamSerializerBase(int? objectVersion = null) : base() => _ObjectVersion = objectVersion;
 
         /// <summary>
         /// Constructor
@@ -29,7 +28,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <param name="objectVersion">Object version</param>
-        protected StreamSerializerBase(Stream stream, int version, int? objectVersion = null) : base()
+        protected DisposableStreamSerializerBase(Stream stream, int version, int? objectVersion = null) : base()
         {
             _ObjectVersion = objectVersion;
             Deserialize(stream, version);
@@ -75,8 +74,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         private async Task SerializeIntAsync(Stream stream, CancellationToken cancellationToken)
         {
-            if (_ObjectVersion != null)
-                await stream.WriteNumberAsync(_ObjectVersion.Value, cancellationToken).DynamicContext();
+            if (_ObjectVersion != null) await stream.WriteNumberAsync(_ObjectVersion.Value, cancellationToken).DynamicContext();
             await SerializeAsync(stream, cancellationToken).DynamicContext();
         }
 
