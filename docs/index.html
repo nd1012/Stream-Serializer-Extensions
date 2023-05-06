@@ -377,6 +377,70 @@ contracts. The currently resulting sequence size is a trade off between size
 and usability. By defining customized type serializers you can optimize the
 resulting sequence size for any type. Keep in mind, that using the most
 specific (de)serializing methods will result in smaller binary sequences.</p>
+<h2 id="stream-object-enumeration">Stream object enumeration</h2>
+<p>You can enumerate serialized objects from any stream like this:</p>
+<pre><code class="lang-cs">foreach(AnyType obj in stream.EnumerateSerialized&lt;AnyType&gt;())
+{
+    ...
+}
+
+await foreach(AnyType obj in stream.EnumerateSerializedAsync&lt;AnyType&gt;())
+{
+    ...
+}
+</code></pre>
+<p>In this example it's assumed that <code>AnyType</code> implements <code>IStreamSerializer</code>.</p>
+<p>For enumerating any other type, you can implement an enumerator using the
+<code>StreamEnumeratorBase</code> and <code>StreamAsyncEnumeratorBase</code> base classes. The only
+thing that you'll have to do is to override the <code>ReadObject(Async)</code> method,
+which finally reads the next object to yield from the <code>Stream</code>. Then you can
+enumerate easily using the static <code>Enumerate(Async)</code> methods of the base types.</p>
+<p>This is a sample <code>bool</code> enumerator implementation, which uses the <code>ReadBool</code>
+method:</p>
+<pre><code class="lang-cs">public class StreamBoolEnumerator : StreamEnumeratorBase&lt;bool&gt;
+{
+    public StreamBoolEnumerator(Stream stream, int? version = null)
+        :base(stream, version)
+        { }
+
+    protected override int ReadObject() =&gt; Stream.ReadBool(SerializerVersion);
+}
+</code></pre>
+<p>To provide the enumerator as a stream extension method:</p>
+<pre><code class="lang-cs">public static IEnumerable&lt;bool&gt; EnumerateBool(this Stream stream, int? version = null)
+    =&gt; StreamBoolEnumerator.Enumerate&lt;StreamBoolEnumerator&gt;(stream, version);
+</code></pre>
+<p>These enumerators are implemented at present:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Enumerator</th>
+<th>Serializer method</th>
+<th>Stream extension</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IStreamSerializer</code></td>
+<td><code>StreamSerializer(Async)Enumerator</code></td>
+<td><code>ReadSerialized(Async)</code></td>
+<td><code>EnumerateSerialized(Async)</code></td>
+</tr>
+<tr>
+<td>Numeric types</td>
+<td><code>StreamNumber(Async)Enumerator</code></td>
+<td><code>ReadNumber(Async)</code></td>
+<td><code>EnumerateNumber(Async)</code></td>
+</tr>
+<tr>
+<td><code>string</code></td>
+<td><code>StreamString(Async)Enumerator</code></td>
+<td><code>ReadString(Async)</code></td>
+<td><code>EnumerateString(Async)</code></td>
+</tr>
+</tbody>
+</table>
 <h2 id="security">Security</h2>
 <p>The base serializer supports basic types and lists. Especially when
 deserializing lists, you should define a minimum and a maximum length.</p>

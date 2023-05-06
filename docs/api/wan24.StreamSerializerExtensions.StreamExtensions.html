@@ -1140,6 +1140,638 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_Enumerate__2_Stream_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.Enumerate%60%602(Stream%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Enumerate.cs/#L19">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_StreamExtensions_Enumerate_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.Enumerate*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_Enumerate__2_Stream_System_Nullable_System_Int32__" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.Enumerate``2(Stream,System.Nullable{System.Int32})">Enumerate&lt;tObject, tEnumerator&gt;(Stream, Nullable&lt;Int32&gt;)</h4>
+  <div class="markdown level1 summary"><p>Enumerate serialized objects</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;tObject&gt; Enumerate&lt;tObject, tEnumerator&gt;(this Stream stream, int? version = null)
+    where tEnumerator : StreamEnumeratorBase&lt;tObject&gt;</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Serializer version</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;tObject&gt;</td>
+        <td><p>Enumerable</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">tObject</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">tEnumerator</span></td>
+        <td><p>Enumeratortype</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_EnumerateAsync__2_Stream_System_Nullable_System_Int32__CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.EnumerateAsync%60%602(Stream%2CSystem.Nullable%7BSystem.Int32%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Enumerate.cs/#L32">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_StreamExtensions_EnumerateAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.EnumerateAsync*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_EnumerateAsync__2_Stream_System_Nullable_System_Int32__CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.EnumerateAsync``2(Stream,System.Nullable{System.Int32},CancellationToken)">EnumerateAsync&lt;tObject, tEnumerator&gt;(Stream, Nullable&lt;Int32&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Enumerate serialized objects</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static async IAsyncEnumerable&lt;tObject&gt; EnumerateAsync&lt;tObject, tEnumerator&gt;(this Stream stream, int? version = null, CancellationToken cancellationToken = null)
+    where tEnumerator : StreamAsyncEnumeratorBase&lt;tObject&gt;</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Serializer version</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Cancellation token</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IAsyncEnumerable</span>&lt;tObject&gt;</td>
+        <td><p>Enumerable</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">tObject</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">tEnumerator</span></td>
+        <td><p>Enumeratortype</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_EnumerateNumber__1_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumber%60%601(Stream%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Buffers.ArrayPool%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Enumerate.cs/#L83">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_StreamExtensions_EnumerateNumber_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumber*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_EnumerateNumber__1_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumber``1(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte})">EnumerateNumber&lt;T&gt;(Stream, Nullable&lt;Int32&gt;, ArrayPool&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Enumerate numbers</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;T&gt; EnumerateNumber&lt;T&gt;(this Stream stream, int? version = null, ArrayPool&lt;byte&gt; pool = null)
+    where T : struct, IConvertible</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Version</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Buffers.ArrayPool</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">pool</span></td>
+        <td><p>Array pool</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;T&gt;</td>
+        <td><p>Enumerable</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_EnumerateNumberAsync__1_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumberAsync%60%601(Stream%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Buffers.ArrayPool%7BSystem.Byte%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Enumerate.cs/#L99">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_StreamExtensions_EnumerateNumberAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumberAsync*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_EnumerateNumberAsync__1_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumberAsync``1(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},CancellationToken)">EnumerateNumberAsync&lt;T&gt;(Stream, Nullable&lt;Int32&gt;, ArrayPool&lt;Byte&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Enumerate numbers</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static async IAsyncEnumerable&lt;T&gt; EnumerateNumberAsync&lt;T&gt;(this Stream stream, int? version = null, ArrayPool&lt;byte&gt; pool = null, CancellationToken cancellationToken = null)
+    where T : struct, IConvertible</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Version</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Buffers.ArrayPool</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">pool</span></td>
+        <td><p>Array pool</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Cancellation token</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IAsyncEnumerable</span>&lt;T&gt;</td>
+        <td><p>Enumerable</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_EnumerateSerialized__1_Stream_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerialized%60%601(Stream%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Enumerate.cs/#L53">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_StreamExtensions_EnumerateSerialized_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerialized*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_EnumerateSerialized__1_Stream_System_Nullable_System_Int32__" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerialized``1(Stream,System.Nullable{System.Int32})">EnumerateSerialized&lt;T&gt;(Stream, Nullable&lt;Int32&gt;)</h4>
+  <div class="markdown level1 summary"><p>Enumerate serialized objects</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;T&gt; EnumerateSerialized&lt;T&gt;(this Stream stream, int? version = null)
+    where T : class, IStreamSerializer</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Version</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;T&gt;</td>
+        <td><p>Enumerable</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_EnumerateSerializedAsync__1_Stream_System_Nullable_System_Int32__CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerializedAsync%60%601(Stream%2CSystem.Nullable%7BSystem.Int32%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Enumerate.cs/#L65">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_StreamExtensions_EnumerateSerializedAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerializedAsync*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_EnumerateSerializedAsync__1_Stream_System_Nullable_System_Int32__CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerializedAsync``1(Stream,System.Nullable{System.Int32},CancellationToken)">EnumerateSerializedAsync&lt;T&gt;(Stream, Nullable&lt;Int32&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Enumerate serialized objects</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static async IAsyncEnumerable&lt;T&gt; EnumerateSerializedAsync&lt;T&gt;(this Stream stream, int? version = null, CancellationToken cancellationToken = null)
+    where T : class, IStreamSerializer</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Version</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Cancellation token</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IAsyncEnumerable</span>&lt;T&gt;</td>
+        <td><p>Enumerable</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_EnumerateString_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.EnumerateString(Stream%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Buffers.ArrayPool%7BSystem.Byte%7D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Enumerate.cs/#L122">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_StreamExtensions_EnumerateString_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.EnumerateString*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_EnumerateString_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__System_Int32_System_Int32_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.EnumerateString(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},System.Int32,System.Int32)">EnumerateString(Stream, Nullable&lt;Int32&gt;, ArrayPool&lt;Byte&gt;, Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Enumerate strings</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;string&gt; EnumerateString(this Stream stream, int? version = null, ArrayPool&lt;byte&gt; pool = null, int minLen = 0, int maxLen = 2147483647)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Version</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Buffers.ArrayPool</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">pool</span></td>
+        <td><p>Array pool</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">minLen</span></td>
+        <td><p>Minimum UTF-8 string bytes length</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">maxLen</span></td>
+        <td><p>Maximum UTF-8 string bytes length</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>Enumerable</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_EnumerateStringAsync_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__System_Int32_System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.EnumerateStringAsync(Stream%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Buffers.ArrayPool%7BSystem.Byte%7D%2CSystem.Int32%2CSystem.Int32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Enumerate.cs/#L138">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_StreamExtensions_EnumerateStringAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.EnumerateStringAsync*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_EnumerateStringAsync_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__System_Int32_System_Int32_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.EnumerateStringAsync(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},System.Int32,System.Int32,CancellationToken)">EnumerateStringAsync(Stream, Nullable&lt;Int32&gt;, ArrayPool&lt;Byte&gt;, Int32, Int32, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Enumerate strings</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static async IAsyncEnumerable&lt;string&gt; EnumerateStringAsync(this Stream stream, int? version = null, ArrayPool&lt;byte&gt; pool = null, int minLen = 0, int maxLen = 2147483647, CancellationToken cancellationToken = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Version</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Buffers.ArrayPool</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">pool</span></td>
+        <td><p>Array pool</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">minLen</span></td>
+        <td><p>Minimum UTF-8 string bytes length</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">maxLen</span></td>
+        <td><p>Maximum UTF-8 string bytes length</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Cancellation token</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IAsyncEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>Enumerable</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_ReadAny_Stream_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.ReadAny(Stream%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -9297,7 +9929,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyObject__2___0___1_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObject%60%602(%60%600%2C%60%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1794">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1812">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyObject_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObject*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyObject__2___0___1_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObject``2(``0,``1)">WriteAnyObject&lt;tStream, tObj&gt;(tStream, tObj)</h4>
@@ -9375,7 +10007,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyObjectAsync__1_Stream___0_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectAsync%60%601(Stream%2C%60%600%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1830">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1848">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyObjectAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyObjectAsync__1_Stream___0_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectAsync``1(Stream,``0,CancellationToken)">WriteAnyObjectAsync&lt;T&gt;(Stream, T, CancellationToken)</h4>
@@ -9453,7 +10085,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyObjectNullable__2___0___1_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectNullable%60%602(%60%600%2C%60%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1868">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1886">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyObjectNullable_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectNullable*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyObjectNullable__2___0___1_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectNullable``2(``0,``1)">WriteAnyObjectNullable&lt;tStream, tObj&gt;(tStream, tObj)</h4>
@@ -9531,7 +10163,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyObjectNullableAsync__1_Stream___0_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectNullableAsync%60%601(Stream%2C%60%600%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1884">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1902">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyObjectNullableAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectNullableAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyObjectNullableAsync__1_Stream___0_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectNullableAsync``1(Stream,``0,CancellationToken)">WriteAnyObjectNullableAsync&lt;T&gt;(Stream, T, CancellationToken)</h4>
@@ -9609,7 +10241,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteArray__2___0___1___.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteArray%60%602(%60%600%2C%60%601%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1476">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1494">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteArray_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteArray*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteArray__2___0___1___" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteArray``2(``0,``1[])">WriteArray&lt;tStream, tElement&gt;(tStream, tElement[])</h4>
@@ -9687,7 +10319,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteArrayAsync__1_Stream___0___CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayAsync%60%601(Stream%2C%60%600%5B%5D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1503">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1521">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteArrayAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteArrayAsync__1_Stream___0___CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayAsync``1(Stream,``0[],CancellationToken)">WriteArrayAsync&lt;T&gt;(Stream, T[], CancellationToken)</h4>
@@ -9764,7 +10396,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteArrayNullable__2___0___1___.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayNullable%60%602(%60%600%2C%60%601%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1534">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1552">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteArrayNullable_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayNullable*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteArrayNullable__2___0___1___" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayNullable``2(``0,``1[])">WriteArrayNullable&lt;tStream, tElement&gt;(tStream, tElement[])</h4>
@@ -9842,7 +10474,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteArrayNullableAsync__1_Stream___0___CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayNullableAsync%60%601(Stream%2C%60%600%5B%5D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1548">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1566">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteArrayNullableAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayNullableAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteArrayNullableAsync__1_Stream___0___CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayNullableAsync``1(Stream,``0[],CancellationToken)">WriteArrayNullableAsync&lt;T&gt;(Stream, T[], CancellationToken)</h4>
@@ -10648,6 +11280,79 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteBytes__1___0_ReadOnlySpan_System_Byte__.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteBytes%60%601(%60%600%2CReadOnlySpan%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1354">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteBytes_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteBytes*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteBytes__1___0_ReadOnlySpan_System_Byte__" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteBytes``1(``0,ReadOnlySpan{System.Byte})">WriteBytes&lt;T&gt;(T, ReadOnlySpan&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Write</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T WriteBytes&lt;T&gt;(this T stream, ReadOnlySpan&lt;byte&gt; value)
+    where T : Stream</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">value</span></td>
+        <td><p>Value to write</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>Stream</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Stream type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteBytes__1___0_Span_System_Byte__.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteBytes%60%601(%60%600%2CSpan%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -10724,7 +11429,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesAsync_Stream_Memory_System_Byte__CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Stream%2CMemory%7BSystem.Byte%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1365">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1374">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesAsync_Stream_Memory_System_Byte__CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Stream,Memory{System.Byte},CancellationToken)">WriteBytesAsync(Stream, Memory&lt;Byte&gt;, CancellationToken)</h4>
@@ -10733,7 +11438,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static async Task WriteBytesAsync(this Stream stream, Memory&lt;byte&gt; value, CancellationToken cancellationToken = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task WriteBytesAsync(this Stream stream, Memory&lt;byte&gt; value, CancellationToken cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -10782,10 +11487,71 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesAsync_Stream_ReadOnlyMemory_System_Byte__CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Stream%2CReadOnlyMemory%7BSystem.Byte%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1383">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesAsync_Stream_ReadOnlyMemory_System_Byte__CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Stream,ReadOnlyMemory{System.Byte},CancellationToken)">WriteBytesAsync(Stream, ReadOnlyMemory&lt;Byte&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Write</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static async Task WriteBytesAsync(this Stream stream, ReadOnlyMemory&lt;byte&gt; value, CancellationToken cancellationToken = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">ReadOnlyMemory</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">value</span></td>
+        <td><p>Value to write</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Cancellation token</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesNullable__1___0_System_Byte___.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesNullable%60%601(%60%600%2CSystem.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1385">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1403">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesNullable_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesNullable*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesNullable__1___0_System_Byte___" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesNullable``1(``0,System.Byte[])">WriteBytesNullable&lt;T&gt;(T, Byte[])</h4>
@@ -10858,7 +11624,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesNullableAsync_Stream_System_Byte___CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesNullableAsync(Stream%2CSystem.Byte%5B%5D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1398">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1416">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesNullableAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesNullableAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesNullableAsync_Stream_System_Byte___CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesNullableAsync(Stream,System.Byte[],CancellationToken)">WriteBytesNullableAsync(Stream, Byte[], CancellationToken)</h4>
@@ -10919,7 +11685,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteDict__3___0_Dictionary___1___2__.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteDict%60%603(%60%600%2CDictionary%7B%60%601%2C%60%602%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1649">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1667">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteDict_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteDict*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteDict__3___0_Dictionary___1___2__" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteDict``3(``0,Dictionary{``1,``2})">WriteDict&lt;tStream, tKey, tValue&gt;(tStream, Dictionary&lt;tKey, tValue&gt;)</h4>
@@ -11002,7 +11768,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteDictAsync__2_Stream_Dictionary___0___1__CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteDictAsync%60%602(Stream%2CDictionary%7B%60%600%2C%60%601%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1682">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1700">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteDictAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteDictAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteDictAsync__2_Stream_Dictionary___0___1__CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteDictAsync``2(Stream,Dictionary{``0,``1},CancellationToken)">WriteDictAsync&lt;tKey, tValue&gt;(Stream, Dictionary&lt;tKey, tValue&gt;, CancellationToken)</h4>
@@ -11084,7 +11850,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteDictNullable__3___0_System_Nullable_Dictionary___1___2___.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteDictNullable%60%603(%60%600%2CSystem.Nullable%7BDictionary%7B%60%601%2C%60%602%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1714">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1732">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteDictNullable_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteDictNullable*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteDictNullable__3___0_System_Nullable_Dictionary___1___2___" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteDictNullable``3(``0,System.Nullable{Dictionary{``1,``2}})">WriteDictNullable&lt;tStream, tKey, tValue&gt;(tStream, Nullable&lt;Dictionary&lt;tKey, tValue&gt;&gt;)</h4>
@@ -11167,7 +11933,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteDictNullableAsync__2_Stream_System_Nullable_Dictionary___0___1___CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteDictNullableAsync%60%602(Stream%2CSystem.Nullable%7BDictionary%7B%60%600%2C%60%601%7D%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1731">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1749">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteDictNullableAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteDictNullableAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteDictNullableAsync__2_Stream_System_Nullable_Dictionary___0___1___CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteDictNullableAsync``2(Stream,System.Nullable{Dictionary{``0,``1}},CancellationToken)">WriteDictNullableAsync&lt;tKey, tValue&gt;(Stream, Nullable&lt;Dictionary&lt;tKey, tValue&gt;&gt;, CancellationToken)</h4>
@@ -11561,7 +12327,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteList__2___0_List___1__.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteList%60%602(%60%600%2CList%7B%60%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1562">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1580">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteList_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteList*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteList__2___0_List___1__" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteList``2(``0,List{``1})">WriteList&lt;tStream, tElement&gt;(tStream, List&lt;tElement&gt;)</h4>
@@ -11639,7 +12405,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteListAsync__1_Stream_List___0__CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteListAsync%60%601(Stream%2CList%7B%60%600%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1589">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1607">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteListAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteListAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteListAsync__1_Stream_List___0__CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteListAsync``1(Stream,List{``0},CancellationToken)">WriteListAsync&lt;T&gt;(Stream, List&lt;T&gt;, CancellationToken)</h4>
@@ -11716,7 +12482,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteListNullable__2___0_System_Nullable_List___1___.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteListNullable%60%602(%60%600%2CSystem.Nullable%7BList%7B%60%601%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1620">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1638">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteListNullable_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteListNullable*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteListNullable__2___0_System_Nullable_List___1___" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteListNullable``2(``0,System.Nullable{List{``1}})">WriteListNullable&lt;tStream, tElement&gt;(tStream, Nullable&lt;List&lt;tElement&gt;&gt;)</h4>
@@ -11794,7 +12560,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteListNullableAsync__1_Stream_System_Nullable_List___0___CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteListNullableAsync%60%601(Stream%2CSystem.Nullable%7BList%7B%60%600%7D%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1634">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1652">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteListNullableAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteListNullableAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteListNullableAsync__1_Stream_System_Nullable_List___0___CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteListNullableAsync``1(Stream,System.Nullable{List{``0}},CancellationToken)">WriteListNullableAsync&lt;T&gt;(Stream, Nullable&lt;List&lt;T&gt;&gt;, CancellationToken)</h4>
@@ -14101,7 +14867,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteSerialized__1___0_wan24_StreamSerializerExtensions_IStreamSerializer_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteSerialized%60%601(%60%600%2Cwan24.StreamSerializerExtensions.IStreamSerializer)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1745">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1763">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteSerialized_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteSerialized*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteSerialized__1___0_wan24_StreamSerializerExtensions_IStreamSerializer_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteSerialized``1(``0,wan24.StreamSerializerExtensions.IStreamSerializer)">WriteSerialized&lt;T&gt;(T, IStreamSerializer)</h4>
@@ -14174,7 +14940,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedAsync_Stream_wan24_StreamSerializerExtensions_IStreamSerializer_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedAsync(Stream%2Cwan24.StreamSerializerExtensions.IStreamSerializer%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1757">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1775">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedAsync_Stream_wan24_StreamSerializerExtensions_IStreamSerializer_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedAsync(Stream,wan24.StreamSerializerExtensions.IStreamSerializer,CancellationToken)">WriteSerializedAsync(Stream, IStreamSerializer, CancellationToken)</h4>
@@ -14235,7 +15001,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedNullable__1___0_wan24_StreamSerializerExtensions_IStreamSerializer_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullable%60%601(%60%600%2Cwan24.StreamSerializerExtensions.IStreamSerializer)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1767">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1785">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedNullable_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullable*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedNullable__1___0_wan24_StreamSerializerExtensions_IStreamSerializer_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullable``1(``0,wan24.StreamSerializerExtensions.IStreamSerializer)">WriteSerializedNullable&lt;T&gt;(T, IStreamSerializer)</h4>
@@ -14308,7 +15074,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedNullableAsync_Stream_wan24_StreamSerializerExtensions_IStreamSerializer_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableAsync(Stream%2Cwan24.StreamSerializerExtensions.IStreamSerializer%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1780">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1798">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedNullableAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedNullableAsync_Stream_wan24_StreamSerializerExtensions_IStreamSerializer_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableAsync(Stream,wan24.StreamSerializerExtensions.IStreamSerializer,CancellationToken)">WriteSerializedNullableAsync(Stream, IStreamSerializer, CancellationToken)</h4>
@@ -14491,7 +15257,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteString__1___0_System_String_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteString%60%601(%60%600%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1411">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1429">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteString_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteString*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteString__1___0_System_String_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteString``1(``0,System.String)">WriteString&lt;T&gt;(T, String)</h4>
@@ -14564,7 +15330,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteStringAsync_Stream_System_String_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteStringAsync(Stream%2CSystem.String%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1430">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1448">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteStringAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteStringAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteStringAsync_Stream_System_String_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteStringAsync(Stream,System.String,CancellationToken)">WriteStringAsync(Stream, String, CancellationToken)</h4>
@@ -14625,7 +15391,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteStringNullable__1___0_System_String_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteStringNullable%60%601(%60%600%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1449">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1467">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteStringNullable_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteStringNullable*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteStringNullable__1___0_System_String_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteStringNullable``1(``0,System.String)">WriteStringNullable&lt;T&gt;(T, String)</h4>
@@ -14698,7 +15464,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteStringNullableAsync_Stream_System_String_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteStringNullableAsync(Stream%2CSystem.String%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1462">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1480">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteStringNullableAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteStringNullableAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteStringNullableAsync_Stream_System_String_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteStringNullableAsync(Stream,System.String,CancellationToken)">WriteStringNullableAsync(Stream, String, CancellationToken)</h4>

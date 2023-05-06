@@ -1,6 +1,5 @@
 ﻿using System.Buffers;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using wan24.Core;
@@ -8,6 +7,7 @@ using wan24.ObjectValidation;
 
 namespace wan24.StreamSerializerExtensions
 {
+    // Read
     public static partial class StreamExtensions
     {
         /// <summary>

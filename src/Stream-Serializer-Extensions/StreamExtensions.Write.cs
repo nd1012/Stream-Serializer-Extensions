@@ -1342,7 +1342,16 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
-        public static T WriteBytes<T>(this T stream, Span<byte> value) where T : Stream
+        public static T WriteBytes<T>(this T stream, Span<byte> value) where T : Stream => WriteBytes(stream, (ReadOnlySpan<byte>)value);
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <typeparam name="T">Stream type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value to write</param>
+        /// <returns>Stream</returns>
+        public static T WriteBytes<T>(this T stream, ReadOnlySpan<byte> value) where T : Stream
         {
             try
             {
@@ -1362,7 +1371,16 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        public static async Task WriteBytesAsync(this Stream stream, Memory<byte> value, CancellationToken cancellationToken = default)
+        public static Task WriteBytesAsync(this Stream stream, Memory<byte> value, CancellationToken cancellationToken = default)
+            => WriteBytesAsync(stream, (ReadOnlyMemory<byte>)value, cancellationToken);
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value to write</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        public static async Task WriteBytesAsync(this Stream stream, ReadOnlyMemory<byte> value, CancellationToken cancellationToken = default)
         {
             try
             {

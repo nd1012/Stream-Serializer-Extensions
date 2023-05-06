@@ -9,6 +9,11 @@ namespace wan24.StreamSerializerExtensions
     public abstract class StreamSerializerBase : ValidatableObject, IStreamSerializerVersion
     {
         /// <summary>
+        /// Base object version
+        /// </summary>
+        public const int BASE_VERSION = 1;
+
+        /// <summary>
         /// Object version
         /// </summary>
         private readonly int? _ObjectVersion;
@@ -16,6 +21,10 @@ namespace wan24.StreamSerializerExtensions
         /// Serialized object version
         /// </summary>
         private int? _SerializedObjectVersion = null;
+        /// <summary>
+        /// Serializer version
+        /// </summary>
+        private int? _SerializerVersion = null;
 
         /// <summary>
         /// Constructor
@@ -41,6 +50,9 @@ namespace wan24.StreamSerializerExtensions
         /// <inheritdoc/>
         int? IStreamSerializerVersion.SerializedObjectVersion => _SerializedObjectVersion;
 
+        /// <inheritdoc/>
+        int? IStreamSerializerVersion.SerializerVersion => _SerializerVersion;
+
         /// <summary>
         /// Serialize
         /// </summary>
@@ -64,6 +76,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         private void SerializeInt(Stream stream)
         {
+            stream.WriteSerializerVersion()
+                .WriteNumber(BASE_VERSION);
             if (_ObjectVersion != null) stream.WriteNumber(_ObjectVersion.Value);
             Serialize(stream);
         }
@@ -75,6 +89,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         private async Task SerializeIntAsync(Stream stream, CancellationToken cancellationToken)
         {
+            await stream.WriteSerializerVersionAsync().DynamicContext();
+            await stream.WriteNumberAsync(BASE_VERSION, cancellationToken).DynamicContext();
             if (_ObjectVersion != null)
                 await stream.WriteNumberAsync(_ObjectVersion.Value, cancellationToken).DynamicContext();
             await SerializeAsync(stream, cancellationToken).DynamicContext();
@@ -106,8 +122,11 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         private void DeserializeInt(Stream stream, int version)
         {
-            if (_ObjectVersion != null) _SerializedObjectVersion = StreamSerializerAdapter.ReadSerializedObjectVersion(stream, version, _ObjectVersion.Value);
-            Deserialize(stream, version);
+            _SerializerVersion = stream.ReadSerializerVersion();
+            int bv = stream.ReadNumber<int>(_SerializerVersion.Value);
+            if (bv < 1 || bv > BASE_VERSION) throw new SerializerException($"Invalid base object version {bv}", new InvalidDataException());
+            if (_ObjectVersion != null) _SerializedObjectVersion = StreamSerializerAdapter.ReadSerializedObjectVersion(stream, _SerializerVersion.Value, _ObjectVersion.Value);
+            Deserialize(stream, _SerializerVersion.Value);
         }
 
         /// <summary>
@@ -118,9 +137,13 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         private async Task DeserializeIntAsync(Stream stream, int version, CancellationToken cancellationToken)
         {
+            _SerializerVersion = await stream.ReadSerializerVersionAsync(cancellationToken).DynamicContext();
+            int bv = await stream.ReadNumberAsync<int>(_SerializerVersion.Value, cancellationToken: cancellationToken).DynamicContext();
+            if (bv < 1 || bv > BASE_VERSION) throw new SerializerException($"Invalid base object version {bv}", new InvalidDataException());
             if (_ObjectVersion != null)
-                _SerializedObjectVersion = await StreamSerializerAdapter.ReadSerializedObjectVersionAsync(stream, version, _ObjectVersion.Value, cancellationToken).DynamicContext();
-            await DeserializeAsync(stream, version, cancellationToken).DynamicContext();
+                _SerializedObjectVersion = await StreamSerializerAdapter.ReadSerializedObjectVersionAsync(stream, _SerializerVersion.Value, _ObjectVersion.Value, cancellationToken)
+                    .DynamicContext();
+            await DeserializeAsync(stream, _SerializerVersion.Value, cancellationToken).DynamicContext();
         }
 
         /// <inheritdoc/>
