@@ -304,6 +304,59 @@ and usability. By defining customized type serializers you can optimize the
 resulting sequence size for any type. Keep in mind, that using the most 
 specific (de)serializing methods will result in smaller binary sequences.
 
+## Stream object enumeration
+
+You can enumerate serialized objects from any stream like this:
+
+```cs
+foreach(AnyType obj in stream.EnumerateSerialized<AnyType>())
+{
+    ...
+}
+
+await foreach(AnyType obj in stream.EnumerateSerializedAsync<AnyType>())
+{
+    ...
+}
+```
+
+In this example it's assumed that `AnyType` implements `IStreamSerializer`.
+
+For enumerating any other type, you can implement an enumerator using the 
+`StreamEnumeratorBase` and `StreamAsyncEnumeratorBase` base classes. The only 
+thing that you'll have to do is to override the `ReadObject(Async)` method, 
+which finally reads the next object to yield from the `Stream`. Then you can 
+enumerate easily using the static `Enumerate(Async)` methods of the base types.
+
+This is a sample `bool` enumerator implementation, which uses the `ReadBool` 
+method:
+
+```cs
+public class StreamBoolEnumerator : StreamEnumeratorBase<bool>
+{
+    public StreamBoolEnumerator(Stream stream, int? version = null)
+        :base(stream, version)
+        { }
+
+    protected override int ReadObject() => Stream.ReadBool(SerializerVersion);
+}
+```
+
+To provide the enumerator as a stream extension method:
+
+```cs
+public static IEnumerable<bool> EnumerateBool(this Stream stream, int? version = null)
+    => StreamBoolEnumerator.Enumerate<StreamBoolEnumerator>(stream, version);
+```
+
+These enumerators are implemented at present:
+
+| Type | Enumerator | Serializer method | Stream extension |
+| --- | --- | --- | --- |
+| `IStreamSerializer` | `StreamSerializer(Async)Enumerator` | `ReadSerialized(Async)` | `EnumerateSerialized(Async)` |
+| Numeric types | `StreamNumber(Async)Enumerator` | `ReadNumber(Async)` | `EnumerateNumber(Async)` |
+| `string` | `StreamString(Async)Enumerator` | `ReadString(Async)` | `EnumerateString(Async)` |
+
 ## Security
 
 The base serializer supports basic types and lists. Especially when 

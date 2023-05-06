@@ -38,6 +38,12 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.DisposableStreamSerializerBase
   nameWithType: DisposableStreamSerializerBase.DisposableStreamSerializerBase
+- uid: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.BASE_VERSION
+  name: BASE_VERSION
+  href: api/wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.html#wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_BASE_VERSION
+  commentId: F:wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.BASE_VERSION
+  fullName: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.BASE_VERSION
+  nameWithType: DisposableStreamSerializerBase.BASE_VERSION
 - uid: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.Deserialize(Stream,System.Int32)
   name: Deserialize(Stream, Int32)
   href: api/wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.html#wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_Deserialize_Stream_System_Int32_
@@ -192,6 +198,706 @@ references:
   fullName: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializedObjectVersion
   nameWithType: DisposableStreamSerializerBase.IStreamSerializerVersion.SerializedObjectVersion
   nameWithType.vb: DisposableStreamSerializerBase.wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializedObjectVersion
+- uid: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializerVersion#SerializerVersion
+  name: IStreamSerializerVersion.SerializerVersion
+  href: api/wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.html#wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializerVersion_SerializerVersion
+  commentId: P:wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializerVersion#SerializerVersion
+  name.vb: wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
+  fullName: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
+  nameWithType: DisposableStreamSerializerBase.IStreamSerializerVersion.SerializerVersion
+  nameWithType.vb: DisposableStreamSerializerBase.wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
+- uid: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializerVersion#SerializerVersion*
+  name: IStreamSerializerVersion.SerializerVersion
+  href: api/wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.html#wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializerVersion_SerializerVersion_
+  commentId: Overload:wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializerVersion#SerializerVersion
+  isSpec: "True"
+  name.vb: wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
+  fullName: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
+  nameWithType: DisposableStreamSerializerBase.IStreamSerializerVersion.SerializerVersion
+  nameWithType.vb: DisposableStreamSerializerBase.wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
+- uid: wan24.StreamSerializerExtensions.Enumerator
+  name: wan24.StreamSerializerExtensions.Enumerator
+  href: api/wan24.StreamSerializerExtensions.Enumerator.html
+  commentId: N:wan24.StreamSerializerExtensions.Enumerator
+  fullName: wan24.StreamSerializerExtensions.Enumerator
+  nameWithType: wan24.StreamSerializerExtensions.Enumerator
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1
+  name: StreamAsyncEnumeratorBase<T>
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html
+  commentId: T:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1
+  name.vb: StreamAsyncEnumeratorBase(Of T)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T)
+  nameWithType: StreamAsyncEnumeratorBase<T>
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.#ctor(Stream,System.Nullable{System.Int32},CancellationToken)
+  name: StreamAsyncEnumeratorBase(Stream, Nullable<Int32>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamAsyncEnumeratorBase_1__ctor_Stream_System_Nullable_System_Int32__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.#ctor(Stream,System.Nullable{System.Int32},CancellationToken)
+  name.vb: StreamAsyncEnumeratorBase(Stream, Nullable(Of Int32), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>.StreamAsyncEnumeratorBase(Stream, System.Nullable<System.Int32>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T).StreamAsyncEnumeratorBase(Stream, System.Nullable(Of System.Int32), CancellationToken)
+  nameWithType: StreamAsyncEnumeratorBase<T>.StreamAsyncEnumeratorBase(Stream, Nullable<Int32>, CancellationToken)
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T).StreamAsyncEnumeratorBase(Stream, Nullable(Of Int32), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.#ctor*
+  name: StreamAsyncEnumeratorBase
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamAsyncEnumeratorBase_1__ctor_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.#ctor
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>.StreamAsyncEnumeratorBase
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T).StreamAsyncEnumeratorBase
+  nameWithType: StreamAsyncEnumeratorBase<T>.StreamAsyncEnumeratorBase
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T).StreamAsyncEnumeratorBase
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1._Current
+  name: _Current
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamAsyncEnumeratorBase_1__Current
+  commentId: F:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1._Current
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>._Current
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T)._Current
+  nameWithType: StreamAsyncEnumeratorBase<T>._Current
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T)._Current
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.Cancellation
+  name: Cancellation
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamAsyncEnumeratorBase_1_Cancellation
+  commentId: F:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.Cancellation
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>.Cancellation
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T).Cancellation
+  nameWithType: StreamAsyncEnumeratorBase<T>.Cancellation
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T).Cancellation
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.Current
+  name: Current
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamAsyncEnumeratorBase_1_Current
+  commentId: P:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.Current
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>.Current
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T).Current
+  nameWithType: StreamAsyncEnumeratorBase<T>.Current
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T).Current
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.Current*
+  name: Current
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamAsyncEnumeratorBase_1_Current_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.Current
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>.Current
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T).Current
+  nameWithType: StreamAsyncEnumeratorBase<T>.Current
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T).Current
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamAsyncEnumeratorBase_1_Dispose_System_Boolean_
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.Dispose(System.Boolean)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>.Dispose(System.Boolean)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T).Dispose(System.Boolean)
+  nameWithType: StreamAsyncEnumeratorBase<T>.Dispose(Boolean)
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T).Dispose(Boolean)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.Dispose*
+  name: Dispose
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamAsyncEnumeratorBase_1_Dispose_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.Dispose
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>.Dispose
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T).Dispose
+  nameWithType: StreamAsyncEnumeratorBase<T>.Dispose
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T).Dispose
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.EnumerateAsync*
+  name: EnumerateAsync
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamAsyncEnumeratorBase_1_EnumerateAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.EnumerateAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>.EnumerateAsync
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T).EnumerateAsync
+  nameWithType: StreamAsyncEnumeratorBase<T>.EnumerateAsync
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T).EnumerateAsync
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.EnumerateAsync``1(Stream,System.Nullable{System.Int32},CancellationToken)
+  name: EnumerateAsync<tEnumerator>(Stream, Nullable<Int32>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamAsyncEnumeratorBase_1_EnumerateAsync__1_Stream_System_Nullable_System_Int32__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.EnumerateAsync``1(Stream,System.Nullable{System.Int32},CancellationToken)
+  name.vb: EnumerateAsync(Of tEnumerator)(Stream, Nullable(Of Int32), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>.EnumerateAsync<tEnumerator>(Stream, System.Nullable<System.Int32>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T).EnumerateAsync(Of tEnumerator)(Stream, System.Nullable(Of System.Int32), CancellationToken)
+  nameWithType: StreamAsyncEnumeratorBase<T>.EnumerateAsync<tEnumerator>(Stream, Nullable<Int32>, CancellationToken)
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T).EnumerateAsync(Of tEnumerator)(Stream, Nullable(Of Int32), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.MoveNextAsync
+  name: MoveNextAsync()
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamAsyncEnumeratorBase_1_MoveNextAsync
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.MoveNextAsync
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>.MoveNextAsync()
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T).MoveNextAsync()
+  nameWithType: StreamAsyncEnumeratorBase<T>.MoveNextAsync()
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T).MoveNextAsync()
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.MoveNextAsync*
+  name: MoveNextAsync
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamAsyncEnumeratorBase_1_MoveNextAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.MoveNextAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>.MoveNextAsync
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T).MoveNextAsync
+  nameWithType: StreamAsyncEnumeratorBase<T>.MoveNextAsync
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T).MoveNextAsync
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.ReadObjectAsync
+  name: ReadObjectAsync()
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamAsyncEnumeratorBase_1_ReadObjectAsync
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.ReadObjectAsync
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>.ReadObjectAsync()
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T).ReadObjectAsync()
+  nameWithType: StreamAsyncEnumeratorBase<T>.ReadObjectAsync()
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T).ReadObjectAsync()
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.ReadObjectAsync*
+  name: ReadObjectAsync
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamAsyncEnumeratorBase_1_ReadObjectAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.ReadObjectAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>.ReadObjectAsync
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T).ReadObjectAsync
+  nameWithType: StreamAsyncEnumeratorBase<T>.ReadObjectAsync
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T).ReadObjectAsync
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.SerializerVersion
+  name: SerializerVersion
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamAsyncEnumeratorBase_1_SerializerVersion
+  commentId: F:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.SerializerVersion
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>.SerializerVersion
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T).SerializerVersion
+  nameWithType: StreamAsyncEnumeratorBase<T>.SerializerVersion
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T).SerializerVersion
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.Stream
+  name: Stream
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamAsyncEnumeratorBase_1_Stream
+  commentId: F:wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase`1.Stream
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase<T>.Stream
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase(Of T).Stream
+  nameWithType: StreamAsyncEnumeratorBase<T>.Stream
+  nameWithType.vb: StreamAsyncEnumeratorBase(Of T).Stream
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1
+  name: StreamEnumeratorBase<T>
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html
+  commentId: T:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1
+  name.vb: StreamEnumeratorBase(Of T)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T)
+  nameWithType: StreamEnumeratorBase<T>
+  nameWithType.vb: StreamEnumeratorBase(Of T)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.#ctor(Stream,System.Nullable{System.Int32})
+  name: StreamEnumeratorBase(Stream, Nullable<Int32>)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1__ctor_Stream_System_Nullable_System_Int32__
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.#ctor(Stream,System.Nullable{System.Int32})
+  name.vb: StreamEnumeratorBase(Stream, Nullable(Of Int32))
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.StreamEnumeratorBase(Stream, System.Nullable<System.Int32>)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).StreamEnumeratorBase(Stream, System.Nullable(Of System.Int32))
+  nameWithType: StreamEnumeratorBase<T>.StreamEnumeratorBase(Stream, Nullable<Int32>)
+  nameWithType.vb: StreamEnumeratorBase(Of T).StreamEnumeratorBase(Stream, Nullable(Of Int32))
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.#ctor*
+  name: StreamEnumeratorBase
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1__ctor_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.#ctor
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.StreamEnumeratorBase
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).StreamEnumeratorBase
+  nameWithType: StreamEnumeratorBase<T>.StreamEnumeratorBase
+  nameWithType.vb: StreamEnumeratorBase(Of T).StreamEnumeratorBase
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1._Current
+  name: _Current
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1__Current
+  commentId: F:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1._Current
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>._Current
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T)._Current
+  nameWithType: StreamEnumeratorBase<T>._Current
+  nameWithType.vb: StreamEnumeratorBase(Of T)._Current
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Current
+  name: Current
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Current
+  commentId: P:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Current
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.Current
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).Current
+  nameWithType: StreamEnumeratorBase<T>.Current
+  nameWithType.vb: StreamEnumeratorBase(Of T).Current
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Current*
+  name: Current
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Current_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Current
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.Current
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).Current
+  nameWithType: StreamEnumeratorBase<T>.Current
+  nameWithType.vb: StreamEnumeratorBase(Of T).Current
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Dispose_System_Boolean_
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Dispose(System.Boolean)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.Dispose(System.Boolean)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).Dispose(System.Boolean)
+  nameWithType: StreamEnumeratorBase<T>.Dispose(Boolean)
+  nameWithType.vb: StreamEnumeratorBase(Of T).Dispose(Boolean)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Dispose*
+  name: Dispose
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Dispose_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Dispose
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.Dispose
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).Dispose
+  nameWithType: StreamEnumeratorBase<T>.Dispose
+  nameWithType.vb: StreamEnumeratorBase(Of T).Dispose
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Enumerate*
+  name: Enumerate
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Enumerate_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Enumerate
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.Enumerate
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).Enumerate
+  nameWithType: StreamEnumeratorBase<T>.Enumerate
+  nameWithType.vb: StreamEnumeratorBase(Of T).Enumerate
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Enumerate``1(Stream,System.Nullable{System.Int32})
+  name: Enumerate<tEnumerator>(Stream, Nullable<Int32>)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Enumerate__1_Stream_System_Nullable_System_Int32__
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Enumerate``1(Stream,System.Nullable{System.Int32})
+  name.vb: Enumerate(Of tEnumerator)(Stream, Nullable(Of Int32))
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.Enumerate<tEnumerator>(Stream, System.Nullable<System.Int32>)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).Enumerate(Of tEnumerator)(Stream, System.Nullable(Of System.Int32))
+  nameWithType: StreamEnumeratorBase<T>.Enumerate<tEnumerator>(Stream, Nullable<Int32>)
+  nameWithType.vb: StreamEnumeratorBase(Of T).Enumerate(Of tEnumerator)(Stream, Nullable(Of Int32))
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.MoveNext
+  name: MoveNext()
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_MoveNext
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.MoveNext
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.MoveNext()
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).MoveNext()
+  nameWithType: StreamEnumeratorBase<T>.MoveNext()
+  nameWithType.vb: StreamEnumeratorBase(Of T).MoveNext()
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.MoveNext*
+  name: MoveNext
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_MoveNext_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.MoveNext
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.MoveNext
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).MoveNext
+  nameWithType: StreamEnumeratorBase<T>.MoveNext
+  nameWithType.vb: StreamEnumeratorBase(Of T).MoveNext
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.ReadObject
+  name: ReadObject()
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_ReadObject
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.ReadObject
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.ReadObject()
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).ReadObject()
+  nameWithType: StreamEnumeratorBase<T>.ReadObject()
+  nameWithType.vb: StreamEnumeratorBase(Of T).ReadObject()
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.ReadObject*
+  name: ReadObject
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_ReadObject_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.ReadObject
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.ReadObject
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).ReadObject
+  nameWithType: StreamEnumeratorBase<T>.ReadObject
+  nameWithType.vb: StreamEnumeratorBase(Of T).ReadObject
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Reset
+  name: Reset()
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Reset
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Reset
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.Reset()
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).Reset()
+  nameWithType: StreamEnumeratorBase<T>.Reset()
+  nameWithType.vb: StreamEnumeratorBase(Of T).Reset()
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Reset*
+  name: Reset
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Reset_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Reset
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.Reset
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).Reset
+  nameWithType: StreamEnumeratorBase<T>.Reset
+  nameWithType.vb: StreamEnumeratorBase(Of T).Reset
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.SerializerVersion
+  name: SerializerVersion
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_SerializerVersion
+  commentId: F:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.SerializerVersion
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.SerializerVersion
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).SerializerVersion
+  nameWithType: StreamEnumeratorBase<T>.SerializerVersion
+  nameWithType.vb: StreamEnumeratorBase(Of T).SerializerVersion
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.StartPosition
+  name: StartPosition
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_StartPosition
+  commentId: F:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.StartPosition
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.StartPosition
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).StartPosition
+  nameWithType: StreamEnumeratorBase<T>.StartPosition
+  nameWithType.vb: StreamEnumeratorBase(Of T).StartPosition
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Stream
+  name: Stream
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Stream
+  commentId: F:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Stream
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.Stream
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).Stream
+  nameWithType: StreamEnumeratorBase<T>.Stream
+  nameWithType.vb: StreamEnumeratorBase(Of T).Stream
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.System#Collections#IEnumerator#Current
+  name: IEnumerator.Current
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_System_Collections_IEnumerator_Current
+  commentId: P:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.System#Collections#IEnumerator#Current
+  name.vb: System.Collections.IEnumerator.Current
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.System.Collections.IEnumerator.Current
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).System.Collections.IEnumerator.Current
+  nameWithType: StreamEnumeratorBase<T>.IEnumerator.Current
+  nameWithType.vb: StreamEnumeratorBase(Of T).System.Collections.IEnumerator.Current
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.System#Collections#IEnumerator#Current*
+  name: IEnumerator.Current
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_System_Collections_IEnumerator_Current_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.System#Collections#IEnumerator#Current
+  isSpec: "True"
+  name.vb: System.Collections.IEnumerator.Current
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase<T>.System.Collections.IEnumerator.Current
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase(Of T).System.Collections.IEnumerator.Current
+  nameWithType: StreamEnumeratorBase<T>.IEnumerator.Current
+  nameWithType.vb: StreamEnumeratorBase(Of T).System.Collections.IEnumerator.Current
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator`1
+  name: StreamNumberAsyncEnumerator<T>
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator-1.html
+  commentId: T:wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator`1
+  name.vb: StreamNumberAsyncEnumerator(Of T)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator<T>
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator(Of T)
+  nameWithType: StreamNumberAsyncEnumerator<T>
+  nameWithType.vb: StreamNumberAsyncEnumerator(Of T)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator`1.#ctor(Stream,System.Nullable{System.Int32},CancellationToken)
+  name: StreamNumberAsyncEnumerator(Stream, Nullable<Int32>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamNumberAsyncEnumerator_1__ctor_Stream_System_Nullable_System_Int32__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator`1.#ctor(Stream,System.Nullable{System.Int32},CancellationToken)
+  name.vb: StreamNumberAsyncEnumerator(Stream, Nullable(Of Int32), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator<T>.StreamNumberAsyncEnumerator(Stream, System.Nullable<System.Int32>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator(Of T).StreamNumberAsyncEnumerator(Stream, System.Nullable(Of System.Int32), CancellationToken)
+  nameWithType: StreamNumberAsyncEnumerator<T>.StreamNumberAsyncEnumerator(Stream, Nullable<Int32>, CancellationToken)
+  nameWithType.vb: StreamNumberAsyncEnumerator(Of T).StreamNumberAsyncEnumerator(Stream, Nullable(Of Int32), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator`1.#ctor(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},CancellationToken)
+  name: StreamNumberAsyncEnumerator(Stream, Nullable<Int32>, ArrayPool<Byte>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamNumberAsyncEnumerator_1__ctor_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator`1.#ctor(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},CancellationToken)
+  name.vb: StreamNumberAsyncEnumerator(Stream, Nullable(Of Int32), ArrayPool(Of Byte), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator<T>.StreamNumberAsyncEnumerator(Stream, System.Nullable<System.Int32>, System.Buffers.ArrayPool<System.Byte>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator(Of T).StreamNumberAsyncEnumerator(Stream, System.Nullable(Of System.Int32), System.Buffers.ArrayPool(Of System.Byte), CancellationToken)
+  nameWithType: StreamNumberAsyncEnumerator<T>.StreamNumberAsyncEnumerator(Stream, Nullable<Int32>, ArrayPool<Byte>, CancellationToken)
+  nameWithType.vb: StreamNumberAsyncEnumerator(Of T).StreamNumberAsyncEnumerator(Stream, Nullable(Of Int32), ArrayPool(Of Byte), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator`1.#ctor*
+  name: StreamNumberAsyncEnumerator
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamNumberAsyncEnumerator_1__ctor_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator`1.#ctor
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator<T>.StreamNumberAsyncEnumerator
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator(Of T).StreamNumberAsyncEnumerator
+  nameWithType: StreamNumberAsyncEnumerator<T>.StreamNumberAsyncEnumerator
+  nameWithType.vb: StreamNumberAsyncEnumerator(Of T).StreamNumberAsyncEnumerator
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator`1.Pool
+  name: Pool
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamNumberAsyncEnumerator_1_Pool
+  commentId: F:wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator`1.Pool
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator<T>.Pool
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator(Of T).Pool
+  nameWithType: StreamNumberAsyncEnumerator<T>.Pool
+  nameWithType.vb: StreamNumberAsyncEnumerator(Of T).Pool
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator`1.ReadObjectAsync
+  name: ReadObjectAsync()
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamNumberAsyncEnumerator_1_ReadObjectAsync
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator`1.ReadObjectAsync
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator<T>.ReadObjectAsync()
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator(Of T).ReadObjectAsync()
+  nameWithType: StreamNumberAsyncEnumerator<T>.ReadObjectAsync()
+  nameWithType.vb: StreamNumberAsyncEnumerator(Of T).ReadObjectAsync()
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator`1.ReadObjectAsync*
+  name: ReadObjectAsync
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamNumberAsyncEnumerator_1_ReadObjectAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator`1.ReadObjectAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator<T>.ReadObjectAsync
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator(Of T).ReadObjectAsync
+  nameWithType: StreamNumberAsyncEnumerator<T>.ReadObjectAsync
+  nameWithType.vb: StreamNumberAsyncEnumerator(Of T).ReadObjectAsync
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator`1
+  name: StreamNumberEnumerator<T>
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator-1.html
+  commentId: T:wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator`1
+  name.vb: StreamNumberEnumerator(Of T)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator<T>
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator(Of T)
+  nameWithType: StreamNumberEnumerator<T>
+  nameWithType.vb: StreamNumberEnumerator(Of T)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator`1.#ctor(Stream,System.Nullable{System.Int32})
+  name: StreamNumberEnumerator(Stream, Nullable<Int32>)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamNumberEnumerator_1__ctor_Stream_System_Nullable_System_Int32__
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator`1.#ctor(Stream,System.Nullable{System.Int32})
+  name.vb: StreamNumberEnumerator(Stream, Nullable(Of Int32))
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator<T>.StreamNumberEnumerator(Stream, System.Nullable<System.Int32>)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator(Of T).StreamNumberEnumerator(Stream, System.Nullable(Of System.Int32))
+  nameWithType: StreamNumberEnumerator<T>.StreamNumberEnumerator(Stream, Nullable<Int32>)
+  nameWithType.vb: StreamNumberEnumerator(Of T).StreamNumberEnumerator(Stream, Nullable(Of Int32))
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator`1.#ctor(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte})
+  name: StreamNumberEnumerator(Stream, Nullable<Int32>, ArrayPool<Byte>)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamNumberEnumerator_1__ctor_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator`1.#ctor(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte})
+  name.vb: StreamNumberEnumerator(Stream, Nullable(Of Int32), ArrayPool(Of Byte))
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator<T>.StreamNumberEnumerator(Stream, System.Nullable<System.Int32>, System.Buffers.ArrayPool<System.Byte>)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator(Of T).StreamNumberEnumerator(Stream, System.Nullable(Of System.Int32), System.Buffers.ArrayPool(Of System.Byte))
+  nameWithType: StreamNumberEnumerator<T>.StreamNumberEnumerator(Stream, Nullable<Int32>, ArrayPool<Byte>)
+  nameWithType.vb: StreamNumberEnumerator(Of T).StreamNumberEnumerator(Stream, Nullable(Of Int32), ArrayPool(Of Byte))
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator`1.#ctor*
+  name: StreamNumberEnumerator
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamNumberEnumerator_1__ctor_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator`1.#ctor
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator<T>.StreamNumberEnumerator
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator(Of T).StreamNumberEnumerator
+  nameWithType: StreamNumberEnumerator<T>.StreamNumberEnumerator
+  nameWithType.vb: StreamNumberEnumerator(Of T).StreamNumberEnumerator
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator`1.Pool
+  name: Pool
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamNumberEnumerator_1_Pool
+  commentId: F:wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator`1.Pool
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator<T>.Pool
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator(Of T).Pool
+  nameWithType: StreamNumberEnumerator<T>.Pool
+  nameWithType.vb: StreamNumberEnumerator(Of T).Pool
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator`1.ReadObject
+  name: ReadObject()
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamNumberEnumerator_1_ReadObject
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator`1.ReadObject
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator<T>.ReadObject()
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator(Of T).ReadObject()
+  nameWithType: StreamNumberEnumerator<T>.ReadObject()
+  nameWithType.vb: StreamNumberEnumerator(Of T).ReadObject()
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator`1.ReadObject*
+  name: ReadObject
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamNumberEnumerator_1_ReadObject_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator`1.ReadObject
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator<T>.ReadObject
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator(Of T).ReadObject
+  nameWithType: StreamNumberEnumerator<T>.ReadObject
+  nameWithType.vb: StreamNumberEnumerator(Of T).ReadObject
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator`1
+  name: StreamSerializerAsyncEnumerator<T>
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator-1.html
+  commentId: T:wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator`1
+  name.vb: StreamSerializerAsyncEnumerator(Of T)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator<T>
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator(Of T)
+  nameWithType: StreamSerializerAsyncEnumerator<T>
+  nameWithType.vb: StreamSerializerAsyncEnumerator(Of T)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator`1.#ctor(Stream,System.Nullable{System.Int32},CancellationToken)
+  name: StreamSerializerAsyncEnumerator(Stream, Nullable<Int32>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamSerializerAsyncEnumerator_1__ctor_Stream_System_Nullable_System_Int32__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator`1.#ctor(Stream,System.Nullable{System.Int32},CancellationToken)
+  name.vb: StreamSerializerAsyncEnumerator(Stream, Nullable(Of Int32), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator<T>.StreamSerializerAsyncEnumerator(Stream, System.Nullable<System.Int32>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator(Of T).StreamSerializerAsyncEnumerator(Stream, System.Nullable(Of System.Int32), CancellationToken)
+  nameWithType: StreamSerializerAsyncEnumerator<T>.StreamSerializerAsyncEnumerator(Stream, Nullable<Int32>, CancellationToken)
+  nameWithType.vb: StreamSerializerAsyncEnumerator(Of T).StreamSerializerAsyncEnumerator(Stream, Nullable(Of Int32), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator`1.#ctor*
+  name: StreamSerializerAsyncEnumerator
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamSerializerAsyncEnumerator_1__ctor_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator`1.#ctor
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator<T>.StreamSerializerAsyncEnumerator
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator(Of T).StreamSerializerAsyncEnumerator
+  nameWithType: StreamSerializerAsyncEnumerator<T>.StreamSerializerAsyncEnumerator
+  nameWithType.vb: StreamSerializerAsyncEnumerator(Of T).StreamSerializerAsyncEnumerator
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator`1.ReadObjectAsync
+  name: ReadObjectAsync()
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamSerializerAsyncEnumerator_1_ReadObjectAsync
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator`1.ReadObjectAsync
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator<T>.ReadObjectAsync()
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator(Of T).ReadObjectAsync()
+  nameWithType: StreamSerializerAsyncEnumerator<T>.ReadObjectAsync()
+  nameWithType.vb: StreamSerializerAsyncEnumerator(Of T).ReadObjectAsync()
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator`1.ReadObjectAsync*
+  name: ReadObjectAsync
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamSerializerAsyncEnumerator_1_ReadObjectAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator`1.ReadObjectAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator<T>.ReadObjectAsync
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator(Of T).ReadObjectAsync
+  nameWithType: StreamSerializerAsyncEnumerator<T>.ReadObjectAsync
+  nameWithType.vb: StreamSerializerAsyncEnumerator(Of T).ReadObjectAsync
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator`1
+  name: StreamSerializerEnumerator<T>
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator-1.html
+  commentId: T:wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator`1
+  name.vb: StreamSerializerEnumerator(Of T)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator<T>
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator(Of T)
+  nameWithType: StreamSerializerEnumerator<T>
+  nameWithType.vb: StreamSerializerEnumerator(Of T)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator`1.#ctor(Stream,System.Nullable{System.Int32})
+  name: StreamSerializerEnumerator(Stream, Nullable<Int32>)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamSerializerEnumerator_1__ctor_Stream_System_Nullable_System_Int32__
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator`1.#ctor(Stream,System.Nullable{System.Int32})
+  name.vb: StreamSerializerEnumerator(Stream, Nullable(Of Int32))
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator<T>.StreamSerializerEnumerator(Stream, System.Nullable<System.Int32>)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator(Of T).StreamSerializerEnumerator(Stream, System.Nullable(Of System.Int32))
+  nameWithType: StreamSerializerEnumerator<T>.StreamSerializerEnumerator(Stream, Nullable<Int32>)
+  nameWithType.vb: StreamSerializerEnumerator(Of T).StreamSerializerEnumerator(Stream, Nullable(Of Int32))
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator`1.#ctor*
+  name: StreamSerializerEnumerator
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamSerializerEnumerator_1__ctor_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator`1.#ctor
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator<T>.StreamSerializerEnumerator
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator(Of T).StreamSerializerEnumerator
+  nameWithType: StreamSerializerEnumerator<T>.StreamSerializerEnumerator
+  nameWithType.vb: StreamSerializerEnumerator(Of T).StreamSerializerEnumerator
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator`1.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamSerializerEnumerator_1_Dispose_System_Boolean_
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator`1.Dispose(System.Boolean)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator<T>.Dispose(System.Boolean)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator(Of T).Dispose(System.Boolean)
+  nameWithType: StreamSerializerEnumerator<T>.Dispose(Boolean)
+  nameWithType.vb: StreamSerializerEnumerator(Of T).Dispose(Boolean)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator`1.Dispose*
+  name: Dispose
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamSerializerEnumerator_1_Dispose_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator`1.Dispose
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator<T>.Dispose
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator(Of T).Dispose
+  nameWithType: StreamSerializerEnumerator<T>.Dispose
+  nameWithType.vb: StreamSerializerEnumerator(Of T).Dispose
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator`1.ReadObject
+  name: ReadObject()
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamSerializerEnumerator_1_ReadObject
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator`1.ReadObject
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator<T>.ReadObject()
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator(Of T).ReadObject()
+  nameWithType: StreamSerializerEnumerator<T>.ReadObject()
+  nameWithType.vb: StreamSerializerEnumerator(Of T).ReadObject()
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator`1.ReadObject*
+  name: ReadObject
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamSerializerEnumerator_1_ReadObject_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator`1.ReadObject
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator<T>.ReadObject
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator(Of T).ReadObject
+  nameWithType: StreamSerializerEnumerator<T>.ReadObject
+  nameWithType.vb: StreamSerializerEnumerator(Of T).ReadObject
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator
+  name: StreamStringAsyncEnumerator
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.html
+  commentId: T:wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator
+  nameWithType: StreamStringAsyncEnumerator
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.#ctor(Stream,System.Nullable{System.Int32},CancellationToken)
+  name: StreamStringAsyncEnumerator(Stream, Nullable<Int32>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.html#wan24_StreamSerializerExtensions_Enumerator_StreamStringAsyncEnumerator__ctor_Stream_System_Nullable_System_Int32__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.#ctor(Stream,System.Nullable{System.Int32},CancellationToken)
+  name.vb: StreamStringAsyncEnumerator(Stream, Nullable(Of Int32), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.StreamStringAsyncEnumerator(Stream, System.Nullable<System.Int32>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.StreamStringAsyncEnumerator(Stream, System.Nullable(Of System.Int32), CancellationToken)
+  nameWithType: StreamStringAsyncEnumerator.StreamStringAsyncEnumerator(Stream, Nullable<Int32>, CancellationToken)
+  nameWithType.vb: StreamStringAsyncEnumerator.StreamStringAsyncEnumerator(Stream, Nullable(Of Int32), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.#ctor(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},System.Int32,System.Int32,CancellationToken)
+  name: StreamStringAsyncEnumerator(Stream, Nullable<Int32>, ArrayPool<Byte>, Int32, Int32, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.html#wan24_StreamSerializerExtensions_Enumerator_StreamStringAsyncEnumerator__ctor_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__System_Int32_System_Int32_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.#ctor(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},System.Int32,System.Int32,CancellationToken)
+  name.vb: StreamStringAsyncEnumerator(Stream, Nullable(Of Int32), ArrayPool(Of Byte), Int32, Int32, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.StreamStringAsyncEnumerator(Stream, System.Nullable<System.Int32>, System.Buffers.ArrayPool<System.Byte>, System.Int32, System.Int32, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.StreamStringAsyncEnumerator(Stream, System.Nullable(Of System.Int32), System.Buffers.ArrayPool(Of System.Byte), System.Int32, System.Int32, CancellationToken)
+  nameWithType: StreamStringAsyncEnumerator.StreamStringAsyncEnumerator(Stream, Nullable<Int32>, ArrayPool<Byte>, Int32, Int32, CancellationToken)
+  nameWithType.vb: StreamStringAsyncEnumerator.StreamStringAsyncEnumerator(Stream, Nullable(Of Int32), ArrayPool(Of Byte), Int32, Int32, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.#ctor*
+  name: StreamStringAsyncEnumerator
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.html#wan24_StreamSerializerExtensions_Enumerator_StreamStringAsyncEnumerator__ctor_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.#ctor
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.StreamStringAsyncEnumerator
+  nameWithType: StreamStringAsyncEnumerator.StreamStringAsyncEnumerator
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.MaxLen
+  name: MaxLen
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.html#wan24_StreamSerializerExtensions_Enumerator_StreamStringAsyncEnumerator_MaxLen
+  commentId: F:wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.MaxLen
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.MaxLen
+  nameWithType: StreamStringAsyncEnumerator.MaxLen
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.MinLen
+  name: MinLen
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.html#wan24_StreamSerializerExtensions_Enumerator_StreamStringAsyncEnumerator_MinLen
+  commentId: F:wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.MinLen
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.MinLen
+  nameWithType: StreamStringAsyncEnumerator.MinLen
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.Pool
+  name: Pool
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.html#wan24_StreamSerializerExtensions_Enumerator_StreamStringAsyncEnumerator_Pool
+  commentId: F:wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.Pool
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.Pool
+  nameWithType: StreamStringAsyncEnumerator.Pool
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.ReadObjectAsync
+  name: ReadObjectAsync()
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.html#wan24_StreamSerializerExtensions_Enumerator_StreamStringAsyncEnumerator_ReadObjectAsync
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.ReadObjectAsync
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.ReadObjectAsync()
+  nameWithType: StreamStringAsyncEnumerator.ReadObjectAsync()
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.ReadObjectAsync*
+  name: ReadObjectAsync
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.html#wan24_StreamSerializerExtensions_Enumerator_StreamStringAsyncEnumerator_ReadObjectAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.ReadObjectAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.ReadObjectAsync
+  nameWithType: StreamStringAsyncEnumerator.ReadObjectAsync
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator
+  name: StreamStringEnumerator
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.html
+  commentId: T:wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator
+  nameWithType: StreamStringEnumerator
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.#ctor(Stream,System.Nullable{System.Int32})
+  name: StreamStringEnumerator(Stream, Nullable<Int32>)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.html#wan24_StreamSerializerExtensions_Enumerator_StreamStringEnumerator__ctor_Stream_System_Nullable_System_Int32__
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.#ctor(Stream,System.Nullable{System.Int32})
+  name.vb: StreamStringEnumerator(Stream, Nullable(Of Int32))
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.StreamStringEnumerator(Stream, System.Nullable<System.Int32>)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.StreamStringEnumerator(Stream, System.Nullable(Of System.Int32))
+  nameWithType: StreamStringEnumerator.StreamStringEnumerator(Stream, Nullable<Int32>)
+  nameWithType.vb: StreamStringEnumerator.StreamStringEnumerator(Stream, Nullable(Of Int32))
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.#ctor(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},System.Int32,System.Int32)
+  name: StreamStringEnumerator(Stream, Nullable<Int32>, ArrayPool<Byte>, Int32, Int32)
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.html#wan24_StreamSerializerExtensions_Enumerator_StreamStringEnumerator__ctor_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__System_Int32_System_Int32_
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.#ctor(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},System.Int32,System.Int32)
+  name.vb: StreamStringEnumerator(Stream, Nullable(Of Int32), ArrayPool(Of Byte), Int32, Int32)
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.StreamStringEnumerator(Stream, System.Nullable<System.Int32>, System.Buffers.ArrayPool<System.Byte>, System.Int32, System.Int32)
+  fullName.vb: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.StreamStringEnumerator(Stream, System.Nullable(Of System.Int32), System.Buffers.ArrayPool(Of System.Byte), System.Int32, System.Int32)
+  nameWithType: StreamStringEnumerator.StreamStringEnumerator(Stream, Nullable<Int32>, ArrayPool<Byte>, Int32, Int32)
+  nameWithType.vb: StreamStringEnumerator.StreamStringEnumerator(Stream, Nullable(Of Int32), ArrayPool(Of Byte), Int32, Int32)
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.#ctor*
+  name: StreamStringEnumerator
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.html#wan24_StreamSerializerExtensions_Enumerator_StreamStringEnumerator__ctor_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.#ctor
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.StreamStringEnumerator
+  nameWithType: StreamStringEnumerator.StreamStringEnumerator
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.MaxLen
+  name: MaxLen
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.html#wan24_StreamSerializerExtensions_Enumerator_StreamStringEnumerator_MaxLen
+  commentId: F:wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.MaxLen
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.MaxLen
+  nameWithType: StreamStringEnumerator.MaxLen
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.MinLen
+  name: MinLen
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.html#wan24_StreamSerializerExtensions_Enumerator_StreamStringEnumerator_MinLen
+  commentId: F:wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.MinLen
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.MinLen
+  nameWithType: StreamStringEnumerator.MinLen
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.Pool
+  name: Pool
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.html#wan24_StreamSerializerExtensions_Enumerator_StreamStringEnumerator_Pool
+  commentId: F:wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.Pool
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.Pool
+  nameWithType: StreamStringEnumerator.Pool
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.ReadObject
+  name: ReadObject()
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.html#wan24_StreamSerializerExtensions_Enumerator_StreamStringEnumerator_ReadObject
+  commentId: M:wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.ReadObject
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.ReadObject()
+  nameWithType: StreamStringEnumerator.ReadObject()
+- uid: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.ReadObject*
+  name: ReadObject
+  href: api/wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.html#wan24_StreamSerializerExtensions_Enumerator_StreamStringEnumerator_ReadObject_
+  commentId: Overload:wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.ReadObject
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.ReadObject
+  nameWithType: StreamStringEnumerator.ReadObject
 - uid: wan24.StreamSerializerExtensions.IStreamSerializer
   name: IStreamSerializer
   href: api/wan24.StreamSerializerExtensions.IStreamSerializer.html
@@ -282,6 +988,19 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializedObjectVersion
   nameWithType: IStreamSerializerVersion.SerializedObjectVersion
+- uid: wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
+  name: SerializerVersion
+  href: api/wan24.StreamSerializerExtensions.IStreamSerializerVersion.html#wan24_StreamSerializerExtensions_IStreamSerializerVersion_SerializerVersion
+  commentId: P:wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
+  fullName: wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
+  nameWithType: IStreamSerializerVersion.SerializerVersion
+- uid: wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion*
+  name: SerializerVersion
+  href: api/wan24.StreamSerializerExtensions.IStreamSerializerVersion.html#wan24_StreamSerializerExtensions_IStreamSerializerVersion_SerializerVersion_
+  commentId: Overload:wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
+  nameWithType: IStreamSerializerVersion.SerializerVersion
 - uid: wan24.StreamSerializerExtensions.NumberTypes
   name: NumberTypes
   href: api/wan24.StreamSerializerExtensions.NumberTypes.html
@@ -859,6 +1578,134 @@ references:
   commentId: F:wan24.StreamSerializerExtensions.StreamExtensions.ArrayEmptyMethod
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.ArrayEmptyMethod
   nameWithType: StreamExtensions.ArrayEmptyMethod
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.Enumerate*
+  name: Enumerate
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_Enumerate_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.Enumerate
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.Enumerate
+  nameWithType: StreamExtensions.Enumerate
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.Enumerate``2(Stream,System.Nullable{System.Int32})
+  name: Enumerate<tObject, tEnumerator>(Stream, Nullable<Int32>)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_Enumerate__2_Stream_System_Nullable_System_Int32__
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.Enumerate``2(Stream,System.Nullable{System.Int32})
+  name.vb: Enumerate(Of tObject, tEnumerator)(Stream, Nullable(Of Int32))
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.Enumerate<tObject, tEnumerator>(Stream, System.Nullable<System.Int32>)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.Enumerate(Of tObject, tEnumerator)(Stream, System.Nullable(Of System.Int32))
+  nameWithType: StreamExtensions.Enumerate<tObject, tEnumerator>(Stream, Nullable<Int32>)
+  nameWithType.vb: StreamExtensions.Enumerate(Of tObject, tEnumerator)(Stream, Nullable(Of Int32))
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateAsync*
+  name: EnumerateAsync
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_EnumerateAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.EnumerateAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateAsync
+  nameWithType: StreamExtensions.EnumerateAsync
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateAsync``2(Stream,System.Nullable{System.Int32},CancellationToken)
+  name: EnumerateAsync<tObject, tEnumerator>(Stream, Nullable<Int32>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_EnumerateAsync__2_Stream_System_Nullable_System_Int32__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.EnumerateAsync``2(Stream,System.Nullable{System.Int32},CancellationToken)
+  name.vb: EnumerateAsync(Of tObject, tEnumerator)(Stream, Nullable(Of Int32), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateAsync<tObject, tEnumerator>(Stream, System.Nullable<System.Int32>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateAsync(Of tObject, tEnumerator)(Stream, System.Nullable(Of System.Int32), CancellationToken)
+  nameWithType: StreamExtensions.EnumerateAsync<tObject, tEnumerator>(Stream, Nullable<Int32>, CancellationToken)
+  nameWithType.vb: StreamExtensions.EnumerateAsync(Of tObject, tEnumerator)(Stream, Nullable(Of Int32), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumber*
+  name: EnumerateNumber
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_EnumerateNumber_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumber
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumber
+  nameWithType: StreamExtensions.EnumerateNumber
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumber``1(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte})
+  name: EnumerateNumber<T>(Stream, Nullable<Int32>, ArrayPool<Byte>)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_EnumerateNumber__1_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumber``1(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte})
+  name.vb: EnumerateNumber(Of T)(Stream, Nullable(Of Int32), ArrayPool(Of Byte))
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumber<T>(Stream, System.Nullable<System.Int32>, System.Buffers.ArrayPool<System.Byte>)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumber(Of T)(Stream, System.Nullable(Of System.Int32), System.Buffers.ArrayPool(Of System.Byte))
+  nameWithType: StreamExtensions.EnumerateNumber<T>(Stream, Nullable<Int32>, ArrayPool<Byte>)
+  nameWithType.vb: StreamExtensions.EnumerateNumber(Of T)(Stream, Nullable(Of Int32), ArrayPool(Of Byte))
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumberAsync*
+  name: EnumerateNumberAsync
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_EnumerateNumberAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumberAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumberAsync
+  nameWithType: StreamExtensions.EnumerateNumberAsync
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumberAsync``1(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},CancellationToken)
+  name: EnumerateNumberAsync<T>(Stream, Nullable<Int32>, ArrayPool<Byte>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_EnumerateNumberAsync__1_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumberAsync``1(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},CancellationToken)
+  name.vb: EnumerateNumberAsync(Of T)(Stream, Nullable(Of Int32), ArrayPool(Of Byte), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumberAsync<T>(Stream, System.Nullable<System.Int32>, System.Buffers.ArrayPool<System.Byte>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateNumberAsync(Of T)(Stream, System.Nullable(Of System.Int32), System.Buffers.ArrayPool(Of System.Byte), CancellationToken)
+  nameWithType: StreamExtensions.EnumerateNumberAsync<T>(Stream, Nullable<Int32>, ArrayPool<Byte>, CancellationToken)
+  nameWithType.vb: StreamExtensions.EnumerateNumberAsync(Of T)(Stream, Nullable(Of Int32), ArrayPool(Of Byte), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerialized*
+  name: EnumerateSerialized
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_EnumerateSerialized_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerialized
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerialized
+  nameWithType: StreamExtensions.EnumerateSerialized
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerialized``1(Stream,System.Nullable{System.Int32})
+  name: EnumerateSerialized<T>(Stream, Nullable<Int32>)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_EnumerateSerialized__1_Stream_System_Nullable_System_Int32__
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerialized``1(Stream,System.Nullable{System.Int32})
+  name.vb: EnumerateSerialized(Of T)(Stream, Nullable(Of Int32))
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerialized<T>(Stream, System.Nullable<System.Int32>)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerialized(Of T)(Stream, System.Nullable(Of System.Int32))
+  nameWithType: StreamExtensions.EnumerateSerialized<T>(Stream, Nullable<Int32>)
+  nameWithType.vb: StreamExtensions.EnumerateSerialized(Of T)(Stream, Nullable(Of Int32))
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerializedAsync*
+  name: EnumerateSerializedAsync
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_EnumerateSerializedAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerializedAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerializedAsync
+  nameWithType: StreamExtensions.EnumerateSerializedAsync
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerializedAsync``1(Stream,System.Nullable{System.Int32},CancellationToken)
+  name: EnumerateSerializedAsync<T>(Stream, Nullable<Int32>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_EnumerateSerializedAsync__1_Stream_System_Nullable_System_Int32__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerializedAsync``1(Stream,System.Nullable{System.Int32},CancellationToken)
+  name.vb: EnumerateSerializedAsync(Of T)(Stream, Nullable(Of Int32), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerializedAsync<T>(Stream, System.Nullable<System.Int32>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateSerializedAsync(Of T)(Stream, System.Nullable(Of System.Int32), CancellationToken)
+  nameWithType: StreamExtensions.EnumerateSerializedAsync<T>(Stream, Nullable<Int32>, CancellationToken)
+  nameWithType.vb: StreamExtensions.EnumerateSerializedAsync(Of T)(Stream, Nullable(Of Int32), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateString(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},System.Int32,System.Int32)
+  name: EnumerateString(Stream, Nullable<Int32>, ArrayPool<Byte>, Int32, Int32)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_EnumerateString_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__System_Int32_System_Int32_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.EnumerateString(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},System.Int32,System.Int32)
+  name.vb: EnumerateString(Stream, Nullable(Of Int32), ArrayPool(Of Byte), Int32, Int32)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateString(Stream, System.Nullable<System.Int32>, System.Buffers.ArrayPool<System.Byte>, System.Int32, System.Int32)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateString(Stream, System.Nullable(Of System.Int32), System.Buffers.ArrayPool(Of System.Byte), System.Int32, System.Int32)
+  nameWithType: StreamExtensions.EnumerateString(Stream, Nullable<Int32>, ArrayPool<Byte>, Int32, Int32)
+  nameWithType.vb: StreamExtensions.EnumerateString(Stream, Nullable(Of Int32), ArrayPool(Of Byte), Int32, Int32)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateString*
+  name: EnumerateString
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_EnumerateString_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.EnumerateString
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateString
+  nameWithType: StreamExtensions.EnumerateString
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateStringAsync(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},System.Int32,System.Int32,CancellationToken)
+  name: EnumerateStringAsync(Stream, Nullable<Int32>, ArrayPool<Byte>, Int32, Int32, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_EnumerateStringAsync_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__System_Int32_System_Int32_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.EnumerateStringAsync(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},System.Int32,System.Int32,CancellationToken)
+  name.vb: EnumerateStringAsync(Stream, Nullable(Of Int32), ArrayPool(Of Byte), Int32, Int32, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateStringAsync(Stream, System.Nullable<System.Int32>, System.Buffers.ArrayPool<System.Byte>, System.Int32, System.Int32, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateStringAsync(Stream, System.Nullable(Of System.Int32), System.Buffers.ArrayPool(Of System.Byte), System.Int32, System.Int32, CancellationToken)
+  nameWithType: StreamExtensions.EnumerateStringAsync(Stream, Nullable<Int32>, ArrayPool<Byte>, Int32, Int32, CancellationToken)
+  nameWithType.vb: StreamExtensions.EnumerateStringAsync(Stream, Nullable(Of Int32), ArrayPool(Of Byte), Int32, Int32, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateStringAsync*
+  name: EnumerateStringAsync
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_EnumerateStringAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.EnumerateStringAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateStringAsync
+  nameWithType: StreamExtensions.EnumerateStringAsync
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadAny(Stream,System.Nullable{System.Int32})
   name: ReadAny(Stream, Nullable<Int32>)
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadAny_Stream_System_Nullable_System_Int32__
@@ -2940,6 +3787,15 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytes
   nameWithType: StreamExtensions.WriteBytes
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytes``1(``0,ReadOnlySpan{System.Byte})
+  name: WriteBytes<T>(T, ReadOnlySpan<Byte>)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteBytes__1___0_ReadOnlySpan_System_Byte__
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteBytes``1(``0,ReadOnlySpan{System.Byte})
+  name.vb: WriteBytes(Of T)(T, ReadOnlySpan(Of Byte))
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytes<T>(T, ReadOnlySpan<System.Byte>)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytes(Of T)(T, ReadOnlySpan(Of System.Byte))
+  nameWithType: StreamExtensions.WriteBytes<T>(T, ReadOnlySpan<Byte>)
+  nameWithType.vb: StreamExtensions.WriteBytes(Of T)(T, ReadOnlySpan(Of Byte))
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytes``1(``0,Span{System.Byte})
   name: WriteBytes<T>(T, Span<Byte>)
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteBytes__1___0_Span_System_Byte__
@@ -2958,6 +3814,15 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Stream, Memory(Of System.Byte), CancellationToken)
   nameWithType: StreamExtensions.WriteBytesAsync(Stream, Memory<Byte>, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteBytesAsync(Stream, Memory(Of Byte), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Stream,ReadOnlyMemory{System.Byte},CancellationToken)
+  name: WriteBytesAsync(Stream, ReadOnlyMemory<Byte>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesAsync_Stream_ReadOnlyMemory_System_Byte__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Stream,ReadOnlyMemory{System.Byte},CancellationToken)
+  name.vb: WriteBytesAsync(Stream, ReadOnlyMemory(Of Byte), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Stream, ReadOnlyMemory<System.Byte>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Stream, ReadOnlyMemory(Of System.Byte), CancellationToken)
+  nameWithType: StreamExtensions.WriteBytesAsync(Stream, ReadOnlyMemory<Byte>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteBytesAsync(Stream, ReadOnlyMemory(Of Byte), CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync*
   name: WriteBytesAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesAsync_
@@ -3758,6 +4623,12 @@ references:
   commentId: T:wan24.StreamSerializerExtensions.StreamSerializer
   fullName: wan24.StreamSerializerExtensions.StreamSerializer
   nameWithType: StreamSerializer
+- uid: wan24.StreamSerializerExtensions.StreamSerializer.AllowedTypes
+  name: AllowedTypes
+  href: api/wan24.StreamSerializerExtensions.StreamSerializer.html#wan24_StreamSerializerExtensions_StreamSerializer_AllowedTypes
+  commentId: F:wan24.StreamSerializerExtensions.StreamSerializer.AllowedTypes
+  fullName: wan24.StreamSerializerExtensions.StreamSerializer.AllowedTypes
+  nameWithType: StreamSerializer.AllowedTypes
 - uid: wan24.StreamSerializerExtensions.StreamSerializer.AsyncDeserialize_Delegate
   name: StreamSerializer.AsyncDeserialize_Delegate
   href: api/wan24.StreamSerializerExtensions.StreamSerializer.AsyncDeserialize_Delegate.html
@@ -3886,6 +4757,19 @@ references:
   commentId: T:wan24.StreamSerializerExtensions.StreamSerializer.Init_Delegate
   fullName: wan24.StreamSerializerExtensions.StreamSerializer.Init_Delegate
   nameWithType: StreamSerializer.Init_Delegate
+- uid: wan24.StreamSerializerExtensions.StreamSerializer.IsTypeAllowed(Type)
+  name: IsTypeAllowed(Type)
+  href: api/wan24.StreamSerializerExtensions.StreamSerializer.html#wan24_StreamSerializerExtensions_StreamSerializer_IsTypeAllowed_Type_
+  commentId: M:wan24.StreamSerializerExtensions.StreamSerializer.IsTypeAllowed(Type)
+  fullName: wan24.StreamSerializerExtensions.StreamSerializer.IsTypeAllowed(Type)
+  nameWithType: StreamSerializer.IsTypeAllowed(Type)
+- uid: wan24.StreamSerializerExtensions.StreamSerializer.IsTypeAllowed*
+  name: IsTypeAllowed
+  href: api/wan24.StreamSerializerExtensions.StreamSerializer.html#wan24_StreamSerializerExtensions_StreamSerializer_IsTypeAllowed_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamSerializer.IsTypeAllowed
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamSerializer.IsTypeAllowed
+  nameWithType: StreamSerializer.IsTypeAllowed
 - uid: wan24.StreamSerializerExtensions.StreamSerializer.LoadType(System.String)
   name: LoadType(String)
   href: api/wan24.StreamSerializerExtensions.StreamSerializer.html#wan24_StreamSerializerExtensions_StreamSerializer_LoadType_System_String_
@@ -4179,6 +5063,12 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.StreamSerializerBase.StreamSerializerBase
   nameWithType: StreamSerializerBase.StreamSerializerBase
+- uid: wan24.StreamSerializerExtensions.StreamSerializerBase.BASE_VERSION
+  name: BASE_VERSION
+  href: api/wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_BASE_VERSION
+  commentId: F:wan24.StreamSerializerExtensions.StreamSerializerBase.BASE_VERSION
+  fullName: wan24.StreamSerializerExtensions.StreamSerializerBase.BASE_VERSION
+  nameWithType: StreamSerializerBase.BASE_VERSION
 - uid: wan24.StreamSerializerExtensions.StreamSerializerBase.Deserialize(Stream,System.Int32)
   name: Deserialize(Stream, Int32)
   href: api/wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_Deserialize_Stream_System_Int32_
@@ -4333,6 +5223,23 @@ references:
   fullName: wan24.StreamSerializerExtensions.StreamSerializerBase.wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializedObjectVersion
   nameWithType: StreamSerializerBase.IStreamSerializerVersion.SerializedObjectVersion
   nameWithType.vb: StreamSerializerBase.wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializedObjectVersion
+- uid: wan24.StreamSerializerExtensions.StreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializerVersion#SerializerVersion
+  name: IStreamSerializerVersion.SerializerVersion
+  href: api/wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializerVersion_SerializerVersion
+  commentId: P:wan24.StreamSerializerExtensions.StreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializerVersion#SerializerVersion
+  name.vb: wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
+  fullName: wan24.StreamSerializerExtensions.StreamSerializerBase.wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
+  nameWithType: StreamSerializerBase.IStreamSerializerVersion.SerializerVersion
+  nameWithType.vb: StreamSerializerBase.wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
+- uid: wan24.StreamSerializerExtensions.StreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializerVersion#SerializerVersion*
+  name: IStreamSerializerVersion.SerializerVersion
+  href: api/wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializerVersion_SerializerVersion_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializerVersion#SerializerVersion
+  isSpec: "True"
+  name.vb: wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
+  fullName: wan24.StreamSerializerExtensions.StreamSerializerBase.wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
+  nameWithType: StreamSerializerBase.IStreamSerializerVersion.SerializerVersion
+  nameWithType.vb: StreamSerializerBase.wan24.StreamSerializerExtensions.IStreamSerializerVersion.SerializerVersion
 - uid: wan24.StreamSerializerExtensions.StreamSerializerModes
   name: StreamSerializerModes
   href: api/wan24.StreamSerializerExtensions.StreamSerializerModes.html

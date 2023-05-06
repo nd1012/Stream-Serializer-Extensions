@@ -89,6 +89,8 @@
     <div><span class="xref">System.IAsyncDisposable</span></div>
     <div><a class="xref" href="wan24.StreamSerializerExtensions.IStreamSerializerVersion.html">IStreamSerializerVersion</a></div>
     <div><a class="xref" href="wan24.StreamSerializerExtensions.IStreamSerializer.html">IStreamSerializer</a></div>
+    <div><span class="xref">wan24.ObjectValidation.IObjectValidatable</span></div>
+    <div><span class="xref">System.ComponentModel.DataAnnotations.IValidatableObject</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -166,7 +168,7 @@
   <h6><strong>Assembly</strong>: StreamSerializerExtensions.dll</h6>
   <h5 id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class DisposableStreamSerializerBase : DisposableBase, IDisposableObject, IDisposable, IAsyncDisposable, IStreamSerializerVersion, IStreamSerializer</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class DisposableStreamSerializerBase : DisposableBase, IDisposableObject, IDisposable, IAsyncDisposable, IStreamSerializerVersion, IStreamSerializer, IObjectValidatable, IValidatableObject</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -175,7 +177,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_DisposableStreamSerializerBase__ctor_Stream_System_Int32_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.%23ctor(Stream%2CSystem.Int32%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L31">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L42">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase__ctor_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.#ctor*"></a>
   <h4 id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase__ctor_Stream_System_Int32_System_Nullable_System_Int32__" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.#ctor(Stream,System.Int32,System.Nullable{System.Int32})">DisposableStreamSerializerBase(Stream, Int32, Nullable&lt;Int32&gt;)</h4>
@@ -221,7 +223,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_DisposableStreamSerializerBase__ctor_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.%23ctor(System.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L23">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L34">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase__ctor_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.#ctor*"></a>
   <h4 id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase__ctor_System_Nullable_System_Int32__" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.#ctor(System.Nullable{System.Int32})">DisposableStreamSerializerBase(Nullable&lt;Int32&gt;)</h4>
@@ -250,6 +252,38 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_BASE_VERSION.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.BASE_VERSION%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L15">View Source</a>
+  </span>
+  <h4 id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_BASE_VERSION" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.BASE_VERSION">BASE_VERSION</h4>
+  <div class="markdown level1 summary"><p>Base object version</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int BASE_VERSION = 1</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -257,7 +291,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_Deserialize_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.Deserialize(Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L86">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L104">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_Deserialize_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.Deserialize*"></a>
   <h4 id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_Deserialize_Stream_System_Int32_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.Deserialize(Stream,System.Int32)">Deserialize(Stream, Int32)</h4>
@@ -297,7 +331,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_DeserializeAsync_Stream_System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.DeserializeAsync(Stream%2CSystem.Int32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L94">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L112">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_DeserializeAsync_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.DeserializeAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_DeserializeAsync_Stream_System_Int32_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.DeserializeAsync(Stream,System.Int32,CancellationToken)">DeserializeAsync(Stream, Int32, CancellationToken)</h4>
@@ -358,7 +392,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_Serialize_Stream_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.Serialize(Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L47">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L61">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_Serialize_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.Serialize*"></a>
   <h4 id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_Serialize_Stream_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.Serialize(Stream)">Serialize(Stream)</h4>
@@ -392,7 +426,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_SerializeAsync_Stream_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.SerializeAsync(Stream%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L54">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L68">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_SerializeAsync_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.SerializeAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_SerializeAsync_Stream_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.SerializeAsync(Stream,CancellationToken)">SerializeAsync(Stream, CancellationToken)</h4>
@@ -449,7 +483,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_Deserialize_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24%23StreamSerializerExtensions%23IStreamSerializer%23Deserialize(Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L131">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L156">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_Deserialize_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializer#Deserialize*"></a>
   <h4 id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_Deserialize_Stream_System_Int32_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializer#Deserialize(Stream,System.Int32)">IStreamSerializer.Deserialize(Stream, Int32)</h4>
@@ -489,7 +523,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_DeserializeAsync_Stream_System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24%23StreamSerializerExtensions%23IStreamSerializer%23DeserializeAsync(Stream%2CSystem.Int32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L134">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L159">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_DeserializeAsync_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializer#DeserializeAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_DeserializeAsync_Stream_System_Int32_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializer#DeserializeAsync(Stream,System.Int32,CancellationToken)">IStreamSerializer.DeserializeAsync(Stream, Int32, CancellationToken)</h4>
@@ -550,7 +584,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_Serialize_Stream_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24%23StreamSerializerExtensions%23IStreamSerializer%23Serialize(Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L125">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L150">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_Serialize_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializer#Serialize*"></a>
   <h4 id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_Serialize_Stream_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializer#Serialize(Stream)">IStreamSerializer.Serialize(Stream)</h4>
@@ -584,7 +618,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_SerializeAsync_Stream_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24%23StreamSerializerExtensions%23IStreamSerializer%23SerializeAsync(Stream%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L128">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L153">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_SerializeAsync_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializer#SerializeAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_SerializeAsync_Stream_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializer#SerializeAsync(Stream,CancellationToken)">IStreamSerializer.SerializeAsync(Stream, CancellationToken)</h4>
@@ -639,7 +673,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializerVersion_ObjectVersion.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24%23StreamSerializerExtensions%23IStreamSerializerVersion%23ObjectVersion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L38">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L49">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializerVersion_ObjectVersion_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializerVersion#ObjectVersion*"></a>
   <h4 id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializerVersion_ObjectVersion" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializerVersion#ObjectVersion">IStreamSerializerVersion.ObjectVersion</h4>
@@ -670,7 +704,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializerVersion_SerializedObjectVersion.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24%23StreamSerializerExtensions%23IStreamSerializerVersion%23SerializedObjectVersion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L41">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L52">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializerVersion_SerializedObjectVersion_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializerVersion#SerializedObjectVersion*"></a>
   <h4 id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializerVersion_SerializedObjectVersion" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializerVersion#SerializedObjectVersion">IStreamSerializerVersion.SerializedObjectVersion</h4>
@@ -680,6 +714,37 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">int? IStreamSerializerVersion.SerializedObjectVersion { get; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializerVersion_SerializerVersion.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24%23StreamSerializerExtensions%23IStreamSerializerVersion%23SerializerVersion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L55">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializerVersion_SerializerVersion_" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializerVersion#SerializerVersion*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializerVersion_SerializerVersion" data-uid="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializerVersion#SerializerVersion">IStreamSerializerVersion.SerializerVersion</h4>
+  <div class="markdown level1 summary"><p>Serializer version (if <span class="xref">null</span>, the instance wasn't deserialized)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">int? IStreamSerializerVersion.SerializerVersion { get; }</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -712,6 +777,12 @@
   <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.IStreamSerializer.html">IStreamSerializer</a>
   </div>
+  <div>
+      <span class="xref">wan24.ObjectValidation.IObjectValidatable</span>
+  </div>
+  <div>
+      <span class="xref">System.ComponentModel.DataAnnotations.IValidatableObject</span>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetNumberType_System_Object_System_Boolean_">SerializerHelper.GetNumberType(Object, Boolean)</a>
@@ -739,7 +810,7 @@
                     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_DisposableStreamSerializerBase.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.DisposableStreamSerializerBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L8" class="contribution-link">View Source</a>
+                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/DisposableStreamSerializerBase.cs/#L10" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -1,12 +1,19 @@
-﻿using wan24.Core;
+﻿using System.ComponentModel.DataAnnotations;
+using wan24.Core;
+using wan24.ObjectValidation;
 
 namespace wan24.StreamSerializerExtensions
 {
     /// <summary>
     /// Base class for a disposable stream serializing type
     /// </summary>
-    public abstract class DisposableStreamSerializerBase : DisposableBase, IStreamSerializerVersion
+    public abstract class DisposableStreamSerializerBase : DisposableBase, IStreamSerializerVersion, IObjectValidatable
     {
+        /// <summary>
+        /// Base object version
+        /// </summary>
+        public const int BASE_VERSION = 1;
+
         /// <summary>
         /// Object version
         /// </summary>
@@ -15,6 +22,10 @@ namespace wan24.StreamSerializerExtensions
         /// Serialized object version
         /// </summary>
         private int? _SerializedObjectVersion = null;
+        /// <summary>
+        /// Serializer version
+        /// </summary>
+        private int? _SerializerVersion = null;
 
         /// <summary>
         /// Constructor
@@ -35,10 +46,13 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <inheritdoc/>
-        int? IStreamSerializerVersion.ObjectVersion => _ObjectVersion;
+        int? IStreamSerializerVersion.ObjectVersion => IfUndisposed(_ObjectVersion);
 
         /// <inheritdoc/>
-        int? IStreamSerializerVersion.SerializedObjectVersion => _SerializedObjectVersion;
+        int? IStreamSerializerVersion.SerializedObjectVersion => IfUndisposed(_SerializedObjectVersion);
+
+        /// <inheritdoc/>
+        int? IStreamSerializerVersion.SerializerVersion => IfUndisposed(_SerializerVersion);
 
         /// <summary>
         /// Serialize
@@ -63,6 +77,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         private void SerializeInt(Stream stream)
         {
+            stream.WriteSerializerVersion()
+                .WriteNumber(BASE_VERSION);
             if (_ObjectVersion != null) stream.WriteNumber(_ObjectVersion.Value);
             Serialize(stream);
         }
@@ -74,6 +90,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         private async Task SerializeIntAsync(Stream stream, CancellationToken cancellationToken)
         {
+            await stream.WriteSerializerVersionAsync().DynamicContext();
+            await stream.WriteNumberAsync(BASE_VERSION, cancellationToken).DynamicContext();
             if (_ObjectVersion != null) await stream.WriteNumberAsync(_ObjectVersion.Value, cancellationToken).DynamicContext();
             await SerializeAsync(stream, cancellationToken).DynamicContext();
         }
@@ -104,8 +122,11 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         private void DeserializeInt(Stream stream, int version)
         {
-            if (_ObjectVersion != null) _SerializedObjectVersion = StreamSerializerAdapter.ReadSerializedObjectVersion(stream, version, _ObjectVersion.Value);
-            Deserialize(stream, version);
+            _SerializerVersion = stream.ReadSerializerVersion();
+            int bv = stream.ReadNumber<int>(_SerializerVersion.Value);
+            if (bv < 1 || bv > BASE_VERSION) throw new SerializerException($"Invalid base object version {bv}", new InvalidDataException());
+            if (_ObjectVersion != null) _SerializedObjectVersion = StreamSerializerAdapter.ReadSerializedObjectVersion(stream, _SerializerVersion.Value, _ObjectVersion.Value);
+            Deserialize(stream, _SerializerVersion.Value);
         }
 
         /// <summary>
@@ -116,21 +137,28 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         private async Task DeserializeIntAsync(Stream stream, int version, CancellationToken cancellationToken)
         {
+            _SerializerVersion = await stream.ReadSerializerVersionAsync(cancellationToken).DynamicContext();
+            int bv = await stream.ReadNumberAsync<int>(_SerializerVersion.Value, cancellationToken: cancellationToken).DynamicContext();
+            if (bv < 1 || bv > BASE_VERSION) throw new SerializerException($"Invalid base object version {bv}", new InvalidDataException());
             if (_ObjectVersion != null)
-                _SerializedObjectVersion = await StreamSerializerAdapter.ReadSerializedObjectVersionAsync(stream, version, _ObjectVersion.Value, cancellationToken).DynamicContext();
-            await DeserializeAsync(stream, version, cancellationToken).DynamicContext();
+                _SerializedObjectVersion = await StreamSerializerAdapter.ReadSerializedObjectVersionAsync(stream, _SerializerVersion.Value, _ObjectVersion.Value, cancellationToken)
+                    .DynamicContext();
+            await DeserializeAsync(stream, _SerializerVersion.Value, cancellationToken).DynamicContext();
         }
 
         /// <inheritdoc/>
-        void IStreamSerializer.Serialize(Stream stream) => SerializeInt(stream);
+        void IStreamSerializer.Serialize(Stream stream) => IfUndisposed(() => SerializeInt(stream));
 
         /// <inheritdoc/>
-        Task IStreamSerializer.SerializeAsync(Stream stream, CancellationToken cancellationToken) => SerializeIntAsync(stream, cancellationToken);
+        Task IStreamSerializer.SerializeAsync(Stream stream, CancellationToken cancellationToken) => IfUndisposed(() => SerializeIntAsync(stream, cancellationToken));
 
         /// <inheritdoc/>
-        void IStreamSerializer.Deserialize(Stream stream, int version) => DeserializeInt(stream, version);
+        void IStreamSerializer.Deserialize(Stream stream, int version) => IfUndisposed(() => DeserializeInt(stream, version));
 
         /// <inheritdoc/>
-        Task IStreamSerializer.DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken) => DeserializeIntAsync(stream, version, cancellationToken);
+        Task IStreamSerializer.DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken) => IfUndisposed(() => DeserializeIntAsync(stream, version, cancellationToken));
+
+        /// <inheritdoc/>
+        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext) => IfUndisposed(() => ValidatableObject.ObjectValidatable(this));
     }
 }

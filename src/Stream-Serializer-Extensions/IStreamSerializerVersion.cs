@@ -13,5 +13,9 @@
         /// Serialized object version (if <see langword="null"/>, the object serializer doesn't support object versioning, or the instance wasn't deserialized)
         /// </summary>
         int? SerializedObjectVersion { get; }
+        /// <summary>
+        /// Serializer version (if <see langword="null"/>, the instance wasn't deserialized)
+        /// </summary>
+        int? SerializerVersion { get; }
     }
 }
