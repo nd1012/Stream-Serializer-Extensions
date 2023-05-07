@@ -15,6 +15,7 @@ The built in serializer supports binary serialization of
 - dictionaries
 - byte arrays
 - possibly any other objects with a parameterless public constructor
+- streams
 
 **NOTE**: Arrays, lists and dictionaries with nullable values aren't supported.
 
@@ -35,6 +36,7 @@ while serializing some types is being done with specialized methods:
 | `Dictionary<tKey, tValue>` | `WriteDict*` | `ReadDict*` |
 | `IStreamSerializer` | `WriteSerialized*` | `ReadSerialized*` |
 | `byte[]` | `WriteBytes*` | `ReadBytes*` |
+| `tream` | `WriteStream*` | `ReadStream*` |
 | (any other) | `WriteAnyObject*` | `ReadAnyObject*` |
 
 Using the `WriteObject*` and `ReadObject*` methods you can let the library 

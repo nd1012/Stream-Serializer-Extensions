@@ -2506,5 +2506,104 @@ namespace wan24.StreamSerializerExtensions
                 throw;
             }
         }
+
+        /// <summary>
+        /// Read a stream
+        /// </summary>
+        /// <typeparam name="T">Target stream type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="target">Target stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="pool">Array pool</param>
+        /// <param name="maxBufferSize">Maximum buffer size in bytes</param>
+        /// <returns>Target stream</returns>
+        public static T ReadStream<T>(this Stream stream, T target, int? version = null, ArrayPool<byte>? pool = null, int? maxBufferSize = null) where T : Stream
+        {
+            //TODO Test
+            if (maxBufferSize != null && maxBufferSize.Value < 1) throw new ArgumentOutOfRangeException(nameof(maxBufferSize));
+            long len = stream.ReadNumber<long>(version, pool);
+            if (len == 0) throw new SerializerException("Invalid stream/chunk length", new InvalidDataException());
+            if (len < 0)
+            {
+                len = Math.Abs(len);
+                if (len > int.MaxValue) throw new SerializerException("Invalid chunk length", new InvalidDataException());
+                if (len > (maxBufferSize ?? Settings.BufferSize))
+                    throw new SerializerException($"Chunk length of {len} bytes exceeds max. buffer size of {maxBufferSize ?? Settings.BufferSize}", new InvalidDataException());
+                using RentedArray<byte> buffer = new((int)len, pool);
+                for (int red = (int)len; red == len;)
+                {
+                    red = stream.ReadBytes(version, buffer.Array, maxLen: buffer.Length).Length;
+                    if (red < 1) break;
+                    target.Write(buffer.Span[..red]);
+                }
+            }
+            else
+            {
+                using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool);
+                long total = 0;
+                for (int red = buffer.Length; red == len && total < len; total += red)
+                {
+                    red = stream.ReadBytes(version, buffer.Array, maxLen: buffer.Length).Length;
+                    if (red < 1) break;
+                    target.Write(buffer.Span[..red]);
+                }
+                if (total != len) throw new SerializerException($"Invalid chunk length", new IOException());
+            }
+            return target;
+        }
+
+        /// <summary>
+        /// Read a stream
+        /// </summary>
+        /// <typeparam name="T">Target stream type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="target">Target stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="pool">Array pool</param>
+        /// <param name="maxBufferSize">Maximum buffer size in bytes</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Target stream</returns>
+        public static async Task<T> ReadStreamAsync<T>(
+            this Stream stream,
+            T target,
+            int? version = null,
+            ArrayPool<byte>? pool = null,
+            int? maxBufferSize = null,
+            CancellationToken cancellationToken = default
+            )
+            where T : Stream
+        {
+            //TODO Test
+            if (maxBufferSize != null && maxBufferSize.Value < 1) throw new ArgumentOutOfRangeException(nameof(maxBufferSize));
+            long len = await stream.ReadNumberAsync<long>(version, pool, cancellationToken).DynamicContext();
+            if (len == 0) throw new SerializerException("Invalid stream/chunk length", new InvalidDataException());
+            if (len < 0)
+            {
+                len = Math.Abs(len);
+                if (len > int.MaxValue) throw new SerializerException("Invalid chunk length", new InvalidDataException());
+                if (len > (maxBufferSize ?? Settings.BufferSize))
+                    throw new SerializerException($"Chunk length of {len} bytes exceeds max. buffer size of {maxBufferSize ?? Settings.BufferSize}", new InvalidDataException());
+                using RentedArray<byte> buffer = new((int)len, pool);
+                for (int red = (int)len; red == len;)
+                {
+                    red = (await stream.ReadBytesAsync(version, buffer.Array, maxLen: buffer.Length, cancellationToken: cancellationToken).DynamicContext()).Length;
+                    if (red < 1) break;
+                    await target.WriteAsync(buffer.Memory[..red], cancellationToken).DynamicContext();
+                }
+            }
+            else
+            {
+                using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool);
+                long total = 0;
+                for (int red = buffer.Length; red == len && total < len; total += red)
+                {
+                    red = (await stream.ReadBytesAsync(version, buffer.Array, maxLen: buffer.Length, cancellationToken: cancellationToken).DynamicContext()).Length;
+                    if (red < 1) break;
+                    await target.WriteAsync(buffer.Memory[..red], cancellationToken).DynamicContext();
+                }
+                if (total != len) throw new SerializerException($"Invalid chunk length", new IOException());
+            }
+            return target;
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Buffers;
 using System.Data;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using wan24.Core;
 
@@ -1903,6 +1904,80 @@ namespace wan24.StreamSerializerExtensions
         {
             await WriteAsync(stream, obj != null, cancellationToken).DynamicContext();
             if (obj != null) await WriteAnyObjectAsync(stream, obj, cancellationToken).DynamicContext();
+        }
+
+        /// <summary>
+        /// Write a stream
+        /// </summary>
+        /// <typeparam name="T">Stream type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="source">Source stream</param>
+        /// <param name="pool">Array pool</param>
+        /// <param name="chunkLength">Chunk length in bytes</param>
+        /// <returns>Stream</returns>
+        public static T WriteStream<T>(this T stream, Stream source, ArrayPool<byte>? pool = null, int? chunkLength = null) where T : Stream
+        {
+            //TODO Test
+            if (chunkLength != null && chunkLength.Value < 1) throw new ArgumentOutOfRangeException(nameof(chunkLength));
+            WriteNumber(stream, source.CanSeek ? source.Length : -1);
+            if (source.CanSeek)
+            {
+                source.CopyTo(stream);
+            }
+            else
+            {
+                using RentedArray<byte> buffer = new(len: chunkLength ?? Settings.BufferSize, pool);
+                for(int red = buffer.Length; red == buffer.Length;)
+                {
+                    red = stream.Read(buffer.Span);
+                    if (red < 1)
+                    {
+                        stream.WriteBytes(Array.Empty<byte>());
+                        break;
+                    }
+                    stream.WriteBytes(buffer.Span);
+                }
+            }
+            return stream;
+        }
+
+        /// <summary>
+        /// Write a stream
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="source">Source stream</param>
+        /// <param name="pool">Array pool</param>
+        /// <param name="chunkLength">Chunk length in bytes</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        public static async Task WriteStreamAsync(
+            this Stream stream, 
+            Stream source, 
+            ArrayPool<byte>? pool = null, 
+            int? chunkLength = null, 
+            CancellationToken cancellationToken = default
+            )
+        {
+            //TODO Test
+            if (chunkLength != null && chunkLength.Value < 1) throw new ArgumentOutOfRangeException(nameof(chunkLength));
+            await WriteNumberAsync(stream, source.CanSeek ? source.Length : 0 - (chunkLength ?? Settings.BufferSize), cancellationToken).DynamicContext();
+            if (source.CanSeek)
+            {
+                await source.CopyToAsync(stream, cancellationToken).DynamicContext();
+            }
+            else
+            {
+                using RentedArray<byte> buffer = new(len: chunkLength ?? Settings.BufferSize, pool);
+                for (int red = buffer.Length; red == buffer.Length;)
+                {
+                    red = await stream.ReadAsync(buffer.Memory, cancellationToken).DynamicContext();
+                    if (red < 1)
+                    {
+                        await stream.WriteBytesAsync(Array.Empty<byte>(), cancellationToken).DynamicContext();
+                        break;
+                    }
+                    await stream.WriteBytesAsync(buffer.Memory, cancellationToken).DynamicContext();
+                }
+            }
         }
     }
 }

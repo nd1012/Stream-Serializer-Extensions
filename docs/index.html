@@ -76,6 +76,7 @@ binary stream sequence.</p>
 <li>dictionaries</li>
 <li>byte arrays</li>
 <li>possibly any other objects with a parameterless public constructor</li>
+<li>streams</li>
 </ul>
 <p><strong>NOTE</strong>: Arrays, lists and dictionaries with nullable values aren't supported.</p>
 <p>It's possible to override the build in serializers, and to add custom type
@@ -126,6 +127,11 @@ while serializing some types is being done with specialized methods:</p>
 <td><code>byte[]</code></td>
 <td><code>WriteBytes*</code></td>
 <td><code>ReadBytes*</code></td>
+</tr>
+<tr>
+<td><code>tream</code></td>
+<td><code>WriteStream*</code></td>
+<td><code>ReadStream*</code></td>
 </tr>
 <tr>
 <td>(any other)</td>
