@@ -137,7 +137,7 @@ namespace wan24.StreamSerializerExtensions
         public static tStream WriteObject<tStream, tObj>(this tStream stream, tObj obj) where tStream : Stream
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
-            if (typeof(IStreamSerializer).IsAssignableFrom(obj.GetType())) return WriteSerialized(stream, (IStreamSerializer)obj);
+            if (obj is IStreamSerializer streamSerializer) return WriteSerialized(stream, streamSerializer);
             if (StreamSerializer.FindSerializer(obj.GetType()) is not StreamSerializer.Serialize_Delegate serializer)
             {
                 WriteAnyObjectMethod.MakeGenericMethod(typeof(tStream), typeof(tObj)).InvokeAuto(obj: null, stream, obj);
@@ -168,9 +168,9 @@ namespace wan24.StreamSerializerExtensions
         public static async Task WriteObjectAsync<T>(this Stream stream, T obj, CancellationToken cancellationToken = default)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
-            if (typeof(IStreamSerializer).IsAssignableFrom(obj.GetType()))
+            if (obj is IStreamSerializer streamSerializer)
             {
-                await WriteSerializedAsync(stream, (IStreamSerializer)obj, cancellationToken).DynamicContext();
+                await WriteSerializedAsync(stream, streamSerializer, cancellationToken).DynamicContext();
                 return;
             }
             if (StreamSerializer.FindAsyncSerializer(obj.GetType()) is not StreamSerializer.AsyncSerialize_Delegate serializer)

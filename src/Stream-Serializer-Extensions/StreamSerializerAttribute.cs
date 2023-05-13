@@ -69,11 +69,11 @@ namespace wan24.StreamSerializerExtensions
         /// Determine if the property value is included in a specific object version
         /// </summary>
         /// <param name="mode">Type serializer mode mode</param>
-        /// <param name="version">Object version</param>
+        /// <param name="version">Object version (<c>0</c> to skip object version compliance checking)</param>
         /// <returns>Value is included?</returns>
         public virtual bool IsIncluded(StreamSerializerModes mode, int version)
         {
-            if (FromVersion == null && Version == null)
+            if (version == 0 || (FromVersion == null && Version == null))
             {
                 switch (mode)
                 {
@@ -108,46 +108,42 @@ namespace wan24.StreamSerializerExtensions
             return attr?.Version is int version
                 ? mode switch
                 {
-                    StreamSerializerModes.OptIn => (from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                    StreamSerializerModes.OptIn => from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                                                   where (pi.GetMethod?.IsPublic ?? false) &&
+                                                    (pi.SetMethod?.IsPublic ?? false) &&
+                                                    (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) != null &&
+                                                    objAttr.IsIncluded(mode, version)
+                                                   orderby pi.GetCustomAttribute<StreamSerializerAttribute>()!.Position, pi.Name
+                                                   select pi,
+                    StreamSerializerModes.OptOut => from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                                                     where (pi.GetMethod?.IsPublic ?? false) &&
                                                      (pi.SetMethod?.IsPublic ?? false) &&
-                                                     (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) != null &&
-                                                     objAttr.IsIncluded(mode, version)
-                                                    select pi)
-                                                .OrderBy(pi => pi.GetCustomAttribute<StreamSerializerAttribute>()!.Position)
-                                                .ThenBy(pi => pi.Name),
-                    StreamSerializerModes.OptOut => (from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                                     where (pi.GetMethod?.IsPublic ?? false) &&
-                                                      (pi.SetMethod?.IsPublic ?? false) &&
-                                                      (
-                                                          (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) == null ||
-                                                          objAttr.IsIncluded(mode, version)
-                                                      )
-                                                     select pi)
-                                                .OrderBy(pi => pi.GetCustomAttribute<StreamSerializerAttribute>()?.Position)
-                                                .ThenBy(pi => pi.Name),
+                                                     (
+                                                         (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) == null ||
+                                                         objAttr.IsIncluded(mode, version)
+                                                     )
+                                                    orderby pi.GetCustomAttribute<StreamSerializerAttribute>()?.Position, pi.Name
+                                                    select pi,
                     _ => throw new InvalidProgramException($"Type serializer mode can't be {StreamSerializerModes.Auto}")
                 }
                 : mode switch
                 {
-                    StreamSerializerModes.OptIn => (from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                    StreamSerializerModes.OptIn => from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                                                   where (pi.GetMethod?.IsPublic ?? false) &&
+                                                    (pi.SetMethod?.IsPublic ?? false) &&
+                                                    (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) != null &&
+                                                    objAttr.Mode != StreamSerializerModes.OptOut
+                                                   orderby pi.GetCustomAttribute<StreamSerializerAttribute>()!.Position, pi.Name
+                                                   select pi,
+                    StreamSerializerModes.OptOut => from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                                                     where (pi.GetMethod?.IsPublic ?? false) &&
                                                      (pi.SetMethod?.IsPublic ?? false) &&
-                                                     (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) != null &&
-                                                     objAttr.Mode != StreamSerializerModes.OptOut
-                                                    select pi)
-                                                .OrderBy(pi => pi.GetCustomAttribute<StreamSerializerAttribute>()!.Position)
-                                                .ThenBy(pi => pi.Name),
-                    StreamSerializerModes.OptOut => (from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                                     where (pi.GetMethod?.IsPublic ?? false) &&
-                                                      (pi.SetMethod?.IsPublic ?? false) &&
-                                                      (
-                                                          (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) == null ||
-                                                          objAttr.Mode == StreamSerializerModes.OptIn
-                                                      )
-                                                     select pi)
-                                                .OrderBy(pi => pi.GetCustomAttribute<StreamSerializerAttribute>()?.Position)
-                                                .ThenBy(pi => pi.Name),
+                                                     (
+                                                         (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) == null ||
+                                                         objAttr.Mode == StreamSerializerModes.OptIn
+                                                     )
+                                                    orderby pi.GetCustomAttribute<StreamSerializerAttribute>()!.Position, pi.Name
+                                                    select pi,
                     _ => throw new InvalidProgramException($"Type serializer mode can't be {StreamSerializerModes.Auto}")
                 };
         }
@@ -166,46 +162,42 @@ namespace wan24.StreamSerializerExtensions
             return version != null
                 ? mode switch
                 {
-                    StreamSerializerModes.OptIn => (from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                    StreamSerializerModes.OptIn => from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                                                   where (pi.GetMethod?.IsPublic ?? false) &&
+                                                    (pi.SetMethod?.IsPublic ?? false) &&
+                                                    (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) != null &&
+                                                    objAttr.IsIncluded(mode, version.Value)
+                                                   orderby pi.GetCustomAttribute<StreamSerializerAttribute>()?.Position ?? 0, pi.Name
+                                                   select pi,
+                    StreamSerializerModes.OptOut => from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                                                     where (pi.GetMethod?.IsPublic ?? false) &&
                                                      (pi.SetMethod?.IsPublic ?? false) &&
-                                                     (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) != null &&
-                                                     objAttr.IsIncluded(mode, version.Value)
-                                                    select pi)
-                                                .OrderBy(pi => pi.GetCustomAttribute<StreamSerializerAttribute>()!.Position)
-                                                .ThenBy(pi => pi.Name),
-                    StreamSerializerModes.OptOut => (from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                                     where (pi.GetMethod?.IsPublic ?? false) &&
-                                                      (pi.SetMethod?.IsPublic ?? false) &&
-                                                      (
-                                                          (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) == null ||
-                                                          objAttr.IsIncluded(mode, version.Value)
-                                                      )
-                                                     select pi)
-                                                .OrderBy(pi => pi.GetCustomAttribute<StreamSerializerAttribute>()?.Position)
-                                                .ThenBy(pi => pi.Name),
+                                                     (
+                                                         (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) == null ||
+                                                         objAttr.IsIncluded(mode, version.Value)
+                                                     )
+                                                    orderby pi.GetCustomAttribute<StreamSerializerAttribute>()?.Position ?? 0, pi.Name
+                                                    select pi,
                     _ => throw new InvalidProgramException($"Type serializer mode can't be {StreamSerializerModes.Auto}")
                 }
                 : mode switch
                 {
-                    StreamSerializerModes.OptIn => (from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                    StreamSerializerModes.OptIn => from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                                                   where (pi.GetMethod?.IsPublic ?? false) &&
+                                                    (pi.SetMethod?.IsPublic ?? false) &&
+                                                    (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) != null &&
+                                                    objAttr.Mode != StreamSerializerModes.OptOut
+                                                   orderby pi.GetCustomAttribute<StreamSerializerAttribute>()?.Position ?? 0, pi.Name
+                                                   select pi,
+                    StreamSerializerModes.OptOut => from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                                                     where (pi.GetMethod?.IsPublic ?? false) &&
                                                      (pi.SetMethod?.IsPublic ?? false) &&
-                                                     (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) != null &&
-                                                     objAttr.Mode != StreamSerializerModes.OptOut
-                                                    select pi)
-                                                .OrderBy(pi => pi.GetCustomAttribute<StreamSerializerAttribute>()!.Position)
-                                                .ThenBy(pi => pi.Name),
-                    StreamSerializerModes.OptOut => (from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                                     where (pi.GetMethod?.IsPublic ?? false) &&
-                                                      (pi.SetMethod?.IsPublic ?? false) &&
-                                                      (
-                                                          (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) == null ||
-                                                          objAttr.Mode == StreamSerializerModes.OptIn
-                                                      )
-                                                     select pi)
-                                                .OrderBy(pi => pi.GetCustomAttribute<StreamSerializerAttribute>()?.Position)
-                                                .ThenBy(pi => pi.Name),
+                                                     (
+                                                         (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) == null ||
+                                                         objAttr.Mode == StreamSerializerModes.OptIn
+                                                     )
+                                                    orderby pi.GetCustomAttribute<StreamSerializerAttribute>()?.Position ?? 0, pi.Name
+                                                    select pi,
                     _ => throw new InvalidProgramException($"Type serializer mode can't be {StreamSerializerModes.Auto}")
                 };
         }
