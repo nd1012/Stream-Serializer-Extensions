@@ -78,6 +78,12 @@ used numeric type in an extra byte).
 
 **NOTE**: All numbers will be serialized using little endian.
 
+## Embedded streams
+
+Using `WriteStream*` and `ReadStream*` you can embed a stream in serialized 
+data. Seekable streams will just be copied, having their length as header, 
+while non-seekable streams will be embedded chunked.
+
 ## Custom serializer
 
 ### Using the `StreamSerializerAttribute` attribute
