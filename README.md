@@ -131,6 +131,20 @@ To exclude a property depending on the object version:
 - `FromVersion`: First object version which includes the property (optional)
 - `Version`: Last object version which includes the property (optional)
 
+### Automatic serializable objects
+
+You can extend from the `(Disposable)AutoStreamSerializerBase` type, if you 
+fully implement serialization using the `StreamSerializerAttribute` for the 
+final type and its properties, and match these pre-requirements:
+
+1. The `StreamSerializerAttribute` of the final type requires an object 
+version number in the `Version` property
+2. The stream serializer mode can't be `Auto`
+
+The auto stream serializer fully relies on a correct use of the 
+`StreamSerializerAttribute` and object versioning. The stream serializer mode 
+`OptIn` might be the most simple choice.
+
 ### Extending the `StreamSerializer`
 
 ```cs
