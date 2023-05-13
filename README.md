@@ -401,7 +401,3 @@ encryption and hashing on the result as you want.
 
 Object validation will be applied to deserialized objects to ensure their 
 validity.
-
-## Roadmap
-
-- [ ] Enumerate objects from a stream
