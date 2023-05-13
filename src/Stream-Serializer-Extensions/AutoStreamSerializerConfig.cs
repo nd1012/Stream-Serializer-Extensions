@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using wan24.Core;
 
+//TODO Test
+
 namespace wan24.StreamSerializerExtensions
 {
     /// <summary>
