@@ -1,4 +1,5 @@
-﻿using wan24.StreamSerializerExtensions;
+﻿using System.Security.Cryptography;
+using wan24.StreamSerializerExtensions;
 
 namespace Stream_Serializer_Extensions_Tests
 {
@@ -11,7 +12,7 @@ namespace Stream_Serializer_Extensions_Tests
         {
             StreamSerializer.SyncSerializer[typeof(TestObject)] = (s, v) => s.Write(((TestObject)v!).Value);
             StreamSerializer.AsyncSerializer[typeof(TestObject)] = (s, v, ct) => s.WriteAsync(((TestObject)v!).Value, ct);
-            StreamSerializer.SyncDeserializer[typeof(TestObject)] = (s, t, v) => new TestObject() { Value = s.ReadBool() };
+            StreamSerializer.SyncDeserializer[typeof(TestObject)] = (s, t, v, o) => new TestObject() { Value = s.ReadBool() };
             StreamSerializer.AsyncDeserializer[typeof(TestObject)] = DeserializeTestObject;
             Types = new()
             {
@@ -24,12 +25,21 @@ namespace Stream_Serializer_Extensions_Tests
                 if (e.Type == null && Types.ContainsKey(e.Name)) e.Type = Types[e.Name];
             };
         }
-        private static async Task<TestObject> DeserializeTestObject(Stream stream, Type type, int version, CancellationToken cancellationToken)
+        private static async Task<TestObject> DeserializeTestObject(Stream stream, Type type, int version, ISerializerOptions? options, CancellationToken cancellationToken)
             => new TestObject() { Value = await stream.ReadBoolAsync(version, cancellationToken: cancellationToken) };
 
         [TestMethod]
         public void Serializer_Test()
         {
+            using MemoryStream stream = new();
+            stream.Write(RandomNumberGenerator.GetBytes(200000));
+            stream.Position = 0;
+            using TestObject5 test5 = new()
+            {
+                AValue = true,
+                Stream = stream,
+                ZValue = true
+            };
             using var ms = new MemoryStream();
             ms.Write(true)
                 .Write((sbyte)0)
@@ -159,7 +169,8 @@ namespace Stream_Serializer_Extensions_Tests
                 .WriteAnyObject(new TestObject4() { Field1 = true, Field2 = true, Field3 = true })
                 .WriteAnyObject(new TestObject4a() { Field1 = true, Field2 = true, Field3 = true })
                 .WriteAnyObject(new TestObject4b() { Field1 = true, Field2 = true, Field3 = true })
-                .WriteAnyObjectNullable((TestObject3?)null);
+                .WriteAnyObjectNullable((TestObject3?)null)
+                .WriteSerialized(test5);
             ms.Position = 0;
             Assert.IsTrue(ms.ReadBool());
             Assert.AreEqual((sbyte)0, ms.ReadOneSByte());
@@ -316,13 +327,36 @@ namespace Stream_Serializer_Extensions_Tests
                 Assert.IsFalse(temp.Field3);
             }
             Assert.IsNull(ms.ReadAnyObjectNullable<TestObject3>());
-            Assert.AreEqual(ms.Length, ms.Position);
             new TestObject2().ToBytes().ToObject<TestObject2>();
+            {
+                Assert.AreEqual(stream.Length, stream.Position);
+                using TestObject5 test5_2 = ms.ReadSerialized<TestObject5>();
+                using Stream? stream2 = test5_2.Stream;
+                Assert.IsTrue(test5_2.AValue);
+                Assert.IsNotNull(stream2);
+                Assert.IsTrue(stream2 is FileStream);
+                Assert.IsTrue(test5_2.ZValue);
+                Assert.AreEqual(stream.Length, stream2.Length);
+                byte[] buffer = new byte[stream.Length];
+                stream2.Position = 0;
+                Assert.AreEqual(buffer.Length, stream2.Read(buffer));
+                Assert.IsTrue(stream.ToArray().SequenceEqual(buffer));
+            }
+            Assert.AreEqual(ms.Length, ms.Position);
         }
 
         [TestMethod]
         public async Task Serializer_TestAsync()
         {
+            using MemoryStream stream = new();
+            stream.Write(RandomNumberGenerator.GetBytes(200000));
+            stream.Position = 0;
+            using TestObject5 test5 = new()
+            {
+                AValue = true,
+                Stream = stream,
+                ZValue = true
+            };
             using var ms = new MemoryStream();
             await ms.WriteAsync(true);
             await ms.WriteAsync((sbyte)0);
@@ -453,6 +487,7 @@ namespace Stream_Serializer_Extensions_Tests
             await ms.WriteAnyObjectAsync(new TestObject4a() { Field1 = true, Field2 = true, Field3 = true });
             await ms.WriteAnyObjectAsync(new TestObject4b() { Field1 = true, Field2 = true, Field3 = true });
             await ms.WriteAnyObjectNullableAsync((TestObject3?)null);
+            await ms.WriteSerializedAsync(test5);
             ms.Position = 0;
             Assert.IsTrue(await ms.ReadBoolAsync());
             Assert.AreEqual((sbyte)0, await ms.ReadOneSByteAsync());
@@ -609,6 +644,20 @@ namespace Stream_Serializer_Extensions_Tests
                 Assert.IsFalse(temp.Field3);
             }
             Assert.IsNull(ms.ReadAnyObjectNullable<TestObject3>());
+            {
+                Assert.AreEqual(stream.Length, stream.Position);
+                using TestObject5 test5_2 = ms.ReadSerialized<TestObject5>();
+                using Stream? stream2 = test5_2.Stream;
+                Assert.IsTrue(test5_2.AValue);
+                Assert.IsNotNull(stream2);
+                Assert.IsTrue(stream2 is FileStream);
+                Assert.IsTrue(test5_2.ZValue);
+                Assert.AreEqual(stream.Length, stream2.Length);
+                byte[] buffer = new byte[stream.Length];
+                stream2.Position = 0;
+                Assert.AreEqual(buffer.Length, await stream2.ReadAsync(buffer));
+                Assert.IsTrue(stream.ToArray().SequenceEqual(buffer));
+            }
             Assert.AreEqual(ms.Length, ms.Position);
         }
     }

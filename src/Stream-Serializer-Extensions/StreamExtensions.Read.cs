@@ -19,6 +19,14 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         public static readonly MethodInfo ReadObjectAsyncMethod;
         /// <summary>
+        /// Read object method
+        /// </summary>
+        public static readonly MethodInfo ReadObjectNullableMethod;
+        /// <summary>
+        /// Read object method
+        /// </summary>
+        public static readonly MethodInfo ReadObjectNullableAsyncMethod;
+        /// <summary>
         /// Read any method
         /// </summary>
         public static readonly MethodInfo ReadAnyMethod;
@@ -123,14 +131,15 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
+        /// <param name="options">Options</param>
         /// <returns>Value</returns>
-        public static T ReadObject<T>(this Stream stream, int? version = null)
+        public static T ReadObject<T>(this Stream stream, int? version = null, ISerializerOptions? options = null)
         {
             if (typeof(IStreamSerializer).IsAssignableFrom(typeof(T))) return (T)ReadSerializedObject(stream, typeof(T), version);
             StreamSerializer.Deserialize_Delegate deserializer = StreamSerializer.FindDeserializer(typeof(T)) ?? throw new SerializerException("No deserializer found");
             try
             {
-                return (T)(deserializer(stream, typeof(T), version ?? StreamSerializer.Version) ?? throw new SerializerException($"{typeof(T)} deserialized to NULL"));
+                return (T)(deserializer(stream, typeof(T), version ?? StreamSerializer.Version, options) ?? throw new SerializerException($"{typeof(T)} deserialized to NULL"));
             }
             catch (SerializerException)
             {
@@ -148,20 +157,21 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
+        /// <param name="options">Options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-        public static async Task<T> ReadObjectAsync<T>(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
+        public static async Task<T> ReadObjectAsync<T>(this Stream stream, int? version = null, ISerializerOptions? options = null, CancellationToken cancellationToken = default)
         {
             if (typeof(IStreamSerializer).IsAssignableFrom(typeof(T)))
                 return (T)await ReadSerializedObjectAsync(stream, typeof(T), version, cancellationToken).DynamicContext();
             if (StreamSerializer.FindAsyncDeserializer(typeof(T)) is not StreamSerializer.AsyncDeserialize_Delegate deserializer)
             {
                 await Task.Yield();
-                return ReadObject<T>(stream, version);
+                return ReadObject<T>(stream, version, options);
             }
             try
             {
-                Task task = deserializer(stream, typeof(T), version ?? StreamSerializer.Version, cancellationToken);
+                Task task = deserializer(stream, typeof(T), version ?? StreamSerializer.Version, options, cancellationToken);
                 await task.DynamicContext();
                 return task.GetResultNullable<T>() ?? throw new SerializerException($"{typeof(T)} deserialized to NULL");
             }
@@ -181,10 +191,11 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
+        /// <param name="options">Options</param>
         /// <returns>Value</returns>
-        public static T? ReadObjectNullable<T>(this Stream stream, int? version = null)
+        public static T? ReadObjectNullable<T>(this Stream stream, int? version = null, ISerializerOptions? options = null)
 #pragma warning disable IDE0034 // default expression can be simplified
-            => ReadBool(stream, version) ? ReadObject<T>(stream, version) : default(T?);
+            => ReadBool(stream, version) ? ReadObject<T>(stream, version, options) : default(T?);
 #pragma warning restore IDE0034 // default expression can be simplified
 
         /// <summary>
@@ -193,11 +204,12 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
+        /// <param name="options">Options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-        public static async Task<T?> ReadObjectNullableAsync<T>(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
+        public static async Task<T?> ReadObjectNullableAsync<T>(this Stream stream, int? version = null, ISerializerOptions? options = null, CancellationToken cancellationToken = default)
             => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
-                ? await ReadObjectAsync<T>(stream, version, cancellationToken).DynamicContext()
+                ? await ReadObjectAsync<T>(stream, version, options, cancellationToken).DynamicContext()
 #pragma warning disable IDE0034 // default expression can be simplified
                 : default(T?);
 #pragma warning restore IDE0034 // default expression can be simplified
@@ -207,8 +219,9 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
+        /// <param name="options">Options</param>
         /// <returns>Object</returns>
-        public static object ReadAny(this Stream stream, int? version = null)
+        public static object ReadAny(this Stream stream, int? version = null, ISerializerOptions? options = null)
         {
             try
             {
@@ -222,7 +235,7 @@ namespace wan24.StreamSerializerExtensions
                 {
                     ArrayPool<byte>.Shared.Return(data);
                 }
-                return ReadAnyInt(stream, version, objType);
+                return ReadAnyInt(stream, version, objType, options);
             }
             catch (SerializerException)
             {
@@ -240,12 +253,14 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <param name="objType">Object type</param>
+        /// <param name="options">Options</param>
         /// <returns>Object</returns>
-        private static object ReadAnyInt(Stream stream, int? version, ObjectTypes objType)
+        private static object ReadAnyInt(Stream stream, int? version, ObjectTypes objType, ISerializerOptions? options)
         {
             if (objType == ObjectTypes.Null) throw new SerializerException("NULL object type is not supported by this method");
             bool isEmpty = objType.HasFlag(ObjectTypes.Empty),
-                isUnsigned = objType.HasFlag(ObjectTypes.Unsigned);
+                isUnsigned = objType.HasFlag(ObjectTypes.Unsigned),
+                readType = true;
             Type? type = null;
             switch (objType.RemoveFlags())
             {
@@ -271,11 +286,28 @@ namespace wan24.StreamSerializerExtensions
                     };
                     break;
                 case ObjectTypes.String:
-                    return isEmpty ? string.Empty : ReadString(stream, version);
+                    return isEmpty 
+                        ? string.Empty 
+                        : ReadString(
+                            stream, 
+                            version,
+                            minLen: options?.GetMinLen(0) ?? 0,
+                            maxLen: options?.GetMaxLen(int.MaxValue) ?? int.MaxValue
+                            );
                 case ObjectTypes.Bytes:
-                    return isEmpty ? Array.Empty<byte>() : ReadBytes(stream, version).Value;
+                    return isEmpty 
+                        ? Array.Empty<byte>() 
+                        : ReadBytes(
+                            stream, 
+                            version,
+                            minLen: options?.GetMinLen(0) ?? 0,
+                            maxLen: options?.GetMaxLen(int.MaxValue) ?? int.MaxValue
+                            ).Value;
+                case ObjectTypes.Stream:
+                    readType = false;
+                    break;
             }
-            type ??= StreamSerializer.LoadType(ReadString(stream, version, minLen: 1, maxLen: short.MaxValue));
+            if (readType) type ??= StreamSerializer.LoadType(ReadString(stream, version, minLen: 1, maxLen: short.MaxValue));
             switch (objType.RemoveFlags())
             {
                 case ObjectTypes.Byte:
@@ -285,21 +317,68 @@ namespace wan24.StreamSerializerExtensions
                 case ObjectTypes.Float:
                 case ObjectTypes.Double:
                 case ObjectTypes.Decimal:
-                    return isEmpty ? Activator.CreateInstance(type)! : ReadNumberMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version)!;
+                    return isEmpty ? Activator.CreateInstance(type!)! : ReadNumberMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version)!;
                 case ObjectTypes.Array:
-                    if (isEmpty) return ArrayEmptyMethod.MakeGenericMethod(type.GetElementType()!).InvokeAuto(obj: null)!;
-                    return ReadArrayMethod.MakeGenericMethod(type.GetElementType()!).InvokeAuto(obj: null, stream, version)!;
+                    if (isEmpty) return ArrayEmptyMethod.MakeGenericMethod(type!.GetElementType()!).InvokeAuto(obj: null)!;
+                    return ReadArrayMethod.MakeGenericMethod(type!.GetElementType()!)
+                        .InvokeAuto(
+                            obj: null, 
+                            stream, 
+                            version,
+                            null,
+                            options?.GetMinLen(0) ?? 0,
+                            options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, default)
+                            )!;
                 case ObjectTypes.List:
-                    if (isEmpty) return Activator.CreateInstance(type)!;
-                    return ReadListMethod.MakeGenericMethod(type.GetGenericArguments()[0]).InvokeAuto(obj: null, stream, version)!;
+                    if (isEmpty) return Activator.CreateInstance(type!)!;
+                    return ReadListMethod.MakeGenericMethod(type!.GetGenericArguments()[0])
+                        .InvokeAuto(
+                            obj: null, 
+                            stream, 
+                            version, 
+                            null,
+                            options?.GetMinLen(0) ?? 0,
+                            options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, default)
+                            )!;
                 case ObjectTypes.Dict:
-                    if (isEmpty) return Activator.CreateInstance(type)!;
-                    Type[] genericArgs = type.GetGenericArguments();
-                    return ReadDictMethod.MakeGenericMethod(genericArgs[0], genericArgs[1]).InvokeAuto(obj: null, stream, version)!;
+                    if (isEmpty) return Activator.CreateInstance(type!)!;
+                    Type[] genericArgs = type!.GetGenericArguments();
+                    return ReadDictMethod.MakeGenericMethod(genericArgs[0], genericArgs[1])
+                        .InvokeAuto(
+                            obj: null, 
+                            stream, 
+                            version,
+                            null,
+                            options?.GetMinLen(0) ?? 0,
+                            options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
+                            options?.Attribute.GetKeySerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, default),
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, default)
+                            )!;
                 case ObjectTypes.Object:
-                    return ReadObjectMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version)!;
+                    return ReadObjectMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version, options)!;
                 case ObjectTypes.Serializable:
-                    return ReadSerializedObject(stream, type, version);
+                    return ReadSerializedObject(stream, type!, version);
+                case ObjectTypes.Stream:
+                    Stream res = options?.Attribute.GetStream(obj: null, property: null, stream, version ?? StreamSerializer.VERSION, default) ?? new FileStream(
+                        Path.GetTempFileName(),//TODO Use wan24-Core Settings.TempFolder
+                        FileMode.OpenOrCreate,
+                        FileAccess.ReadWrite,
+                        FileShare.None,
+                        bufferSize: Settings.BufferSize,
+                        FileOptions.RandomAccess | FileOptions.DeleteOnClose
+                        );
+                    if (objType.IsEmpty()) return res;
+                    try
+                    {
+                        return ReadStream(stream, res, version, minLen: options?.GetMinLen(0L) ?? 0, maxLen: options?.GetMaxLen(long.MaxValue) ?? long.MaxValue);
+                    }
+                    catch
+                    {
+                        res.Dispose();
+                        throw;
+                    }
                 default:
                     throw new InvalidProgramException();
             }
@@ -310,9 +389,10 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
+        /// <param name="options">Options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Object</returns>
-        public static async Task<object> ReadAnyAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
+        public static async Task<object> ReadAnyAsync(this Stream stream, int? version = null, ISerializerOptions? options = null, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -326,7 +406,7 @@ namespace wan24.StreamSerializerExtensions
                 {
                     ArrayPool<byte>.Shared.Return(data);
                 }
-                return await ReadAnyIntAsync(stream, version, objType, cancellationToken).DynamicContext();
+                return await ReadAnyIntAsync(stream, version, objType, options, cancellationToken).DynamicContext();
             }
             catch (SerializerException)
             {
@@ -344,13 +424,15 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <param name="objType">Object type</param>
+        /// <param name="options">Options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Object</returns>
-        private static async Task<object> ReadAnyIntAsync(Stream stream, int? version, ObjectTypes objType, CancellationToken cancellationToken)
+        private static async Task<object> ReadAnyIntAsync(Stream stream, int? version, ObjectTypes objType, ISerializerOptions? options, CancellationToken cancellationToken)
         {
             if (objType == ObjectTypes.Null) throw new SerializerException("NULL object type is not supported by this method");
             bool isEmpty = objType.HasFlag(ObjectTypes.Empty),
-                isUnsigned = objType.HasFlag(ObjectTypes.Unsigned);
+                isUnsigned = objType.HasFlag(ObjectTypes.Unsigned),
+                readType = true;
             Type? type = null;
             Task task;
             switch (objType.RemoveFlags())
@@ -377,11 +459,30 @@ namespace wan24.StreamSerializerExtensions
                     };
                     break;
                 case ObjectTypes.String:
-                    return isEmpty ? string.Empty : await ReadStringAsync(stream, version, cancellationToken: cancellationToken).DynamicContext();
+                    return isEmpty 
+                        ? string.Empty 
+                        : await ReadStringAsync(
+                            stream, 
+                            version, 
+                            minLen: options?.GetMinLen(0) ?? 0, 
+                            maxLen: options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, 
+                            cancellationToken: cancellationToken
+                            ).DynamicContext();
                 case ObjectTypes.Bytes:
-                    return isEmpty ? Array.Empty<byte>() : (await ReadBytesAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()).Value;
+                    return isEmpty 
+                        ? Array.Empty<byte>() 
+                        : (await ReadBytesAsync(
+                            stream, 
+                            version,
+                            minLen: options?.GetMinLen(0) ?? 0,
+                            maxLen: options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
+                            cancellationToken: cancellationToken
+                            ).DynamicContext()).Value;
+                case ObjectTypes.Stream:
+                    readType = false;
+                    break;
             }
-            type ??= StreamSerializer.LoadType(await ReadStringAsync(stream, version, pool: null, minLen: 1, maxLen: short.MaxValue, cancellationToken).DynamicContext());
+            if (readType) type ??= StreamSerializer.LoadType(await ReadStringAsync(stream, version, pool: null, minLen: 1, maxLen: short.MaxValue, cancellationToken).DynamicContext());
             switch (objType.RemoveFlags())
             {
                 case ObjectTypes.Byte:
@@ -391,32 +492,88 @@ namespace wan24.StreamSerializerExtensions
                 case ObjectTypes.Float:
                 case ObjectTypes.Double:
                 case ObjectTypes.Decimal:
-                    if (isEmpty) return Activator.CreateInstance(type)!;
-                    task = (Task)ReadNumberAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version, null, cancellationToken)!;
+                    if (isEmpty) return Activator.CreateInstance(type!)!;
+                    task = (Task)ReadNumberAsyncMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version, null, cancellationToken)!;
                     break;
                 case ObjectTypes.Array:
-                    if (isEmpty) return ArrayEmptyMethod.MakeGenericMethod(type.GetElementType()!).InvokeAuto(obj: null)!;
-                    task = (Task)ReadArrayAsyncMethod.MakeGenericMethod(type.GetElementType()!).InvokeAuto(obj: null, stream, version, null, 0, int.MaxValue, cancellationToken)!;
+                    if (isEmpty) return ArrayEmptyMethod.MakeGenericMethod(type!.GetElementType()!).InvokeAuto(obj: null)!;
+                    task = (Task)ReadArrayAsyncMethod.MakeGenericMethod(type!.GetElementType()!)
+                        .InvokeAuto(
+                            obj: null, 
+                            stream, 
+                            version, 
+                            null, 
+                            options?.GetMinLen(0) ?? 0, 
+                            options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, 
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, cancellationToken), 
+                            cancellationToken
+                            )!;
                     break;
                 case ObjectTypes.List:
-                    if (isEmpty) return Activator.CreateInstance(type)!;
-                    task = (Task)ReadListAsyncMethod.MakeGenericMethod(type.GetGenericArguments()[0]).InvokeAuto(obj: null, stream, version, null, 0, int.MaxValue, cancellationToken)!;
+                    if (isEmpty) return Activator.CreateInstance(type!)!;
+                    task = (Task)ReadListAsyncMethod.MakeGenericMethod(type!.GetGenericArguments()[0])
+                        .InvokeAuto(
+                            obj: null, 
+                            stream, 
+                            version, 
+                            null, 
+                            options?.GetMinLen(0) ?? 0, 
+                            options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, cancellationToken), 
+                            cancellationToken
+                            )!;
                     break;
                 case ObjectTypes.Dict:
-                    if (isEmpty) return Activator.CreateInstance(type)!;
-                    Type[] genericArgs = type.GetGenericArguments();
-                    task = (Task)ReadDictAsyncMethod.MakeGenericMethod(genericArgs[0], genericArgs[1]).InvokeAuto(obj: null, stream, version, null, 0, int.MaxValue, cancellationToken)!;
+                    if (isEmpty) return Activator.CreateInstance(type!)!;
+                    Type[] genericArgs = type!.GetGenericArguments();
+                    task = (Task)ReadDictAsyncMethod.MakeGenericMethod(genericArgs[0], genericArgs[1])
+                        .InvokeAuto(
+                            obj: null, 
+                            stream, 
+                            version, 
+                            null, 
+                            options?.GetMinLen(0) ?? 0, 
+                            options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
+                            options?.Attribute.GetKeySerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, cancellationToken),
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, cancellationToken), 
+                            cancellationToken)!;
                     break;
                 case ObjectTypes.Object:
-                    task = (Task)ReadObjectAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version, cancellationToken)!;
+                    task = (Task)ReadObjectAsyncMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version, options, cancellationToken)!;
                     break;
                 case ObjectTypes.Serializable:
-                    return await ReadSerializedObjectAsync(stream, type, version, cancellationToken)!.DynamicContext();
+                    return await ReadSerializedObjectAsync(stream, type!, version, cancellationToken)!.DynamicContext();
+                case ObjectTypes.Stream:
+                    Stream res = options?.Attribute.GetStream(obj: null, property: null, stream, version ?? StreamSerializer.VERSION, default) ?? new FileStream(
+                        Path.GetTempFileName(),//TODO Use wan24-Core Settings.TempFolder
+                        FileMode.OpenOrCreate,
+                        FileAccess.ReadWrite,
+                        FileShare.None,
+                        bufferSize: Settings.BufferSize,
+                        FileOptions.RandomAccess | FileOptions.DeleteOnClose
+                        );
+                    if (objType.IsEmpty()) return res;
+                    try
+                    {
+                        return await ReadStreamAsync(
+                            stream,
+                            res,
+                            version,
+                            minLen: options?.GetMinLen(0L) ?? 0,
+                            maxLen: options?.GetMaxLen(long.MaxValue) ?? long.MaxValue,
+                            cancellationToken: cancellationToken
+                            ).DynamicContext();
+                    }
+                    catch
+                    {
+                        res.Dispose();
+                        throw;
+                    }
                 default:
                     throw new InvalidProgramException();
             }
             await task.DynamicContext();
-            return task.GetResult(type);
+            return task.GetResult(type!);
         }
 
         /// <summary>
@@ -424,8 +581,9 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
+        /// <param name="options">Options</param>
         /// <returns>Object</returns>
-        public static object? ReadAnyNullable(this Stream stream, int? version = null)
+        public static object? ReadAnyNullable(this Stream stream, int? version = null, ISerializerOptions? options = null)
         {
             try
             {
@@ -439,7 +597,7 @@ namespace wan24.StreamSerializerExtensions
                 {
                     ArrayPool<byte>.Shared.Return(data);
                 }
-                return objType == ObjectTypes.Null ? null : ReadAnyInt(stream, version, objType);
+                return objType == ObjectTypes.Null ? null : ReadAnyInt(stream, version, objType, options);
             }
             catch (SerializerException)
             {
@@ -456,9 +614,10 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
+        /// <param name="options">Options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Object</returns>
-        public static async Task<object?> ReadAnyNullableAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
+        public static async Task<object?> ReadAnyNullableAsync(this Stream stream, int? version = null, ISerializerOptions? options = null, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -472,7 +631,7 @@ namespace wan24.StreamSerializerExtensions
                 {
                     ArrayPool<byte>.Shared.Return(data);
                 }
-                return objType == ObjectTypes.Null ? null : await ReadAnyIntAsync(stream, version, objType, cancellationToken).DynamicContext();
+                return objType == ObjectTypes.Null ? null : await ReadAnyIntAsync(stream, version, objType, options, cancellationToken).DynamicContext();
             }
             catch (SerializerException)
             {
@@ -1913,8 +2072,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="minLen">Minimum length</param>
         /// <param name="maxLen">Maximum length</param>
+        /// <param name="valueOptions">Value serializer options</param>
         /// <returns>Value</returns>
-        public static T[] ReadArray<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
+        public static T[] ReadArray<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue, ISerializerOptions? valueOptions = null)
         {
             if (typeof(T) == typeof(byte)) return (ReadBytes(stream, version, buffer: null, pool, minLen, maxLen) as T[])!;
             try
@@ -1922,7 +2082,7 @@ namespace wan24.StreamSerializerExtensions
                 int len = ReadNumber<int>(stream, version, pool);
                 SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                 T[] res = new T[len];
-                for (int i = 0; i < len; res[i] = ReadObject<T>(stream, version), i++) ;
+                for (int i = 0; i < len; res[i] = ReadObject<T>(stream, version, valueOptions), i++) ;
                 return res;
             }
             catch (SerializerException)
@@ -1944,6 +2104,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="minLen">Minimum length</param>
         /// <param name="maxLen">Maximum length</param>
+        /// <param name="valueOptions">Value serializer options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<T[]> ReadArrayAsync<T>(
@@ -1952,6 +2113,7 @@ namespace wan24.StreamSerializerExtensions
             ArrayPool<byte>? pool = null,
             int minLen = 0,
             int maxLen = int.MaxValue,
+            ISerializerOptions? valueOptions = null,
             CancellationToken cancellationToken = default
             )
         {
@@ -1962,7 +2124,7 @@ namespace wan24.StreamSerializerExtensions
                 int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
                 SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                 T[] res = new T[len];
-                for (int i = 0; i < len; res[i] = await ReadObjectAsync<T>(stream, version, cancellationToken).DynamicContext(), i++) ;
+                for (int i = 0; i < len; res[i] = await ReadObjectAsync<T>(stream, version, valueOptions, cancellationToken).DynamicContext(), i++) ;
                 return res;
             }
             catch (SerializerException)
@@ -1984,10 +2146,18 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="minLen">Minimum length</param>
         /// <param name="maxLen">Maximum length</param>
+        /// <param name="valueOptions">Value serializer options</param>
         /// <returns>Value</returns>
-        public static T[]? ReadArrayNullable<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
+        public static T[]? ReadArrayNullable<T>(
+            this Stream stream,
+            int? version = null,
+            ArrayPool<byte>? pool = null,
+            int minLen = 0,
+            int maxLen = int.MaxValue,
+            ISerializerOptions? valueOptions = null
+            )
 #pragma warning disable IDE0034 // default expression can be simplified
-            => ReadBool(stream, version, pool) ? ReadArray<T>(stream, version, pool, minLen, maxLen) : default(T[]?);
+            => ReadBool(stream, version, pool) ? ReadArray<T>(stream, version, pool, minLen, maxLen, valueOptions) : default(T[]?);
 #pragma warning restore IDE0034 // default expression can be simplified
 
         /// <summary>
@@ -1999,6 +2169,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="minLen">Minimum length</param>
         /// <param name="maxLen">Maximum length</param>
+        /// <param name="valueOptions">Value serializer options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<T[]?> ReadArrayNullableAsync<T>(
@@ -2007,10 +2178,11 @@ namespace wan24.StreamSerializerExtensions
             ArrayPool<byte>? pool = null,
             int minLen = 0,
             int maxLen = int.MaxValue,
+            ISerializerOptions? valueOptions = null,
             CancellationToken cancellationToken = default
             )
             => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadArrayAsync<T>(stream, version, pool, minLen, maxLen, cancellationToken).DynamicContext()
+                ? await ReadArrayAsync<T>(stream, version, pool, minLen, maxLen, valueOptions, cancellationToken).DynamicContext()
                 : default(T[]?);
 
         /// <summary>
@@ -2022,8 +2194,16 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="minLen">Minimum length</param>
         /// <param name="maxLen">Maximum length</param>
+        /// <param name="valueOptions">Value serializer options</param>
         /// <returns>Value</returns>
-        public static List<T> ReadList<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
+        public static List<T> ReadList<T>(
+            this Stream stream,
+            int? version = null,
+            ArrayPool<byte>? pool = null,
+            int minLen = 0,
+            int maxLen = int.MaxValue,
+            ISerializerOptions? valueOptions = null
+            )
         {
             if (typeof(T) == typeof(byte)) return new List<T>((ReadBytes(stream, version, buffer: null, pool, minLen, maxLen) as T[])!);
             try
@@ -2031,7 +2211,7 @@ namespace wan24.StreamSerializerExtensions
                 int len = ReadNumber<int>(stream, version, pool);
                 SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                 List<T> res = new(len);
-                for (int i = 0; i < len; res.Add(ReadObject<T>(stream, version)), i++) ;
+                for (int i = 0; i < len; res.Add(ReadObject<T>(stream, version, valueOptions)), i++) ;
                 return res;
             }
             catch (SerializerException)
@@ -2053,6 +2233,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="minLen">Minimum length</param>
         /// <param name="maxLen">Maximum length</param>
+        /// <param name="valueOptions">Value serializer options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<List<T>> ReadListAsync<T>(
@@ -2061,6 +2242,7 @@ namespace wan24.StreamSerializerExtensions
             ArrayPool<byte>? pool = null,
             int minLen = 0,
             int maxLen = int.MaxValue,
+            ISerializerOptions? valueOptions = null,
             CancellationToken cancellationToken = default
             )
         {
@@ -2071,7 +2253,7 @@ namespace wan24.StreamSerializerExtensions
                 int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
                 SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                 List<T> res = new(len);
-                for (int i = 0; i < len; res.Add(await ReadObjectAsync<T>(stream, version, cancellationToken).DynamicContext()), i++) ;
+                for (int i = 0; i < len; res.Add(await ReadObjectAsync<T>(stream, version, valueOptions, cancellationToken).DynamicContext()), i++) ;
                 return res;
             }
             catch (SerializerException)
@@ -2093,10 +2275,18 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="minLen">Minimum length</param>
         /// <param name="maxLen">Maximum length</param>
+        /// <param name="valueOptions">Value serializer options</param>
         /// <returns>Value</returns>
-        public static List<T>? ReadListNullable<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
+        public static List<T>? ReadListNullable<T>(
+            this Stream stream,
+            int? version = null,
+            ArrayPool<byte>? pool = null,
+            int minLen = 0,
+            int maxLen = int.MaxValue,
+            ISerializerOptions? valueOptions = null
+            )
 #pragma warning disable IDE0034 // default expression can be simplified
-            => ReadBool(stream, version, pool) ? ReadList<T>(stream, version, pool, minLen, maxLen) : default(List<T>?);
+            => ReadBool(stream, version, pool) ? ReadList<T>(stream, version, pool, minLen, maxLen, valueOptions) : default(List<T>?);
 #pragma warning restore IDE0034 // default expression can be simplified
 
         /// <summary>
@@ -2108,6 +2298,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="minLen">Minimum length</param>
         /// <param name="maxLen">Maximum length</param>
+        /// <param name="valueOptions">Value serializer options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<List<T>?> ReadListNullableAsync<T>(
@@ -2116,10 +2307,11 @@ namespace wan24.StreamSerializerExtensions
             ArrayPool<byte>? pool = null,
             int minLen = 0,
             int maxLen = int.MaxValue,
+            ISerializerOptions? valueOptions = null,
             CancellationToken cancellationToken = default
             )
             => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadListAsync<T>(stream, version, pool, minLen, maxLen, cancellationToken).DynamicContext()
+                ? await ReadListAsync<T>(stream, version, pool, minLen, maxLen, valueOptions, cancellationToken).DynamicContext()
                 : default(List<T>?);
 
         /// <summary>
@@ -2132,8 +2324,18 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="minLen">Minimum length</param>
         /// <param name="maxLen">Maximum length</param>
+        /// <param name="keyOptions">Key serializer options</param>
+        /// <param name="valueOptions">Value serializer options</param>
         /// <returns>Value</returns>
-        public static Dictionary<tKey, tValue> ReadDict<tKey, tValue>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
+        public static Dictionary<tKey, tValue> ReadDict<tKey, tValue>(
+            this Stream stream,
+            int? version = null,
+            ArrayPool<byte>? pool = null,
+            int minLen = 0,
+            int maxLen = int.MaxValue,
+            ISerializerOptions? keyOptions = null,
+            ISerializerOptions? valueOptions = null
+            )
             where tKey : notnull
         {
             try
@@ -2142,8 +2344,8 @@ namespace wan24.StreamSerializerExtensions
                 SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                 Dictionary<tKey, tValue> res = new(len);
                 for (int i = 0; i < len; i++)
-                    res[ReadObject<tKey>(stream, version)]
-                        = ReadObject<tValue>(stream, version);
+                    res[ReadObject<tKey>(stream, version, keyOptions)]
+                        = ReadObject<tValue>(stream, version, valueOptions);
                 return res;
             }
             catch (SerializerException)
@@ -2166,6 +2368,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="minLen">Minimum length</param>
         /// <param name="maxLen">Maximum length</param>
+        /// <param name="keyOptions">Key serializer options</param>
+        /// <param name="valueOptions">Value serializer options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<Dictionary<tKey, tValue>> ReadDictAsync<tKey, tValue>(
@@ -2174,6 +2378,8 @@ namespace wan24.StreamSerializerExtensions
             ArrayPool<byte>? pool = null,
             int minLen = 0,
             int maxLen = int.MaxValue,
+            ISerializerOptions? keyOptions = null,
+            ISerializerOptions? valueOptions = null,
             CancellationToken cancellationToken = default
             )
             where tKey : notnull
@@ -2184,8 +2390,8 @@ namespace wan24.StreamSerializerExtensions
                 SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                 Dictionary<tKey, tValue> res = new(len);
                 for (int i = 0; i < len; i++)
-                    res[await ReadObjectAsync<tKey>(stream, version, cancellationToken).DynamicContext()]
-                        = await ReadObjectAsync<tValue>(stream, version, cancellationToken).DynamicContext();
+                    res[await ReadObjectAsync<tKey>(stream, version, keyOptions, cancellationToken).DynamicContext()]
+                        = await ReadObjectAsync<tValue>(stream, version, valueOptions, cancellationToken).DynamicContext();
                 return res;
             }
             catch (SerializerException)
@@ -2208,11 +2414,21 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="minLen">Minimum length</param>
         /// <param name="maxLen">Maximum length</param>
+        /// <param name="keyOptions">Key serializer options</param>
+        /// <param name="valueOptions">Value serializer options</param>
         /// <returns>Value</returns>
-        public static Dictionary<tKey, tValue>? ReadDictNullable<tKey, tValue>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
+        public static Dictionary<tKey, tValue>? ReadDictNullable<tKey, tValue>(
+            this Stream stream,
+            int? version = null,
+            ArrayPool<byte>? pool = null,
+            int minLen = 0,
+            int maxLen = int.MaxValue,
+            ISerializerOptions? keyOptions = null,
+            ISerializerOptions? valueOptions = null
+            )
             where tKey : notnull
 #pragma warning disable IDE0034 // default expression can be simplified
-            => ReadBool(stream, version, pool) ? ReadDict<tKey, tValue>(stream, version, pool, minLen, maxLen) : default(Dictionary<tKey, tValue>?);
+            => ReadBool(stream, version, pool) ? ReadDict<tKey, tValue>(stream, version, pool, minLen, maxLen, keyOptions, valueOptions) : default(Dictionary<tKey, tValue>?);
 #pragma warning restore IDE0034 // default expression can be simplified
 
         /// <summary>
@@ -2225,6 +2441,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="minLen">Minimum length</param>
         /// <param name="maxLen">Maximum length</param>
+        /// <param name="keyOptions">Key serializer options</param>
+        /// <param name="valueOptions">Value serializer options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         public static async Task<Dictionary<tKey, tValue>?> ReadDictNullableAsync<tKey, tValue>(
@@ -2233,11 +2451,13 @@ namespace wan24.StreamSerializerExtensions
             ArrayPool<byte>? pool = null,
             int minLen = 0,
             int maxLen = int.MaxValue,
+            ISerializerOptions? keyOptions = null,
+            ISerializerOptions? valueOptions = null,
             CancellationToken cancellationToken = default
             )
             where tKey : notnull
             => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadDictAsync<tKey, tValue>(stream, version, pool, minLen, maxLen, cancellationToken).DynamicContext()
+                ? await ReadDictAsync<tKey, tValue>(stream, version, pool, minLen, maxLen, keyOptions, valueOptions, cancellationToken).DynamicContext()
                 : default(Dictionary<tKey, tValue>?);
 
         /// <summary>
@@ -2512,21 +2732,33 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <typeparam name="T">Target stream type</typeparam>
         /// <param name="stream">Stream</param>
-        /// <param name="target">Target stream</param>
+        /// <param name="target">Target stream (the position won't be reset)</param>
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <param name="maxBufferSize">Maximum buffer size in bytes</param>
-        /// <param name="maxStreamLength">Maximum stream length in bytes</param>
+        /// <param name="minLen">Minimum stream length</param>
+        /// <param name="maxLen">Maximum stream length in bytes</param>
         /// <returns>Target stream</returns>
-        public static T ReadStream<T>(this Stream stream, T target, int? version = null, ArrayPool<byte>? pool = null, int? maxBufferSize = null, long? maxStreamLength = null) where T : Stream
+        public static T ReadStream<T>(
+            this Stream stream,
+            T target,
+            int? version = null,
+            ArrayPool<byte>? pool = null,
+            int? maxBufferSize = null,
+            long minLen = 0,
+            long maxLen = long.MaxValue
+            )
+            where T : Stream
         {
-            //TODO Test
+            if (!target.CanWrite) throw new ArgumentException("Writable stream required", nameof(target));
             if (maxBufferSize != null && maxBufferSize.Value < 1) throw new ArgumentOutOfRangeException(nameof(maxBufferSize));
+            if (minLen < 0) throw new ArgumentOutOfRangeException(nameof(minLen));
+            if (maxLen < 0 || maxLen < minLen) throw new ArgumentOutOfRangeException(nameof(maxLen));
             long len = stream.ReadNumber<long>(version, pool);
             if (len == 0) throw new SerializerException("Invalid stream/chunk length", new InvalidDataException());
             if (len < 0)
             {
-                maxStreamLength ??= long.MaxValue;
+                // Chunked
                 len = Math.Abs(len);
                 if (len > int.MaxValue) throw new SerializerException("Invalid chunk length", new InvalidDataException());
                 if (len > (maxBufferSize ?? Settings.BufferSize))
@@ -2536,25 +2768,27 @@ namespace wan24.StreamSerializerExtensions
                 for (int red = (int)len; red == len; total += red)
                 {
                     red = stream.ReadBytes(version, buffer.Array, maxLen: buffer.Length).Length;
-                    if (total + red > maxStreamLength) throw new SerializerException($"The embedded stream length exceeds the maximum of {maxStreamLength} bytes", new OverflowException());
+                    if (total + red > maxLen) throw new SerializerException($"The embedded stream length exceeds the maximum of {maxLen} bytes", new OverflowException());
                     if (red < 1) break;
                     target.Write(buffer.Span[..red]);
                 }
+                if (total < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
             }
             else
             {
-                if (len > maxStreamLength)
-                    throw new SerializerException($"Embedded stream length of {len} bytes exceeds the maximum stream length of {maxStreamLength} bytes", new OverflowException());
-                maxStreamLength = len;
+                // Fixed length
+                if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
+                if (len > maxLen)
+                    throw new SerializerException($"Embedded stream length of {len} bytes exceeds the maximum stream length of {maxLen} bytes", new OverflowException());
                 using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool);
                 long total = 0;
-                for (int red = buffer.Length; red == len && total < len; total += red)
+                for (int red = buffer.Length; red == buffer.Length && total < len; total += red)
                 {
-                    red = stream.ReadBytes(version, buffer.Array, maxLen: (int)Math.Min(buffer.Length, maxStreamLength.Value - total)).Length;
+                    red = stream.Read(buffer.Span[..(int)Math.Min(buffer.Length, len - total)]);
                     if (red < 1) break;
                     target.Write(buffer.Span[..red]);
                 }
-                if (total != len) throw new SerializerException($"Invalid chunk length", new IOException());
+                if (total != len) throw new SerializerException($"Invalid stream length ({len} bytes proposed, {total} bytes red)", new IOException());
             }
             return target;
         }
@@ -2564,11 +2798,12 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <typeparam name="T">Target stream type</typeparam>
         /// <param name="stream">Stream</param>
-        /// <param name="target">Target stream</param>
+        /// <param name="target">Target stream (the position won't be reset)</param>
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <param name="maxBufferSize">Maximum buffer size in bytes</param>
-        /// <param name="maxStreamLength">Maximum stream length in bytes</param>
+        /// <param name="minLen">Minimum stream length</param>
+        /// <param name="maxLen">Maximum stream length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Target stream</returns>
         public static async Task<T> ReadStreamAsync<T>(
@@ -2577,18 +2812,22 @@ namespace wan24.StreamSerializerExtensions
             int? version = null,
             ArrayPool<byte>? pool = null,
             int? maxBufferSize = null,
-            long? maxStreamLength = null, 
+            long minLen = 0,
+            long maxLen = long.MaxValue,
             CancellationToken cancellationToken = default
             )
             where T : Stream
         {
             //TODO Test
+            if (!target.CanWrite) throw new ArgumentException("Writable stream required", nameof(target));
             if (maxBufferSize != null && maxBufferSize.Value < 1) throw new ArgumentOutOfRangeException(nameof(maxBufferSize));
+            if (minLen < 0) throw new ArgumentOutOfRangeException(nameof(minLen));
+            if (maxLen < 0 || maxLen < minLen) throw new ArgumentOutOfRangeException(nameof(maxLen));
             long len = await stream.ReadNumberAsync<long>(version, pool, cancellationToken).DynamicContext();
             if (len == 0) throw new SerializerException("Invalid stream/chunk length", new InvalidDataException());
             if (len < 0)
             {
-                maxStreamLength ??= long.MaxValue;
+                // Chunked
                 len = Math.Abs(len);
                 if (len > int.MaxValue) throw new SerializerException("Invalid chunk length", new InvalidDataException());
                 if (len > (maxBufferSize ?? Settings.BufferSize))
@@ -2597,27 +2836,28 @@ namespace wan24.StreamSerializerExtensions
                 long total = 0;
                 for (int red = (int)len; red == len; total += red)
                 {
-                    red = (await stream.ReadBytesAsync(version, buffer.Array, maxLen: buffer.Length, cancellationToken: cancellationToken) .DynamicContext()).Length;
-                    if (total + red > maxStreamLength) throw new SerializerException($"The embedded stream length exceeds the maximum of {maxStreamLength} bytes", new OverflowException());
+                    red = (await stream.ReadBytesAsync(version, buffer.Array, maxLen: buffer.Length, cancellationToken: cancellationToken).DynamicContext()).Length;
+                    if (total + red > maxLen) throw new SerializerException($"The embedded stream length exceeds the maximum of {maxLen} bytes", new OverflowException());
                     if (red < 1) break;
                     await target.WriteAsync(buffer.Memory[..red], cancellationToken).DynamicContext();
                 }
+                if (total < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
             }
             else
             {
-                if (len > maxStreamLength)
-                    throw new SerializerException($"Embedded stream length of {len} bytes exceeds the maximum stream length of {maxStreamLength} bytes", new OverflowException());
-                maxStreamLength = len;
+                // Fixed length
+                if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
+                if (len > maxLen)
+                    throw new SerializerException($"Embedded stream length of {len} bytes exceeds the maximum stream length of {maxLen} bytes", new OverflowException());
                 using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool);
                 long total = 0;
-                for (int red = buffer.Length; red == len && total < len; total += red)
+                for (int red = buffer.Length; red == buffer.Length && total < len; total += red)
                 {
-                    red = (await stream.ReadBytesAsync(version, buffer.Array, maxLen: (int)Math.Min(buffer.Length, maxStreamLength.Value - total), cancellationToken: cancellationToken)
-                        .DynamicContext()).Length;
+                    red = await stream.ReadAsync(buffer.Memory[..(int)Math.Min(buffer.Length, len - total)], cancellationToken: cancellationToken).DynamicContext();
                     if (red < 1) break;
                     await target.WriteAsync(buffer.Memory[..red], cancellationToken).DynamicContext();
                 }
-                if (total != len) throw new SerializerException($"Invalid chunk length", new IOException());
+                if (total != len) throw new SerializerException($"Invalid stream length ({len} bytes proposed, {total} bytes red)", new IOException());
             }
             return target;
         }

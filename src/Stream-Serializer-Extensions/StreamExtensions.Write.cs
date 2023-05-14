@@ -91,6 +91,8 @@ namespace wan24.StreamSerializerExtensions
             WriteDictAsyncMethod = type.GetMethod(nameof(WriteDictAsync), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(WriteDictAsync)}");
             ReadObjectMethod = type.GetMethod(nameof(ReadObject), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadObject)}");
             ReadObjectAsyncMethod = type.GetMethod(nameof(ReadObjectAsync), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadObjectAsync)}");
+            ReadObjectNullableMethod = type.GetMethod(nameof(ReadObjectNullable), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadObjectNullable)}");
+            ReadObjectNullableAsyncMethod = type.GetMethod(nameof(ReadObjectNullableAsync), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadObjectNullableAsync)}");
             ReadAnyMethod = type.GetMethod(nameof(ReadAny), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadAny)}");
             ReadAnyAsyncMethod = type.GetMethod(nameof(ReadAnyAsync), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadAnyAsync)}");
             ReadAnyNullableMethod = type.GetMethod(nameof(ReadAnyNullable), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadAnyNullable)}");
@@ -1917,12 +1919,11 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Stream</returns>
         public static T WriteStream<T>(this T stream, Stream source, ArrayPool<byte>? pool = null, int? chunkLength = null) where T : Stream
         {
-            //TODO Test
             if (chunkLength != null && chunkLength.Value < 1) throw new ArgumentOutOfRangeException(nameof(chunkLength));
-            WriteNumber(stream, source.CanSeek ? source.Length : -1);
+            WriteNumber(stream, source.CanSeek ? source.Length - source.Position : 0 - (chunkLength ?? Settings.BufferSize));
             if (source.CanSeek)
             {
-                source.CopyTo(stream);
+                source.CopyTo(stream, bufferSize: chunkLength ?? Settings.BufferSize);
             }
             else
             {
@@ -1959,10 +1960,10 @@ namespace wan24.StreamSerializerExtensions
         {
             //TODO Test
             if (chunkLength != null && chunkLength.Value < 1) throw new ArgumentOutOfRangeException(nameof(chunkLength));
-            await WriteNumberAsync(stream, source.CanSeek ? source.Length : 0 - (chunkLength ?? Settings.BufferSize), cancellationToken).DynamicContext();
+            await WriteNumberAsync(stream, source.CanSeek ? source.Length - source.Position : 0 - (chunkLength ?? Settings.BufferSize), cancellationToken).DynamicContext();
             if (source.CanSeek)
             {
-                await source.CopyToAsync(stream, cancellationToken).DynamicContext();
+                await source.CopyToAsync(stream, bufferSize: chunkLength ?? Settings.BufferSize, cancellationToken).DynamicContext();
             }
             else
             {

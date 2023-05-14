@@ -12,7 +12,7 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Auto stream serializer configuration
         /// </summary>
-        protected static readonly AutoStreamSerializerConfig<T> AutoStreamSerializerConfig;
+        private static AutoStreamSerializerConfig<T> _AutoStreamSerializerConfig = null!;
 
         /// <summary>
         /// Static constructor
@@ -20,13 +20,17 @@ namespace wan24.StreamSerializerExtensions
         static AutoStreamSerializerBase()
         {
             if (typeof(T).GetCustomAttribute<StreamSerializerAttribute>() == null) throw new InvalidProgramException($"{typeof(T)} needs a {typeof(StreamSerializerAttribute)}");
-            AutoStreamSerializerConfig = new();
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
         protected AutoStreamSerializerBase() : base(AutoStreamSerializerConfig.Attribute.Version) { }
+
+        /// <summary>
+        /// Auto stream serializer configuration
+        /// </summary>
+        protected static AutoStreamSerializerConfig<T> AutoStreamSerializerConfig => _AutoStreamSerializerConfig ??= new();
 
         /// <inheritdoc/>
         IAutoStreamSerializerConfig IAutoStreamSerializer.AutoStreamSerializerConfig => AutoStreamSerializerConfig;

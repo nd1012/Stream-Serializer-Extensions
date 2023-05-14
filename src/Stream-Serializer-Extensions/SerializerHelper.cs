@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
+using System.Reflection;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -379,6 +379,7 @@ namespace wan24.StreamSerializerExtensions
                 decimal => ObjectTypes.Decimal,
                 string => ObjectTypes.String,
                 byte[] => ObjectTypes.Bytes,
+                Stream => ObjectTypes.Stream,
                 IStreamSerializer => ObjectTypes.Serializable,
                 _ => ObjectTypes.Null
             };
@@ -471,6 +472,14 @@ namespace wan24.StreamSerializerExtensions
                         writeObject = false;
                     }
                     break;
+                case ObjectTypes.Stream:
+                    Stream stream = (Stream)obj;
+                    if (stream.CanSeek && stream.Length == 0)
+                    {
+                        objType |= ObjectTypes.Empty;
+                        writeObject = false;
+                    }
+                    break;
                 default:
                     throw new InvalidProgramException();
             }
@@ -557,5 +566,38 @@ namespace wan24.StreamSerializerExtensions
             if (includesSerializerVersion) serializerVersion = ms.ReadSerializerVersion();
             return ms.ReadSerialized<T>(serializerVersion);
         }
+
+        /// <summary>
+        /// Get the serializer options
+        /// </summary>
+        /// <param name="pi">Property</param>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Serializer options</returns>
+        public static ISerializerOptions? GetSerializerOptions(this PropertyInfo pi, Stream stream, int version, CancellationToken cancellationToken)
+            => pi.GetCustomAttribute<StreamSerializerAttribute>()?.GetSerializerOptions(pi, stream, version, cancellationToken);
+
+        /// <summary>
+        /// Get the key serializer options
+        /// </summary>
+        /// <param name="pi">Property</param>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Serializer options</returns>
+        public static ISerializerOptions? GetKeySerializerOptions(this PropertyInfo pi, Stream stream, int version, CancellationToken cancellationToken)
+            => pi.GetCustomAttribute<StreamSerializerAttribute>()?.GetKeySerializerOptions(pi, stream, version, cancellationToken);
+
+        /// <summary>
+        /// Get the value serializer options
+        /// </summary>
+        /// <param name="pi">Property</param>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Serializer options</returns>
+        public static ISerializerOptions? GetValueSerializerOptions(this PropertyInfo pi, Stream stream, int version, CancellationToken cancellationToken)
+            => pi.GetCustomAttribute<StreamSerializerAttribute>()?.GetValueSerializerOptions(pi, stream, version, cancellationToken);
     }
 }

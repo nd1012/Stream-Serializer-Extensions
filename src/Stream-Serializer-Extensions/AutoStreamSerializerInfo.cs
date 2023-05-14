@@ -59,7 +59,7 @@ namespace wan24.StreamSerializerExtensions
         {
             if (Serializer == null)
             {
-                stream.WriteObject(Property.GetValue(obj));
+                stream.WriteObjectNullable(Property.GetValue(obj));
             }
             else
             {
@@ -79,7 +79,7 @@ namespace wan24.StreamSerializerExtensions
         {
             if (AsyncSerializer == null)
             {
-                await stream.WriteObjectAsync(obj, cancellationToken).DynamicContext();
+                await stream.WriteObjectNullableAsync(Property.GetValue(obj), cancellationToken).DynamicContext();
             }
             else
             {
@@ -99,7 +99,8 @@ namespace wan24.StreamSerializerExtensions
         {
             if (Deserializer == null)
             {
-                Property.SetValue(obj, StreamExtensions.ReadObjectMethod.MakeGenericMethod(Property.PropertyType).InvokeAuto(obj: null, stream, version));
+                Property.SetValue(obj, StreamExtensions.ReadObjectNullableMethod.MakeGenericMethod(Property.PropertyType)
+                    .InvokeAuto(obj: null, stream, version, Property.GetSerializerOptions(stream, version, default)));
             }
             else
             {
@@ -121,8 +122,9 @@ namespace wan24.StreamSerializerExtensions
             if (AsyncDeserializer == null)
             {
                 Property.SetValue(
-                    obj, 
-                    await StreamExtensions.ReadObjectAsyncMethod.MakeGenericMethod(Property.PropertyType).InvokeAutoAsync(obj: null, stream, version, cancellationToken).DynamicContext()
+                    obj,
+                    await StreamExtensions.ReadObjectNullableAsyncMethod.MakeGenericMethod(Property.PropertyType)
+                    .InvokeAutoAsync(obj: null, stream, version, Property.GetSerializerOptions(stream, version, default), cancellationToken).DynamicContext()
                     );
             }
             else
@@ -151,11 +153,11 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="cancellationToken">Cancellation token</param>
         public delegate Task AsyncSerializer_Delegate(
-            IAutoStreamSerializerConfig config, 
-            AutoStreamSerializerInfo info, 
-            IAutoStreamSerializer obj, 
-            object? value, 
-            Stream stream, 
+            IAutoStreamSerializerConfig config,
+            AutoStreamSerializerInfo info,
+            IAutoStreamSerializer obj,
+            object? value,
+            Stream stream,
             CancellationToken cancellationToken
             );
 
@@ -181,11 +183,11 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Deserialized value</returns>
         public delegate Task<object?> AsyncDeserializer_Delegate(
-            IAutoStreamSerializerConfig config, 
-            AutoStreamSerializerInfo info, 
-            IAutoStreamSerializer obj, 
-            Stream stream, 
-            int version, 
+            IAutoStreamSerializerConfig config,
+            AutoStreamSerializerInfo info,
+            IAutoStreamSerializer obj,
+            Stream stream,
+            int version,
             CancellationToken cancellationToken
             );
     }
