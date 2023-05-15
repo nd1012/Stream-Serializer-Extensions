@@ -2,6 +2,8 @@
 using System.Collections.Concurrent;
 using wan24.Core;
 
+//TODO Make more use the BufferPool
+
 namespace wan24.StreamSerializerExtensions
 {
     /// <summary>
@@ -305,7 +307,7 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Byte array buffer pool to use
         /// </summary>
-        public static ArrayPool<byte> BufferBool { get; set; } = ArrayPool<byte>.Shared;
+        public static ArrayPool<byte> BufferPool { get; set; } = ArrayPool<byte>.Shared;
 
         /// <summary>
         /// Find a serializer

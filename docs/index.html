@@ -240,8 +240,9 @@ within the binary sequence. This ordering will be applied:</p>
 </ul>
 <p>To exclude a property depending on the object version:</p>
 <ul>
-<li><code>FromVersion</code>: First object version which includes the property (optional)</li>
-<li><code>Version</code>: Last object version which includes the property (optional)</li>
+<li><code>FromVersion</code>: First object version which <strong>includes</strong> the property
+(optional)</li>
+<li><code>Version</code>: Last object version which <strong>includes</strong> the property (optional)</li>
 </ul>
 <p>You can set some details for the deserializer methods using these properties:</p>
 <ul>
@@ -283,11 +284,19 @@ final type and its properties, and match these pre-requirements:</p>
 <ol>
 <li>The <code>StreamSerializerAttribute</code> of the final type requires an object
 version number in the <code>Version</code> property</li>
-<li>The stream serializer mode can't be <code>Auto</code></li>
+<li>The stream serializer mode must be <code>OptIn</code></li>
 </ol>
 <p>The auto stream serializer fully relies on a correct use of the
-<code>StreamSerializerAttribute</code> and object versioning. The stream serializer mode
-<code>OptIn</code> might be the most simple choice.</p>
+<code>StreamSerializerAttribute</code> and object versioning for both, the type and its
+serialized properties.</p>
+<p>If a serialized object property has an unchanged default value, the serializer
+will only write a flag which is telling the deserializer not to deserialize a
+value. If you don't want that, you can disable defult value flags for the
+whole type by setting the <code>StreamSerializerAttribute.UseDefaultValues</code> value
+to <code>false</code> (this property is also evaluated per property). To make a decision
+for each property based on the object version, you can create your own
+<code>StreamSerializerAttribute</code> and override the <code>GetUseDefaultValue</code> method,
+which per default simply returns the <code>UseDefaultValues</code> flag.</p>
 <h3 id="extending-the-streamserializer">Extending the <code>StreamSerializer</code></h3>
 <pre><code class="lang-cs">StreamSerializer.SyncSerializer.AddOrUpdate(
     typeof(YourType),

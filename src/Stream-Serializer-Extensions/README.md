@@ -140,8 +140,9 @@ within the binary sequence. This ordering will be applied:
 
 To exclude a property depending on the object version:
 
-- `FromVersion`: First object version which includes the property (optional)
-- `Version`: Last object version which includes the property (optional)
+- `FromVersion`: First object version which **includes** the property 
+(optional)
+- `Version`: Last object version which **includes** the property (optional)
 
 You can set some details for the deserializer methods using these properties:
 
@@ -191,11 +192,20 @@ final type and its properties, and match these pre-requirements:
 
 1. The `StreamSerializerAttribute` of the final type requires an object 
 version number in the `Version` property
-2. The stream serializer mode can't be `Auto`
+2. The stream serializer mode must be `OptIn`
 
 The auto stream serializer fully relies on a correct use of the 
-`StreamSerializerAttribute` and object versioning. The stream serializer mode 
-`OptIn` might be the most simple choice.
+`StreamSerializerAttribute` and object versioning for both, the type and its 
+serialized properties.
+
+If a serialized object property has an unchanged default value, the serializer 
+will only write a flag which is telling the deserializer not to deserialize a 
+value. If you don't want that, you can disable defult value flags for the 
+whole type by setting the `StreamSerializerAttribute.UseDefaultValues` value 
+to `false` (this property is also evaluated per property). To make a decision 
+for each property based on the object version, you can create your own 
+`StreamSerializerAttribute` and override the `GetUseDefaultValue` method, 
+which per default simply returns the `UseDefaultValues` flag.
 
 ### Extending the `StreamSerializer`
 

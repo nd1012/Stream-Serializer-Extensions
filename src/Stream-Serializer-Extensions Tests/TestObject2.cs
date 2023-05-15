@@ -3,6 +3,7 @@ using wan24.StreamSerializerExtensions;
 
 namespace Stream_Serializer_Extensions_Tests
 {
+    // Testing StreamSerializerBase
     internal class TestObject2 : StreamSerializerBase
     {
         public TestObject2() : base(1) { }

@@ -74,6 +74,11 @@ namespace wan24.StreamSerializerExtensions
         public int? Position { get; }
 
         /// <summary>
+        /// Use default value(s) for automatic configured serialization?
+        /// </summary>
+        public bool UseDefaultValues { get; set; } = true;
+
+        /// <summary>
         /// <see cref="ISerializerOptions"/> type
         /// </summary>
         public Type? OptionsType { get; set; }
@@ -167,7 +172,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream to use for deserializing an embedded stream</returns>
-        public virtual Stream? GetStream(object? obj, PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken)
+        public virtual Stream? GetStream(object? obj, PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken = default)
         {
             if (obj == null && property != null) throw new ArgumentNullException(nameof(obj));
             if (obj != null && property == null) throw new ArgumentNullException(nameof(property));
@@ -210,7 +215,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Serializer options</returns>
-        public virtual ISerializerOptions GetSerializerOptions(PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken)
+        public virtual ISerializerOptions GetSerializerOptions(PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -254,7 +259,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Serializer options</returns>
-        public virtual ISerializerOptions GetKeySerializerOptions(PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken)
+        public virtual ISerializerOptions GetKeySerializerOptions(PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken = default)
         {
             if (KeySerializerOptions != null) return KeySerializerOptions;
             if (KeySerializerOptionsFactoryType == null) return KeySerializerOptions ??= CreateSerializerOptions(KeyOptionsType, property);
@@ -290,7 +295,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Serializer options</returns>
-        public virtual ISerializerOptions GetValueSerializerOptions(PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken)
+        public virtual ISerializerOptions GetValueSerializerOptions(PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken = default)
         {
             if (ValueSerializerOptions != null) return ValueSerializerOptions;
             if (ValueSerializerOptionsFactoryType == null) return ValueSerializerOptions ??= CreateSerializerOptions(ValueOptionsType, property);
@@ -326,27 +331,20 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value is included?</returns>
         public virtual bool IsIncluded(StreamSerializerModes mode, int version)
         {
-            if (version != 0 && (FromVersion != null || Version != null))
-            {
-                bool versionMatch = true;
-                if (FromVersion != null && version < FromVersion) versionMatch = false;
-                if (versionMatch && Version != null && version > Version) versionMatch = false;
-                //FIXME If the version doesn't match, the attribute mode needs to be evaluated against the type mode for the return value
-                if (!versionMatch) return Mode == StreamSerializerModes.OptIn || (Mode == StreamSerializerModes.Auto && mode == StreamSerializerModes.OptIn);
-            }
-            switch (mode)
-            {
-                case StreamSerializerModes.OptIn:
-                    if (Mode == StreamSerializerModes.OptOut) return false;
-                    break;
-                case StreamSerializerModes.OptOut:
-                    if (Mode != StreamSerializerModes.OptIn) return false;
-                    break;
-                default:
-                    throw new ArgumentException($"Type serializer mode can't be {StreamSerializerModes.Auto}", nameof(mode));
-            }
-            return true;
+            if (mode == StreamSerializerModes.Auto) throw new ArgumentException($"Type stream serializer mode can't be {StreamSerializerModes.Auto}", nameof(mode));
+            return (version == 0 || (FromVersion == null && Version == null) || (FromVersion == null || version >= FromVersion) && (Version == null || version <= Version)) &&
+                (
+                    (mode == StreamSerializerModes.OptOut && Mode.In(StreamSerializerModes.OptOut, StreamSerializerModes.Auto)) ||
+                    (Mode == StreamSerializerModes.Auto ? mode : Mode) == StreamSerializerModes.OptIn
+                );
         }
+
+        /// <summary>
+        /// Get if using the default value(s) for automatic configured serializing
+        /// </summary>
+        /// <param name="version">Object version</param>
+        /// <returns>Use the default value(s)?</returns>
+        public virtual bool GetUseDefaultValue(int version) => UseDefaultValues;
 
         /// <summary>
         /// Create serializer options
@@ -422,28 +420,28 @@ namespace wan24.StreamSerializerExtensions
         /// Get properties to write
         /// </summary>
         /// <param name="type">Type</param>
+        /// <param name="version">Object version</param>
         /// <returns>Properties</returns>
-        public static IEnumerable<PropertyInfo> GetWriteProperties(Type type)
+        public static IEnumerable<PropertyInfo> GetWriteProperties(Type type, int? version = null)
         {
-            StreamSerializerAttribute? attr = type.GetCustomAttribute<StreamSerializerAttribute>(),
-                objAttr;
+            StreamSerializerAttribute? attr = type.GetCustomAttribute<StreamSerializerAttribute>();
             StreamSerializerModes mode = attr?.Mode ?? StreamSerializerModes.OptOut;
-            int version = attr?.Version ?? 0;
+            version ??= attr?.Version ?? 0;
             return mode switch
             {
                 StreamSerializerModes.OptIn => from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                                                where (pi.GetMethod?.IsPublic ?? false) &&
                                                 (pi.SetMethod?.IsPublic ?? false) &&
-                                                (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) != null &&
-                                                objAttr.IsIncluded(mode, version)
+                                                pi.GetCustomAttribute<StreamSerializerAttribute>() is StreamSerializerAttribute objAttr &&
+                                                objAttr.IsIncluded(mode, version.Value)
                                                orderby pi.GetCustomAttribute<StreamSerializerAttribute>()!.Position, pi.Name
                                                select pi,
                 StreamSerializerModes.OptOut => from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                                                 where (pi.GetMethod?.IsPublic ?? false) &&
                                                  (pi.SetMethod?.IsPublic ?? false) &&
                                                  (
-                                                     (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) == null ||
-                                                     objAttr.IsIncluded(mode, version)
+                                                     pi.GetCustomAttribute<StreamSerializerAttribute>() is not StreamSerializerAttribute objAttr ||
+                                                     objAttr.IsIncluded(mode, version.Value)
                                                  )
                                                 orderby pi.GetCustomAttribute<StreamSerializerAttribute>()?.Position, pi.Name
                                                 select pi,
@@ -459,8 +457,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Properties</returns>
         public static IEnumerable<PropertyInfo> GetReadProperties(Type type, int? version)
         {
-            StreamSerializerAttribute? attr = type.GetCustomAttribute<StreamSerializerAttribute>(),
-                objAttr;
+            StreamSerializerAttribute? attr = type.GetCustomAttribute<StreamSerializerAttribute>();
             StreamSerializerModes mode = attr?.Mode ?? StreamSerializerModes.OptOut;
             version = attr?.Version ?? 0;
             return mode switch
@@ -468,7 +465,7 @@ namespace wan24.StreamSerializerExtensions
                 StreamSerializerModes.OptIn => from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                                                where (pi.GetMethod?.IsPublic ?? false) &&
                                                 (pi.SetMethod?.IsPublic ?? false) &&
-                                                (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) != null &&
+                                                pi.GetCustomAttribute<StreamSerializerAttribute>() is StreamSerializerAttribute objAttr &&
                                                 objAttr.IsIncluded(mode, version.Value)
                                                orderby pi.GetCustomAttribute<StreamSerializerAttribute>()?.Position ?? 0, pi.Name
                                                select pi,
@@ -476,7 +473,7 @@ namespace wan24.StreamSerializerExtensions
                                                 where (pi.GetMethod?.IsPublic ?? false) &&
                                                  (pi.SetMethod?.IsPublic ?? false) &&
                                                  (
-                                                     (objAttr = pi.GetCustomAttribute<StreamSerializerAttribute>()) == null ||
+                                                     pi.GetCustomAttribute<StreamSerializerAttribute>() is not StreamSerializerAttribute objAttr ||
                                                      objAttr.IsIncluded(mode, version.Value)
                                                  )
                                                 orderby pi.GetCustomAttribute<StreamSerializerAttribute>()?.Position ?? 0, pi.Name

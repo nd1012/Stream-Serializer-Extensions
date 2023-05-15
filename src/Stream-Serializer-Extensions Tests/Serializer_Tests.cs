@@ -37,7 +37,24 @@ namespace Stream_Serializer_Extensions_Tests
             using TestObject5 test5 = new()
             {
                 AValue = true,
+                BValue = true,
                 Stream = stream,
+                ZValue = true
+            };
+            using MemoryStream stream_a = new();
+            stream_a.Write(RandomNumberGenerator.GetBytes(200000));
+            stream_a.Position = 0;
+            using TestObject5a test5a = new()
+            {
+                AValue = true,
+                BValue = true,
+                Stream = stream_a,
+                ZValue = true
+            };
+            using TestObject5b test5b = new()
+            {
+                AValue = true,
+                BValue = true,
                 ZValue = true
             };
             using var ms = new MemoryStream();
@@ -170,7 +187,9 @@ namespace Stream_Serializer_Extensions_Tests
                 .WriteAnyObject(new TestObject4a() { Field1 = true, Field2 = true, Field3 = true })
                 .WriteAnyObject(new TestObject4b() { Field1 = true, Field2 = true, Field3 = true })
                 .WriteAnyObjectNullable((TestObject3?)null)
-                .WriteSerialized(test5);
+                .WriteSerialized(test5)
+                .WriteSerialized(test5a)
+                .WriteSerialized(test5b);
             ms.Position = 0;
             Assert.IsTrue(ms.ReadBool());
             Assert.AreEqual((sbyte)0, ms.ReadOneSByte());
@@ -333,14 +352,36 @@ namespace Stream_Serializer_Extensions_Tests
                 using TestObject5 test5_2 = ms.ReadSerialized<TestObject5>();
                 using Stream? stream2 = test5_2.Stream;
                 Assert.IsTrue(test5_2.AValue);
-                Assert.IsNotNull(stream2);
-                Assert.IsTrue(stream2 is FileStream);
-                Assert.IsTrue(test5_2.ZValue);
+                Assert.IsFalse(test5_2.BValue);
+                Assert.IsInstanceOfType<FileStream>(stream2);
+                Assert.IsFalse(test5_2.ZValue);
                 Assert.AreEqual(stream.Length, stream2.Length);
                 byte[] buffer = new byte[stream.Length];
                 stream2.Position = 0;
                 Assert.AreEqual(buffer.Length, stream2.Read(buffer));
                 Assert.IsTrue(stream.ToArray().SequenceEqual(buffer));
+            }
+            {
+                Assert.AreEqual(stream_a.Length, stream_a.Position);
+                using TestObject5a test5_2 = ms.ReadSerialized<TestObject5a>();
+                using Stream? stream2 = test5_2.Stream;
+                Assert.IsTrue(test5_2.AValue);
+                Assert.IsFalse(test5_2.BValue);
+                Assert.IsInstanceOfType<FileStream>(stream2);
+                Assert.IsTrue(test5_2.ZValue);
+                Assert.AreEqual(stream.Length, stream2.Length);
+                byte[] buffer = new byte[stream.Length];
+                stream2.Position = 0;
+                Assert.AreEqual(buffer.Length, stream2.Read(buffer));
+                Assert.IsTrue(stream_a.ToArray().SequenceEqual(buffer));
+            }
+            {
+                using TestObject5b test5_2 = ms.ReadSerialized<TestObject5b>();
+                using Stream? stream2 = test5_2.Stream;
+                Assert.IsTrue(test5_2.AValue);
+                Assert.IsFalse(test5_2.BValue);
+                Assert.IsNull(stream2);
+                Assert.IsTrue(test5_2.ZValue);
             }
             Assert.AreEqual(ms.Length, ms.Position);
         }
@@ -354,7 +395,24 @@ namespace Stream_Serializer_Extensions_Tests
             using TestObject5 test5 = new()
             {
                 AValue = true,
+                BValue = true,
                 Stream = stream,
+                ZValue = true
+            };
+            using MemoryStream stream_a = new();
+            stream_a.Write(RandomNumberGenerator.GetBytes(200000));
+            stream_a.Position = 0;
+            using TestObject5a test5a = new()
+            {
+                AValue = true,
+                BValue = true,
+                Stream = stream_a,
+                ZValue = true
+            };
+            using TestObject5b test5b = new()
+            {
+                AValue = true,
+                BValue = true,
                 ZValue = true
             };
             using var ms = new MemoryStream();
@@ -488,6 +546,8 @@ namespace Stream_Serializer_Extensions_Tests
             await ms.WriteAnyObjectAsync(new TestObject4b() { Field1 = true, Field2 = true, Field3 = true });
             await ms.WriteAnyObjectNullableAsync((TestObject3?)null);
             await ms.WriteSerializedAsync(test5);
+            await ms.WriteSerializedAsync(test5a);
+            await ms.WriteSerializedAsync(test5b);
             ms.Position = 0;
             Assert.IsTrue(await ms.ReadBoolAsync());
             Assert.AreEqual((sbyte)0, await ms.ReadOneSByteAsync());
@@ -646,17 +706,39 @@ namespace Stream_Serializer_Extensions_Tests
             Assert.IsNull(ms.ReadAnyObjectNullable<TestObject3>());
             {
                 Assert.AreEqual(stream.Length, stream.Position);
-                using TestObject5 test5_2 = ms.ReadSerialized<TestObject5>();
+                using TestObject5 test5_2 = await ms.ReadSerializedAsync<TestObject5>();
                 using Stream? stream2 = test5_2.Stream;
                 Assert.IsTrue(test5_2.AValue);
-                Assert.IsNotNull(stream2);
-                Assert.IsTrue(stream2 is FileStream);
-                Assert.IsTrue(test5_2.ZValue);
+                Assert.IsFalse(test5_2.BValue);
+                Assert.IsInstanceOfType<FileStream>(stream2);
+                Assert.IsFalse(test5_2.ZValue);
                 Assert.AreEqual(stream.Length, stream2.Length);
                 byte[] buffer = new byte[stream.Length];
                 stream2.Position = 0;
                 Assert.AreEqual(buffer.Length, await stream2.ReadAsync(buffer));
                 Assert.IsTrue(stream.ToArray().SequenceEqual(buffer));
+            }
+            {
+                Assert.AreEqual(stream_a.Length, stream_a.Position);
+                using TestObject5a test5_2 = await ms.ReadSerializedAsync<TestObject5a>();
+                using Stream? stream2 = test5_2.Stream;
+                Assert.IsTrue(test5_2.AValue);
+                Assert.IsFalse(test5_2.BValue);
+                Assert.IsInstanceOfType<FileStream>(stream2);
+                Assert.IsTrue(test5_2.ZValue);
+                Assert.AreEqual(stream.Length, stream2.Length);
+                byte[] buffer = new byte[stream.Length];
+                stream2.Position = 0;
+                Assert.AreEqual(buffer.Length, await stream2.ReadAsync(buffer));
+                Assert.IsTrue(stream_a.ToArray().SequenceEqual(buffer));
+            }
+            {
+                using TestObject5b test5_2 = await ms.ReadSerializedAsync<TestObject5b>();
+                using Stream? stream2 = test5_2.Stream;
+                Assert.IsTrue(test5_2.AValue);
+                Assert.IsFalse(test5_2.BValue);
+                Assert.IsNull(stream2);
+                Assert.IsTrue(test5_2.ZValue);
             }
             Assert.AreEqual(ms.Length, ms.Position);
         }

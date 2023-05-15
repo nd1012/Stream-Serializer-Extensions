@@ -8004,7 +8004,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_ReadStreamAsync__1_Stream___0_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__System_Nullable_System_Int32__System_Int64_System_Int64_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.ReadStreamAsync%60%601(Stream%2C%60%600%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Buffers.ArrayPool%7BSystem.Byte%7D%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Int64%2CSystem.Int64%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Read.cs/#L2809">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Read.cs/#L2844">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_ReadStreamAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.ReadStreamAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_ReadStreamAsync__1_Stream___0_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__System_Nullable_System_Int32__System_Int64_System_Int64_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.ReadStreamAsync``1(Stream,``0,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},System.Nullable{System.Int32},System.Int64,System.Int64,CancellationToken)">ReadStreamAsync&lt;T&gt;(Stream, T, Nullable&lt;Int32&gt;, ArrayPool&lt;Byte&gt;, Nullable&lt;Int32&gt;, Int64, Int64, CancellationToken)</h4>
@@ -8036,6 +8036,218 @@
         <td><span class="xref">T</span></td>
         <td><span class="parametername">target</span></td>
         <td><p>Target stream (the position won't be reset)</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Serializer version</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Buffers.ArrayPool</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">pool</span></td>
+        <td><p>Array pool</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">maxBufferSize</span></td>
+        <td><p>Maximum buffer size in bytes</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">minLen</span></td>
+        <td><p>Minimum stream length</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">maxLen</span></td>
+        <td><p>Maximum stream length in bytes</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Cancellation token</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;T&gt;</td>
+        <td><p>Target stream</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Target stream type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_ReadStreamNullable__1_Stream___0_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__System_Nullable_System_Int32__System_Int64_System_Int64_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.ReadStreamNullable%60%601(Stream%2C%60%600%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Buffers.ArrayPool%7BSystem.Byte%7D%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Int64%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Read.cs/#L2812">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_StreamExtensions_ReadStreamNullable_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.ReadStreamNullable*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_ReadStreamNullable__1_Stream___0_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__System_Nullable_System_Int32__System_Int64_System_Int64_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.ReadStreamNullable``1(Stream,``0,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},System.Nullable{System.Int32},System.Int64,System.Int64)">ReadStreamNullable&lt;T&gt;(Stream, T, Nullable&lt;Int32&gt;, ArrayPool&lt;Byte&gt;, Nullable&lt;Int32&gt;, Int64, Int64)</h4>
+  <div class="markdown level1 summary"><p>Read a stream</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T ReadStreamNullable&lt;T&gt;(this Stream stream, T target, int? version = null, ArrayPool&lt;byte&gt; pool = null, int? maxBufferSize = null, long minLen = 0L, long maxLen = 9223372036854775807L)
+    where T : Stream</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">target</span></td>
+        <td><p>Target stream (the position won't be reset; will be disposed, if the value is <span class="xref">null</span>)</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Serializer version</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Buffers.ArrayPool</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">pool</span></td>
+        <td><p>Array pool</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">maxBufferSize</span></td>
+        <td><p>Maximum buffer size in bytes</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">minLen</span></td>
+        <td><p>Minimum stream length</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">maxLen</span></td>
+        <td><p>Maximum stream length in bytes</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>Target stream</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Target stream type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_ReadStreamNullableAsync__1_Stream___0_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__System_Nullable_System_Int32__System_Int64_System_Int64_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.ReadStreamNullableAsync%60%601(Stream%2C%60%600%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Buffers.ArrayPool%7BSystem.Byte%7D%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Int64%2CSystem.Int64%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Read.cs/#L2916">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_StreamExtensions_ReadStreamNullableAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.ReadStreamNullableAsync*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_ReadStreamNullableAsync__1_Stream___0_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__System_Nullable_System_Int32__System_Int64_System_Int64_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.ReadStreamNullableAsync``1(Stream,``0,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte},System.Nullable{System.Int32},System.Int64,System.Int64,CancellationToken)">ReadStreamNullableAsync&lt;T&gt;(Stream, T, Nullable&lt;Int32&gt;, ArrayPool&lt;Byte&gt;, Nullable&lt;Int32&gt;, Int64, Int64, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Read a stream</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static async Task&lt;T&gt; ReadStreamNullableAsync&lt;T&gt;(this Stream stream, T target, int? version = null, ArrayPool&lt;byte&gt; pool = null, int? maxBufferSize = null, long minLen = 0L, long maxLen = 9223372036854775807L, CancellationToken cancellationToken = null)
+    where T : Stream</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">target</span></td>
+        <td><p>Target stream (the position won't be reset; will be disposed, if the value is <span class="xref">null</span>)</p>
 </td>
       </tr>
       <tr>
@@ -15758,7 +15970,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteStreamAsync_Stream_Stream_System_Buffers_ArrayPool_System_Byte__System_Nullable_System_Int32__CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamAsync(Stream%2CStream%2CSystem.Buffers.ArrayPool%7BSystem.Byte%7D%2CSystem.Nullable%7BSystem.Int32%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1953">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1967">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteStreamAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamAsync*"></a>
   <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteStreamAsync_Stream_Stream_System_Buffers_ArrayPool_System_Byte__System_Nullable_System_Int32__CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamAsync(Stream,Stream,System.Buffers.ArrayPool{System.Byte},System.Nullable{System.Int32},CancellationToken)">WriteStreamAsync(Stream, Stream, ArrayPool&lt;Byte&gt;, Nullable&lt;Int32&gt;, CancellationToken)</h4>
@@ -15823,6 +16035,165 @@
       <tr>
         <td><span class="xref">Task</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteStreamNullable__1___0_System_Nullable_Stream__System_Buffers_ArrayPool_System_Byte__System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamNullable%60%601(%60%600%2CSystem.Nullable%7BStream%7D%2CSystem.Buffers.ArrayPool%7BSystem.Byte%7D%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L1956">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteStreamNullable_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamNullable*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteStreamNullable__1___0_System_Nullable_Stream__System_Buffers_ArrayPool_System_Byte__System_Nullable_System_Int32__" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamNullable``1(``0,System.Nullable{Stream},System.Buffers.ArrayPool{System.Byte},System.Nullable{System.Int32})">WriteStreamNullable&lt;T&gt;(T, Nullable&lt;Stream&gt;, ArrayPool&lt;Byte&gt;, Nullable&lt;Int32&gt;)</h4>
+  <div class="markdown level1 summary"><p>Write a stream</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T WriteStreamNullable&lt;T&gt;(this T stream, Stream? source, ArrayPool&lt;byte&gt; pool = null, int? chunkLength = null)
+    where T : Stream</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Stream</span>&gt;</td>
+        <td><span class="parametername">source</span></td>
+        <td><p>Source stream</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Buffers.ArrayPool</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">pool</span></td>
+        <td><p>Array pool</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">chunkLength</span></td>
+        <td><p>Chunk length in bytes</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>Stream</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Stream type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_StreamExtensions_WriteStreamNullableAsync_Stream_System_Nullable_Stream__System_Buffers_ArrayPool_System_Byte__System_Nullable_System_Int32__CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamNullableAsync(Stream%2CSystem.Nullable%7BStream%7D%2CSystem.Buffers.ArrayPool%7BSystem.Byte%7D%2CSystem.Nullable%7BSystem.Int32%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/StreamExtensions.Write.cs/#L2008">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_StreamExtensions_WriteStreamNullableAsync_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamNullableAsync*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_StreamExtensions_WriteStreamNullableAsync_Stream_System_Nullable_Stream__System_Buffers_ArrayPool_System_Byte__System_Nullable_System_Int32__CancellationToken_" data-uid="wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamNullableAsync(Stream,System.Nullable{Stream},System.Buffers.ArrayPool{System.Byte},System.Nullable{System.Int32},CancellationToken)">WriteStreamNullableAsync(Stream, Nullable&lt;Stream&gt;, ArrayPool&lt;Byte&gt;, Nullable&lt;Int32&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Write a stream</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static async Task WriteStreamNullableAsync(this Stream stream, Stream? source, ArrayPool&lt;byte&gt; pool = null, int? chunkLength = null, CancellationToken cancellationToken = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Stream</span>&gt;</td>
+        <td><span class="parametername">source</span></td>
+        <td><p>Source stream</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Buffers.ArrayPool</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">pool</span></td>
+        <td><p>Array pool</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">chunkLength</span></td>
+        <td><p>Chunk length in bytes</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Cancellation token</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>Stream</p>
+</td>
       </tr>
     </tbody>
   </table>
