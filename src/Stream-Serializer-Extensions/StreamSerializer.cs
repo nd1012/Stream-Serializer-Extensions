@@ -51,6 +51,7 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         static StreamSerializer()
         {
+            //TODO (De)serializer for the new WordDateTime type
             SyncSerializer = new(
                 new KeyValuePair<Type, Serialize_Delegate>[]
                 {

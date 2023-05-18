@@ -167,7 +167,7 @@ namespace wan24.StreamSerializerExtensions
         /// Prepare the serialization
         /// </summary>
         /// <param name="obj">Serialized object</param>
-        /// <returns>Properties, used default value property names, default value bits and their length in bytes</returns>
+        /// <returns>Properties, used default value property names, default value bits (needs to be returned to the <see cref="StreamSerializer.BufferPool"/>) and their length in bytes</returns>
         private (PropertyInfo[] Properties, List<string>? UsedDefaultValue, byte[]? DefaultValueBits, int? DefaultBitsLength) PrepareSerialization(T obj)
         {
             PropertyInfo[] properties = StreamSerializerAttribute.GetWriteProperties(obj.GetType()).ToArray();
@@ -206,7 +206,7 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="obj">Serialized object</param>
         /// <param name="properties">Properties</param>
-        /// <param name="defaultValueBits">Default value bits</param>
+        /// <param name="defaultValueBits">Default value bits (needs to be returned to the <see cref="StreamSerializer.BufferPool"/>)</param>
         /// <returns>Properties, used default value property names and default value bits</returns>
         private List<string>? PrepareDeserialization(T obj, PropertyInfo[] properties, byte[]? defaultValueBits)
         {
