@@ -71,6 +71,10 @@
         /// </summary>
         Bytes = 15,
         /// <summary>
+        /// Embedded stream
+        /// </summary>
+        Stream = 16,
+        /// <summary>
         /// Unsigned number
         /// </summary>
         Unsigned = 64,

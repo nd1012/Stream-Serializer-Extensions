@@ -76,6 +76,7 @@ binary stream sequence.</p>
 <li>dictionaries</li>
 <li>byte arrays</li>
 <li>possibly any other objects with a parameterless public constructor</li>
+<li>streams</li>
 </ul>
 <p><strong>NOTE</strong>: Arrays, lists and dictionaries with nullable values aren't supported.</p>
 <p>It's possible to override the build in serializers, and to add custom type
@@ -126,6 +127,11 @@ while serializing some types is being done with specialized methods:</p>
 <td><code>byte[]</code></td>
 <td><code>WriteBytes*</code></td>
 <td><code>ReadBytes*</code></td>
+</tr>
+<tr>
+<td><code>tream</code></td>
+<td><code>WriteStream*</code></td>
+<td><code>ReadStream*</code></td>
 </tr>
 <tr>
 <td>(any other)</td>
@@ -183,6 +189,15 @@ value which could be fit into an UInt16, the value will be converted for
 serialization, and you can save one byte (because the methods will store the
 used numeric type in an extra byte).</p>
 <p><strong>NOTE</strong>: All numbers will be serialized using little endian.</p>
+<h2 id="embedded-streams">Embedded streams</h2>
+<p>Using <code>WriteStream*</code> and <code>ReadStream*</code> you can embed a stream in serialized
+data. Seekable streams will just be copied, having their length as header,
+while non-seekable streams will be embedded chunked.</p>
+<p>When deserializing an embedded stream using generic read-methods (like
+<code>ReadObject</code> or <code>ReadAny</code>), a temporary <code>FileStream</code> will be created, which
+will delete the temporary file when disposing. You can define a stream factory
+using <code>StreamSerializerAttribute.StreamFactoryType</code> and
+<code>StreamSerializerAttribute.StreamFactoryMethod</code>.</p>
 <h2 id="custom-serializer">Custom serializer</h2>
 <h3 id="using-the-streamserializerattribute-attribute">Using the <code>StreamSerializerAttribute</code> attribute</h3>
 <p>The type needs to have a constructor without parameters. Properties with a
@@ -194,7 +209,7 @@ public class YourType
 	
 	public string Serialized { get; set; } = null!;
 	
-	[StreamSerializer]
+	[StreamSerializer(1)]
 	public string? NotSerialized { get; set; }
 }
 
@@ -225,9 +240,63 @@ within the binary sequence. This ordering will be applied:</p>
 </ul>
 <p>To exclude a property depending on the object version:</p>
 <ul>
-<li><code>FromVersion</code>: First object version which includes the property (optional)</li>
-<li><code>Version</code>: Last object version which includes the property (optional)</li>
+<li><code>FromVersion</code>: First object version which <strong>includes</strong> the property
+(optional)</li>
+<li><code>Version</code>: Last object version which <strong>includes</strong> the property (optional)</li>
 </ul>
+<p>You can set some details for the deserializer methods using these properties:</p>
+<ul>
+<li><code>OptionsType</code>: Individual serializer options type to use</li>
+<li><code>KeyOptionsType</code>: Individual key serializer options type to use</li>
+<li><code>ValueOptionsType</code>: Individual value serializer options type to use</li>
+<li><code>MinLen</code>: Minimum length</li>
+<li><code>Maxlen</code>: Maximum length</li>
+</ul>
+<p>The attribute type can be extended, methods are virtual.</p>
+<h4 id="stream-factory">Stream factory</h4>
+<p>If you use the attribute on a <code>Stream</code> property, you can define a stream
+factory using the <code>StreamFactoryType</code> and <code>StreamFactoryMethod</code>, or you set a
+<code>StreamFactory_Delegate</code> to the <code>StreamFactory</code> property (using reflections).</p>
+<p>You can use the <code>StreamSerializerAttribute.MemoryStreamFactory</code> method as
+memory stream factory.</p>
+<h4 id="serializer-options-factory">Serializer options factory</h4>
+<p>For automatic object deserialization the deserializer will try to get an
+<code>ISerializerOptions</code> object, which is being used to provide deserialization
+details to the deserializer method. You may define a serializer options
+factory using the <code>SerializerOptionsFactoryType</code> and
+<code>SerializerOptionsFactoryMethod</code> properties, or you set the serializer options
+to the <code>SerializerOptions</code> property (using reflections).</p>
+<p>The same applies to</p>
+<ul>
+<li><code>KeySerializerOptions</code>: Used by deserializer methods which deserialize a
+dictionary, for example</li>
+<li><code>ValueSerializerOptions</code>: Used by deserializer methods which deserialize a
+dictionary, array or list, for example</li>
+</ul>
+<p>The <code>OptionsType</code>, <code>KeyOptionsType</code> and <code>ValueOptionsType</code> properties are used
+when no factory method was defined. Those types need to implement a
+constructor which takes a <code>PropertyInfo?</code> and a <code>StreamSerializerAttribute?</code>
+parameter.</p>
+<h3 id="automatic-serializable-objects">Automatic serializable objects</h3>
+<p>You can extend from the <code>(Disposable)AutoStreamSerializerBase</code> type, if you
+fully implement serialization using the <code>StreamSerializerAttribute</code> for the
+final type and its properties, and match these pre-requirements:</p>
+<ol>
+<li>The <code>StreamSerializerAttribute</code> of the final type requires an object
+version number in the <code>Version</code> property</li>
+<li>The stream serializer mode must be <code>OptIn</code></li>
+</ol>
+<p>The auto stream serializer fully relies on a correct use of the
+<code>StreamSerializerAttribute</code> and object versioning for both, the type and its
+serialized properties.</p>
+<p>If a serialized object property has an unchanged default value, the serializer
+will only write a flag which is telling the deserializer not to deserialize a
+value. If you don't want that, you can disable defult value flags for the
+whole type by setting the <code>StreamSerializerAttribute.UseDefaultValues</code> value
+to <code>false</code> (this property is also evaluated per property). To make a decision
+for each property based on the object version, you can create your own
+<code>StreamSerializerAttribute</code> and override the <code>GetUseDefaultValue</code> method,
+which per default simply returns the <code>UseDefaultValues</code> flag.</p>
 <h3 id="extending-the-streamserializer">Extending the <code>StreamSerializer</code></h3>
 <pre><code class="lang-cs">StreamSerializer.SyncSerializer.AddOrUpdate(
     typeof(YourType),
@@ -462,10 +531,6 @@ to compress/protect a created binary sequence, you can apply compression,
 encryption and hashing on the result as you want.</p>
 <p>Object validation will be applied to deserialized objects to ensure their
 validity.</p>
-<h2 id="roadmap">Roadmap</h2>
-<ul>
-<li>[ ] Enumerate objects from a stream</li>
-</ul>
 </article>
           </div>
           

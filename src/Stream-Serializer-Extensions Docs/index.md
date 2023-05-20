@@ -15,6 +15,7 @@ The built in serializer supports binary serialization of
 - dictionaries
 - byte arrays
 - possibly any other objects with a parameterless public constructor
+- streams
 
 **NOTE**: Arrays, lists and dictionaries with nullable values aren't supported.
 
@@ -35,6 +36,7 @@ while serializing some types is being done with specialized methods:
 | `Dictionary<tKey, tValue>` | `WriteDict*` | `ReadDict*` |
 | `IStreamSerializer` | `WriteSerialized*` | `ReadSerialized*` |
 | `byte[]` | `WriteBytes*` | `ReadBytes*` |
+| `tream` | `WriteStream*` | `ReadStream*` |
 | (any other) | `WriteAnyObject*` | `ReadAnyObject*` |
 
 Using the `WriteObject*` and `ReadObject*` methods you can let the library 
@@ -76,6 +78,18 @@ used numeric type in an extra byte).
 
 **NOTE**: All numbers will be serialized using little endian.
 
+## Embedded streams
+
+Using `WriteStream*` and `ReadStream*` you can embed a stream in serialized 
+data. Seekable streams will just be copied, having their length as header, 
+while non-seekable streams will be embedded chunked.
+
+When deserializing an embedded stream using generic read-methods (like 
+`ReadObject` or `ReadAny`), a temporary `FileStream` will be created, which 
+will delete the temporary file when disposing. You can define a stream factory 
+using `StreamSerializerAttribute.StreamFactoryType` and 
+`StreamSerializerAttribute.StreamFactoryMethod`.
+
 ## Custom serializer
 
 ### Using the `StreamSerializerAttribute` attribute
@@ -91,7 +105,7 @@ public class YourType
 	
 	public string Serialized { get; set; } = null!;
 	
-	[StreamSerializer]
+	[StreamSerializer(1)]
 	public string? NotSerialized { get; set; }
 }
 
@@ -126,8 +140,72 @@ within the binary sequence. This ordering will be applied:
 
 To exclude a property depending on the object version:
 
-- `FromVersion`: First object version which includes the property (optional)
-- `Version`: Last object version which includes the property (optional)
+- `FromVersion`: First object version which **includes** the property 
+(optional)
+- `Version`: Last object version which **includes** the property (optional)
+
+You can set some details for the deserializer methods using these properties:
+
+- `OptionsType`: Individual serializer options type to use
+- `KeyOptionsType`: Individual key serializer options type to use
+- `ValueOptionsType`: Individual value serializer options type to use
+- `MinLen`: Minimum length
+- `Maxlen`: Maximum length
+
+The attribute type can be extended, methods are virtual.
+
+#### Stream factory
+
+If you use the attribute on a `Stream` property, you can define a stream 
+factory using the `StreamFactoryType` and `StreamFactoryMethod`, or you set a 
+`StreamFactory_Delegate` to the `StreamFactory` property (using reflections).
+
+You can use the `StreamSerializerAttribute.MemoryStreamFactory` method as 
+memory stream factory.
+
+#### Serializer options factory
+
+For automatic object deserialization the deserializer will try to get an 
+`ISerializerOptions` object, which is being used to provide deserialization 
+details to the deserializer method. You may define a serializer options 
+factory using the `SerializerOptionsFactoryType` and 
+`SerializerOptionsFactoryMethod` properties, or you set the serializer options 
+to the `SerializerOptions` property (using reflections).
+
+The same applies to
+
+- `KeySerializerOptions`: Used by deserializer methods which deserialize a 
+dictionary, for example
+- `ValueSerializerOptions`: Used by deserializer methods which deserialize a 
+dictionary, array or list, for example
+
+The `OptionsType`, `KeyOptionsType` and `ValueOptionsType` properties are used 
+when no factory method was defined. Those types need to implement a 
+constructor which takes a `PropertyInfo?` and a `StreamSerializerAttribute?` 
+parameter.
+
+### Automatic serializable objects
+
+You can extend from the `(Disposable)AutoStreamSerializerBase` type, if you 
+fully implement serialization using the `StreamSerializerAttribute` for the 
+final type and its properties, and match these pre-requirements:
+
+1. The `StreamSerializerAttribute` of the final type requires an object 
+version number in the `Version` property
+2. The stream serializer mode must be `OptIn`
+
+The auto stream serializer fully relies on a correct use of the 
+`StreamSerializerAttribute` and object versioning for both, the type and its 
+serialized properties.
+
+If a serialized object property has an unchanged default value, the serializer 
+will only write a flag which is telling the deserializer not to deserialize a 
+value. If you don't want that, you can disable defult value flags for the 
+whole type by setting the `StreamSerializerAttribute.UseDefaultValues` value 
+to `false` (this property is also evaluated per property). To make a decision 
+for each property based on the object version, you can create your own 
+`StreamSerializerAttribute` and override the `GetUseDefaultValue` method, 
+which per default simply returns the `UseDefaultValues` flag.
 
 ### Extending the `StreamSerializer`
 
@@ -385,7 +463,3 @@ encryption and hashing on the result as you want.
 
 Object validation will be applied to deserialized objects to ensure their 
 validity.
-
-## Roadmap
-
-- [ ] Enumerate objects from a stream

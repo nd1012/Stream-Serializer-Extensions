@@ -11,7 +11,7 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         /// <summary>
         /// Array pool
         /// </summary>
-        protected readonly ArrayPool<byte>? Pool;
+        protected readonly ArrayPool<byte> Pool;
         /// <summary>
         /// Minimum UTF-8 string bytes length
         /// </summary>
@@ -27,7 +27,8 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        public StreamStringAsyncEnumerator(Stream stream, int? version = null, CancellationToken cancellationToken = default) : base(stream, version, cancellationToken) => Pool = null;
+        public StreamStringAsyncEnumerator(Stream stream, int? version = null, CancellationToken cancellationToken = default) : base(stream, version, cancellationToken)
+            => Pool = StreamSerializer.BufferPool;
 
         /// <summary>
         /// Constructor
@@ -48,7 +49,7 @@ namespace wan24.StreamSerializerExtensions.Enumerator
             )
             : base(stream, version, cancellationToken)
         {
-            Pool = pool;
+            Pool = pool ?? StreamSerializer.BufferPool;
             MinLen = minLen;
             MaxLen = maxLen;
         }

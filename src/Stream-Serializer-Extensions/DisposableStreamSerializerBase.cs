@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using wan24.Core;
 using wan24.ObjectValidation;
 
@@ -31,7 +32,7 @@ namespace wan24.StreamSerializerExtensions
         /// Constructor
         /// </summary>
         /// <param name="objectVersion">Object version</param>
-        protected DisposableStreamSerializerBase(int? objectVersion = null) : base() => _ObjectVersion = objectVersion;
+        protected DisposableStreamSerializerBase(int? objectVersion = null) : base() => _ObjectVersion = objectVersion ?? GetType().GetCustomAttribute<StreamSerializerAttribute>()?.Version;
 
         /// <summary>
         /// Constructor
@@ -90,7 +91,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         private async Task SerializeIntAsync(Stream stream, CancellationToken cancellationToken)
         {
-            await stream.WriteSerializerVersionAsync().DynamicContext();
+            await stream.WriteSerializerVersionAsync(cancellationToken).DynamicContext();
             await stream.WriteNumberAsync(BASE_VERSION, cancellationToken).DynamicContext();
             if (_ObjectVersion != null) await stream.WriteNumberAsync(_ObjectVersion.Value, cancellationToken).DynamicContext();
             await SerializeAsync(stream, cancellationToken).DynamicContext();
@@ -120,7 +121,9 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
+#pragma warning disable IDE0060 // Remove unused parameter (may be used later)
         private void DeserializeInt(Stream stream, int version)
+#pragma warning restore IDE0060 // Remove unused parameter (may be used later)
         {
             _SerializerVersion = stream.ReadSerializerVersion();
             int bv = stream.ReadNumber<int>(_SerializerVersion.Value);
@@ -135,7 +138,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
+#pragma warning disable IDE0060 // Remove unused parameter (may be used later)
         private async Task DeserializeIntAsync(Stream stream, int version, CancellationToken cancellationToken)
+#pragma warning restore IDE0060 // Remove unused parameter (may be used later)
         {
             _SerializerVersion = await stream.ReadSerializerVersionAsync(cancellationToken).DynamicContext();
             int bv = await stream.ReadNumberAsync<int>(_SerializerVersion.Value, cancellationToken: cancellationToken).DynamicContext();
@@ -159,6 +164,6 @@ namespace wan24.StreamSerializerExtensions
         Task IStreamSerializer.DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken) => IfUndisposed(() => DeserializeIntAsync(stream, version, cancellationToken));
 
         /// <inheritdoc/>
-        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext) => IfUndisposed(() => ValidatableObject.ObjectValidatable(this));
+        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext) => IfUndisposed(() => ValidatableObjectBase.ObjectValidatable(this));
     }
 }
