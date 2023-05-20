@@ -1,5 +1,4 @@
-﻿using wan24.ObjectValidation;
-using wan24.StreamSerializerExtensions;
+﻿using wan24.StreamSerializerExtensions;
 
 namespace Stream_Serializer_Extensions_Tests
 {
@@ -22,7 +21,7 @@ namespace Stream_Serializer_Extensions_Tests
         public bool BValue { get; set; }
 
         // Excluded in object version 3+ (but included in object version 1 and 2)
-        [StreamSerializer(0, 2), NoValidation]//TODO Remove NoValidation for newer ObjectValidation version which denies Stream validation
+        [StreamSerializer(0, 2)]
         public Stream? Stream { get; set; }
 
         // Always included

@@ -1929,7 +1929,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 else
                 {
-                    using RentedArray<byte> buffer = new(len: chunkLength ?? Settings.BufferSize, pool);
+                    using RentedArray<byte> buffer = new(len: chunkLength ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool);
                     for (int red = buffer.Length; red == buffer.Length;)
                     {
                         red = stream.Read(buffer.Span);
@@ -1982,7 +1982,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 else
                 {
-                    using RentedArray<byte> buffer = new(len: chunkLength ?? Settings.BufferSize, pool);
+                    using RentedArray<byte> buffer = new(len: chunkLength ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool);
                     for (int red = buffer.Length; red == buffer.Length;)
                     {
                         red = await stream.ReadAsync(buffer.Memory, cancellationToken).DynamicContext();

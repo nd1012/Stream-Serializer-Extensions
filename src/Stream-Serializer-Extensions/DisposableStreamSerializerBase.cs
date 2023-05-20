@@ -164,6 +164,6 @@ namespace wan24.StreamSerializerExtensions
         Task IStreamSerializer.DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken) => IfUndisposed(() => DeserializeIntAsync(stream, version, cancellationToken));
 
         /// <inheritdoc/>
-        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext) => IfUndisposed(() => ValidatableObject.ObjectValidatable(this));
+        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext) => IfUndisposed(() => ValidatableObjectBase.ObjectValidatable(this));
     }
 }

@@ -19,5 +19,9 @@ namespace wan24.StreamSerializerExtensions
         /// Auto stream serializer informations (key is the property name)
         /// </summary>
         OrderedDictionary<string, AutoStreamSerializerInfo> Infos { get; }
+        /// <summary>
+        /// Default values
+        /// </summary>
+        Dictionary<string, object?>? DefaultValues { get; }
     }
 }

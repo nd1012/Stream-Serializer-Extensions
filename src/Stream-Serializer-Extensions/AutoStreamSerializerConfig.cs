@@ -10,14 +10,10 @@ namespace wan24.StreamSerializerExtensions
     public sealed class AutoStreamSerializerConfig<T> : IAutoStreamSerializerConfig where T : class, IAutoStreamSerializer
     {
         /// <summary>
-        /// Default values
-        /// </summary>
-        private readonly Dictionary<string, object?>? DefaultValues;
-
-        /// <summary>
         /// Constructor
         /// </summary>
-        public AutoStreamSerializerConfig()
+        /// <param name="initDefaultValues">Initialize default values?</param>
+        public AutoStreamSerializerConfig(bool initDefaultValues = true)
         {
             Type = typeof(T);
             // Stream serializer attribute required
@@ -35,12 +31,7 @@ namespace wan24.StreamSerializerExtensions
             if (Attribute.UseDefaultValues)
             {
                 DefaultValues = new();
-                object instance = Type.ConstructAuto(usePrivate: true) ?? throw new SerializerException($"Can't instance {Type} for getting the default values", new InvalidProgramException());
-                foreach (AutoStreamSerializerInfo info in Infos.Values)
-                {
-                    if (!info.Attribute.UseDefaultValues) continue;
-                    DefaultValues[info.Property.Name] = info.Property.GetValue(instance);
-                }
+                if (initDefaultValues) InitDefaultValues();
             }
             else
             {
@@ -56,6 +47,9 @@ namespace wan24.StreamSerializerExtensions
 
         /// <inheritdoc/>
         public OrderedDictionary<string, AutoStreamSerializerInfo> Infos { get; }
+
+        /// <inheritdoc/>
+        public Dictionary<string, object?>? DefaultValues { get; }
 
         /// <summary>
         /// Serialize
@@ -164,6 +158,20 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <summary>
+        /// Initialize the default values
+        /// </summary>
+        public void InitDefaultValues()
+        {
+            if (DefaultValues == null) return;
+            object instance = Type.ConstructAuto(usePrivate: true) ?? throw new SerializerException($"Can't instance {Type} for getting the default values", new InvalidProgramException());
+            foreach (AutoStreamSerializerInfo info in Infos.Values)
+            {
+                if (!info.Attribute.UseDefaultValues) continue;
+                DefaultValues[info.Property.Name] = info.Property.GetValue(instance);
+            }
+        }
+
+        /// <summary>
         /// Prepare the serialization
         /// </summary>
         /// <param name="obj">Serialized object</param>
@@ -181,12 +189,12 @@ namespace wan24.StreamSerializerExtensions
             bool usedDefault;
             PropertyInfo[] props = properties.Where(p => DefaultValues.ContainsKey(p.Name) && Infos[p.Name].Attribute.GetUseDefaultValue(Attribute.Version!.Value)).ToArray();
             defaultValueBitsLength = (int)Math.Ceiling((decimal)props.Length / 8);
-            defaultValueBits = StreamSerializer.BufferPool.Rent(defaultValueBitsLength.Value);
+            defaultValueBits = StreamSerializer.BufferPool.RentClean(defaultValueBitsLength.Value);
             try
             {
                 foreach (PropertyInfo pi in props)
                 {
-                    if (usedDefault = ObjectHelper.AreEqual(pi.GetValue(obj), DefaultValues[pi.Name])) defaultValueBits[byteOffset] |= (byte)(1 << bitOffset);
+                    if (usedDefault = ObjectHelper.AreEqual(pi.GetValue(obj), DefaultValues[pi.Name])) defaultValueBits[byteOffset] |= 1.ShiftLeft(bitOffset).ToByte();
                     if (usedDefault || (!pi.IsNullable() && pi.PropertyType == typeof(bool))) usedDefaultValue.Add(pi.Name);
                     if (++bitOffset != 8) continue;
                     byteOffset++;
@@ -217,14 +225,18 @@ namespace wan24.StreamSerializerExtensions
             try
             {
                 int byteOffset = 0,
-                bitOffset = 0,
-                    bit;
-                bool usedDefault;
+                    bitOffset = 0;
                 foreach (PropertyInfo pi in properties)
                 {
-                    bit = 1 << bitOffset;
-                    if (usedDefault = (defaultValueBits[byteOffset] & bit) == bit) usedDefaultValue.Add(pi.Name);
-                    if (!usedDefault && !pi.IsNullable() && pi.PropertyType == typeof(bool)) pi.SetValue(obj, !(bool)pi.GetValue(obj)!);
+                    if (defaultValueBits[byteOffset].HasFlags(1.ShiftLeft(bitOffset).ToByte()))
+                    {
+                        usedDefaultValue.Add(pi.Name);
+                    }
+                    else if (!pi.IsNullable() && pi.PropertyType == typeof(bool))
+                    {
+                        usedDefaultValue.Add(pi.Name);
+                        pi.SetValue(obj, !(bool)pi.GetValue(obj)!);
+                    }
                     if (++bitOffset != 8) continue;
                     byteOffset++;
                     bitOffset = 0;

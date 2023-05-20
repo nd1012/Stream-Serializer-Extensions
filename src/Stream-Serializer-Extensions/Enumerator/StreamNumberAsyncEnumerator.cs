@@ -12,7 +12,7 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         /// <summary>
         /// Array pool
         /// </summary>
-        protected readonly ArrayPool<byte>? Pool;
+        protected readonly ArrayPool<byte> Pool;
 
         /// <summary>
         /// Constructor
@@ -21,7 +21,7 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         public StreamNumberAsyncEnumerator(Stream stream, int? version = null, CancellationToken cancellationToken = default) : base(stream, version, cancellationToken)
-            => Pool = null;
+            => Pool = StreamSerializer.BufferPool;
 
         /// <summary>
         /// Constructor
@@ -32,7 +32,7 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         /// <param name="cancellationToken">Cancellation token</param>
         public StreamNumberAsyncEnumerator(Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default) 
             : base(stream, version, cancellationToken)
-            => Pool = pool;
+            => Pool = pool ?? StreamSerializer.BufferPool;
 
         /// <inheritdoc/>
         protected override async Task<T> ReadObjectAsync() => await Stream.ReadNumberAsync<T>(SerializerVersion, Pool, Cancellation).DynamicContext();

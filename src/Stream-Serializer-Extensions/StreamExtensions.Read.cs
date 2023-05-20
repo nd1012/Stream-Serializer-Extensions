@@ -233,7 +233,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 finally
                 {
-                    ArrayPool<byte>.Shared.Return(data);
+                    StreamSerializer.BufferPool.Return(data);
                 }
                 return ReadAnyInt(stream, version, objType, options);
             }
@@ -362,7 +362,7 @@ namespace wan24.StreamSerializerExtensions
                     return ReadSerializedObject(stream, type!, version);
                 case ObjectTypes.Stream:
                     Stream res = options?.Attribute.GetStream(obj: null, property: null, stream, version ?? StreamSerializer.VERSION, default) ?? new FileStream(
-                        Path.GetTempFileName(),//TODO Use wan24-Core Settings.TempFolder
+                        Path.Combine(Settings.TempFolder, Guid.NewGuid().ToString()),
                         FileMode.OpenOrCreate,
                         FileAccess.ReadWrite,
                         FileShare.None,
@@ -404,7 +404,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 finally
                 {
-                    ArrayPool<byte>.Shared.Return(data);
+                    StreamSerializer.BufferPool.Return(data);
                 }
                 return await ReadAnyIntAsync(stream, version, objType, options, cancellationToken).DynamicContext();
             }
@@ -545,7 +545,7 @@ namespace wan24.StreamSerializerExtensions
                     return await ReadSerializedObjectAsync(stream, type!, version, cancellationToken)!.DynamicContext();
                 case ObjectTypes.Stream:
                     Stream res = options?.Attribute.GetStream(obj: null, property: null, stream, version ?? StreamSerializer.VERSION, default) ?? new FileStream(
-                        Path.GetTempFileName(),//TODO Use wan24-Core Settings.TempFolder
+                        Path.Combine(Settings.TempFolder, Guid.NewGuid().ToString()),
                         FileMode.OpenOrCreate,
                         FileAccess.ReadWrite,
                         FileShare.None,
@@ -595,7 +595,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 finally
                 {
-                    ArrayPool<byte>.Shared.Return(data);
+                    StreamSerializer.BufferPool.Return(data);
                 }
                 return objType == ObjectTypes.Null ? null : ReadAnyInt(stream, version, objType, options);
             }
@@ -629,7 +629,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 finally
                 {
-                    ArrayPool<byte>.Shared.Return(data);
+                    StreamSerializer.BufferPool.Return(data);
                 }
                 return objType == ObjectTypes.Null ? null : await ReadAnyIntAsync(stream, version, objType, options, cancellationToken).DynamicContext();
             }
@@ -665,7 +665,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -692,7 +692,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -853,7 +853,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -880,7 +880,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -929,7 +929,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -956,7 +956,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1005,7 +1005,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1032,7 +1032,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1081,7 +1081,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1108,7 +1108,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1157,7 +1157,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1184,7 +1184,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1233,7 +1233,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1260,7 +1260,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1309,7 +1309,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1336,7 +1336,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1385,7 +1385,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1412,7 +1412,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1461,7 +1461,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1488,7 +1488,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1619,7 +1619,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1731,7 +1731,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -1976,7 +1976,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static string ReadString(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
         {
-            (byte[] data, int len) = ReadBytes(stream, version, buffer: null, pool, minLen, maxLen);
+            (byte[] data, int len) = ReadBytes(stream, version, buffer: null, pool ?? StreamSerializer.BufferPool, minLen, maxLen);
             try
             {
                 return data.AsSpan(0, len).ToUtf8String();
@@ -1987,7 +1987,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                pool?.Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -2010,7 +2010,7 @@ namespace wan24.StreamSerializerExtensions
             CancellationToken cancellationToken = default
             )
         {
-            (byte[] data, int len) = await ReadBytesAsync(stream, version, buffer: null, pool, minLen, maxLen, cancellationToken).DynamicContext();
+            (byte[] data, int len) = await ReadBytesAsync(stream, version, buffer: null, pool ?? StreamSerializer.BufferPool, minLen, maxLen, cancellationToken).DynamicContext();
             try
             {
                 return data.AsSpan(0, len).ToUtf8String();
@@ -2021,7 +2021,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                pool?.Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data);
             }
         }
 
@@ -2690,7 +2690,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Serialized data (a pool array which needs to be returned to the pool after use and might be larger than the given length!)</returns>
         public static byte[] ReadSerializedData(this Stream stream, int len, ArrayPool<byte>? pool = null)
         {
-            byte[] res = (pool ?? ArrayPool<byte>.Shared).Rent(len);
+            byte[] res = (pool ?? StreamSerializer.BufferPool).Rent(len);
             try
             {
                 if (stream.Read(res.AsSpan(0, len)) != len) throw new SerializerException($"Failed to read serialized data ({len} bytes)");
@@ -2698,7 +2698,7 @@ namespace wan24.StreamSerializerExtensions
             }
             catch
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(res);
+                (pool ?? StreamSerializer.BufferPool).Return(res);
                 throw;
             }
         }
@@ -2713,7 +2713,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Serialized data (a pool array which needs to be returned to the pool after use and might be larger than the given length!)</returns>
         public static async Task<byte[]> ReadSerializedDataAsync(this Stream stream, int len, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
         {
-            byte[] res = (pool ?? ArrayPool<byte>.Shared).Rent(len);
+            byte[] res = (pool ?? StreamSerializer.BufferPool).Rent(len);
             try
             {
                 if (await stream.ReadAsync(res.AsMemory(0, len), cancellationToken).DynamicContext() != len)
@@ -2722,7 +2722,7 @@ namespace wan24.StreamSerializerExtensions
             }
             catch
             {
-                (pool ?? ArrayPool<byte>.Shared).Return(res);
+                (pool ?? StreamSerializer.BufferPool).Return(res);
                 throw;
             }
         }
@@ -2767,7 +2767,7 @@ namespace wan24.StreamSerializerExtensions
                 if (len > int.MaxValue) throw new SerializerException($"Invalid chunk length {len}", new InvalidDataException());
                 if (len > (maxBufferSize ?? Settings.BufferSize))
                     throw new SerializerException($"Chunk length of {len} bytes exceeds max. buffer size of {maxBufferSize ?? Settings.BufferSize}", new InvalidDataException());
-                using RentedArray<byte> buffer = new((int)len, pool);
+                using RentedArray<byte> buffer = new((int)len, pool ?? StreamSerializer.BufferPool);
                 long total = 0;
                 for (int red = (int)len; red == len; total += red)
                 {
@@ -2784,7 +2784,7 @@ namespace wan24.StreamSerializerExtensions
                 if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
                 if (len > maxLen)
                     throw new SerializerException($"Embedded stream length of {len} bytes exceeds the maximum stream length of {maxLen} bytes", new OverflowException());
-                using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool);
+                using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool);
                 long total = 0;
                 for (int red = buffer.Length; red == buffer.Length && total < len; total += red)
                 {
@@ -2870,7 +2870,7 @@ namespace wan24.StreamSerializerExtensions
                 if (len > int.MaxValue) throw new SerializerException($"Invalid chunk length {len}", new InvalidDataException());
                 if (len > (maxBufferSize ?? Settings.BufferSize))
                     throw new SerializerException($"Chunk length of {len} bytes exceeds max. buffer size of {maxBufferSize ?? Settings.BufferSize}", new InvalidDataException());
-                using RentedArray<byte> buffer = new((int)len, pool);
+                using RentedArray<byte> buffer = new((int)len, pool ?? StreamSerializer.BufferPool);
                 long total = 0;
                 for (int red = (int)len; red == len; total += red)
                 {
@@ -2887,7 +2887,7 @@ namespace wan24.StreamSerializerExtensions
                 if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
                 if (len > maxLen)
                     throw new SerializerException($"Embedded stream length of {len} bytes exceeds the maximum stream length of {maxLen} bytes", new OverflowException());
-                using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool);
+                using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool);
                 long total = 0;
                 for (int red = buffer.Length; red == buffer.Length && total < len; total += red)
                 {

@@ -2,8 +2,6 @@
 using System.Collections.Concurrent;
 using wan24.Core;
 
-//TODO Make more use the BufferPool
-
 namespace wan24.StreamSerializerExtensions
 {
     /// <summary>
@@ -51,7 +49,6 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         static StreamSerializer()
         {
-            //TODO (De)serializer for the new WordDateTime type
             SyncSerializer = new(
                 new KeyValuePair<Type, Serialize_Delegate>[]
                 {
@@ -483,7 +480,7 @@ namespace wan24.StreamSerializerExtensions
         public static async Task<Stream> StreamDeserializer(Stream stream, Type type, int version, ISerializerOptions? options, CancellationToken cancellationToken)
         {
             Stream res = options?.Attribute.GetStream(obj: null, property: null, stream, version, cancellationToken) ?? new FileStream(
-                Path.GetTempFileName(),//TODO Use wan24-Core Settings.TempFolder
+                Path.Combine(Settings.TempFolder, Guid.NewGuid().ToString()),
                 FileMode.OpenOrCreate,
                 FileAccess.ReadWrite,
                 FileShare.None,

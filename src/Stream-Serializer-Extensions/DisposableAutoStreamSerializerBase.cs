@@ -20,7 +20,8 @@ namespace wan24.StreamSerializerExtensions
         static DisposableAutoStreamSerializerBase()
         {
             if (typeof(T).GetCustomAttribute<StreamSerializerAttribute>() == null) throw new InvalidProgramException($"{typeof(T)} needs a {typeof(StreamSerializerAttribute)}");
-            AutoStreamSerializerConfig = new();
+            AutoStreamSerializerConfig = new(initDefaultValues: false);
+            AutoStreamSerializerConfig.InitDefaultValues();
         }
 
         /// <summary>

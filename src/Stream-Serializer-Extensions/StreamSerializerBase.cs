@@ -7,7 +7,7 @@ namespace wan24.StreamSerializerExtensions
     /// <summary>
     /// Base class for a stream serializing type
     /// </summary>
-    public abstract class StreamSerializerBase : ValidatableObject, IStreamSerializerVersion
+    public abstract class StreamSerializerBase : ValidatableObjectBase, IStreamSerializerVersion
     {
         /// <summary>
         /// Base object version

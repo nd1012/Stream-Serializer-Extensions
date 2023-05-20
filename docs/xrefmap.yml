@@ -146,14 +146,14 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig(Of T)
   nameWithType: AutoStreamSerializerConfig<T>
   nameWithType.vb: AutoStreamSerializerConfig(Of T)
-- uid: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig`1.#ctor
-  name: AutoStreamSerializerConfig()
-  href: api/wan24.StreamSerializerExtensions.AutoStreamSerializerConfig-1.html#wan24_StreamSerializerExtensions_AutoStreamSerializerConfig_1__ctor
-  commentId: M:wan24.StreamSerializerExtensions.AutoStreamSerializerConfig`1.#ctor
-  fullName: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig<T>.AutoStreamSerializerConfig()
-  fullName.vb: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig(Of T).AutoStreamSerializerConfig()
-  nameWithType: AutoStreamSerializerConfig<T>.AutoStreamSerializerConfig()
-  nameWithType.vb: AutoStreamSerializerConfig(Of T).AutoStreamSerializerConfig()
+- uid: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig`1.#ctor(System.Boolean)
+  name: AutoStreamSerializerConfig(Boolean)
+  href: api/wan24.StreamSerializerExtensions.AutoStreamSerializerConfig-1.html#wan24_StreamSerializerExtensions_AutoStreamSerializerConfig_1__ctor_System_Boolean_
+  commentId: M:wan24.StreamSerializerExtensions.AutoStreamSerializerConfig`1.#ctor(System.Boolean)
+  fullName: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig<T>.AutoStreamSerializerConfig(System.Boolean)
+  fullName.vb: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig(Of T).AutoStreamSerializerConfig(System.Boolean)
+  nameWithType: AutoStreamSerializerConfig<T>.AutoStreamSerializerConfig(Boolean)
+  nameWithType.vb: AutoStreamSerializerConfig(Of T).AutoStreamSerializerConfig(Boolean)
 - uid: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig`1.#ctor*
   name: AutoStreamSerializerConfig
   href: api/wan24.StreamSerializerExtensions.AutoStreamSerializerConfig-1.html#wan24_StreamSerializerExtensions_AutoStreamSerializerConfig_1__ctor_
@@ -180,6 +180,23 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig(Of T).Attribute
   nameWithType: AutoStreamSerializerConfig<T>.Attribute
   nameWithType.vb: AutoStreamSerializerConfig(Of T).Attribute
+- uid: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig`1.DefaultValues
+  name: DefaultValues
+  href: api/wan24.StreamSerializerExtensions.AutoStreamSerializerConfig-1.html#wan24_StreamSerializerExtensions_AutoStreamSerializerConfig_1_DefaultValues
+  commentId: P:wan24.StreamSerializerExtensions.AutoStreamSerializerConfig`1.DefaultValues
+  fullName: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig<T>.DefaultValues
+  fullName.vb: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig(Of T).DefaultValues
+  nameWithType: AutoStreamSerializerConfig<T>.DefaultValues
+  nameWithType.vb: AutoStreamSerializerConfig(Of T).DefaultValues
+- uid: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig`1.DefaultValues*
+  name: DefaultValues
+  href: api/wan24.StreamSerializerExtensions.AutoStreamSerializerConfig-1.html#wan24_StreamSerializerExtensions_AutoStreamSerializerConfig_1_DefaultValues_
+  commentId: Overload:wan24.StreamSerializerExtensions.AutoStreamSerializerConfig`1.DefaultValues
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig<T>.DefaultValues
+  fullName.vb: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig(Of T).DefaultValues
+  nameWithType: AutoStreamSerializerConfig<T>.DefaultValues
+  nameWithType.vb: AutoStreamSerializerConfig(Of T).DefaultValues
 - uid: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig`1.Deserialize(`0,Stream,System.Int32)
   name: Deserialize(T, Stream, Int32)
   href: api/wan24.StreamSerializerExtensions.AutoStreamSerializerConfig-1.html#wan24_StreamSerializerExtensions_AutoStreamSerializerConfig_1_Deserialize__0_Stream_System_Int32_
@@ -231,6 +248,23 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig(Of T).Infos
   nameWithType: AutoStreamSerializerConfig<T>.Infos
   nameWithType.vb: AutoStreamSerializerConfig(Of T).Infos
+- uid: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig`1.InitDefaultValues
+  name: InitDefaultValues()
+  href: api/wan24.StreamSerializerExtensions.AutoStreamSerializerConfig-1.html#wan24_StreamSerializerExtensions_AutoStreamSerializerConfig_1_InitDefaultValues
+  commentId: M:wan24.StreamSerializerExtensions.AutoStreamSerializerConfig`1.InitDefaultValues
+  fullName: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig<T>.InitDefaultValues()
+  fullName.vb: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig(Of T).InitDefaultValues()
+  nameWithType: AutoStreamSerializerConfig<T>.InitDefaultValues()
+  nameWithType.vb: AutoStreamSerializerConfig(Of T).InitDefaultValues()
+- uid: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig`1.InitDefaultValues*
+  name: InitDefaultValues
+  href: api/wan24.StreamSerializerExtensions.AutoStreamSerializerConfig-1.html#wan24_StreamSerializerExtensions_AutoStreamSerializerConfig_1_InitDefaultValues_
+  commentId: Overload:wan24.StreamSerializerExtensions.AutoStreamSerializerConfig`1.InitDefaultValues
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig<T>.InitDefaultValues
+  fullName.vb: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig(Of T).InitDefaultValues
+  nameWithType: AutoStreamSerializerConfig<T>.InitDefaultValues
+  nameWithType.vb: AutoStreamSerializerConfig(Of T).InitDefaultValues
 - uid: wan24.StreamSerializerExtensions.AutoStreamSerializerConfig`1.Serialize(`0,Stream)
   name: Serialize(T, Stream)
   href: api/wan24.StreamSerializerExtensions.AutoStreamSerializerConfig-1.html#wan24_StreamSerializerExtensions_AutoStreamSerializerConfig_1_Serialize__0_Stream_
@@ -1549,6 +1583,19 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.IAutoStreamSerializerConfig.Attribute
   nameWithType: IAutoStreamSerializerConfig.Attribute
+- uid: wan24.StreamSerializerExtensions.IAutoStreamSerializerConfig.DefaultValues
+  name: DefaultValues
+  href: api/wan24.StreamSerializerExtensions.IAutoStreamSerializerConfig.html#wan24_StreamSerializerExtensions_IAutoStreamSerializerConfig_DefaultValues
+  commentId: P:wan24.StreamSerializerExtensions.IAutoStreamSerializerConfig.DefaultValues
+  fullName: wan24.StreamSerializerExtensions.IAutoStreamSerializerConfig.DefaultValues
+  nameWithType: IAutoStreamSerializerConfig.DefaultValues
+- uid: wan24.StreamSerializerExtensions.IAutoStreamSerializerConfig.DefaultValues*
+  name: DefaultValues
+  href: api/wan24.StreamSerializerExtensions.IAutoStreamSerializerConfig.html#wan24_StreamSerializerExtensions_IAutoStreamSerializerConfig_DefaultValues_
+  commentId: Overload:wan24.StreamSerializerExtensions.IAutoStreamSerializerConfig.DefaultValues
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.IAutoStreamSerializerConfig.DefaultValues
+  nameWithType: IAutoStreamSerializerConfig.DefaultValues
 - uid: wan24.StreamSerializerExtensions.IAutoStreamSerializerConfig.Infos
   name: Infos
   href: api/wan24.StreamSerializerExtensions.IAutoStreamSerializerConfig.html#wan24_StreamSerializerExtensions_IAutoStreamSerializerConfig_Infos

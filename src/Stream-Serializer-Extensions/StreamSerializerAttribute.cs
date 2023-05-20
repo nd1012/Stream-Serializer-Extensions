@@ -186,23 +186,23 @@ namespace wan24.StreamSerializerExtensions
                             : $"{obj.GetType()}.{property!.Name} stream serializer attribute defines a stream factory type, but no method"
                         , new InvalidProgramException()
                         );
-                //TODO Use wan24-Core ReflectionExtensions
-                MethodInfo delegateInfo = typeof(StreamFactory_Delegate).GetMethod("Invoke")!;
-                Type[] parameters = delegateInfo.GetParameters().Select(p => p.ParameterType).ToArray();
-                foreach (MethodInfo mi in StreamFactoryType.GetMethods(BindingFlags.Public | BindingFlags.Static))
-                {
-                    if (mi.Name != StreamFactoryMethod) continue;
-                    if (delegateInfo.ReturnType.IsAssignableFrom(mi.ReturnType) || !mi.GetParameters().Select(p => p.ParameterType).SequenceEqual(parameters)) continue;
-                    StreamFactory = mi.CreateDelegate<StreamFactory_Delegate>();
-                    break;
-                }
-                if (StreamFactory == null)
-                    throw new SerializerException(
-                        obj == null
-                            ? $"Stream serializer attribute defined stream factory {StreamFactoryType}.{StreamFactoryMethod} not found"
-                            : $"{obj.GetType()}.{property!.Name} stream serializer attribute defined stream factory {StreamFactoryType}.{StreamFactoryMethod} not found",
-                        new InvalidProgramException()
-                        );
+                MethodInfo delegateInfo = typeof(StreamFactory_Delegate).GetMethod(nameof(StreamFactory_Delegate.Invoke), BindingFlags.Public)!,
+                    mi = StreamFactoryType.GetMethod(
+                        StreamFactoryMethod,
+                        BindingFlags.Public | BindingFlags.Static,
+                        filter: null,
+                        genericArgumentCount: null,
+                        exactTypes: false,
+                        delegateInfo.ReturnType,
+                        delegateInfo.GetParameters().Select(p => p.ParameterType).ToArray()
+                        ) ??
+                        throw new SerializerException(
+                            obj == null
+                                ? $"Stream serializer attribute defined stream factory {StreamFactoryType}.{StreamFactoryMethod} not found"
+                                : $"{obj.GetType()}.{property!.Name} stream serializer attribute defined stream factory {StreamFactoryType}.{StreamFactoryMethod} not found",
+                            new InvalidProgramException()
+                            );
+                StreamFactory = mi.CreateDelegate<StreamFactory_Delegate>();
             }
             return StreamFactory(obj, property, this, stream, version, cancellationToken);
         }
@@ -228,21 +228,23 @@ namespace wan24.StreamSerializerExtensions
                             : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defines a serializer options factory type, but no method",
                         new InvalidProgramException()
                         );
-                //TODO Use wan24-Core ReflectionExtensions
-                MethodInfo delegateInfo = typeof(SerializerOptionsFactory_Delegate).GetMethod("Invoke")!;
-                Type[] parameters = delegateInfo.GetParameters().Select(p => p.ParameterType).ToArray();
-                foreach (MethodInfo mi in SerializerOptionsFactoryType.GetMethods(BindingFlags.Public | BindingFlags.Static))
-                {
-                    if (mi.Name != SerializerOptionsFactoryMethod) continue;
-                    if (delegateInfo.ReturnType.IsAssignableFrom(mi.ReturnType) || !mi.GetParameters().Select(p => p.ParameterType).SequenceEqual(parameters)) continue;
-                    return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, stream, version, cancellationToken })!;
-                }
-                throw new SerializerException(
-                    property == null
-                        ? $"Stream serializer attribute defined serializer options factory {SerializerOptionsFactoryType}.{SerializerOptionsFactoryMethod} not found"
-                        : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defined serializer options factory {SerializerOptionsFactoryType}.{SerializerOptionsFactoryMethod} not found",
-                    new InvalidProgramException()
-                    );
+                MethodInfo delegateInfo = typeof(SerializerOptionsFactory_Delegate).GetMethod("Invoke")!,
+                    mi = SerializerOptionsFactoryType.GetMethod(
+                        SerializerOptionsFactoryMethod,
+                        BindingFlags.Public|BindingFlags.Static,
+                        filter: null,
+                        genericArgumentCount: null,
+                        exactTypes: false,
+                        delegateInfo.ReturnType,
+                        delegateInfo.GetParameters().Select(p => p.ParameterType).ToArray()
+                        ) ??
+                        throw new SerializerException(
+                            property == null
+                                ? $"Stream serializer attribute defined serializer options factory {SerializerOptionsFactoryType}.{SerializerOptionsFactoryMethod} not found"
+                                : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defined serializer options factory {SerializerOptionsFactoryType}.{SerializerOptionsFactoryMethod} not found",
+                            new InvalidProgramException()
+                            );
+                return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, stream, version, cancellationToken })!;
             }
             finally
             {
@@ -270,21 +272,23 @@ namespace wan24.StreamSerializerExtensions
                         : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defines a key serializer options factory type, but no method",
                     new InvalidProgramException()
                     );
-            //TODO Use wan24-Core ReflectionExtensions
-            MethodInfo delegateInfo = typeof(SerializerOptionsFactory_Delegate).GetMethod("Invoke")!;
-            Type[] parameters = delegateInfo.GetParameters().Select(p => p.ParameterType).ToArray();
-            foreach (MethodInfo mi in KeySerializerOptionsFactoryType.GetMethods(BindingFlags.Public | BindingFlags.Static))
-            {
-                if (mi.Name != SerializerOptionsFactoryMethod) continue;
-                if (delegateInfo.ReturnType.IsAssignableFrom(mi.ReturnType) || !mi.GetParameters().Select(p => p.ParameterType).SequenceEqual(parameters)) continue;
-                return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, stream, version, cancellationToken })!;
-            }
-            throw new SerializerException(
-                property == null
-                    ? $"Stream serializer attribute defined serializer options factory {KeySerializerOptionsFactoryType}.{KeySerializerOptionsFactoryMethod} not found"
-                    : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defined serializer options factory {KeySerializerOptionsFactoryType}.{KeySerializerOptionsFactoryMethod} not found",
-                new InvalidProgramException()
-                );
+            MethodInfo delegateInfo = typeof(SerializerOptionsFactory_Delegate).GetMethod("Invoke")!,
+                mi = KeySerializerOptionsFactoryType.GetMethod(
+                    KeySerializerOptionsFactoryMethod,
+                    BindingFlags.Public | BindingFlags.Static,
+                    filter: null,
+                    genericArgumentCount: null,
+                    exactTypes: false,
+                    delegateInfo.ReturnType,
+                    delegateInfo.GetParameters().Select(p => p.ParameterType).ToArray()
+                    ) ??
+                    throw new SerializerException(
+                        property == null
+                            ? $"Stream serializer attribute defined serializer options factory {KeySerializerOptionsFactoryType}.{KeySerializerOptionsFactoryMethod} not found"
+                            : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defined serializer options factory {KeySerializerOptionsFactoryType}.{KeySerializerOptionsFactoryMethod} not found",
+                        new InvalidProgramException()
+                        );
+            return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, stream, version, cancellationToken })!;
         }
 
         /// <summary>
@@ -306,21 +310,23 @@ namespace wan24.StreamSerializerExtensions
                         : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defines a value serializer options factory type, but no method",
                     new InvalidProgramException()
                     );
-            //TODO Use wan24-Core ReflectionExtensions
-            MethodInfo delegateInfo = typeof(SerializerOptionsFactory_Delegate).GetMethod("Invoke")!;
-            Type[] parameters = delegateInfo.GetParameters().Select(p => p.ParameterType).ToArray();
-            foreach (MethodInfo mi in ValueSerializerOptionsFactoryType.GetMethods(BindingFlags.Public | BindingFlags.Static))
-            {
-                if (mi.Name != SerializerOptionsFactoryMethod) continue;
-                if (delegateInfo.ReturnType.IsAssignableFrom(mi.ReturnType) || !mi.GetParameters().Select(p => p.ParameterType).SequenceEqual(parameters)) continue;
-                return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, stream, version, cancellationToken })!;
-            }
-            throw new SerializerException(
-                property == null
-                    ? $"Stream serializer attribute defined serializer options factory {ValueSerializerOptionsFactoryType}.{ValueSerializerOptionsFactoryMethod} not found"
-                    : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defined serializer options factory {ValueSerializerOptionsFactoryType}.{ValueSerializerOptionsFactoryMethod} not found",
-                new InvalidProgramException()
-                );
+            MethodInfo delegateInfo = typeof(SerializerOptionsFactory_Delegate).GetMethod("Invoke")!,
+                mi = ValueSerializerOptionsFactoryType.GetMethod(
+                    ValueSerializerOptionsFactoryMethod,
+                    BindingFlags.Public | BindingFlags.Static,
+                    filter: null,
+                    genericArgumentCount: null,
+                    exactTypes: false,
+                    delegateInfo.ReturnType,
+                    delegateInfo.GetParameters().Select(p => p.ParameterType).ToArray()
+                    ) ??
+                    throw new SerializerException(
+                        property == null
+                            ? $"Stream serializer attribute defined serializer options factory {ValueSerializerOptionsFactoryType}.{ValueSerializerOptionsFactoryMethod} not found"
+                            : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defined serializer options factory {ValueSerializerOptionsFactoryType}.{ValueSerializerOptionsFactoryMethod} not found",
+                        new InvalidProgramException()
+                        );
+            return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, stream, version, cancellationToken })!;
         }
 
         /// <summary>
