@@ -1,9 +1,10 @@
 ﻿using System.Buffers;
 using System.Data;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Text;
 using wan24.Core;
+
+//TODO Improve nullable boolean, enumeration, numeric, stream and object writing (increase the serializer version)
 
 namespace wan24.StreamSerializerExtensions
 {
