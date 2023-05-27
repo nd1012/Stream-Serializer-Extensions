@@ -2190,6 +2190,65 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
+        /// <param name="arr">Array</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="valueOptions">Value serializer options</param>
+        /// <returns>Value</returns>
+        public static T[] ReadFixedArray<T>(this Stream stream, T[] arr, int? version = null, ISerializerOptions? valueOptions = null)
+        {
+            try
+            {
+                for (int i = 0; i < arr.Length; arr[i] = ReadObject<T>(stream, version, valueOptions), i++) ;
+                return arr;
+            }
+            catch (SerializerException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new SerializerException(message: null, ex);
+            }
+        }
+
+        /// <summary>
+        /// Read
+        /// </summary>
+        /// <typeparam name="T">Element type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="arr">Array</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="valueOptions">Value serializer options</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Value</returns>
+        public static async Task<T[]> ReadFixedArrayAsync<T>(
+            this Stream stream,
+            T[] arr,
+            int? version = null,
+            ISerializerOptions? valueOptions = null,
+            CancellationToken cancellationToken = default
+            )
+        {
+            try
+            {
+                for (int i = 0; i < arr.Length; arr[i] = await ReadObjectAsync<T>(stream, version, valueOptions, cancellationToken).DynamicContext(), i++) ;
+                return arr;
+            }
+            catch (SerializerException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new SerializerException(message: null, ex);
+            }
+        }
+
+        /// <summary>
+        /// Read
+        /// </summary>
+        /// <typeparam name="T">Element type</typeparam>
+        /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <param name="minLen">Minimum length</param>
@@ -2693,7 +2752,8 @@ namespace wan24.StreamSerializerExtensions
             byte[] res = (pool ?? StreamSerializer.BufferPool).Rent(len);
             try
             {
-                if (stream.Read(res.AsSpan(0, len)) != len) throw new SerializerException($"Failed to read serialized data ({len} bytes)");
+                if (stream.Read(res.AsSpan(0, len)) != len)
+                    throw new SerializerException($"Failed to read serialized data ({len} bytes)");
                 return res;
             }
             catch
