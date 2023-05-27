@@ -191,7 +191,8 @@ namespace Stream_Serializer_Extensions_Tests
                 .WriteSerialized(test5)
                 .WriteSerialized(test5a)
                 .WriteSerialized(test5b)
-                .WriteFixedArray(fixedData.AsSpan());
+                .WriteFixedArray(fixedData.AsSpan())
+                .WriteStruct(new TestStruct(true));
             ms.Position = 0;
             Assert.IsTrue(ms.ReadBool());
             Assert.AreEqual((sbyte)0, ms.ReadOneSByte());
@@ -389,6 +390,10 @@ namespace Stream_Serializer_Extensions_Tests
                 int[] fixedData2 = ms.ReadFixedArray(new int[fixedData.Length]);
                 Assert.IsTrue(fixedData.SequenceEqual(fixedData2));
             }
+            {
+                TestStruct obj = ms.ReadStruct<TestStruct>();
+                Assert.IsTrue(obj.Value);
+            }
             Assert.AreEqual(ms.Length, ms.Position);
         }
 
@@ -556,6 +561,7 @@ namespace Stream_Serializer_Extensions_Tests
             await ms.WriteSerializedAsync(test5a);
             await ms.WriteSerializedAsync(test5b);
             await ms.WriteFixedArrayAsync(fixedData.AsMemory());
+            await ms.WriteStructAsync(new TestStruct(true));
             ms.Position = 0;
             Assert.IsTrue(await ms.ReadBoolAsync());
             Assert.AreEqual((sbyte)0, await ms.ReadOneSByteAsync());
@@ -751,6 +757,10 @@ namespace Stream_Serializer_Extensions_Tests
             {
                 int[] fixedData2 = await ms.ReadFixedArrayAsync(new int[fixedData.Length]);
                 Assert.IsTrue(fixedData.SequenceEqual(fixedData2));
+            }
+            {
+                TestStruct obj = await ms.ReadStructAsync<TestStruct>();
+                Assert.IsTrue(obj.Value);
             }
             Assert.AreEqual(ms.Length, ms.Position);
         }

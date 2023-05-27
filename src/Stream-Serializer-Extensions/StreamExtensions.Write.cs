@@ -1,6 +1,7 @@
 ﻿using System.Buffers;
 using System.Data;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using wan24.Core;
 
@@ -94,6 +95,8 @@ namespace wan24.StreamSerializerExtensions
             ReadObjectAsyncMethod = type.GetMethod(nameof(ReadObjectAsync), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadObjectAsync)}");
             ReadObjectNullableMethod = type.GetMethod(nameof(ReadObjectNullable), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadObjectNullable)}");
             ReadObjectNullableAsyncMethod = type.GetMethod(nameof(ReadObjectNullableAsync), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadObjectNullableAsync)}");
+            ReadStructMethod = type.GetMethod(nameof(ReadStruct), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadStruct)}");
+            ReadStructAsyncMethod = type.GetMethod(nameof(ReadStructAsync), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadStructAsync)}");
             ReadAnyMethod = type.GetMethod(nameof(ReadAny), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadAny)}");
             ReadAnyAsyncMethod = type.GetMethod(nameof(ReadAnyAsync), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadAnyAsync)}");
             ReadAnyNullableMethod = type.GetMethod(nameof(ReadAnyNullable), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadAnyNullable)}");
@@ -2083,6 +2086,85 @@ namespace wan24.StreamSerializerExtensions
         {
             await WriteAsync(stream, source != null, cancellationToken).DynamicContext();
             if (source != null) await WriteStreamAsync(stream, source, pool, chunkLength, cancellationToken).DynamicContext();
+        }
+
+        /// <summary>
+        /// Write a struct
+        /// </summary>
+        /// <typeparam name="tStream">Stream type</typeparam>
+        /// <typeparam name="tStruct">Struct type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Struct</param>
+        /// <returns>Stream</returns>
+        public static tStream WriteStruct<tStream, tStruct>(this tStream stream, tStruct value)
+            where tStream : Stream
+            where tStruct : struct
+        {
+            using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool);
+            GCHandle gch = GCHandle.Alloc(buffer.Array, GCHandleType.Pinned);
+            try
+            {
+                Marshal.StructureToPtr(value, gch.AddrOfPinnedObject(), fDeleteOld: true);
+            }
+            finally
+            {
+                gch.Free();
+            }
+            return WriteBytes(stream, buffer.Span);
+        }
+
+        /// <summary>
+        /// Write a struct
+        /// </summary>
+        /// <typeparam name="tStream">Stream type</typeparam>
+        /// <typeparam name="tStruct">Struct type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Struct</param>
+        /// <returns>Stream</returns>
+        public static tStream WriteStructNullable<tStream, tStruct>(this tStream stream, tStruct? value)
+            where tStream : Stream
+            where tStruct : struct
+            => value == null ? stream.Write(false) : stream.Write(true).WriteStruct(value.Value);
+
+        /// <summary>
+        /// Write a struct
+        /// </summary>
+        /// <typeparam name="tStream">Stream type</typeparam>
+        /// <typeparam name="tStruct">Struct type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Struct</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        public static Task WriteStructAsync<tStream, tStruct>(this tStream stream, tStruct value, CancellationToken cancellationToken = default)
+            where tStream : Stream
+            where tStruct : struct
+        {
+            using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool);
+            GCHandle gch = GCHandle.Alloc(buffer.Array, GCHandleType.Pinned);
+            try
+            {
+                Marshal.StructureToPtr(value, gch.AddrOfPinnedObject(), fDeleteOld: true);
+            }
+            finally
+            {
+                gch.Free();
+            }
+            return WriteBytesAsync(stream, buffer.Memory, cancellationToken);
+        }
+
+        /// <summary>
+        /// Write a struct
+        /// </summary>
+        /// <typeparam name="tStream">Stream type</typeparam>
+        /// <typeparam name="tStruct">Struct type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Struct</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        public static async Task WriteStructNullableAsync<tStream, tStruct>(this tStream stream, tStruct? value, CancellationToken cancellationToken = default)
+            where tStream : Stream
+            where tStruct : struct
+        {
+            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
+            if (value != null) await WriteStructAsync(stream, value.Value, cancellationToken).DynamicContext();
         }
     }
 }

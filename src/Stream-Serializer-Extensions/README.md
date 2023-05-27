@@ -14,6 +14,7 @@ The built in serializer supports binary serialization of
 - lists
 - dictionaries
 - byte arrays
+- structures
 - possibly any other objects with a parameterless public constructor
 - streams
 
@@ -36,7 +37,8 @@ while serializing some types is being done with specialized methods:
 | `Dictionary<tKey, tValue>` | `WriteDict*` | `ReadDict*` |
 | `IStreamSerializer` | `WriteSerialized*` | `ReadSerialized*` |
 | `byte[]` | `WriteBytes*` | `ReadBytes*` |
-| `tream` | `WriteStream*` | `ReadStream*` |
+| `Stream` | `WriteStream*` | `ReadStream*` |
+| Structure | `WriteStruct*` | `ReadStruct*` |
 | (any other) | `WriteAnyObject*` | `ReadAnyObject*` |
 
 Using the `WriteObject*` and `ReadObject*` methods you can let the library 
@@ -65,6 +67,7 @@ more generic. This is when to choose which method:
 | --- | --- |
 | `*Serialized*` | The fixed type is a stream serializer base object |
 | `*Object*` | The fixed type has a specialized serializer |
+| `*Struct*` | The fixed type is a marshalable structure |
 | `*AnyObject*` | The type uses attributes (or no serializer contract information at all) and doesn't have a specialized serializer |
 | `*Any*` | The dynamic type is unknown when (de)serializing |
 

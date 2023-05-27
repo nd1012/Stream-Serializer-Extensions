@@ -75,6 +75,10 @@
         /// </summary>
         Stream = 16,
         /// <summary>
+        /// Struct
+        /// </summary>
+        Struct = 17,
+        /// <summary>
         /// Unsigned number
         /// </summary>
         Unsigned = 64,

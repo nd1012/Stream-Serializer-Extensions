@@ -1,6 +1,7 @@
 ﻿using System.Buffers;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using wan24.Core;
 using wan24.ObjectValidation;
@@ -18,6 +19,14 @@ namespace wan24.StreamSerializerExtensions
         /// Read object method
         /// </summary>
         public static readonly MethodInfo ReadObjectAsyncMethod;
+        /// <summary>
+        /// Read struct method
+        /// </summary>
+        public static readonly MethodInfo ReadStructMethod;
+        /// <summary>
+        /// Read struct method
+        /// </summary>
+        public static readonly MethodInfo ReadStructAsyncMethod;
         /// <summary>
         /// Read object method
         /// </summary>
@@ -358,6 +367,8 @@ namespace wan24.StreamSerializerExtensions
                             )!;
                 case ObjectTypes.Object:
                     return ReadObjectMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version, options)!;
+                case ObjectTypes.Struct:
+                    return ReadStructMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version)!;
                 case ObjectTypes.Serializable:
                     return ReadSerializedObject(stream, type!, version);
                 case ObjectTypes.Stream:
@@ -540,6 +551,9 @@ namespace wan24.StreamSerializerExtensions
                     break;
                 case ObjectTypes.Object:
                     task = (Task)ReadObjectAsyncMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version, options, cancellationToken)!;
+                    break;
+                case ObjectTypes.Struct:
+                    task = (Task)ReadStructAsyncMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version, cancellationToken)!;
                     break;
                 case ObjectTypes.Serializable:
                     return await ReadSerializedObjectAsync(stream, type!, version, cancellationToken)!.DynamicContext();
@@ -2992,5 +3006,107 @@ namespace wan24.StreamSerializerExtensions
             }
             return await ReadStreamAsync(stream, target, version, pool, maxBufferSize, minLen, maxLen, cancellationToken).DynamicContext();
         }
+
+        /// <summary>
+        /// Read a struct
+        /// </summary>
+        /// <typeparam name="T">Struct type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="buffer">Buffer</param>
+        /// <param name="pool">Buffer pool</param>
+        /// <returns>Struct</returns>
+        public static T ReadStruct<T>(
+            this Stream stream,
+            int? version = null,
+            byte[]? buffer = null,
+            ArrayPool<byte>? pool = null
+            )
+            where T : struct
+        {
+            int len = Marshal.SizeOf(typeof(T));
+            byte[] data = stream.ReadBytes(version, buffer, pool, len, len).Value;
+            GCHandle gch = GCHandle.Alloc(data, GCHandleType.Pinned);
+            try
+            {
+                return Marshal.PtrToStructure<T>(gch.AddrOfPinnedObject());
+            }
+            finally
+            {
+                gch.Free();
+            }
+        }
+
+        /// <summary>
+        /// Read a struct
+        /// </summary>
+        /// <typeparam name="T">Struct type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="buffer">Buffer</param>
+        /// <param name="pool">Buffer pool</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Struct</returns>
+        public static async Task<T> ReadStructAsync<T>(
+            this Stream stream,
+            int? version = null,
+            byte[]? buffer = null,
+            ArrayPool<byte>? pool = null,
+            CancellationToken cancellationToken = default
+            )
+            where T : struct
+        {
+            int len = Marshal.SizeOf(typeof(T));
+            byte[] data = (await stream.ReadBytesAsync(version, buffer, pool, len, len, cancellationToken).DynamicContext()).Value;
+            GCHandle gch = GCHandle.Alloc(data, GCHandleType.Pinned);
+            try
+            {
+                return Marshal.PtrToStructure<T>(gch.AddrOfPinnedObject());
+            }
+            finally
+            {
+                gch.Free();
+            }
+        }
+
+        /// <summary>
+        /// Read a struct
+        /// </summary>
+        /// <typeparam name="T">Struct type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="buffer">Buffer</param>
+        /// <param name="pool">Buffer pool</param>
+        /// <returns>Struct</returns>
+        public static T? ReadStructNullable<T>(
+            this Stream stream,
+            int? version = null,
+            byte[]? buffer = null,
+            ArrayPool<byte>? pool = null
+            )
+            where T : struct
+            => ReadBool(stream, version, pool) ? ReadStruct<T>(stream, version, buffer, pool) : null;
+
+        /// <summary>
+        /// Read a struct
+        /// </summary>
+        /// <typeparam name="T">Struct type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="buffer">Buffer</param>
+        /// <param name="pool">Buffer pool</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Struct</returns>
+        public static async Task<T?> ReadStructNullableAsync<T>(
+            this Stream stream,
+            int? version = null,
+            byte[]? buffer = null,
+            ArrayPool<byte>? pool = null,
+            CancellationToken cancellationToken = default
+            )
+            where T : struct
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadStructAsync<T>(stream, version, buffer, pool, cancellationToken).DynamicContext()
+                : null;
     }
 }
