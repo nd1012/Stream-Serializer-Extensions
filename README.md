@@ -31,7 +31,7 @@ while serializing some types is being done with specialized methods:
 | --- | --- | --- |
 | `string` | `WriteString*` | `ReadString*` |
 | `Enum` | `WriteEnum*` | `ReadEnum*` |
-| `Array` | `WriteArray*` | `ReadArray*` |
+| `Array` | `Write*Array*` | `Read*Array*` |
 | `List<T>` | `WriteList*` | `ReadList*` |
 | `Dictionary<tKey, tValue>` | `WriteDict*` | `ReadDict*` |
 | `IStreamSerializer` | `WriteSerialized*` | `ReadSerialized*` |

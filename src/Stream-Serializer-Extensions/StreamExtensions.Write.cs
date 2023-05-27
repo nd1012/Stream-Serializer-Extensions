@@ -236,7 +236,7 @@ namespace wan24.StreamSerializerExtensions
             try
             {
                 (Type type, ObjectTypes objType, bool writeType, bool writeObject) = obj.GetObjectSerializerInfo();
-                using(RentedArray<byte> poolData = new(1))
+                using (RentedArray<byte> poolData = new(1))
                 {
                     poolData[0] = (byte)objType;
                     stream.Write(poolData.Span);
@@ -559,7 +559,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(value.GetBytes());
+                using RentedArray<byte> buffer = new(sizeof(short), StreamSerializer.BufferPool);
+                stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
             catch (Exception ex)
@@ -578,7 +579,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
+                using RentedArray<byte> buffer = new(sizeof(short), StreamSerializer.BufferPool);
+                await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -623,7 +625,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(value.GetBytes());
+                using RentedArray<byte> buffer = new(sizeof(ushort), StreamSerializer.BufferPool);
+                stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
             catch (Exception ex)
@@ -642,7 +645,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
+                using RentedArray<byte> buffer = new(sizeof(ushort), StreamSerializer.BufferPool);
+                await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -687,7 +691,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(value.GetBytes());
+                using RentedArray<byte> buffer = new(sizeof(int), StreamSerializer.BufferPool);
+                stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
             catch (Exception ex)
@@ -706,7 +711,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
+                using RentedArray<byte> buffer = new(sizeof(int), StreamSerializer.BufferPool);
+                await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -751,7 +757,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(value.GetBytes());
+                using RentedArray<byte> buffer = new(sizeof(uint), StreamSerializer.BufferPool);
+                stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
             catch (Exception ex)
@@ -770,7 +777,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
+                using RentedArray<byte> buffer = new(sizeof(uint), StreamSerializer.BufferPool);
+                await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -815,7 +823,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(value.GetBytes());
+                using RentedArray<byte> buffer = new(sizeof(long), StreamSerializer.BufferPool);
+                stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
             catch (Exception ex)
@@ -834,7 +843,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
+                using RentedArray<byte> buffer = new(sizeof(long), StreamSerializer.BufferPool);
+                await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -879,7 +889,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(value.GetBytes());
+                using RentedArray<byte> buffer = new(sizeof(ulong), StreamSerializer.BufferPool);
+                stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
             catch (Exception ex)
@@ -898,7 +909,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
+                using RentedArray<byte> buffer = new(sizeof(ulong), StreamSerializer.BufferPool);
+                await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -943,7 +955,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(value.GetBytes());
+                using RentedArray<byte> buffer = new(sizeof(float), StreamSerializer.BufferPool);
+                stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
             catch (Exception ex)
@@ -962,7 +975,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
+                using RentedArray<byte> buffer = new(sizeof(float), StreamSerializer.BufferPool);
+                await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -1007,7 +1021,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(value.GetBytes());
+                using RentedArray<byte> buffer = new(sizeof(double), StreamSerializer.BufferPool);
+                stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
             catch (Exception ex)
@@ -1026,7 +1041,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
+                using RentedArray<byte> buffer = new(sizeof(double), StreamSerializer.BufferPool);
+                await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -1071,7 +1087,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                stream.Write(value.GetBytes());
+                using RentedArray<byte> buffer = new(sizeof(int) << 2, StreamSerializer.BufferPool);
+                stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
             catch (Exception ex)
@@ -1090,7 +1107,8 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                await stream.WriteAsync(value.GetBytes(), cancellationToken).DynamicContext();
+                using RentedArray<byte> buffer = new(sizeof(int) << 2, StreamSerializer.BufferPool);
+                await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
             {
@@ -1140,7 +1158,7 @@ namespace wan24.StreamSerializerExtensions
             using RentedArray<byte> poolData = new(1);
             poolData[0] = (byte)type;
             stream.Write(poolData.Span);
-            if(!type.IsZero() && !type.HasValueFlags())
+            if (!type.IsZero() && !type.HasValueFlags())
                 switch (type)
                 {
                     case NumberTypes.Byte:
@@ -1581,6 +1599,55 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
+        public static tStream WriteFixedArray<tStream, tElement>(this tStream stream, Span<tElement> value) where tStream : Stream
+        {
+            try
+            {
+                foreach (tElement element in value)
+                    WriteObject(stream, element);
+                return stream;
+            }
+            catch (SerializerException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new SerializerException(message: null, ex);
+            }
+        }
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <typeparam name="T">Element type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value to write</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        public static async Task WriteFixedArrayAsync<T>(this Stream stream, Memory<T> value, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                for (int i = 0; i < value.Length; i++) await WriteObjectAsync(stream, value.Span[i], cancellationToken).DynamicContext();
+            }
+            catch (SerializerException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new SerializerException(message: null, ex);
+            }
+        }
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <typeparam name="tStream">Stream type</typeparam>
+        /// <typeparam name="tElement">Element type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value to write</param>
+        /// <returns>Stream</returns>
         public static tStream WriteList<tStream, tElement>(this tStream stream, List<tElement> value) where tStream : Stream
         {
             if (typeof(tElement) == typeof(byte)) return WriteBytes(stream, (value as byte[])!);
@@ -1966,10 +2033,10 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="chunkLength">Chunk length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteStreamAsync(
-            this Stream stream, 
-            Stream source, 
-            ArrayPool<byte>? pool = null, 
-            int? chunkLength = null, 
+            this Stream stream,
+            Stream source,
+            ArrayPool<byte>? pool = null,
+            int? chunkLength = null,
             CancellationToken cancellationToken = default
             )
         {
@@ -2007,10 +2074,10 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
         public static async Task WriteStreamNullableAsync(
-            this Stream stream, 
-            Stream? source, 
-            ArrayPool<byte>? pool = null, 
-            int? chunkLength = null, 
+            this Stream stream,
+            Stream? source,
+            ArrayPool<byte>? pool = null,
+            int? chunkLength = null,
             CancellationToken cancellationToken = default
             )
         {

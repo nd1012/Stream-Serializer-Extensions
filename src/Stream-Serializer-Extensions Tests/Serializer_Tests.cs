@@ -31,6 +31,7 @@ namespace Stream_Serializer_Extensions_Tests
         [TestMethod]
         public void Serializer_Test()
         {
+            int[] fixedData = new int[] { 0, 1, 2 };
             using MemoryStream stream = new();
             stream.Write(RandomNumberGenerator.GetBytes(200000));
             stream.Position = 0;
@@ -189,7 +190,8 @@ namespace Stream_Serializer_Extensions_Tests
                 .WriteAnyObjectNullable((TestObject3?)null)
                 .WriteSerialized(test5)
                 .WriteSerialized(test5a)
-                .WriteSerialized(test5b);
+                .WriteSerialized(test5b)
+                .WriteFixedArray(fixedData.AsSpan());
             ms.Position = 0;
             Assert.IsTrue(ms.ReadBool());
             Assert.AreEqual((sbyte)0, ms.ReadOneSByte());
@@ -383,12 +385,17 @@ namespace Stream_Serializer_Extensions_Tests
                 Assert.IsNull(stream2);
                 Assert.IsTrue(test5_2.ZValue);
             }
+            {
+                int[] fixedData2 = ms.ReadFixedArray(new int[fixedData.Length]);
+                Assert.IsTrue(fixedData.SequenceEqual(fixedData2));
+            }
             Assert.AreEqual(ms.Length, ms.Position);
         }
 
         [TestMethod]
         public async Task Serializer_TestAsync()
         {
+            int[] fixedData = new int[] { 0, 1, 2 };
             using MemoryStream stream = new();
             stream.Write(RandomNumberGenerator.GetBytes(200000));
             stream.Position = 0;
@@ -548,6 +555,7 @@ namespace Stream_Serializer_Extensions_Tests
             await ms.WriteSerializedAsync(test5);
             await ms.WriteSerializedAsync(test5a);
             await ms.WriteSerializedAsync(test5b);
+            await ms.WriteFixedArrayAsync(fixedData.AsMemory());
             ms.Position = 0;
             Assert.IsTrue(await ms.ReadBoolAsync());
             Assert.AreEqual((sbyte)0, await ms.ReadOneSByteAsync());
@@ -739,6 +747,10 @@ namespace Stream_Serializer_Extensions_Tests
                 Assert.IsFalse(test5_2.BValue);
                 Assert.IsNull(stream2);
                 Assert.IsTrue(test5_2.ZValue);
+            }
+            {
+                int[] fixedData2 = await ms.ReadFixedArrayAsync(new int[fixedData.Length]);
+                Assert.IsTrue(fixedData.SequenceEqual(fixedData2));
             }
             Assert.AreEqual(ms.Length, ms.Position);
         }
