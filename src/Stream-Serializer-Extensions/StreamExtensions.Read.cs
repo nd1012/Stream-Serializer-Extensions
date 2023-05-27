@@ -1875,6 +1875,7 @@ namespace wan24.StreamSerializerExtensions
                 if (len == 0 && buffer == null) buffer = Array.Empty<byte>();
                 rented = buffer == null && pool != null;
                 buffer ??= rented ? pool!.Rent(len) : new byte[len];
+                if (buffer.Length < len) throw new ArgumentException($"Buffer too small ({len} bytes required)", nameof(buffer));
                 if (len != 0 && stream.Read(buffer.AsSpan(0, len)) != len) throw new SerializerException($"Failed to read serialized data ({len} bytes)");
                 return (buffer, len);
             }
@@ -1919,6 +1920,7 @@ namespace wan24.StreamSerializerExtensions
                 if (len == 0 && buffer == null) buffer = Array.Empty<byte>();
                 rented = buffer == null && pool != null;
                 buffer ??= rented ? pool!.Rent(len) : new byte[len];
+                if (buffer.Length < len) throw new ArgumentException($"Buffer too small ({len} bytes required)", nameof(buffer));
                 if (len != 0 && await stream.ReadAsync(buffer.AsMemory(0, len), cancellationToken).DynamicContext() != len)
                     throw new SerializerException($"Failed to read serialized data ({len} bytes)");
                 return (buffer, len);
@@ -3026,14 +3028,21 @@ namespace wan24.StreamSerializerExtensions
         {
             int len = Marshal.SizeOf(typeof(T));
             byte[] data = stream.ReadBytes(version, buffer, pool, len, len).Value;
-            GCHandle gch = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                return Marshal.PtrToStructure<T>(gch.AddrOfPinnedObject());
+                GCHandle gch = GCHandle.Alloc(data, GCHandleType.Pinned);
+                try
+                {
+                    return Marshal.PtrToStructure<T>(gch.AddrOfPinnedObject());
+                }
+                finally
+                {
+                    gch.Free();
+                }
             }
             finally
             {
-                gch.Free();
+                if (buffer == null && pool != null) pool.Return(data);
             }
         }
 
@@ -3058,14 +3067,21 @@ namespace wan24.StreamSerializerExtensions
         {
             int len = Marshal.SizeOf(typeof(T));
             byte[] data = (await stream.ReadBytesAsync(version, buffer, pool, len, len, cancellationToken).DynamicContext()).Value;
-            GCHandle gch = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                return Marshal.PtrToStructure<T>(gch.AddrOfPinnedObject());
+                GCHandle gch = GCHandle.Alloc(data, GCHandleType.Pinned);
+                try
+                {
+                    return Marshal.PtrToStructure<T>(gch.AddrOfPinnedObject());
+                }
+                finally
+                {
+                    gch.Free();
+                }
             }
             finally
             {
-                gch.Free();
+                if (buffer == null && pool != null) pool.Return(data);
             }
         }
 
