@@ -75,6 +75,7 @@ binary stream sequence.</p>
 <li>lists</li>
 <li>dictionaries</li>
 <li>byte arrays</li>
+<li>structures</li>
 <li>possibly any other objects with a parameterless public constructor</li>
 <li>streams</li>
 </ul>
@@ -129,9 +130,14 @@ while serializing some types is being done with specialized methods:</p>
 <td><code>ReadBytes*</code></td>
 </tr>
 <tr>
-<td><code>tream</code></td>
+<td><code>Stream</code></td>
 <td><code>WriteStream*</code></td>
 <td><code>ReadStream*</code></td>
+</tr>
+<tr>
+<td>Structure</td>
+<td><code>WriteStruct*</code></td>
+<td><code>ReadStruct*</code></td>
 </tr>
 <tr>
 <td>(any other)</td>
@@ -171,6 +177,10 @@ more generic. This is when to choose which method:</p>
 <tr>
 <td><code>*Object*</code></td>
 <td>The fixed type has a specialized serializer</td>
+</tr>
+<tr>
+<td><code>*Struct*</code></td>
+<td>The fixed type is a marshalable structure</td>
 </tr>
 <tr>
 <td><code>*AnyObject*</code></td>

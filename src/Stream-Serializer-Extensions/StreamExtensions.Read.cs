@@ -1,6 +1,7 @@
 ﻿using System.Buffers;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using wan24.Core;
 using wan24.ObjectValidation;
@@ -18,6 +19,14 @@ namespace wan24.StreamSerializerExtensions
         /// Read object method
         /// </summary>
         public static readonly MethodInfo ReadObjectAsyncMethod;
+        /// <summary>
+        /// Read struct method
+        /// </summary>
+        public static readonly MethodInfo ReadStructMethod;
+        /// <summary>
+        /// Read struct method
+        /// </summary>
+        public static readonly MethodInfo ReadStructAsyncMethod;
         /// <summary>
         /// Read object method
         /// </summary>
@@ -358,6 +367,8 @@ namespace wan24.StreamSerializerExtensions
                             )!;
                 case ObjectTypes.Object:
                     return ReadObjectMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version, options)!;
+                case ObjectTypes.Struct:
+                    return ReadStructMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version)!;
                 case ObjectTypes.Serializable:
                     return ReadSerializedObject(stream, type!, version);
                 case ObjectTypes.Stream:
@@ -540,6 +551,9 @@ namespace wan24.StreamSerializerExtensions
                     break;
                 case ObjectTypes.Object:
                     task = (Task)ReadObjectAsyncMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version, options, cancellationToken)!;
+                    break;
+                case ObjectTypes.Struct:
+                    task = (Task)ReadStructAsyncMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version, cancellationToken)!;
                     break;
                 case ObjectTypes.Serializable:
                     return await ReadSerializedObjectAsync(stream, type!, version, cancellationToken)!.DynamicContext();
@@ -1861,6 +1875,7 @@ namespace wan24.StreamSerializerExtensions
                 if (len == 0 && buffer == null) buffer = Array.Empty<byte>();
                 rented = buffer == null && pool != null;
                 buffer ??= rented ? pool!.Rent(len) : new byte[len];
+                if (buffer.Length < len) throw new ArgumentException($"Buffer too small ({len} bytes required)", nameof(buffer));
                 if (len != 0 && stream.Read(buffer.AsSpan(0, len)) != len) throw new SerializerException($"Failed to read serialized data ({len} bytes)");
                 return (buffer, len);
             }
@@ -1905,6 +1920,7 @@ namespace wan24.StreamSerializerExtensions
                 if (len == 0 && buffer == null) buffer = Array.Empty<byte>();
                 rented = buffer == null && pool != null;
                 buffer ??= rented ? pool!.Rent(len) : new byte[len];
+                if (buffer.Length < len) throw new ArgumentException($"Buffer too small ({len} bytes required)", nameof(buffer));
                 if (len != 0 && await stream.ReadAsync(buffer.AsMemory(0, len), cancellationToken).DynamicContext() != len)
                     throw new SerializerException($"Failed to read serialized data ({len} bytes)");
                 return (buffer, len);
@@ -2827,7 +2843,7 @@ namespace wan24.StreamSerializerExtensions
                 if (len > int.MaxValue) throw new SerializerException($"Invalid chunk length {len}", new InvalidDataException());
                 if (len > (maxBufferSize ?? Settings.BufferSize))
                     throw new SerializerException($"Chunk length of {len} bytes exceeds max. buffer size of {maxBufferSize ?? Settings.BufferSize}", new InvalidDataException());
-                using RentedArray<byte> buffer = new((int)len, pool ?? StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new((int)len, pool ?? StreamSerializer.BufferPool, clean: false);
                 long total = 0;
                 for (int red = (int)len; red == len; total += red)
                 {
@@ -2844,7 +2860,7 @@ namespace wan24.StreamSerializerExtensions
                 if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
                 if (len > maxLen)
                     throw new SerializerException($"Embedded stream length of {len} bytes exceeds the maximum stream length of {maxLen} bytes", new OverflowException());
-                using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool, clean: false);
                 long total = 0;
                 for (int red = buffer.Length; red == buffer.Length && total < len; total += red)
                 {
@@ -2930,7 +2946,7 @@ namespace wan24.StreamSerializerExtensions
                 if (len > int.MaxValue) throw new SerializerException($"Invalid chunk length {len}", new InvalidDataException());
                 if (len > (maxBufferSize ?? Settings.BufferSize))
                     throw new SerializerException($"Chunk length of {len} bytes exceeds max. buffer size of {maxBufferSize ?? Settings.BufferSize}", new InvalidDataException());
-                using RentedArray<byte> buffer = new((int)len, pool ?? StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new((int)len, pool ?? StreamSerializer.BufferPool, clean: false);
                 long total = 0;
                 for (int red = (int)len; red == len; total += red)
                 {
@@ -2947,7 +2963,7 @@ namespace wan24.StreamSerializerExtensions
                 if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
                 if (len > maxLen)
                     throw new SerializerException($"Embedded stream length of {len} bytes exceeds the maximum stream length of {maxLen} bytes", new OverflowException());
-                using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool, clean: false);
                 long total = 0;
                 for (int red = buffer.Length; red == buffer.Length && total < len; total += red)
                 {
@@ -2992,5 +3008,121 @@ namespace wan24.StreamSerializerExtensions
             }
             return await ReadStreamAsync(stream, target, version, pool, maxBufferSize, minLen, maxLen, cancellationToken).DynamicContext();
         }
+
+        /// <summary>
+        /// Read a struct
+        /// </summary>
+        /// <typeparam name="T">Struct type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="buffer">Buffer</param>
+        /// <param name="pool">Buffer pool</param>
+        /// <returns>Struct</returns>
+        public static T ReadStruct<T>(
+            this Stream stream,
+            int? version = null,
+            byte[]? buffer = null,
+            ArrayPool<byte>? pool = null
+            )
+            where T : struct
+        {
+            int len = Marshal.SizeOf(typeof(T));
+            byte[] data = stream.ReadBytes(version, buffer, pool, len, len).Value;
+            try
+            {
+                GCHandle gch = GCHandle.Alloc(data, GCHandleType.Pinned);
+                try
+                {
+                    return Marshal.PtrToStructure<T>(gch.AddrOfPinnedObject());
+                }
+                finally
+                {
+                    gch.Free();
+                }
+            }
+            finally
+            {
+                if (buffer == null && pool != null) pool.Return(data);
+            }
+        }
+
+        /// <summary>
+        /// Read a struct
+        /// </summary>
+        /// <typeparam name="T">Struct type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="buffer">Buffer</param>
+        /// <param name="pool">Buffer pool</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Struct</returns>
+        public static async Task<T> ReadStructAsync<T>(
+            this Stream stream,
+            int? version = null,
+            byte[]? buffer = null,
+            ArrayPool<byte>? pool = null,
+            CancellationToken cancellationToken = default
+            )
+            where T : struct
+        {
+            int len = Marshal.SizeOf(typeof(T));
+            byte[] data = (await stream.ReadBytesAsync(version, buffer, pool, len, len, cancellationToken).DynamicContext()).Value;
+            try
+            {
+                GCHandle gch = GCHandle.Alloc(data, GCHandleType.Pinned);
+                try
+                {
+                    return Marshal.PtrToStructure<T>(gch.AddrOfPinnedObject());
+                }
+                finally
+                {
+                    gch.Free();
+                }
+            }
+            finally
+            {
+                if (buffer == null && pool != null) pool.Return(data);
+            }
+        }
+
+        /// <summary>
+        /// Read a struct
+        /// </summary>
+        /// <typeparam name="T">Struct type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="buffer">Buffer</param>
+        /// <param name="pool">Buffer pool</param>
+        /// <returns>Struct</returns>
+        public static T? ReadStructNullable<T>(
+            this Stream stream,
+            int? version = null,
+            byte[]? buffer = null,
+            ArrayPool<byte>? pool = null
+            )
+            where T : struct
+            => ReadBool(stream, version, pool) ? ReadStruct<T>(stream, version, buffer, pool) : null;
+
+        /// <summary>
+        /// Read a struct
+        /// </summary>
+        /// <typeparam name="T">Struct type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="buffer">Buffer</param>
+        /// <param name="pool">Buffer pool</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Struct</returns>
+        public static async Task<T?> ReadStructNullableAsync<T>(
+            this Stream stream,
+            int? version = null,
+            byte[]? buffer = null,
+            ArrayPool<byte>? pool = null,
+            CancellationToken cancellationToken = default
+            )
+            where T : struct
+            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                ? await ReadStructAsync<T>(stream, version, buffer, pool, cancellationToken).DynamicContext()
+                : null;
     }
 }

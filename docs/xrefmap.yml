@@ -2005,6 +2005,12 @@ references:
   commentId: F:wan24.StreamSerializerExtensions.ObjectTypes.String
   fullName: wan24.StreamSerializerExtensions.ObjectTypes.String
   nameWithType: ObjectTypes.String
+- uid: wan24.StreamSerializerExtensions.ObjectTypes.Struct
+  name: Struct
+  href: api/wan24.StreamSerializerExtensions.ObjectTypes.html#wan24_StreamSerializerExtensions_ObjectTypes_Struct
+  commentId: F:wan24.StreamSerializerExtensions.ObjectTypes.Struct
+  fullName: wan24.StreamSerializerExtensions.ObjectTypes.Struct
+  nameWithType: ObjectTypes.Struct
 - uid: wan24.StreamSerializerExtensions.ObjectTypes.Unsigned
   name: Unsigned
   href: api/wan24.StreamSerializerExtensions.ObjectTypes.html#wan24_StreamSerializerExtensions_ObjectTypes_Unsigned
@@ -4214,6 +4220,82 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.ReadStringNullableAsync
   nameWithType: StreamExtensions.ReadStringNullableAsync
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadStruct*
+  name: ReadStruct
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadStruct_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.ReadStruct
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.ReadStruct
+  nameWithType: StreamExtensions.ReadStruct
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadStruct``1(Stream,System.Nullable{System.Int32},System.Byte[],System.Buffers.ArrayPool{System.Byte})
+  name: ReadStruct<T>(Stream, Nullable<Int32>, Byte[], ArrayPool<Byte>)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadStruct__1_Stream_System_Nullable_System_Int32__System_Byte___System_Buffers_ArrayPool_System_Byte__
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.ReadStruct``1(Stream,System.Nullable{System.Int32},System.Byte[],System.Buffers.ArrayPool{System.Byte})
+  name.vb: ReadStruct(Of T)(Stream, Nullable(Of Int32), Byte(), ArrayPool(Of Byte))
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.ReadStruct<T>(Stream, System.Nullable<System.Int32>, System.Byte[], System.Buffers.ArrayPool<System.Byte>)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.ReadStruct(Of T)(Stream, System.Nullable(Of System.Int32), System.Byte(), System.Buffers.ArrayPool(Of System.Byte))
+  nameWithType: StreamExtensions.ReadStruct<T>(Stream, Nullable<Int32>, Byte[], ArrayPool<Byte>)
+  nameWithType.vb: StreamExtensions.ReadStruct(Of T)(Stream, Nullable(Of Int32), Byte(), ArrayPool(Of Byte))
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructAsync*
+  name: ReadStructAsync
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadStructAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.ReadStructAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructAsync
+  nameWithType: StreamExtensions.ReadStructAsync
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructAsync``1(Stream,System.Nullable{System.Int32},System.Byte[],System.Buffers.ArrayPool{System.Byte},CancellationToken)
+  name: ReadStructAsync<T>(Stream, Nullable<Int32>, Byte[], ArrayPool<Byte>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadStructAsync__1_Stream_System_Nullable_System_Int32__System_Byte___System_Buffers_ArrayPool_System_Byte__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.ReadStructAsync``1(Stream,System.Nullable{System.Int32},System.Byte[],System.Buffers.ArrayPool{System.Byte},CancellationToken)
+  name.vb: ReadStructAsync(Of T)(Stream, Nullable(Of Int32), Byte(), ArrayPool(Of Byte), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructAsync<T>(Stream, System.Nullable<System.Int32>, System.Byte[], System.Buffers.ArrayPool<System.Byte>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructAsync(Of T)(Stream, System.Nullable(Of System.Int32), System.Byte(), System.Buffers.ArrayPool(Of System.Byte), CancellationToken)
+  nameWithType: StreamExtensions.ReadStructAsync<T>(Stream, Nullable<Int32>, Byte[], ArrayPool<Byte>, CancellationToken)
+  nameWithType.vb: StreamExtensions.ReadStructAsync(Of T)(Stream, Nullable(Of Int32), Byte(), ArrayPool(Of Byte), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructAsyncMethod
+  name: ReadStructAsyncMethod
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadStructAsyncMethod
+  commentId: F:wan24.StreamSerializerExtensions.StreamExtensions.ReadStructAsyncMethod
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructAsyncMethod
+  nameWithType: StreamExtensions.ReadStructAsyncMethod
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructMethod
+  name: ReadStructMethod
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadStructMethod
+  commentId: F:wan24.StreamSerializerExtensions.StreamExtensions.ReadStructMethod
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructMethod
+  nameWithType: StreamExtensions.ReadStructMethod
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructNullable*
+  name: ReadStructNullable
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadStructNullable_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.ReadStructNullable
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructNullable
+  nameWithType: StreamExtensions.ReadStructNullable
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructNullable``1(Stream,System.Nullable{System.Int32},System.Byte[],System.Buffers.ArrayPool{System.Byte})
+  name: ReadStructNullable<T>(Stream, Nullable<Int32>, Byte[], ArrayPool<Byte>)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadStructNullable__1_Stream_System_Nullable_System_Int32__System_Byte___System_Buffers_ArrayPool_System_Byte__
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.ReadStructNullable``1(Stream,System.Nullable{System.Int32},System.Byte[],System.Buffers.ArrayPool{System.Byte})
+  name.vb: ReadStructNullable(Of T)(Stream, Nullable(Of Int32), Byte(), ArrayPool(Of Byte))
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructNullable<T>(Stream, System.Nullable<System.Int32>, System.Byte[], System.Buffers.ArrayPool<System.Byte>)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructNullable(Of T)(Stream, System.Nullable(Of System.Int32), System.Byte(), System.Buffers.ArrayPool(Of System.Byte))
+  nameWithType: StreamExtensions.ReadStructNullable<T>(Stream, Nullable<Int32>, Byte[], ArrayPool<Byte>)
+  nameWithType.vb: StreamExtensions.ReadStructNullable(Of T)(Stream, Nullable(Of Int32), Byte(), ArrayPool(Of Byte))
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructNullableAsync*
+  name: ReadStructNullableAsync
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadStructNullableAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.ReadStructNullableAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructNullableAsync
+  nameWithType: StreamExtensions.ReadStructNullableAsync
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructNullableAsync``1(Stream,System.Nullable{System.Int32},System.Byte[],System.Buffers.ArrayPool{System.Byte},CancellationToken)
+  name: ReadStructNullableAsync<T>(Stream, Nullable<Int32>, Byte[], ArrayPool<Byte>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadStructNullableAsync__1_Stream_System_Nullable_System_Int32__System_Byte___System_Buffers_ArrayPool_System_Byte__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.ReadStructNullableAsync``1(Stream,System.Nullable{System.Int32},System.Byte[],System.Buffers.ArrayPool{System.Byte},CancellationToken)
+  name.vb: ReadStructNullableAsync(Of T)(Stream, Nullable(Of Int32), Byte(), ArrayPool(Of Byte), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructNullableAsync<T>(Stream, System.Nullable<System.Int32>, System.Byte[], System.Buffers.ArrayPool<System.Byte>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.ReadStructNullableAsync(Of T)(Stream, System.Nullable(Of System.Int32), System.Byte(), System.Buffers.ArrayPool(Of System.Byte), CancellationToken)
+  nameWithType: StreamExtensions.ReadStructNullableAsync<T>(Stream, Nullable<Int32>, Byte[], ArrayPool<Byte>, CancellationToken)
+  nameWithType.vb: StreamExtensions.ReadStructNullableAsync(Of T)(Stream, Nullable(Of Int32), Byte(), ArrayPool(Of Byte), CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadUInt(Stream,System.Nullable{System.Int32},System.Buffers.ArrayPool{System.Byte})
   name: ReadUInt(Stream, Nullable<Int32>, ArrayPool<Byte>)
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadUInt_Stream_System_Nullable_System_Int32__System_Buffers_ArrayPool_System_Byte__
@@ -5743,6 +5825,70 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStringNullableAsync
   nameWithType: StreamExtensions.WriteStringNullableAsync
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStruct*
+  name: WriteStruct
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStruct_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.WriteStruct
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStruct
+  nameWithType: StreamExtensions.WriteStruct
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStruct``2(``0,``1)
+  name: WriteStruct<tStream, tStruct>(tStream, tStruct)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStruct__2___0___1_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteStruct``2(``0,``1)
+  name.vb: WriteStruct(Of tStream, tStruct)(tStream, tStruct)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStruct<tStream, tStruct>(tStream, tStruct)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteStruct(Of tStream, tStruct)(tStream, tStruct)
+  nameWithType: StreamExtensions.WriteStruct<tStream, tStruct>(tStream, tStruct)
+  nameWithType.vb: StreamExtensions.WriteStruct(Of tStream, tStruct)(tStream, tStruct)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync*
+  name: WriteStructAsync
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStructAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync
+  nameWithType: StreamExtensions.WriteStructAsync
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync``2(``0,``1,CancellationToken)
+  name: WriteStructAsync<tStream, tStruct>(tStream, tStruct, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStructAsync__2___0___1_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync``2(``0,``1,CancellationToken)
+  name.vb: WriteStructAsync(Of tStream, tStruct)(tStream, tStruct, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync<tStream, tStruct>(tStream, tStruct, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync(Of tStream, tStruct)(tStream, tStruct, CancellationToken)
+  nameWithType: StreamExtensions.WriteStructAsync<tStream, tStruct>(tStream, tStruct, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteStructAsync(Of tStream, tStruct)(tStream, tStruct, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullable*
+  name: WriteStructNullable
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStructNullable_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullable
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullable
+  nameWithType: StreamExtensions.WriteStructNullable
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullable``2(``0,System.Nullable{``1})
+  name: WriteStructNullable<tStream, tStruct>(tStream, Nullable<tStruct>)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStructNullable__2___0_System_Nullable___1__
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullable``2(``0,System.Nullable{``1})
+  name.vb: WriteStructNullable(Of tStream, tStruct)(tStream, Nullable(Of tStruct))
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullable<tStream, tStruct>(tStream, System.Nullable<tStruct>)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullable(Of tStream, tStruct)(tStream, System.Nullable(Of tStruct))
+  nameWithType: StreamExtensions.WriteStructNullable<tStream, tStruct>(tStream, Nullable<tStruct>)
+  nameWithType.vb: StreamExtensions.WriteStructNullable(Of tStream, tStruct)(tStream, Nullable(Of tStruct))
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync*
+  name: WriteStructNullableAsync
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStructNullableAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync
+  nameWithType: StreamExtensions.WriteStructNullableAsync
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync``2(``0,System.Nullable{``1},CancellationToken)
+  name: WriteStructNullableAsync<tStream, tStruct>(tStream, Nullable<tStruct>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStructNullableAsync__2___0_System_Nullable___1__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync``2(``0,System.Nullable{``1},CancellationToken)
+  name.vb: WriteStructNullableAsync(Of tStream, tStruct)(tStream, Nullable(Of tStruct), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync<tStream, tStruct>(tStream, System.Nullable<tStruct>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync(Of tStream, tStruct)(tStream, System.Nullable(Of tStruct), CancellationToken)
+  nameWithType: StreamExtensions.WriteStructNullableAsync<tStream, tStruct>(tStream, Nullable<tStruct>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteStructNullableAsync(Of tStream, tStruct)(tStream, Nullable(Of tStruct), CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamSerializer
   name: StreamSerializer
   href: api/wan24.StreamSerializerExtensions.StreamSerializer.html

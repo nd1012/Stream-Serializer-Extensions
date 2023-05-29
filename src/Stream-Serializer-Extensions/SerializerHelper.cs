@@ -396,6 +396,10 @@ namespace wan24.StreamSerializerExtensions
                 {
                     objType = ObjectTypes.Dict;
                 }
+                else if (type.IsValueType && !type.IsEnum)
+                {
+                    objType = ObjectTypes.Struct;
+                }
                 else
                 {
                     objType = ObjectTypes.Object;
@@ -462,6 +466,7 @@ namespace wan24.StreamSerializerExtensions
                     }
                     break;
                 case ObjectTypes.Object:
+                case ObjectTypes.Struct:
                 case ObjectTypes.Serializable:
                     writeType = true;
                     break;
