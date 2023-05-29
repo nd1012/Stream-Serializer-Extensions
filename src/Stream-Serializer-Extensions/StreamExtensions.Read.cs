@@ -2843,7 +2843,7 @@ namespace wan24.StreamSerializerExtensions
                 if (len > int.MaxValue) throw new SerializerException($"Invalid chunk length {len}", new InvalidDataException());
                 if (len > (maxBufferSize ?? Settings.BufferSize))
                     throw new SerializerException($"Chunk length of {len} bytes exceeds max. buffer size of {maxBufferSize ?? Settings.BufferSize}", new InvalidDataException());
-                using RentedArray<byte> buffer = new((int)len, pool ?? StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new((int)len, pool ?? StreamSerializer.BufferPool, clean: false);
                 long total = 0;
                 for (int red = (int)len; red == len; total += red)
                 {
@@ -2860,7 +2860,7 @@ namespace wan24.StreamSerializerExtensions
                 if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
                 if (len > maxLen)
                     throw new SerializerException($"Embedded stream length of {len} bytes exceeds the maximum stream length of {maxLen} bytes", new OverflowException());
-                using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool, clean: false);
                 long total = 0;
                 for (int red = buffer.Length; red == buffer.Length && total < len; total += red)
                 {
@@ -2946,7 +2946,7 @@ namespace wan24.StreamSerializerExtensions
                 if (len > int.MaxValue) throw new SerializerException($"Invalid chunk length {len}", new InvalidDataException());
                 if (len > (maxBufferSize ?? Settings.BufferSize))
                     throw new SerializerException($"Chunk length of {len} bytes exceeds max. buffer size of {maxBufferSize ?? Settings.BufferSize}", new InvalidDataException());
-                using RentedArray<byte> buffer = new((int)len, pool ?? StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new((int)len, pool ?? StreamSerializer.BufferPool, clean: false);
                 long total = 0;
                 for (int red = (int)len; red == len; total += red)
                 {
@@ -2963,7 +2963,7 @@ namespace wan24.StreamSerializerExtensions
                 if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
                 if (len > maxLen)
                     throw new SerializerException($"Embedded stream length of {len} bytes exceeds the maximum stream length of {maxLen} bytes", new OverflowException());
-                using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool, clean: false);
                 long total = 0;
                 for (int red = buffer.Length; red == buffer.Length && total < len; total += red)
                 {

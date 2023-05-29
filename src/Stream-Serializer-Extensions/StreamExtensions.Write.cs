@@ -320,7 +320,7 @@ namespace wan24.StreamSerializerExtensions
             {
                 if (obj == null)
                 {
-                    using RentedArray<byte> poolData = new(1);
+                    using RentedArray<byte> poolData = new(1, clean: false);
                     poolData[0] = (byte)ObjectTypes.Null;
                     stream.Write(poolData.Span);
                 }
@@ -352,7 +352,7 @@ namespace wan24.StreamSerializerExtensions
             {
                 if (obj == null)
                 {
-                    using RentedArray<byte> poolData = new(1);
+                    using RentedArray<byte> poolData = new(1, clean: false);
                     poolData[0] = (byte)ObjectTypes.Null;
                     await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
                 }
@@ -396,7 +396,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task WriteAsync(this Stream stream, bool value, CancellationToken cancellationToken = default)
         {
-            using RentedArray<byte> poolData = new(1);
+            using RentedArray<byte> poolData = new(1, clean: false);
             poolData[0] = (byte)(value ? 1 : 0);
             await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
         }
@@ -562,7 +562,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(short), StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(short), StreamSerializer.BufferPool, clean: false);
                 stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
@@ -582,7 +582,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(short), StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(short), StreamSerializer.BufferPool, clean: false);
                 await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
@@ -628,7 +628,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(ushort), StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(ushort), StreamSerializer.BufferPool, clean: false);
                 stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
@@ -648,7 +648,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(ushort), StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(ushort), StreamSerializer.BufferPool, clean: false);
                 await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
@@ -694,7 +694,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(int), StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(int), StreamSerializer.BufferPool, clean: false);
                 stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
@@ -714,7 +714,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(int), StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(int), StreamSerializer.BufferPool, clean: false);
                 await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
@@ -760,7 +760,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(uint), StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(uint), StreamSerializer.BufferPool, clean: false);
                 stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
@@ -780,7 +780,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(uint), StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(uint), StreamSerializer.BufferPool, clean: false);
                 await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
@@ -826,7 +826,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(long), StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(long), StreamSerializer.BufferPool, clean: false);
                 stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
@@ -846,7 +846,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(long), StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(long), StreamSerializer.BufferPool, clean: false);
                 await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
@@ -892,7 +892,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(ulong), StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(ulong), StreamSerializer.BufferPool, clean: false);
                 stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
@@ -912,7 +912,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(ulong), StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(ulong), StreamSerializer.BufferPool, clean: false);
                 await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
@@ -958,7 +958,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(float), StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(float), StreamSerializer.BufferPool, clean: false);
                 stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
@@ -978,7 +978,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(float), StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(float), StreamSerializer.BufferPool, clean: false);
                 await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
@@ -1024,7 +1024,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(double), StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(double), StreamSerializer.BufferPool, clean: false);
                 stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
@@ -1044,7 +1044,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(double), StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(double), StreamSerializer.BufferPool, clean: false);
                 await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
@@ -1090,7 +1090,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(int) << 2, StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(int) << 2, StreamSerializer.BufferPool, clean: false);
                 stream.Write(value.GetBytes(buffer.Span));
                 return stream;
             }
@@ -1110,7 +1110,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
-                using RentedArray<byte> buffer = new(sizeof(int) << 2, StreamSerializer.BufferPool);
+                using RentedArray<byte> buffer = new(sizeof(int) << 2, StreamSerializer.BufferPool, clean: false);
                 await stream.WriteAsync(value.GetBytes(buffer.Memory), cancellationToken).DynamicContext();
             }
             catch (Exception ex)
@@ -1158,7 +1158,7 @@ namespace wan24.StreamSerializerExtensions
             where tNumber : struct, IConvertible
         {
             (object number, NumberTypes type) = value.GetNumberAndType();
-            using RentedArray<byte> poolData = new(1);
+            using RentedArray<byte> poolData = new(1, clean: false);
             poolData[0] = (byte)type;
             stream.Write(poolData.Span);
             if (!type.IsZero() && !type.HasValueFlags())
@@ -1211,7 +1211,7 @@ namespace wan24.StreamSerializerExtensions
             where T : struct, IConvertible
         {
             (object number, NumberTypes type) = value.GetNumberAndType();
-            using RentedArray<byte> poolData = new(1);
+            using RentedArray<byte> poolData = new(1, clean: false);
             poolData[0] = (byte)type;
             await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
             if (!type.IsZero() && !type.HasValueFlags())
@@ -2000,7 +2000,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 else
                 {
-                    using RentedArray<byte> buffer = new(len: chunkLength ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool);
+                    using RentedArray<byte> buffer = new(len: chunkLength ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool, clean: false);
                     for (int red = buffer.Length; red == buffer.Length;)
                     {
                         red = stream.Read(buffer.Span);
@@ -2053,7 +2053,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 else
                 {
-                    using RentedArray<byte> buffer = new(len: chunkLength ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool);
+                    using RentedArray<byte> buffer = new(len: chunkLength ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool, clean: false);
                     for (int red = buffer.Length; red == buffer.Length;)
                     {
                         red = await stream.ReadAsync(buffer.Memory, cancellationToken).DynamicContext();
@@ -2100,7 +2100,7 @@ namespace wan24.StreamSerializerExtensions
             where tStream : Stream
             where tStruct : struct
         {
-            using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool);
+            using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
             GCHandle gch = GCHandle.Alloc(buffer.Array, GCHandleType.Pinned);
             try
             {
@@ -2138,7 +2138,7 @@ namespace wan24.StreamSerializerExtensions
             where tStream : Stream
             where tStruct : struct
         {
-            using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool);
+            using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
             GCHandle gch = GCHandle.Alloc(buffer.Array, GCHandleType.Pinned);
             try
             {
