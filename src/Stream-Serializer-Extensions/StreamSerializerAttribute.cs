@@ -6,15 +6,13 @@ namespace wan24.StreamSerializerExtensions
     /// <summary>
     /// Attribute for stream serializable classes and properties
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Property | AttributeTargets.Field)]
     public class StreamSerializerAttribute : Attribute
     {
         /// <summary>
-        /// Constructor
+        /// Structure fields which require endianess conversion
         /// </summary>
-        /// <exception cref="NotSupportedException">Use the type or property constructors instead</exception>
-        [Obsolete("Use the type or property constructors instead")]
-        public StreamSerializerAttribute() : base() => throw new NotSupportedException();
+        protected List<FieldInfo>? StructureFields = null;
 
         /// <summary>
         /// Constructor (used for a type)
@@ -351,6 +349,20 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Object version</param>
         /// <returns>Use the default value(s)?</returns>
         public virtual bool GetUseDefaultValue(int version) => UseDefaultValues;
+
+        /// <summary>
+        /// Get the structure fields which require endianess conversion
+        /// </summary>
+        /// <param name="type">Structure type</param>
+        /// <returns>Fields</returns>
+        public virtual List<FieldInfo> GetStructureFields(Type type)
+        {
+            if (!type.IsValueType) throw new ArgumentException("Structure type required", nameof(type));
+            return StructureFields ??= new(from fi in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                                           where !fi.IsStatic &&
+                                              fi.GetCustomAttribute<StreamSerializerAttribute>() is not null
+                                           select fi);
+        }
 
         /// <summary>
         /// Create serializer options

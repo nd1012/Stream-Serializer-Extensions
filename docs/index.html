@@ -68,9 +68,9 @@ binary stream sequence.</p>
 <p>The built in serializer supports binary serialization of</p>
 <ul>
 <li>booleans</li>
-<li>numbers ((U)Int8-64, Single, Double, Decimal)</li>
+<li>numbers ((U)Int8-64, Single, Double, Decimal, little endian)</li>
 <li>enumerations</li>
-<li>strings (UTF-8)</li>
+<li>strings (UTF-8/16/32, little endian)</li>
 <li>arrays</li>
 <li>lists</li>
 <li>dictionaries</li>
@@ -208,6 +208,32 @@ while non-seekable streams will be embedded chunked.</p>
 will delete the temporary file when disposing. You can define a stream factory
 using <code>StreamSerializerAttribute.StreamFactoryType</code> and
 <code>StreamSerializerAttribute.StreamFactoryMethod</code>.</p>
+<h2 id="structure-serialization">Structure serialization</h2>
+<p>The <code>WriteStruct*</code> methods use <code>Marshal</code> for structure serialization, which
+produce little or big endian bits depending on the processors endianess. To
+ensure that a serialized structure can be deserialized on any system,
+endianess will be converted to little endian per default. For this it's
+required to add a <code>StreamSerializerAttribute</code> to the strcture type and all
+fields which require endianess conversion, which are</p>
+<ul>
+<li>numeric types (which include enumeration values)</li>
+<li>sub-structures which host numeric type fields</li>
+</ul>
+<p><strong>NOTE</strong>: The serializer uses reflection for this only once (for
+initialization) only on system with a big endian processor, which shouldn't
+have too much performance impact for a permanent running service.</p>
+<p><strong>CAUTION</strong>: Only structure fields will be processed. Their value should be a
+structure, too - object references will make problems and are not supported.
+Also variable length value counters won't be converted, which limits the
+endianess conversion support to structures which match to these limitations
+only:</p>
+<ul>
+<li>No object referencing fields</li>
+<li>Fixed length contents</li>
+</ul>
+<p><strong>TIP</strong>: A structure may implement the <code>IStreamSerializer</code> inferface and be
+written using the <code>WriteSerialized*</code> methods. For reading you can use the
+<code>ReadSerializedStruct*</code> methods.</p>
 <h2 id="custom-serializer">Custom serializer</h2>
 <h3 id="using-the-streamserializerattribute-attribute">Using the <code>StreamSerializerAttribute</code> attribute</h3>
 <p>The type needs to have a constructor without parameters. Properties with a
