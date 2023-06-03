@@ -150,8 +150,8 @@ namespace wan24.StreamSerializerExtensions
             byte[] res = (pool ?? StreamSerializer.BufferPool).Rent(len);
             try
             {
-                if (stream.Read(res.AsSpan(0, len)) != len)
-                    throw new SerializerException($"Failed to read serialized data ({len} bytes)");
+                int red = stream.Read(res.AsSpan(0, len));
+                if (red != len) throw new SerializerException($"Failed to read serialized data ({len} bytes expected, {red} bytes red)");
                 return res;
             }
             catch
@@ -174,8 +174,8 @@ namespace wan24.StreamSerializerExtensions
             byte[] res = (pool ?? StreamSerializer.BufferPool).Rent(len);
             try
             {
-                if (await stream.ReadAsync(res.AsMemory(0, len), cancellationToken).DynamicContext() != len)
-                    throw new SerializerException($"Failed to read serialized data ({len} bytes)");
+                int red = await stream.ReadAsync(res.AsMemory(0, len), cancellationToken).DynamicContext();
+                if (red != len) throw new SerializerException($"Failed to read serialized data ({len} bytes expected, {red} bytes red)");
                 return res;
             }
             catch

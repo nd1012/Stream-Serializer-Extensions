@@ -1167,7 +1167,7 @@ namespace wan24.StreamSerializerExtensions
                     {
                         using RentedArray<byte> buffer = new(len: 1, pool, clean: false);
                         NumberTypes numberType = (NumberTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
-                        return numberType == NumberTypes.Null ? null : await ReadNumberAsync<T>(stream, version, pool, cancellationToken).DynamicContext(); ;
+                        return numberType == NumberTypes.Null ? null : await ReadNumberIntAsync<T>(stream, version, numberType, pool, cancellationToken).DynamicContext(); ;
                     }
             }
         }
