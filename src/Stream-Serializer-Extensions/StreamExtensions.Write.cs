@@ -1,8 +1,6 @@
 ﻿using System.Reflection;
 using wan24.Core;
 
-//TODO Improve nullable boolean, enumeration, numeric, stream and object writing (increase the serializer version)
-
 namespace wan24.StreamSerializerExtensions
 {
     /// <summary>
@@ -101,6 +99,8 @@ namespace wan24.StreamSerializerExtensions
             ReadSerializedAsyncMethod = type.GetMethod(nameof(ReadSerializedAsync), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadSerializedAsync)}");
             ReadNumberMethod = type.GetMethod(nameof(ReadNumber), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadNumber)}");
             ReadNumberAsyncMethod = type.GetMethod(nameof(ReadNumberAsync), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadNumberAsync)}");
+            ReadNumberIntMethod = type.GetMethod(nameof(ReadNumberInt), BindingFlags.Static | BindingFlags.NonPublic) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadNumberInt)}");
+            ReadNumberIntAsyncMethod = type.GetMethod(nameof(ReadNumberIntAsync), BindingFlags.Static | BindingFlags.NonPublic) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadNumberIntAsync)}");
             ReadEnumMethod = type.GetMethod(nameof(ReadEnum), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadEnum)}");
             ReadEnumAsyncMethod = type.GetMethod(nameof(ReadEnumAsync), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadEnumAsync)}");
             ReadArrayMethod = type.GetMethod(nameof(ReadArray), BindingFlags.Static | BindingFlags.Public) ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadArray)}");

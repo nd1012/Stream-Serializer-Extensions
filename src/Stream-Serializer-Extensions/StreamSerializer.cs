@@ -12,7 +12,7 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Version number
         /// </summary>
-        public const int VERSION = 1;
+        public const int VERSION = 2;
 
         /// <summary>
         /// Initialized?

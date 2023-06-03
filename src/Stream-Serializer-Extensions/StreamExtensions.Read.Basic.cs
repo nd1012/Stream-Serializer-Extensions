@@ -886,11 +886,22 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
         public static T ReadNumber<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null) where T : struct, IConvertible
+            => ReadNumberInt<T>(stream, version, numberType: null, pool);
+
+        /// <summary>
+        /// Read
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="numberType">Number type</param>
+        /// <param name="pool">Array pool</param>
+        /// <returns>Value</returns>
+        private static T ReadNumberInt<T>(Stream stream, int? version, NumberTypes? numberType, ArrayPool<byte>? pool) where T : struct, IConvertible
         {
-            byte[] data = ReadSerializedData(stream, len: 1, pool);
+            byte[] data = numberType == null ? ReadSerializedData(stream, len: 1, pool) : (pool ?? StreamSerializer.BufferPool).Rent(minimumLength: 1);
             try
             {
-                NumberTypes type = (NumberTypes)data[0];
+                NumberTypes type = numberType ?? (NumberTypes)data[0];
                 if (type.IsZero()) return (T)Activator.CreateInstance(typeof(T))!;
                 switch (type.RemoveValueFlags())
                 {
@@ -994,13 +1005,28 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-        public static async Task<T> ReadNumberAsync<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+        public static Task<T> ReadNumberAsync<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            where T : struct, IConvertible
+            => ReadNumberIntAsync<T>(stream, version, numberType: null, pool, cancellationToken);
+
+        /// <summary>
+        /// Read
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="numberType">Number type</param>
+        /// <param name="pool">Array pool</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Value</returns>
+        private static async Task<T> ReadNumberIntAsync<T>(Stream stream, int? version, NumberTypes? numberType, ArrayPool<byte>? pool, CancellationToken cancellationToken)
             where T : struct, IConvertible
         {
-            byte[] data = await ReadSerializedDataAsync(stream, len: 1, pool, cancellationToken).DynamicContext();
+            byte[] data = numberType == null
+                ? await ReadSerializedDataAsync(stream, len: 1, pool, cancellationToken).DynamicContext()
+                : (pool ?? StreamSerializer.BufferPool).Rent(minimumLength: 1);
             try
             {
-                NumberTypes type = (NumberTypes)data[0];
+                NumberTypes type = numberType ?? (NumberTypes)data[0];
                 if (type.IsZero()) return (T)Activator.CreateInstance(typeof(T))!;
                 switch (type.RemoveValueFlags())
                 {
@@ -1106,7 +1132,19 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
         public static T? ReadNumberNullable<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null) where T : struct, IConvertible
-            => ReadBool(stream, version, pool) ? ReadNumber<T>(stream, version, pool) : default(T?);
+        {
+            switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
+            {
+                case 1:
+                    return ReadBool(stream, version, pool) ? ReadNumber<T>(stream, version, pool) : null;
+                default:
+                    {
+                        using RentedArray<byte> buffer = new(len: 1, pool, clean: false);
+                        NumberTypes numberType = (NumberTypes)ReadOneByte(stream, version);
+                        return numberType == NumberTypes.Null ? default(T?) : ReadNumberInt<T>(stream, version, numberType, pool);
+                    }
+            }
+        }
 
         /// <summary>
         /// Read
@@ -1118,8 +1156,20 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static async Task<T?> ReadNumberNullableAsync<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             where T : struct, IConvertible
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadNumberAsync<T>(stream, version, pool, cancellationToken).DynamicContext()
-                : default(T?);
+        {
+            switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
+            {
+                case 1:
+                    return await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext() 
+                        ? await ReadNumberAsync<T>(stream, version, pool, cancellationToken).DynamicContext() 
+                        : null;
+                default:
+                    {
+                        using RentedArray<byte> buffer = new(len: 1, pool, clean: false);
+                        NumberTypes numberType = (NumberTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
+                        return numberType == NumberTypes.Null ? null : await ReadNumberAsync<T>(stream, version, pool, cancellationToken).DynamicContext(); ;
+                    }
+            }
+        }
     }
 }

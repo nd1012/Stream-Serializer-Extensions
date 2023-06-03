@@ -52,7 +52,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="chunkLength">Chunk length in bytes</param>
         /// <returns>Stream</returns>
         public static T WriteStreamNullable<T>(this T stream, Stream? source, ArrayPool<byte>? pool = null, int? chunkLength = null) where T : Stream
-            => source == null ? Write(stream, false) : WriteStream(stream, source, pool, chunkLength);
+            => source == null ? WriteNumber(stream, long.MinValue) : WriteStream(stream, source, pool, chunkLength);
 
         /// <summary>
         /// Write a stream
@@ -111,8 +111,14 @@ namespace wan24.StreamSerializerExtensions
             CancellationToken cancellationToken = default
             )
         {
-            await WriteAsync(stream, source != null, cancellationToken).DynamicContext();
-            if (source != null) await WriteStreamAsync(stream, source, pool, chunkLength, cancellationToken).DynamicContext();
+            if (source == null)
+            {
+                await WriteNumberAsync(stream, long.MinValue, cancellationToken).DynamicContext();
+            }
+            else
+            {
+                await WriteStreamAsync(stream, source, pool, chunkLength, cancellationToken).DynamicContext();
+            }
         }
     }
 }

@@ -64,6 +64,14 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         public static readonly MethodInfo ReadNumberAsyncMethod;
         /// <summary>
+        /// Read number method
+        /// </summary>
+        public static readonly MethodInfo ReadNumberIntMethod;
+        /// <summary>
+        /// Read number method
+        /// </summary>
+        public static readonly MethodInfo ReadNumberIntAsyncMethod;
+        /// <summary>
         /// Read enumeration method
         /// </summary>
         public static readonly MethodInfo ReadEnumMethod;

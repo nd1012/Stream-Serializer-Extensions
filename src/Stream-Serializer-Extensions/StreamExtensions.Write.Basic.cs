@@ -791,45 +791,56 @@ namespace wan24.StreamSerializerExtensions
         public static tStream WriteNumber<tStream, tNumber>(this tStream stream, tNumber value)
             where tStream : Stream
             where tNumber : struct, IConvertible
+            => WriteNumberInt(stream, value, type: null);
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <typeparam name="T">Stream type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value to write</param>
+        /// <param name="type">Number type</param>
+        /// <returns>Stream</returns>
+        public static T WriteNumberInt<T>(T stream, object value, NumberTypes? type) where T : Stream
         {
-            (object number, NumberTypes type) = value.GetNumberAndType();
+            if (type == null) (_, type) = value.GetNumberAndType();
             using RentedArray<byte> poolData = new(1, clean: false);
             poolData[0] = (byte)type;
             stream.Write(poolData.Span);
-            if (!type.IsZero() && !type.HasValueFlags())
+            if (!type.Value.IsZero() && !type.Value.HasValueFlags())
                 switch (type)
                 {
                     case NumberTypes.Byte:
                     case NumberTypes.Byte | NumberTypes.Unsigned:
-                        poolData[0] = number.ConvertType<byte>();
+                        poolData[0] = value.ConvertType<byte>();
                         stream.Write(poolData.Span);
                         break;
                     case NumberTypes.Short:
-                        Write(stream, number.ConvertType<short>());
+                        Write(stream, value.ConvertType<short>());
                         break;
                     case NumberTypes.Short | NumberTypes.Unsigned:
-                        Write(stream, number.ConvertType<ushort>());
+                        Write(stream, value.ConvertType<ushort>());
                         break;
                     case NumberTypes.Int:
-                        Write(stream, number.ConvertType<int>());
+                        Write(stream, value.ConvertType<int>());
                         break;
                     case NumberTypes.Int | NumberTypes.Unsigned:
-                        Write(stream, number.ConvertType<uint>());
+                        Write(stream, value.ConvertType<uint>());
                         break;
                     case NumberTypes.Long:
-                        Write(stream, number.ConvertType<long>());
+                        Write(stream, value.ConvertType<long>());
                         break;
                     case NumberTypes.Long | NumberTypes.Unsigned:
-                        Write(stream, number.ConvertType<ulong>());
+                        Write(stream, value.ConvertType<ulong>());
                         break;
                     case NumberTypes.Float:
-                        Write(stream, number.ConvertType<float>());
+                        Write(stream, value.ConvertType<float>());
                         break;
                     case NumberTypes.Double:
-                        Write(stream, number.ConvertType<double>());
+                        Write(stream, value.ConvertType<double>());
                         break;
                     case NumberTypes.Decimal:
-                        Write(stream, number.ConvertType<decimal>());
+                        Write(stream, value.ConvertType<decimal>());
                         break;
                 }
             return stream;
@@ -842,47 +853,58 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        public static async Task WriteNumberAsync<T>(this Stream stream, T value, CancellationToken cancellationToken = default)
+        public static Task WriteNumberAsync<T>(this Stream stream, T value, CancellationToken cancellationToken = default) where T : struct, IConvertible
+            => WriteNumberIntAsync<T>(stream, value, type: null, cancellationToken);
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <typeparam name="T">Number type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value to write</param>
+        /// <param name="type">Number type</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        private static async Task WriteNumberIntAsync<T>(Stream stream, object value, NumberTypes? type, CancellationToken cancellationToken)
             where T : struct, IConvertible
         {
-            (object number, NumberTypes type) = value.GetNumberAndType();
+            if (type == null) (_, type) = value.GetNumberAndType();
             using RentedArray<byte> poolData = new(1, clean: false);
             poolData[0] = (byte)type;
             await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
-            if (!type.IsZero() && !type.HasValueFlags())
+            if (!type.Value.IsZero() && !type.Value.HasValueFlags())
                 switch (type)
                 {
                     case NumberTypes.Byte:
                     case NumberTypes.Byte | NumberTypes.Unsigned:
-                        poolData[0] = number.ConvertType<byte>();
+                        poolData[0] = value.ConvertType<byte>();
                         await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Short:
-                        await WriteAsync(stream, number.ConvertType<short>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, value.ConvertType<short>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Short | NumberTypes.Unsigned:
-                        await WriteAsync(stream, number.ConvertType<ushort>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, value.ConvertType<ushort>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Int:
-                        await WriteAsync(stream, number.ConvertType<int>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, value.ConvertType<int>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Int | NumberTypes.Unsigned:
-                        await WriteAsync(stream, number.ConvertType<uint>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, value.ConvertType<uint>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Long:
-                        await WriteAsync(stream, number.ConvertType<long>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, value.ConvertType<long>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Long | NumberTypes.Unsigned:
-                        await WriteAsync(stream, number.ConvertType<ulong>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, value.ConvertType<ulong>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Float:
-                        await WriteAsync(stream, number.ConvertType<float>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, value.ConvertType<float>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Double:
-                        await WriteAsync(stream, number.ConvertType<double>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, value.ConvertType<double>(), cancellationToken).DynamicContext();
                         break;
                     case NumberTypes.Decimal:
-                        await WriteAsync(stream, number.ConvertType<decimal>(), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, value.ConvertType<decimal>(), cancellationToken).DynamicContext();
                         break;
                 }
         }
@@ -898,11 +920,7 @@ namespace wan24.StreamSerializerExtensions
         public static tStream WriteNumberNullable<tStream, tNumber>(this tStream stream, tNumber? value)
             where tStream : Stream
             where tNumber : struct, IConvertible
-        {
-            Write(stream, value != null);
-            if (value != null) WriteNumber(stream, value.Value);
-            return stream;
-        }
+            => value == null ? WriteEnum(stream, NumberTypes.Null) : WriteNumber(stream, value.Value);
 
         /// <summary>
         /// Write
@@ -914,8 +932,14 @@ namespace wan24.StreamSerializerExtensions
         public static async Task WriteNumberNullableAsync<T>(this Stream stream, T? value, CancellationToken cancellationToken = default)
             where T : struct, IConvertible
         {
-            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
-            if (value != null) await WriteNumberAsync(stream, value.Value, cancellationToken).DynamicContext();
+            if (value == null)
+            {
+                await WriteEnumAsync(stream, NumberTypes.Null, cancellationToken).DynamicContext();
+            }
+            else
+            {
+                await WriteNumberAsync(stream, value.Value, cancellationToken).DynamicContext();
+            }
         }
     }
 }

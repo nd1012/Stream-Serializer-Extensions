@@ -28,12 +28,38 @@ namespace wan24.StreamSerializerExtensions
             long maxLen = long.MaxValue
             )
             where T : Stream
+            => ReadStreamInt(stream, target, version, pool, maxBufferSize, minLen, maxLen, len: null);
+
+        /// <summary>
+        /// Read a stream
+        /// </summary>
+        /// <typeparam name="T">Target stream type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="target">Target stream (the position won't be reset)</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="pool">Array pool</param>
+        /// <param name="maxBufferSize">Maximum buffer size in bytes</param>
+        /// <param name="minLen">Minimum stream length</param>
+        /// <param name="maxLen">Maximum stream length in bytes</param>
+        /// <param name="len">Stream/chunk length in bytes (chunk length is negative)</param>
+        /// <returns>Target stream</returns>
+        private static T ReadStreamInt<T>(
+            this Stream stream,
+            T target,
+            int? version,
+            ArrayPool<byte>? pool,
+            int? maxBufferSize,
+            long minLen,
+            long maxLen,
+            long? len
+            )
+            where T : Stream
         {
             if (!target.CanWrite) throw new ArgumentException("Writable stream required", nameof(target));
             if (maxBufferSize != null && maxBufferSize.Value < 1) throw new ArgumentOutOfRangeException(nameof(maxBufferSize));
             if (minLen < 0) throw new ArgumentOutOfRangeException(nameof(minLen));
             if (maxLen < 0 || maxLen < minLen) throw new ArgumentOutOfRangeException(nameof(maxLen));
-            long len = stream.ReadNumber<long>(version, pool);
+            len ??= stream.ReadNumber<long>(version, pool);
             if (len == 0)
             {
                 if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
@@ -42,7 +68,7 @@ namespace wan24.StreamSerializerExtensions
             if (len < 0)
             {
                 // Chunked
-                len = Math.Abs(len);
+                len = Math.Abs(len.Value);
                 if (len > int.MaxValue) throw new SerializerException($"Invalid chunk length {len}", new InvalidDataException());
                 if (len > (maxBufferSize ?? Settings.BufferSize))
                     throw new SerializerException($"Chunk length of {len} bytes exceeds max. buffer size of {maxBufferSize ?? Settings.BufferSize}", new InvalidDataException());
@@ -67,7 +93,7 @@ namespace wan24.StreamSerializerExtensions
                 long total = 0;
                 for (int red = buffer.Length; red == buffer.Length && total < len; total += red)
                 {
-                    red = stream.Read(buffer.Span[..(int)Math.Min(buffer.Length, len - total)]);
+                    red = stream.Read(buffer.Span[..(int)Math.Min(buffer.Length, len.Value - total)]);
                     if (red < 1) break;
                     target.Write(buffer.Span[..red]);
                 }
@@ -99,12 +125,24 @@ namespace wan24.StreamSerializerExtensions
             )
             where T : Stream
         {
-            if (!ReadBool(stream, version, pool))
+            switch (version ?? StreamSerializer.VERSION)
             {
-                target.Dispose();
-                return null;
+                case 1:
+                    if (!ReadBool(stream, version, pool))
+                    {
+                        target.Dispose();
+                        return null;
+                    }
+                    return ReadStream(stream, target, version, pool, maxBufferSize, minLen, maxLen);
+                default:
+                    long len = ReadNumber<long>(stream, version, pool);
+                    if (len == long.MinValue)
+                    {
+                        target.Dispose();
+                        return null;
+                    }
+                    return ReadStreamInt(stream, target, version, pool, maxBufferSize, minLen, maxLen, len);
             }
-            return ReadStream(stream, target, version, pool, maxBufferSize, minLen, maxLen);
         }
 
         /// <summary>
@@ -120,7 +158,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum stream length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Target stream</returns>
-        public static async Task<T> ReadStreamAsync<T>(
+        public static Task<T> ReadStreamAsync<T>(
             this Stream stream,
             T target,
             int? version = null,
@@ -131,12 +169,40 @@ namespace wan24.StreamSerializerExtensions
             CancellationToken cancellationToken = default
             )
             where T : Stream
+            => ReadStreamIntAsync(stream, target, version, pool, maxBufferSize, minLen, maxLen, len: null, cancellationToken);
+
+        /// <summary>
+        /// Read a stream
+        /// </summary>
+        /// <typeparam name="T">Target stream type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="target">Target stream (the position won't be reset)</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="pool">Array pool</param>
+        /// <param name="maxBufferSize">Maximum buffer size in bytes</param>
+        /// <param name="minLen">Minimum stream length</param>
+        /// <param name="maxLen">Maximum stream length in bytes</param>
+        /// <param name="len">Stream/chunk length in bytes (chunk length is negative)</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Target stream</returns>
+        private static async Task<T> ReadStreamIntAsync<T>(
+            Stream stream,
+            T target,
+            int? version,
+            ArrayPool<byte>? pool,
+            int? maxBufferSize,
+            long minLen,
+            long maxLen,
+            long? len,
+            CancellationToken cancellationToken
+            )
+            where T : Stream
         {
             if (!target.CanWrite) throw new ArgumentException("Writable stream required", nameof(target));
             if (maxBufferSize != null && maxBufferSize.Value < 1) throw new ArgumentOutOfRangeException(nameof(maxBufferSize));
             if (minLen < 0) throw new ArgumentOutOfRangeException(nameof(minLen));
             if (maxLen < 0 || maxLen < minLen) throw new ArgumentOutOfRangeException(nameof(maxLen));
-            long len = await stream.ReadNumberAsync<long>(version, pool, cancellationToken).DynamicContext();
+            len ??= await stream.ReadNumberAsync<long>(version, pool, cancellationToken).DynamicContext();
             if (len == 0)
             {
                 if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
@@ -145,7 +211,7 @@ namespace wan24.StreamSerializerExtensions
             if (len < 0)
             {
                 // Chunked
-                len = Math.Abs(len);
+                len = Math.Abs(len.Value);
                 if (len > int.MaxValue) throw new SerializerException($"Invalid chunk length {len}", new InvalidDataException());
                 if (len > (maxBufferSize ?? Settings.BufferSize))
                     throw new SerializerException($"Chunk length of {len} bytes exceeds max. buffer size of {maxBufferSize ?? Settings.BufferSize}", new InvalidDataException());
@@ -170,7 +236,7 @@ namespace wan24.StreamSerializerExtensions
                 long total = 0;
                 for (int red = buffer.Length; red == buffer.Length && total < len; total += red)
                 {
-                    red = await stream.ReadAsync(buffer.Memory[..(int)Math.Min(buffer.Length, len - total)], cancellationToken: cancellationToken).DynamicContext();
+                    red = await stream.ReadAsync(buffer.Memory[..(int)Math.Min(buffer.Length, len.Value - total)], cancellationToken: cancellationToken).DynamicContext();
                     if (red < 1) break;
                     await target.WriteAsync(buffer.Memory[..red], cancellationToken).DynamicContext();
                 }
@@ -204,12 +270,24 @@ namespace wan24.StreamSerializerExtensions
             )
             where T : Stream
         {
-            if (!await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext())
+            switch (version ?? StreamSerializer.VERSION)
             {
-                await target.DisposeAsync().DynamicContext();
-                return null;
+                case 1:
+                    if (!await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext())
+                    {
+                        await target.DisposeAsync().DynamicContext();
+                        return null;
+                    }
+                    return await ReadStreamAsync(stream, target, version, pool, maxBufferSize, minLen, maxLen, cancellationToken).DynamicContext();
+                default:
+                    long len = await ReadNumberAsync<long>(stream, version, pool, cancellationToken).DynamicContext();
+                    if (len == long.MinValue)
+                    {
+                        await target.DisposeAsync().DynamicContext();
+                        return null;
+                    }
+                    return await ReadStreamIntAsync(stream, target, version, pool, maxBufferSize, minLen, maxLen, len, cancellationToken).DynamicContext();
             }
-            return await ReadStreamAsync(stream, target, version, pool, maxBufferSize, minLen, maxLen, cancellationToken).DynamicContext();
         }
     }
 }

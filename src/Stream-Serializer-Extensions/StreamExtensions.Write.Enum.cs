@@ -19,6 +19,7 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
+                if (ObjectHelper.AreEqual(value, default(tEnum))) return Write(stream, (byte)NumberTypes.Default);
                 Type type = typeof(tEnum).GetEnumUnderlyingType();
                 WriteNumberMethod.MakeGenericMethod(typeof(tStream), type).InvokeAuto(obj: null, stream, Convert.ChangeType(value, type));
                 return stream;
@@ -41,6 +42,11 @@ namespace wan24.StreamSerializerExtensions
         {
             try
             {
+                if (ObjectHelper.AreEqual(value, default(T)))
+                {
+                    await WriteAsync(stream, (byte)NumberTypes.Default, cancellationToken).DynamicContext();
+                    return;
+                }
                 Type type = typeof(T).GetEnumUnderlyingType();
                 Task task = (Task)WriteNumberAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, Convert.ChangeType(value, type), cancellationToken)!;
                 await task.DynamicContext();
@@ -62,11 +68,7 @@ namespace wan24.StreamSerializerExtensions
         public static tStream WriteEnumNullable<tStream, tEnum>(this tStream stream, tEnum? value)
             where tStream : Stream
             where tEnum : struct, Enum
-        {
-            Write(stream, value != null);
-            if (value != null) WriteEnum(stream, value.Value);
-            return stream;
-        }
+            => value == null ? Write(stream, (byte)NumberTypes.Null) : WriteEnum(stream, value.Value);
 
         /// <summary>
         /// Write
@@ -78,8 +80,14 @@ namespace wan24.StreamSerializerExtensions
         public static async Task WriteEnumNullableAsync<T>(this Stream stream, T? value, CancellationToken cancellationToken = default)
             where T : struct, Enum
         {
-            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
-            if (value != null) await WriteEnumAsync(stream, value.Value, cancellationToken).DynamicContext();
+            if (value == null)
+            {
+                await WriteAsync(stream, (byte)NumberTypes.Null, cancellationToken).DynamicContext();
+            }
+            else
+            {
+                await WriteEnumAsync(stream, value.Value, cancellationToken).DynamicContext();
+            }
         }
     }
 }

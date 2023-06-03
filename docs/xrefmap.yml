@@ -1813,6 +1813,12 @@ references:
   commentId: F:wan24.StreamSerializerExtensions.NumberTypes.Decimal
   fullName: wan24.StreamSerializerExtensions.NumberTypes.Decimal
   nameWithType: NumberTypes.Decimal
+- uid: wan24.StreamSerializerExtensions.NumberTypes.Default
+  name: Default
+  href: api/wan24.StreamSerializerExtensions.NumberTypes.html#wan24_StreamSerializerExtensions_NumberTypes_Default
+  commentId: F:wan24.StreamSerializerExtensions.NumberTypes.Default
+  fullName: wan24.StreamSerializerExtensions.NumberTypes.Default
+  nameWithType: NumberTypes.Default
 - uid: wan24.StreamSerializerExtensions.NumberTypes.Double
   name: Double
   href: api/wan24.StreamSerializerExtensions.NumberTypes.html#wan24_StreamSerializerExtensions_NumberTypes_Double
@@ -1861,6 +1867,12 @@ references:
   commentId: F:wan24.StreamSerializerExtensions.NumberTypes.None
   fullName: wan24.StreamSerializerExtensions.NumberTypes.None
   nameWithType: NumberTypes.None
+- uid: wan24.StreamSerializerExtensions.NumberTypes.Null
+  name: "Null"
+  href: api/wan24.StreamSerializerExtensions.NumberTypes.html#wan24_StreamSerializerExtensions_NumberTypes_Null
+  commentId: F:wan24.StreamSerializerExtensions.NumberTypes.Null
+  fullName: wan24.StreamSerializerExtensions.NumberTypes.Null
+  nameWithType: NumberTypes.Null
 - uid: wan24.StreamSerializerExtensions.NumberTypes.Short
   name: Short
   href: api/wan24.StreamSerializerExtensions.NumberTypes.html#wan24_StreamSerializerExtensions_NumberTypes_Short
@@ -3624,6 +3636,18 @@ references:
   commentId: F:wan24.StreamSerializerExtensions.StreamExtensions.ReadNumberAsyncMethod
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.ReadNumberAsyncMethod
   nameWithType: StreamExtensions.ReadNumberAsyncMethod
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadNumberIntAsyncMethod
+  name: ReadNumberIntAsyncMethod
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadNumberIntAsyncMethod
+  commentId: F:wan24.StreamSerializerExtensions.StreamExtensions.ReadNumberIntAsyncMethod
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.ReadNumberIntAsyncMethod
+  nameWithType: StreamExtensions.ReadNumberIntAsyncMethod
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadNumberIntMethod
+  name: ReadNumberIntMethod
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadNumberIntMethod
+  commentId: F:wan24.StreamSerializerExtensions.StreamExtensions.ReadNumberIntMethod
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.ReadNumberIntMethod
+  nameWithType: StreamExtensions.ReadNumberIntMethod
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadNumberMethod
   name: ReadNumberMethod
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadNumberMethod
@@ -5710,6 +5734,22 @@ references:
   commentId: F:wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberAsyncMethod
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberAsyncMethod
   nameWithType: StreamExtensions.WriteNumberAsyncMethod
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberInt*
+  name: WriteNumberInt
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNumberInt_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberInt
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberInt
+  nameWithType: StreamExtensions.WriteNumberInt
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberInt``1(``0,System.Object,System.Nullable{wan24.StreamSerializerExtensions.NumberTypes})
+  name: WriteNumberInt<T>(T, Object, Nullable<NumberTypes>)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNumberInt__1___0_System_Object_System_Nullable_wan24_StreamSerializerExtensions_NumberTypes__
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberInt``1(``0,System.Object,System.Nullable{wan24.StreamSerializerExtensions.NumberTypes})
+  name.vb: WriteNumberInt(Of T)(T, Object, Nullable(Of NumberTypes))
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberInt<T>(T, System.Object, System.Nullable<wan24.StreamSerializerExtensions.NumberTypes>)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberInt(Of T)(T, System.Object, System.Nullable(Of wan24.StreamSerializerExtensions.NumberTypes))
+  nameWithType: StreamExtensions.WriteNumberInt<T>(T, Object, Nullable<NumberTypes>)
+  nameWithType.vb: StreamExtensions.WriteNumberInt(Of T)(T, Object, Nullable(Of NumberTypes))
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberMethod
   name: WriteNumberMethod
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNumberMethod
