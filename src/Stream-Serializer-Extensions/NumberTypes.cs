@@ -39,6 +39,14 @@
         /// </summary>
         Decimal = 7,
         /// <summary>
+        /// Enumeration default value (for enumeration writing/reading)
+        /// </summary>
+        Default = 30,
+        /// <summary>
+        /// <see langword="null"/> (for nullable writing/reading)
+        /// </summary>
+        Null = 31,
+        /// <summary>
         /// Min. value
         /// </summary>
         MinValue = 32,
@@ -53,7 +61,9 @@
         /// <summary>
         /// Is zero?
         /// </summary>
+#pragma warning disable CA1069 // Double constant value
         Zero = 128,
+#pragma warning restore CA1069 // Double constant value
         /// <summary>
         /// All flags
         /// </summary>

@@ -7,9 +7,9 @@ binary stream sequence.
 The built in serializer supports binary serialization of 
 
 - booleans
-- numbers ((U)Int8-64, Single, Double, Decimal)
+- numbers ((U)Int8-64, Single, Double, Decimal, little endian)
 - enumerations
-- strings (UTF-8)
+- strings (UTF-8/16/32, little endian)
 - arrays
 - lists
 - dictionaries
@@ -92,6 +92,35 @@ When deserializing an embedded stream using generic read-methods (like
 will delete the temporary file when disposing. You can define a stream factory 
 using `StreamSerializerAttribute.StreamFactoryType` and 
 `StreamSerializerAttribute.StreamFactoryMethod`.
+
+## Structure serialization
+
+The `WriteStruct*` methods use `Marshal` for structure serialization, which 
+produce little or big endian bits depending on the processors endianess. To 
+ensure that a serialized structure can be deserialized on any system, 
+endianess will be converted to little endian per default. For this it's 
+required to add a `StreamSerializerAttribute` to the strcture type and all 
+fields which require endianess conversion, which are
+
+- numeric types (which include enumeration values)
+- sub-structures which host numeric type fields
+
+**NOTE**: The serializer uses reflection for this only once (for 
+initialization) only on system with a big endian processor, which shouldn't 
+have too much performance impact for a permanent running service.
+
+**CAUTION**: Only structure fields will be processed. Their value should be a 
+structure, too - object references will make problems and are not supported. 
+Also variable length value counters won't be converted, which limits the 
+endianess conversion support to structures which match to these limitations 
+only:
+
+- No object referencing fields
+- Fixed length contents
+
+**TIP**: A structure may implement the `IStreamSerializer` inferface and be 
+written using the `WriteSerialized*` methods. For reading you can use the 
+`ReadSerializedStruct*` methods.
 
 ## Custom serializer
 
