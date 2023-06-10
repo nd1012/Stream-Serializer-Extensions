@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime;
 using System.Runtime.InteropServices;
 using wan24.Core;
 
@@ -16,6 +17,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Struct</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static tStream WriteStruct<tStream, tStruct>(this tStream stream, tStruct value, bool forceLittleEndian = true)
             where tStream : Stream
             where tStruct : struct
@@ -44,6 +46,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Struct</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static tStream WriteStructNullable<tStream, tStruct>(this tStream stream, tStruct? value, bool forceLittleEndian = true)
             where tStream : Stream
             where tStruct : struct
@@ -58,6 +61,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Struct</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static Task WriteStructAsync<tStream, tStruct>(this tStream stream, tStruct value, bool forceLittleEndian = true, CancellationToken cancellationToken = default)
             where tStream : Stream
             where tStruct : struct
@@ -86,6 +90,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Struct</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteStructNullableAsync<tStream, tStruct>(
             this tStream stream,
             tStruct? value,

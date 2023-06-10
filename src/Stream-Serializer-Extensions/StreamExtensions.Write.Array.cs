@@ -1,4 +1,5 @@
-﻿using wan24.Core;
+﻿using System.Runtime;
+using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -13,6 +14,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static tStream WriteArray<tStream, tElement>(this tStream stream, tElement[] value) where tStream : Stream
         {
             if (typeof(tElement) == typeof(byte)) return WriteBytes(stream, (value as byte[])!);
@@ -40,6 +42,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteArrayAsync<T>(this Stream stream, T[] value, CancellationToken cancellationToken = default)
         {
             if (typeof(T) == typeof(byte))
@@ -71,6 +74,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static tStream WriteArrayNullable<tStream, tElement>(this tStream stream, tElement[]? value) where tStream : Stream
         {
             Write(stream, value != null);
@@ -85,6 +89,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteArrayNullableAsync<T>(this Stream stream, T[]? value, CancellationToken cancellationToken = default)
         {
             await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
@@ -99,6 +104,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static tStream WriteFixedArray<tStream, tElement>(this tStream stream, Span<tElement> value) where tStream : Stream
         {
             try
@@ -124,6 +130,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteFixedArrayAsync<T>(this Stream stream, Memory<T> value, CancellationToken cancellationToken = default)
         {
             try

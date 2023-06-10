@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.Runtime;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -15,6 +16,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="minLen">Minimum length in bytes</param>
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static string ReadString(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
         {
             (byte[] data, int len) = ReadBytes(stream, version, buffer: null, pool ?? StreamSerializer.BufferPool, minLen, maxLen);
@@ -42,6 +44,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<string> ReadStringAsync(
             this Stream stream,
             int? version = null,
@@ -75,6 +78,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="minLen">Minimum length in bytes</param>
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static string? ReadStringNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
 #pragma warning disable IDE0034 // default expression can be simplified
             => ReadBool(stream, version, pool) ? ReadString(stream, version, pool, minLen, maxLen) : default(string?);
@@ -90,6 +94,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<string?> ReadStringNullableAsync(
             this Stream stream,
             int? version = null,
@@ -113,6 +118,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="minLen">Minimum length in bytes</param>
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static string ReadString16(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
         {
             (byte[] data, int len) = ReadBytes(stream, version, buffer: null, pool ?? StreamSerializer.BufferPool, minLen, maxLen);
@@ -140,6 +146,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<string> ReadString16Async(
             this Stream stream,
             int? version = null,
@@ -173,6 +180,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="minLen">Minimum length in bytes</param>
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static string? ReadString16Nullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
 #pragma warning disable IDE0034 // default expression can be simplified
             => ReadBool(stream, version, pool) ? ReadString16(stream, version, pool, minLen, maxLen) : default(string?);
@@ -188,6 +196,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<string?> ReadString16NullableAsync(
             this Stream stream,
             int? version = null,
@@ -211,6 +220,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="minLen">Minimum length in bytes</param>
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static string ReadString32(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
         {
             (byte[] data, int len) = ReadBytes(stream, version, buffer: null, pool ?? StreamSerializer.BufferPool, minLen, maxLen);
@@ -238,6 +248,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<string> ReadString32Async(
             this Stream stream,
             int? version = null,
@@ -271,6 +282,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="minLen">Minimum length in bytes</param>
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static string? ReadString32Nullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
 #pragma warning disable IDE0034 // default expression can be simplified
             => ReadBool(stream, version, pool) ? ReadString32(stream, version, pool, minLen, maxLen) : default(string?);
@@ -286,6 +298,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<string?> ReadString32NullableAsync(
             this Stream stream,
             int? version = null,

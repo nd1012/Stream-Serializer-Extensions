@@ -1,5 +1,6 @@
 ﻿using System.Buffers;
 using System.Reflection;
+using System.Runtime;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -118,6 +119,7 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Steam</param>
         /// <returns>Serializer version</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static int ReadSerializerVersion(this Stream stream)
         {
             int res = ReadNumber<int>(stream, version: 1);
@@ -131,6 +133,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Steam</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Serializer version</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<int> ReadSerializerVersionAsync(this Stream stream, CancellationToken cancellationToken = default)
         {
             int res = await ReadNumberAsync<int>(stream, version: 1, cancellationToken: cancellationToken).DynamicContext();

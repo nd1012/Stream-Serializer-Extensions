@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.Runtime;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -109,6 +110,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="keyOptions">Key serializer options</param>
         /// <param name="valueOptions">Value serializer options</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static Dictionary<tKey, tValue>? ReadDictNullable<tKey, tValue>(
             this Stream stream,
             int? version = null,
@@ -137,6 +139,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="valueOptions">Value serializer options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<Dictionary<tKey, tValue>?> ReadDictNullableAsync<tKey, tValue>(
             this Stream stream,
             int? version = null,

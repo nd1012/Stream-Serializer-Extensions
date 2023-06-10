@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.Runtime;
 using System.Runtime.InteropServices;
 using wan24.Core;
 
@@ -16,6 +17,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="buffer">Buffer</param>
         /// <param name="pool">Buffer pool</param>
         /// <returns>Struct</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static T ReadStruct<T>(
             this Stream stream,
             int? version = null,
@@ -54,6 +56,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Buffer pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Struct</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<T> ReadStructAsync<T>(
             this Stream stream,
             int? version = null,
@@ -92,6 +95,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="buffer">Buffer</param>
         /// <param name="pool">Buffer pool</param>
         /// <returns>Struct</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static T? ReadStructNullable<T>(
             this Stream stream,
             int? version = null,
@@ -111,6 +115,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Buffer pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Struct</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<T?> ReadStructNullableAsync<T>(
             this Stream stream,
             int? version = null,

@@ -1,4 +1,5 @@
-﻿using wan24.Core;
+﻿using System.Runtime;
+using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -12,6 +13,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static T WriteSerialized<T>(this T stream, IStreamSerializer obj) where T : Stream
         {
             obj.Serialize(stream);
@@ -24,8 +26,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        public static async Task WriteSerializedAsync(this Stream stream, IStreamSerializer obj, CancellationToken cancellationToken = default)
-            => await obj.SerializeAsync(stream, cancellationToken).DynamicContext();
+        [TargetedPatchingOptOut("Tiny method")]
+        public static Task WriteSerializedAsync(this Stream stream, IStreamSerializer obj, CancellationToken cancellationToken = default)
+            => obj.SerializeAsync(stream, cancellationToken);
 
         /// <summary>
         /// Write
@@ -34,6 +37,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static T WriteSerializedNullable<T>(this T stream, IStreamSerializer? obj) where T : Stream
         {
             Write(stream, obj != null);
@@ -47,6 +51,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteSerializedNullableAsync(this Stream stream, IStreamSerializer? obj, CancellationToken cancellationToken = default)
         {
             await WriteAsync(stream, obj != null, cancellationToken).DynamicContext();

@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using wan24.Core;
+using System.Runtime;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -118,6 +118,7 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Stream type</typeparam>
         /// <param name="stream">Stream</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static T WriteSerializerVersion<T>(this T stream) where T : Stream => WriteNumber(stream, StreamSerializer.VERSION);
 
         /// <summary>
@@ -125,7 +126,8 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        public static async Task WriteSerializerVersionAsync(this Stream stream, CancellationToken cancellationToken = default)
-            => await WriteNumberAsync(stream, StreamSerializer.VERSION, cancellationToken).DynamicContext();
+        [TargetedPatchingOptOut("Tiny method")]
+        public static Task WriteSerializerVersionAsync(this Stream stream, CancellationToken cancellationToken = default)
+            => WriteNumberAsync(stream, StreamSerializer.VERSION, cancellationToken);
     }
 }

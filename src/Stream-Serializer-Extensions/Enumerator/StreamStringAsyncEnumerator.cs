@@ -1,5 +1,4 @@
 ﻿using System.Buffers;
-using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions.Enumerator
 {
@@ -55,6 +54,6 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         }
 
         /// <inheritdoc/>
-        protected override async Task<string> ReadObjectAsync() => await Stream.ReadStringAsync(SerializerVersion, Pool, MinLen, MaxLen, Cancellation).DynamicContext();
+        protected override Task<string> ReadObjectAsync() => Stream.ReadStringAsync(SerializerVersion, Pool, MinLen, MaxLen, Cancellation);
     }
 }

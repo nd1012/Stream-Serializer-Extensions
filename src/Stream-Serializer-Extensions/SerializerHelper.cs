@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using System.Runtime;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -15,6 +16,7 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="type">Type</param>
         /// <returns>Type without flags</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static NumberTypes RemoveFlags(this NumberTypes type) => type & ~NumberTypes.FLAGS;
 
         /// <summary>
@@ -22,6 +24,7 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="type">Type</param>
         /// <returns>Type without value flags</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static NumberTypes RemoveValueFlags(this NumberTypes type) => type & ~NumberTypes.VALUE_FLAGS;
 
         /// <summary>
@@ -29,27 +32,31 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="type">Type</param>
         /// <returns>Unsigned?</returns>
-        public static bool IsUnsigned(this NumberTypes type) => type.HasFlag(NumberTypes.Unsigned);
+        [TargetedPatchingOptOut("Tiny method")]
+        public static bool IsUnsigned(this NumberTypes type) => type.ContainsAllFlags(NumberTypes.Unsigned);
 
         /// <summary>
         /// Is min. value?
         /// </summary>
         /// <param name="type">Type</param>
         /// <returns>Min.value?</returns>
-        public static bool IsMinValue(this NumberTypes type) => type.HasFlag(NumberTypes.MinValue);
+        [TargetedPatchingOptOut("Tiny method")]
+        public static bool IsMinValue(this NumberTypes type) => type.ContainsAllFlags(NumberTypes.MinValue);
 
         /// <summary>
         /// Is max. value?
         /// </summary>
         /// <param name="type">Type</param>
         /// <returns>Max. value?</returns>
-        public static bool IsMaxValue(this NumberTypes type) => type.HasFlag(NumberTypes.MaxValue);
+        [TargetedPatchingOptOut("Tiny method")]
+        public static bool IsMaxValue(this NumberTypes type) => type.ContainsAllFlags(NumberTypes.MaxValue);
 
         /// <summary>
         /// Is zero?
         /// </summary>
         /// <param name="type">Type</param>
         /// <returns>Zero?</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static bool IsZero(this NumberTypes type) => type == NumberTypes.Zero;
 
         /// <summary>
@@ -57,6 +64,7 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="type">Type</param>
         /// <returns>Has value flags?</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static bool HasValueFlags(this NumberTypes type) => (type & NumberTypes.VALUE_FLAGS) != 0;
 
         /// <summary>
@@ -64,6 +72,7 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="type">Type</param>
         /// <returns>Type without flags</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static ObjectTypes RemoveFlags(this ObjectTypes type) => type & ~ObjectTypes.FLAGS;
 
         /// <summary>
@@ -71,14 +80,16 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="type">Type</param>
         /// <returns>Empty?</returns>
-        public static bool IsEmpty(this ObjectTypes type) => type.HasFlag(ObjectTypes.Empty);
+        [TargetedPatchingOptOut("Tiny method")]
+        public static bool IsEmpty(this ObjectTypes type) => type.ContainsAllFlags(ObjectTypes.Empty);
 
         /// <summary>
         /// Is unsigned?
         /// </summary>
         /// <param name="type">Type</param>
         /// <returns>Unsigned?</returns>
-        public static bool IsUnsigned(this ObjectTypes type) => type.HasFlag(ObjectTypes.Unsigned);
+        [TargetedPatchingOptOut("Tiny method")]
+        public static bool IsUnsigned(this ObjectTypes type) => type.ContainsAllFlags(ObjectTypes.Unsigned);
 
         /// <summary>
         /// Is a number?
@@ -496,6 +507,7 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="value">Value</param>
         /// <returns>Non-null value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static object EnsureNotNull(object? value)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
@@ -509,6 +521,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="min">Minimum value</param>
         /// <param name="max">Maximum value</param>
         /// <returns>Length</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static int EnsureValidLength(int len, int min = 0, int max = int.MaxValue)
         {
             if (len < min || len > max) throw new InvalidDataException($"Invalid length {len}");
@@ -522,6 +535,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="min">Minimum value</param>
         /// <param name="max">Maximum value</param>
         /// <returns>Length</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static long EnsureValidLength(long len, long min = 0, long max = long.MaxValue)
         {
             if (len < min || len > max) throw new InvalidDataException($"Invalid length {len}");
@@ -580,6 +594,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Serializer options</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static ISerializerOptions? GetSerializerOptions(this PropertyInfo pi, Stream stream, int version, CancellationToken cancellationToken)
             => pi.GetCustomAttribute<StreamSerializerAttribute>()?.GetSerializerOptions(pi, stream, version, cancellationToken);
 
@@ -591,6 +606,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Serializer options</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static ISerializerOptions? GetKeySerializerOptions(this PropertyInfo pi, Stream stream, int version, CancellationToken cancellationToken)
             => pi.GetCustomAttribute<StreamSerializerAttribute>()?.GetKeySerializerOptions(pi, stream, version, cancellationToken);
 
@@ -602,6 +618,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Serializer options</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static ISerializerOptions? GetValueSerializerOptions(this PropertyInfo pi, Stream stream, int version, CancellationToken cancellationToken)
             => pi.GetCustomAttribute<StreamSerializerAttribute>()?.GetValueSerializerOptions(pi, stream, version, cancellationToken);
     }

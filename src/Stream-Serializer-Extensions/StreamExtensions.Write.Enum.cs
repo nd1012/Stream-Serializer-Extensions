@@ -1,4 +1,5 @@
-﻿using wan24.Core;
+﻿using System.Runtime;
+using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -13,6 +14,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static tStream WriteEnum<tStream, tEnum>(this tStream stream, tEnum value)
             where tStream : Stream
             where tEnum : struct, Enum
@@ -37,6 +39,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteEnumAsync<T>(this Stream stream, T value, CancellationToken cancellationToken = default)
             where T : struct, Enum
         {
@@ -65,6 +68,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static tStream WriteEnumNullable<tStream, tEnum>(this tStream stream, tEnum? value)
             where tStream : Stream
             where tEnum : struct, Enum
@@ -77,6 +81,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteEnumNullableAsync<T>(this Stream stream, T? value, CancellationToken cancellationToken = default)
             where T : struct, Enum
         {

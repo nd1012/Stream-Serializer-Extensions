@@ -1,4 +1,5 @@
-﻿using wan24.Core;
+﻿using System.Runtime;
+using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -14,6 +15,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="serializerVersion">Serializer version</param>
         /// <param name="objectVersion">Object version</param>
         /// <returns>Serialized object version</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static int ReadSerializedObjectVersion(Stream stream, int serializerVersion, int objectVersion)
         {
             int res = stream.ReadNumber<int>(serializerVersion);
@@ -29,6 +31,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="objectVersion">Object version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Serialized object version</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<int> ReadSerializedObjectVersionAsync(Stream stream, int serializerVersion, int objectVersion, CancellationToken cancellationToken = default)
         {
             int res = await stream.ReadNumberAsync<int>(serializerVersion, cancellationToken: cancellationToken).DynamicContext();

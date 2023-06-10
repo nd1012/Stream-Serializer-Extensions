@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -39,14 +38,14 @@ namespace wan24.StreamSerializerExtensions
         protected override void Serialize(Stream stream) => AutoStreamSerializerConfig.Serialize((T)this, stream);
 
         /// <inheritdoc/>
-        protected override async Task SerializeAsync(Stream stream, CancellationToken cancellationToken)
-            => await AutoStreamSerializerConfig.SerializeAsync((T)this, stream, cancellationToken).DynamicContext();
+        protected override Task SerializeAsync(Stream stream, CancellationToken cancellationToken)
+            => AutoStreamSerializerConfig.SerializeAsync((T)this, stream, cancellationToken);
 
         /// <inheritdoc/>
         protected override void Deserialize(Stream stream, int version) => AutoStreamSerializerConfig.Deserialize((T)this, stream, version);
 
         /// <inheritdoc/>
-        protected override async Task DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken)
-            => await AutoStreamSerializerConfig.DeserializeAsync((T)this, stream, version, cancellationToken).DynamicContext();
+        protected override Task DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken)
+            => AutoStreamSerializerConfig.DeserializeAsync((T)this, stream, version, cancellationToken);
     }
 }

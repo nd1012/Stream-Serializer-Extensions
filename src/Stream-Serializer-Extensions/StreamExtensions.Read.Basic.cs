@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.Runtime;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -14,6 +15,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static bool ReadBool(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
 #pragma warning restore IDE0060
         {
@@ -41,6 +43,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<bool> ReadBoolAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -66,6 +69,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static bool? ReadBoolNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
             => ReadBool(stream, version, pool) ? ReadBool(stream, version, pool) : default(bool?);
 
@@ -77,6 +81,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<bool?> ReadBoolNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
                 ? await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
@@ -88,6 +93,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static sbyte ReadOneSByte(this Stream stream, int? version = null)
         {
             try
@@ -108,6 +114,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<sbyte> ReadOneSByteAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -121,6 +128,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static sbyte? ReadOneSByteNullable(this Stream stream, int? version = null)
             => ReadBool(stream, version) ? ReadOneSByte(stream, version) : default(sbyte?);
 
@@ -131,6 +139,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<sbyte?> ReadOneSByteNullableAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
             => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
                 ? await ReadOneSByteAsync(stream, version, cancellationToken).DynamicContext()
@@ -143,6 +152,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static byte ReadOneByte(this Stream stream, int? version = null)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -166,6 +176,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<byte> ReadOneByteAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -179,6 +190,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static ushort? ReadOneByteNullable(this Stream stream, int? version = null)
             => ReadBool(stream, version) ? ReadOneByte(stream, version) : default(ushort?);
 
@@ -189,6 +201,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<ushort?> ReadOneByteNullableAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
             => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
                 ? await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext()
@@ -202,6 +215,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static short ReadShort(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -229,6 +243,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<short> ReadShortAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -254,6 +269,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static short? ReadShortNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
             => ReadBool(stream, version, pool) ? ReadShort(stream, version, pool) : default(short?);
 
@@ -265,6 +281,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<short?> ReadShortNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
                 ? await ReadShortAsync(stream, version, pool, cancellationToken).DynamicContext()
@@ -278,6 +295,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static ushort ReadUShort(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -305,6 +323,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<ushort> ReadUShortAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -330,6 +349,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static ushort? ReadUShortNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
             => ReadBool(stream, version, pool) ? ReadUShort(stream, version, pool) : default(ushort?);
 
@@ -341,6 +361,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<ushort?> ReadUShortNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
                 ? await ReadUShortAsync(stream, version, pool, cancellationToken).DynamicContext()
@@ -354,6 +375,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static int ReadInt(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -381,6 +403,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<int> ReadIntAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -406,6 +429,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static int? ReadIntNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
             => ReadBool(stream, version, pool) ? ReadInt(stream, version, pool) : default(int?);
 
@@ -417,6 +441,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<int?> ReadIntNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
                 ? await ReadIntAsync(stream, version, pool, cancellationToken).DynamicContext()
@@ -430,6 +455,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static uint ReadUInt(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -457,6 +483,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<uint> ReadUIntAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -482,6 +509,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static uint? ReadUIntNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
             => ReadBool(stream, version, pool) ? ReadUInt(stream, version, pool) : default(uint?);
 
@@ -493,6 +521,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<uint?> ReadUIntNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
                 ? await ReadUIntAsync(stream, version, pool, cancellationToken).DynamicContext()
@@ -506,6 +535,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static long ReadLong(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -533,6 +563,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<long> ReadLongAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -558,6 +589,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static long? ReadLongNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
             => ReadBool(stream, version, pool) ? ReadLong(stream, version, pool) : default(long?);
 
@@ -569,6 +601,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<long?> ReadLongNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
                 ? await ReadLongAsync(stream, version, pool, cancellationToken).DynamicContext()
@@ -582,6 +615,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static ulong ReadULong(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -609,6 +643,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<ulong> ReadULongAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -634,6 +669,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static ulong? ReadULongNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
             => ReadBool(stream, version, pool) ? ReadULong(stream, version, pool) : default(ulong?);
 
@@ -645,6 +681,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<ulong?> ReadULongNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
                 ? await ReadULongAsync(stream, version, pool, cancellationToken).DynamicContext()
@@ -658,6 +695,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static float ReadFloat(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -685,6 +723,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<float> ReadFloatAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -710,6 +749,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static float? ReadFloatNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
             => ReadBool(stream, version, pool) ? ReadFloat(stream, version, pool) : default(float?);
 
@@ -721,6 +761,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<float?> ReadFloatNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
                 ? await ReadFloatAsync(stream, version, pool, cancellationToken).DynamicContext()
@@ -734,6 +775,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static double ReadDouble(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -761,6 +803,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<double> ReadDoubleAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -786,6 +829,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static double? ReadDoubleNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
             => ReadBool(stream, version, pool) ? ReadDouble(stream, version, pool) : default(double?);
 
@@ -797,6 +841,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<double?> ReadDoubleNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
                 ? await ReadDoubleAsync(stream, version, pool, cancellationToken).DynamicContext()
@@ -810,6 +855,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static decimal ReadDecimal(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -837,6 +883,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<decimal> ReadDecimalAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -862,6 +909,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static decimal? ReadDecimalNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
             => ReadBool(stream, version, pool) ? ReadDecimal(stream, version, pool) : default(decimal?);
 
@@ -873,6 +921,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<decimal?> ReadDecimalNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
                 ? await ReadDecimalAsync(stream, version, pool, cancellationToken).DynamicContext()
@@ -1131,6 +1180,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static T? ReadNumberNullable<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null) where T : struct, IConvertible
         {
             switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
@@ -1154,6 +1204,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<T?> ReadNumberNullableAsync<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             where T : struct, IConvertible
         {
