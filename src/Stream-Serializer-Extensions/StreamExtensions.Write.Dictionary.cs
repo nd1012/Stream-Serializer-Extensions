@@ -1,4 +1,5 @@
-﻿using wan24.Core;
+﻿using System.Runtime;
+using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -14,6 +15,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static tStream WriteDict<tStream, tKey, tValue>(this tStream stream, Dictionary<tKey, tValue> value)
             where tStream : Stream
             where tKey : notnull
@@ -47,6 +49,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteDictAsync<tKey, tValue>(this Stream stream, Dictionary<tKey, tValue> value, CancellationToken cancellationToken = default)
             where tKey : notnull
         {
@@ -79,6 +82,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static tStream WriteDictNullable<tStream, tKey, tValue>(this tStream stream, Dictionary<tKey, tValue>? value)
             where tStream : Stream
             where tKey : notnull
@@ -96,6 +100,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteDictNullableAsync<tKey, tValue>(this Stream stream, Dictionary<tKey, tValue>? value, CancellationToken cancellationToken = default)
             where tKey : notnull
         {

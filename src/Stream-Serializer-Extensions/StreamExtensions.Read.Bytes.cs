@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.Runtime;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -98,6 +99,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="minLen">Minimum length in bytes</param>
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <returns>Value and length</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static (byte[] Value, int Length)? ReadBytesNullable(
             this Stream stream,
             int? version = null,
@@ -119,6 +121,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value and length</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<(byte[] Value, int Length)?> ReadBytesNullableAsync(
             this Stream stream,
             int? version = null,

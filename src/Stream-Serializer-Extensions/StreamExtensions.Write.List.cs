@@ -1,4 +1,5 @@
-﻿using wan24.Core;
+﻿using System.Runtime;
+using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -13,6 +14,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static tStream WriteList<tStream, tElement>(this tStream stream, List<tElement> value) where tStream : Stream
         {
             if (typeof(tElement) == typeof(byte)) return WriteBytes(stream, (value as byte[])!);
@@ -40,6 +42,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteListAsync<T>(this Stream stream, List<T> value, CancellationToken cancellationToken = default)
         {
             if (typeof(T) == typeof(byte))
@@ -71,6 +74,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static tStream WriteListNullable<tStream, tElement>(this tStream stream, List<tElement>? value) where tStream : Stream
         {
             Write(stream, value != null);
@@ -85,6 +89,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteListNullableAsync<T>(this Stream stream, List<T>? value, CancellationToken cancellationToken = default)
         {
             await WriteAsync(stream, value != null, cancellationToken).DynamicContext();

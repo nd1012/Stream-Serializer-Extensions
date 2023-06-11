@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime;
 using System.Text;
 using wan24.Core;
 
@@ -15,6 +16,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static tStream WriteObject<tStream, tObj>(this tStream stream, tObj obj) where tStream : Stream
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
@@ -46,6 +48,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteObjectAsync<T>(this Stream stream, T obj, CancellationToken cancellationToken = default)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
@@ -82,6 +85,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static tStream WriteObjectNullable<tStream, tObj>(this tStream stream, tObj? obj) where tStream : Stream
         {
             Write(stream, obj != null);
@@ -96,6 +100,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteObjectNullableAsync<T>(this Stream stream, T? obj, CancellationToken cancellationToken = default)
         {
             await WriteAsync(stream, obj != null, cancellationToken).DynamicContext();
@@ -184,6 +189,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static tStream WriteAnyObjectNullable<tStream, tObj>(this tStream stream, tObj? obj)
             where tStream : Stream
             where tObj : class, new()
@@ -200,6 +206,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteAnyObjectNullableAsync<T>(this Stream stream, T? obj, CancellationToken cancellationToken = default) where T : class, new()
         {
             await WriteAsync(stream, obj != null, cancellationToken).DynamicContext();

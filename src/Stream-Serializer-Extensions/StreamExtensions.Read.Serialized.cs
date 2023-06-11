@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using System.Runtime;
 using wan24.Core;
 using wan24.ObjectValidation;
 
@@ -45,6 +46,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="type">Object type</param>
         /// <param name="version">Serializer version</param>
         /// <returns>Object</returns>
+        [TargetedPatchingOptOut("Just a method adapter")]
         public static object ReadSerializedObject(this Stream stream, Type type, int? version = null)
             => ReadSerializedMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version)!;
 
@@ -87,6 +89,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Object</returns>
+        [TargetedPatchingOptOut("Just a method adapter")]
         public static async Task<object> ReadSerializedObjectAsync(this Stream stream, Type type, int? version = null, CancellationToken cancellationToken = default)
         {
             Task task = (Task)ReadSerializedAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version, cancellationToken)!;
@@ -101,6 +104,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <returns>Object</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static T? ReadSerializedNullable<T>(this Stream stream, int? version = null) where T : class, IStreamSerializer
 #pragma warning disable IDE0034 // default expression can be simplified
             => ReadBool(stream, version) ? ReadSerialized<T>(stream, version) : default(T?);
@@ -114,6 +118,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Object</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<T?> ReadSerializedNullableAsync<T>(this Stream stream, int? version = null, CancellationToken cancellationToken = default) where T : class, IStreamSerializer
             => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
                 ? await ReadSerializedAsync<T>(stream, version, cancellationToken).DynamicContext()
@@ -189,6 +194,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <returns>Structure</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static T? ReadSerializedStructNullable<T>(this Stream stream, int? version = null) where T : struct, IStreamSerializer
             => ReadBool(stream, version) ? ReadSerializedStruct<T>(stream, version) : default(T?);
 
@@ -200,6 +206,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Structure</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task<T?> ReadSerializedStructNullableAsync<T>(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
             where T : struct, IStreamSerializer
             => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()

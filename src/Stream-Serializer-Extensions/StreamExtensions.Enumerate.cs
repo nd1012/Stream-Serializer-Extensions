@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.Runtime;
 using System.Runtime.CompilerServices;
 using wan24.Core;
 using wan24.StreamSerializerExtensions.Enumerator;
@@ -16,6 +17,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <returns>Enumerable</returns>
+        [TargetedPatchingOptOut("Just a method adapter")]
         public static IEnumerable<tObject> Enumerate<tObject, tEnumerator>(this Stream stream, int? version = null)
             where tEnumerator : StreamEnumeratorBase<tObject>
             => StreamEnumeratorBase<tObject>.Enumerate<tEnumerator>(stream, version);
@@ -50,6 +52,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="version">Version</param>
         /// <returns>Enumerable</returns>
+        [TargetedPatchingOptOut("Just a method adapter")]
         public static IEnumerable<T> EnumerateSerialized<T>(this Stream stream, int? version = null)
             where T : class, IStreamSerializer
             => StreamEnumeratorBase<T>.Enumerate<StreamSerializerEnumerator<T>>(stream, version);

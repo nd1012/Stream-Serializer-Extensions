@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Runtime;
+using System.Text;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -13,6 +14,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static T WriteString<T>(this T stream, string value) where T : Stream
         {
             try
@@ -33,6 +35,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteStringAsync(this Stream stream, string value, CancellationToken cancellationToken = default)
         {
             try
@@ -53,6 +56,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static T WriteStringNullable<T>(this T stream, string? value) where T : Stream
         {
             Write(stream, value != null);
@@ -66,6 +70,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteStringNullableAsync(this Stream stream, string? value, CancellationToken cancellationToken = default)
         {
             await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
@@ -79,6 +84,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static T WriteString16<T>(this T stream, string value) where T : Stream
         {
             try
@@ -99,6 +105,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteString16Async(this Stream stream, string value, CancellationToken cancellationToken = default)
         {
             try
@@ -119,6 +126,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static T WriteString16Nullable<T>(this T stream, string? value) where T : Stream
         {
             Write(stream, value != null);
@@ -132,6 +140,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteString16NullableAsync(this Stream stream, string? value, CancellationToken cancellationToken = default)
         {
             await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
@@ -145,6 +154,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static T WriteString32<T>(this T stream, string value) where T : Stream
         {
             try
@@ -165,6 +175,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteString32Async(this Stream stream, string value, CancellationToken cancellationToken = default)
         {
             try
@@ -185,6 +196,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static T WriteString32Nullable<T>(this T stream, string? value) where T : Stream
         {
             Write(stream, value != null);
@@ -198,6 +210,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteString32NullableAsync(this Stream stream, string? value, CancellationToken cancellationToken = default)
         {
             await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
