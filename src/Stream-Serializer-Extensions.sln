@@ -7,26 +7,49 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stream-Serializer-Extension
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stream-Serializer-Extensions Tests", "Stream-Serializer-Extensions Tests\Stream-Serializer-Extensions Tests.csproj", "{0B38A3F4-CE52-4324-BBA7-A648845D2F47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stream-Serializer-Extensions Docs", "Stream-Serializer-Extensions Docs\Stream-Serializer-Extensions Docs.csproj", "{7E29CC27-3AB4-4CEC-A32E-1E94607C5924}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stream-Serializer-Extensions Docs", "Stream-Serializer-Extensions Docs\Stream-Serializer-Extensions Docs.csproj", "{7E29CC27-3AB4-4CEC-A32E-1E94607C5924}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectValidation", "..\..\ObjectValidation\src\ObjectValidation\ObjectValidation.csproj", "{F8293296-B214-4304-B87A-D954AD821BC8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wan24-Core", "..\..\wan24-Core\src\Wan24-Core\Wan24-Core.csproj", "{7D2B294F-AF0D-48AB-834B-9AF91529BC64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Trunk|Any CPU = Trunk|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{40B13FA3-D1FB-4FC9-BDD1-ED638EA40C3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{40B13FA3-D1FB-4FC9-BDD1-ED638EA40C3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40B13FA3-D1FB-4FC9-BDD1-ED638EA40C3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40B13FA3-D1FB-4FC9-BDD1-ED638EA40C3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40B13FA3-D1FB-4FC9-BDD1-ED638EA40C3C}.Trunk|Any CPU.ActiveCfg = Trunk|Any CPU
+		{40B13FA3-D1FB-4FC9-BDD1-ED638EA40C3C}.Trunk|Any CPU.Build.0 = Trunk|Any CPU
 		{0B38A3F4-CE52-4324-BBA7-A648845D2F47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0B38A3F4-CE52-4324-BBA7-A648845D2F47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B38A3F4-CE52-4324-BBA7-A648845D2F47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B38A3F4-CE52-4324-BBA7-A648845D2F47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B38A3F4-CE52-4324-BBA7-A648845D2F47}.Trunk|Any CPU.ActiveCfg = Trunk|Any CPU
+		{0B38A3F4-CE52-4324-BBA7-A648845D2F47}.Trunk|Any CPU.Build.0 = Trunk|Any CPU
 		{7E29CC27-3AB4-4CEC-A32E-1E94607C5924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7E29CC27-3AB4-4CEC-A32E-1E94607C5924}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E29CC27-3AB4-4CEC-A32E-1E94607C5924}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E29CC27-3AB4-4CEC-A32E-1E94607C5924}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E29CC27-3AB4-4CEC-A32E-1E94607C5924}.Trunk|Any CPU.ActiveCfg = Trunk|Any CPU
+		{7E29CC27-3AB4-4CEC-A32E-1E94607C5924}.Trunk|Any CPU.Build.0 = Trunk|Any CPU
+		{F8293296-B214-4304-B87A-D954AD821BC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8293296-B214-4304-B87A-D954AD821BC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8293296-B214-4304-B87A-D954AD821BC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8293296-B214-4304-B87A-D954AD821BC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8293296-B214-4304-B87A-D954AD821BC8}.Trunk|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8293296-B214-4304-B87A-D954AD821BC8}.Trunk|Any CPU.Build.0 = Debug|Any CPU
+		{7D2B294F-AF0D-48AB-834B-9AF91529BC64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D2B294F-AF0D-48AB-834B-9AF91529BC64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D2B294F-AF0D-48AB-834B-9AF91529BC64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D2B294F-AF0D-48AB-834B-9AF91529BC64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D2B294F-AF0D-48AB-834B-9AF91529BC64}.Trunk|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D2B294F-AF0D-48AB-834B-9AF91529BC64}.Trunk|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

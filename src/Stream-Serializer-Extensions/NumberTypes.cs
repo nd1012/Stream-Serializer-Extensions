@@ -39,7 +39,7 @@
         /// </summary>
         Decimal = 7,
         /// <summary>
-        /// Enumeration default value (for enumeration writing/reading)
+        /// Enumeration default value (for enumeration writing/reading) or default nullable numeric writing action
         /// </summary>
         Default = 30,
         /// <summary>

@@ -9,78 +9,59 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Write
         /// </summary>
-        /// <typeparam name="tStream">Stream type</typeparam>
-        /// <typeparam name="tElement">Element type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static tStream WriteArray<tStream, tElement>(this tStream stream, tElement[] value) where tStream : Stream
-        {
-            if (typeof(tElement) == typeof(byte)) return WriteBytes(stream, (value as byte[])!);
-            try
+        public static Stream WriteArray(this Stream stream, Array value)
+            => SerializerException.Wrap(() =>
             {
+                if (value.GetType().GetElementType() == typeof(byte)) return WriteBytes(stream, (value as byte[])!);
                 WriteNumber(stream, value.Length);
                 if (value.Length == 0) return stream;
-                foreach (tElement element in value) WriteObject(stream, element);
+                foreach (object element in value) WriteObject(stream, element);
                 return stream;
-            }
-            catch (SerializerException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-        }
+            });
 
         /// <summary>
         /// Write
         /// </summary>
-        /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task WriteArrayAsync<T>(this Stream stream, T[] value, CancellationToken cancellationToken = default)
-        {
-            if (typeof(T) == typeof(byte))
+        public static Task WriteArrayAsync(this Stream stream, Array value, CancellationToken cancellationToken = default)
+            => SerializerException.WrapAsync(async () =>
             {
-                await WriteBytesAsync(stream, (value as byte[])!, cancellationToken).DynamicContext();
-                return;
-            }
-            try
-            {
+                if (value.GetType().GetElementType() == typeof(byte))
+                {
+                    await WriteBytesAsync(stream, (value as byte[])!, cancellationToken).DynamicContext();
+                    return;
+                }
                 await WriteNumberAsync(stream, value.Length, cancellationToken).DynamicContext();
                 if (value.Length == 0) return;
-                foreach (T element in value) await WriteObjectAsync(stream, element, cancellationToken).DynamicContext();
-            }
-            catch (SerializerException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-        }
+                foreach (object element in value) await WriteObjectAsync(stream, element, cancellationToken).DynamicContext();
+            });
 
         /// <summary>
         /// Write
         /// </summary>
-        /// <typeparam name="tStream">Stream type</typeparam>
-        /// <typeparam name="tElement">Element type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static tStream WriteArrayNullable<tStream, tElement>(this tStream stream, tElement[]? value) where tStream : Stream
-        {
-            Write(stream, value != null);
-            if (value != null) WriteArray(stream, value);
-            return stream;
-        }
+        public static Stream WriteArrayNullable(this Stream stream, Array? value)
+            => WriteIfNull(stream, value, () => WriteArray(stream, value!));
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value to write</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
+        public static Task WriteArrayNullableAsync(this Stream stream, Array? value, CancellationToken cancellationToken = default)
+            => WriteIfNullAsync(stream, value, () => WriteArrayAsync(stream, value!, cancellationToken), cancellationToken);
 
         /// <summary>
         /// Write
@@ -88,29 +69,14 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        [TargetedPatchingOptOut("Tiny method")]
-        public static async Task WriteArrayNullableAsync<T>(this Stream stream, T[]? value, CancellationToken cancellationToken = default)
-        {
-            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
-            if (value != null) await WriteArrayAsync(stream, value, cancellationToken).DynamicContext();
-        }
-
-        /// <summary>
-        /// Write
-        /// </summary>
-        /// <typeparam name="tStream">Stream type</typeparam>
-        /// <typeparam name="tElement">Element type</typeparam>
-        /// <param name="stream">Stream</param>
-        /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static tStream WriteFixedArray<tStream, tElement>(this tStream stream, Span<tElement> value) where tStream : Stream
+        public static Stream WriteFixedArray<T>(this Stream stream, Span<T> value)
         {
             try
             {
-                foreach (tElement element in value)
-                    WriteObject(stream, element);
+                foreach (T element in value)
+                    WriteObject(stream, element!);
                 return stream;
             }
             catch (SerializerException)
@@ -131,20 +97,10 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task WriteFixedArrayAsync<T>(this Stream stream, Memory<T> value, CancellationToken cancellationToken = default)
-        {
-            try
+        public static Task WriteFixedArrayAsync<T>(this Stream stream, Memory<T> value, CancellationToken cancellationToken = default)
+            => SerializerException.WrapAsync(async () =>
             {
-                for (int i = 0; i < value.Length; i++) await WriteObjectAsync(stream, value.Span[i], cancellationToken).DynamicContext();
-            }
-            catch (SerializerException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-        }
+                for (int i = 0; i < value.Length; i++) await WriteObjectAsync(stream, value.Span[i]!, cancellationToken).DynamicContext();
+            });
     }
 }

@@ -79,14 +79,11 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">wan24.ObjectValidation.ValidatableObjectBase</span></div>
-    <div class="level2"><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html">StreamSerializerBase</a></div>
-    <div class="level3"><span class="xref">AutoStreamSerializerBase&lt;T&gt;</span></div>
+    <div class="level1"><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html">StreamSerializerBase</a></div>
+    <div class="level2"><span class="xref">AutoStreamSerializerBase&lt;T&gt;</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><span class="xref">wan24.ObjectValidation.IObjectValidatable</span></div>
-    <div><span class="xref">System.ComponentModel.DataAnnotations.IValidatableObject</span></div>
     <div><a class="xref" href="wan24.StreamSerializerExtensions.IAutoStreamSerializer.html">IAutoStreamSerializer</a></div>
     <div><a class="xref" href="wan24.StreamSerializerExtensions.IStreamSerializerVersion.html">IStreamSerializerVersion</a></div>
     <div><a class="xref" href="wan24.StreamSerializerExtensions.IStreamSerializer.html">IStreamSerializer</a></div>
@@ -117,42 +114,12 @@
     <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_DeserializeAsync_Stream_System_Int32_CancellationToken_">StreamSerializerBase.IStreamSerializer.DeserializeAsync(Stream, Int32, CancellationToken)</a>
     </div>
-    <div>
-      <span class="xref">wan24.ObjectValidation.ValidatableObjectBase.Validate(System.ComponentModel.DataAnnotations.ValidationContext)</span>
-    </div>
-    <div>
-      <span class="xref">wan24.ObjectValidation.ValidatableObjectBase.System.ComponentModel.DataAnnotations.IValidatableObject.Validate(System.ComponentModel.DataAnnotations.ValidationContext)</span>
-    </div>
-    <div>
-      <span class="xref">wan24.ObjectValidation.ValidatableObjectBase.ObjectValidatable(wan24.ObjectValidation.IObjectValidatable)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="wan24.StreamSerializerExtensions.html">wan24.StreamSerializerExtensions</a></h6>
   <h6><strong>Assembly</strong>: StreamSerializerExtensions.dll</h6>
   <h5 id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class AutoStreamSerializerBase&lt;T&gt; : StreamSerializerBase, IObjectValidatable, IValidatableObject, IAutoStreamSerializer, IStreamSerializerVersion, IStreamSerializer where T : AutoStreamSerializerBase&lt;T&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class AutoStreamSerializerBase&lt;T&gt; : StreamSerializerBase, IAutoStreamSerializer, IStreamSerializerVersion, IStreamSerializer where T : AutoStreamSerializerBase&lt;T&gt;</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -456,12 +423,6 @@
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">wan24.ObjectValidation.IObjectValidatable</span>
-  </div>
-  <div>
-      <span class="xref">System.ComponentModel.DataAnnotations.IValidatableObject</span>
-  </div>
-  <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.IAutoStreamSerializer.html">IAutoStreamSerializer</a>
   </div>
   <div>
@@ -481,7 +442,7 @@
       <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetObjectSerializerInfo_System_Object_">SerializerHelper.GetObjectSerializerInfo(Object)</a>
   </div>
   <div>
-      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ValidateObject__1___0_">SerializerHelper.ValidateObject&lt;T&gt;(T)</a>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ValidateDeserializedObject__1___0_">SerializerHelper.ValidateDeserializedObject&lt;T&gt;(T)</a>
   </div>
   <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ToBytes_wan24_StreamSerializerExtensions_IStreamSerializer_System_Boolean_">SerializerHelper.ToBytes(IStreamSerializer, Boolean)</a>

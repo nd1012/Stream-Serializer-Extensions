@@ -17,27 +17,35 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <returns>Object</returns>
         public static T ReadSerialized<T>(this Stream stream, int? version = null) where T : class, IStreamSerializer
-        {
-            Type type = typeof(T);
-            if (type.IsAbstract || type.IsInterface || type.IsGenericTypeDefinition) throw new SerializerException($"Type {type} isn't a supported deserializer type");
-            ConstructorInfo ci = (from c in type.GetConstructors()
-                                  where c.IsPublic &&
-                                    (
-                                        c.GetParameters().Length == 0 ||
-                                        (c.GetParameters().Length == 2 && c.GetParameters()[0].ParameterType == typeof(Stream) && c.GetParameters()[1].ParameterType == typeof(int))
-                                    )
-                                  select c)
-                                  .OrderBy(c => c.GetParameters().Length)
-                                  .FirstOrDefault()
-                                  ?? throw new SerializerException($"Failed to find the serializer constructor of type {type}");
-            bool serializerConstructor = ci.GetParameters().Length > 0;
-            T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
-            if (!serializerConstructor) res.Deserialize(stream, version ?? StreamSerializer.Version);
-            List<ValidationResult> results = new();
-            if (!res.TryValidateObject(results))
-                throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");
-            return res;
-        }
+            => SerializerException.Wrap(() =>
+            {
+                Type type = typeof(T);
+                if (type.IsAbstract || type.IsInterface || type.IsGenericTypeDefinition)
+                    throw new SerializerException($"Type {type} isn't a supported deserializer type");
+                ConstructorInfo ci = (from c in type.GetConstructors()
+                                      where c.IsPublic &&
+                                        (
+                                            c.GetParameters().Length == 0 ||
+                                            (
+                                                c.GetParameters().Length == 2 &&
+                                                c.GetParameters()[0].ParameterType == typeof(Stream) &&
+                                                c.GetParameters()[1].ParameterType == typeof(int)
+                                            )
+                                        )
+                                      select c)
+                                      .OrderBy(c => c.GetParameters().Length)
+                                      .FirstOrDefault()
+                                      ?? throw new SerializerException($"Failed to find the serializer constructor of type {type}");
+                bool serializerConstructor = ci.GetParameters().Length > 0;
+                T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
+                if (!serializerConstructor) res.Deserialize(stream, version ?? StreamSerializer.Version);
+                if (!res.TryValidateObject(out List<ValidationResult> results))
+                    throw new SerializerException(
+                        $"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})",
+                        new ObjectValidationException(results)
+                        );
+                return res;
+            });
 
         /// <summary>
         /// Read
@@ -47,8 +55,37 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <returns>Object</returns>
         [TargetedPatchingOptOut("Just a method adapter")]
-        public static object ReadSerializedObject(this Stream stream, Type type, int? version = null)
-            => ReadSerializedMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version)!;
+        public static IStreamSerializer ReadSerializedObject(this Stream stream, Type type, int? version = null)
+            => SerializerException.Wrap(() =>
+            {
+                if (type.IsAbstract || type.IsInterface || type.IsGenericTypeDefinition)
+                    throw new SerializerException($"Type {type} isn't a supported deserializer type");
+                ConstructorInfo ci = (from c in type.GetConstructors()
+                                      where c.IsPublic &&
+                                        (
+                                            c.GetParameters().Length == 0 ||
+                                            (
+                                                c.GetParameters().Length == 2 &&
+                                                c.GetParameters()[0].ParameterType == typeof(Stream) &&
+                                                c.GetParameters()[1].ParameterType == typeof(int)
+                                            )
+                                        )
+                                      select c)
+                                      .OrderBy(c => c.GetParameters().Length)
+                                      .FirstOrDefault()
+                                      ?? throw new SerializerException($"Failed to find the serializer constructor of type {type}");
+                bool serializerConstructor = ci.GetParameters().Length > 0;
+                IStreamSerializer res = (IStreamSerializer)(serializerConstructor
+                    ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version })
+                    : ci.Invoke(Array.Empty<object?>()));
+                if (!serializerConstructor) res.Deserialize(stream, version ?? StreamSerializer.Version);
+                if (!res.TryValidateObject(out List<ValidationResult> results))
+                    throw new SerializerException(
+                        $"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})",
+                        new ObjectValidationException(results)
+                        );
+                return res;
+            });
 
         /// <summary>
         /// Read
@@ -58,28 +95,36 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Object</returns>
-        public static async Task<T> ReadSerializedAsync<T>(this Stream stream, int? version = null, CancellationToken cancellationToken = default) where T : class, IStreamSerializer
-        {
-            Type type = typeof(T);
-            if (type.IsAbstract || type.IsInterface || type.IsGenericTypeDefinition) throw new SerializerException($"Type {type} isn't a supported deserializer type");
-            ConstructorInfo ci = (from c in type.GetConstructors()
-                                  where c.IsPublic &&
-                                    (
-                                        c.GetParameters().Length == 0 ||
-                                        (c.GetParameters().Length == 2 && c.GetParameters()[0].ParameterType == typeof(Stream) && c.GetParameters()[1].ParameterType == typeof(int))
-                                    )
-                                  select c)
-                                  .OrderBy(c => c.GetParameters().Length)
-                                  .FirstOrDefault()
-                                  ?? throw new SerializerException($"Failed to find the serializer constructor of type {type}");
-            bool serializerConstructor = ci.GetParameters().Length > 0;
-            T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
-            if (!serializerConstructor) await res.DeserializeAsync(stream, version ?? StreamSerializer.Version, cancellationToken).DynamicContext();
-            List<ValidationResult> results = new();
-            if (!res.TryValidateObject(results))
-                throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");
-            return res;
-        }
+        public static Task<T> ReadSerializedAsync<T>(this Stream stream, int? version = null, CancellationToken cancellationToken = default) where T : class, IStreamSerializer
+            => SerializerException.WrapAsync(async () =>
+            {
+                Type type = typeof(T);
+                if (type.IsAbstract || type.IsInterface || type.IsGenericTypeDefinition)
+                    throw new SerializerException($"Type {type} isn't a supported deserializer type");
+                ConstructorInfo ci = (from c in type.GetConstructors()
+                                      where c.IsPublic &&
+                                        (
+                                            c.GetParameters().Length == 0 ||
+                                            (
+                                                c.GetParameters().Length == 2 &&
+                                                c.GetParameters()[0].ParameterType == typeof(Stream) &&
+                                                c.GetParameters()[1].ParameterType == typeof(int)
+                                            )
+                                        )
+                                      select c)
+                                      .OrderBy(c => c.GetParameters().Length)
+                                      .FirstOrDefault()
+                                      ?? throw new SerializerException($"Failed to find the serializer constructor of type {type}");
+                bool serializerConstructor = ci.GetParameters().Length > 0;
+                T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
+                if (!serializerConstructor) await res.DeserializeAsync(stream, version ?? StreamSerializer.Version, cancellationToken).DynamicContext();
+                if (!res.TryValidateObject(out List<ValidationResult> results))
+                    throw new SerializerException(
+                        $"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})",
+                        new ObjectValidationException(results)
+                        );
+                return res;
+            });
 
         /// <summary>
         /// Read
@@ -90,12 +135,37 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Object</returns>
         [TargetedPatchingOptOut("Just a method adapter")]
-        public static async Task<object> ReadSerializedObjectAsync(this Stream stream, Type type, int? version = null, CancellationToken cancellationToken = default)
-        {
-            Task task = (Task)ReadSerializedAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version, cancellationToken)!;
-            await task.DynamicContext();
-            return task.GetResult(type);
-        }
+        public static Task<IStreamSerializer> ReadSerializedObjectAsync(this Stream stream, Type type, int? version = null, CancellationToken cancellationToken = default)
+            => SerializerException.WrapAsync(async () =>
+            {
+                if (type.IsAbstract || type.IsInterface || type.IsGenericTypeDefinition)
+                    throw new SerializerException($"Type {type} isn't a supported deserializer type");
+                ConstructorInfo ci = (from c in type.GetConstructors()
+                                      where c.IsPublic &&
+                                        (
+                                            c.GetParameters().Length == 0 ||
+                                            (
+                                                c.GetParameters().Length == 2 &&
+                                                c.GetParameters()[0].ParameterType == typeof(Stream) &&
+                                                c.GetParameters()[1].ParameterType == typeof(int)
+                                            )
+                                        )
+                                      select c)
+                                      .OrderBy(c => c.GetParameters().Length)
+                                      .FirstOrDefault()
+                                      ?? throw new SerializerException($"Failed to find the serializer constructor of type {type}");
+                bool serializerConstructor = ci.GetParameters().Length > 0;
+                IStreamSerializer res = (IStreamSerializer)(serializerConstructor
+                    ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version })
+                    : ci.Invoke(Array.Empty<object?>()));
+                if (!serializerConstructor) await res.DeserializeAsync(stream, version ?? StreamSerializer.Version, cancellationToken).DynamicContext();
+                if (!res.TryValidateObject(out List<ValidationResult> results))
+                    throw new SerializerException(
+                        $"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})",
+                        new ObjectValidationException(results)
+                        );
+                return res;
+            });
 
         /// <summary>
         /// Read
@@ -134,27 +204,35 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <returns>Structure</returns>
         public static T ReadSerializedStruct<T>(this Stream stream, int? version = null) where T : struct, IStreamSerializer
-        {
-            Type type = typeof(T);
-            if (type.IsAbstract || type.IsInterface || type.IsGenericTypeDefinition) throw new SerializerException($"Type {type} isn't a supported deserializer type");
-            ConstructorInfo ci = (from c in type.GetConstructors()
-                                  where c.IsPublic &&
-                                    (
-                                        c.GetParameters().Length == 0 ||
-                                        (c.GetParameters().Length == 2 && c.GetParameters()[0].ParameterType == typeof(Stream) && c.GetParameters()[1].ParameterType == typeof(int))
-                                    )
-                                  select c)
-                                  .OrderBy(c => c.GetParameters().Length)
-                                  .FirstOrDefault()
-                                  ?? throw new SerializerException($"Failed to find the serializer constructor of type {type}");
-            bool serializerConstructor = ci.GetParameters().Length > 0;
-            T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
-            if (!serializerConstructor) res.Deserialize(stream, version ?? StreamSerializer.Version);
-            List<ValidationResult> results = new();
-            if (!res.TryValidateObject(results))
-                throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");
-            return res;
-        }
+            => SerializerException.Wrap(() =>
+            {
+                Type type = typeof(T);
+                if (type.IsAbstract || type.IsInterface || type.IsGenericTypeDefinition)
+                    throw new SerializerException($"Type {type} isn't a supported deserializer type");
+                ConstructorInfo ci = (from c in type.GetConstructors()
+                                      where c.IsPublic &&
+                                        (
+                                            c.GetParameters().Length == 0 ||
+                                            (
+                                                c.GetParameters().Length == 2 &&
+                                                c.GetParameters()[0].ParameterType == typeof(Stream) &&
+                                                c.GetParameters()[1].ParameterType == typeof(int)
+                                            )
+                                        )
+                                      select c)
+                                      .OrderBy(c => c.GetParameters().Length)
+                                      .FirstOrDefault()
+                                      ?? throw new SerializerException($"Failed to find the serializer constructor of type {type}");
+                bool serializerConstructor = ci.GetParameters().Length > 0;
+                T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
+                if (!serializerConstructor) res.Deserialize(stream, version ?? StreamSerializer.Version);
+                if (!res.TryValidateObject(out List<ValidationResult> results))
+                    throw new SerializerException(
+                        $"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})",
+                        new ObjectValidationException(results)
+                        );
+                return res;
+            });
 
         /// <summary>
         /// Read
@@ -164,28 +242,36 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Structure</returns>
-        public static async Task<T> ReadSerializedStructAsync<T>(this Stream stream, int? version = null, CancellationToken cancellationToken = default) where T : struct, IStreamSerializer
-        {
-            Type type = typeof(T);
-            if (type.IsAbstract || type.IsInterface || type.IsGenericTypeDefinition) throw new SerializerException($"Type {type} isn't a supported deserializer type");
-            ConstructorInfo ci = (from c in type.GetConstructors()
-                                  where c.IsPublic &&
-                                    (
-                                        c.GetParameters().Length == 0 ||
-                                        (c.GetParameters().Length == 2 && c.GetParameters()[0].ParameterType == typeof(Stream) && c.GetParameters()[1].ParameterType == typeof(int))
-                                    )
-                                  select c)
-                                  .OrderBy(c => c.GetParameters().Length)
-                                  .FirstOrDefault()
-                                  ?? throw new SerializerException($"Failed to find the serializer constructor of type {type}");
-            bool serializerConstructor = ci.GetParameters().Length > 0;
-            T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
-            if (!serializerConstructor) await res.DeserializeAsync(stream, version ?? StreamSerializer.Version, cancellationToken).DynamicContext();
-            List<ValidationResult> results = new();
-            if (!res.TryValidateObject(results))
-                throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");
-            return res;
-        }
+        public static Task<T> ReadSerializedStructAsync<T>(this Stream stream, int? version = null, CancellationToken cancellationToken = default) where T : struct, IStreamSerializer
+            => SerializerException.WrapAsync(async () =>
+            {
+                Type type = typeof(T);
+                if (type.IsAbstract || type.IsInterface || type.IsGenericTypeDefinition)
+                    throw new SerializerException($"Type {type} isn't a supported deserializer type");
+                ConstructorInfo ci = (from c in type.GetConstructors()
+                                      where c.IsPublic &&
+                                        (
+                                            c.GetParameters().Length == 0 ||
+                                            (
+                                                c.GetParameters().Length == 2 &&
+                                                c.GetParameters()[0].ParameterType == typeof(Stream) &&
+                                                c.GetParameters()[1].ParameterType == typeof(int)
+                                            )
+                                        )
+                                      select c)
+                                      .OrderBy(c => c.GetParameters().Length)
+                                      .FirstOrDefault()
+                                      ?? throw new SerializerException($"Failed to find the serializer constructor of type {type}");
+                bool serializerConstructor = ci.GetParameters().Length > 0;
+                T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
+                if (!serializerConstructor) await res.DeserializeAsync(stream, version ?? StreamSerializer.Version, cancellationToken).DynamicContext();
+                if (!res.TryValidateObject(out List<ValidationResult> results))
+                    throw new SerializerException(
+                        $"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})",
+                        new ObjectValidationException(results)
+                        );
+                return res;
+            });
 
         /// <summary>
         /// Read

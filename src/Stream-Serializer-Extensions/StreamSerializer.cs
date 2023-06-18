@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.Collections;
 using System.Collections.Concurrent;
 using wan24.Core;
 
@@ -12,7 +13,7 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Version number
         /// </summary>
-        public const int VERSION = 2;
+        public const int VERSION = 3;
 
         /// <summary>
         /// Initialized?
@@ -55,7 +56,7 @@ namespace wan24.StreamSerializerExtensions
                     new KeyValuePair<Type, Serialize_Delegate>(typeof(bool),(s, v) => s.Write((bool)SerializerHelper.EnsureNotNull(v))),
                     new KeyValuePair<Type, Serialize_Delegate>(typeof(sbyte),(s, v) => s.Write((sbyte)SerializerHelper.EnsureNotNull(v))),
                     new KeyValuePair<Type, Serialize_Delegate>(typeof(byte),(s, v) => s.Write((byte)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(short),(s, v) => s.Write((short)SerializerHelper.EnsureNotNull(v))),
+                    new KeyValuePair<Type, Serialize_Delegate>(typeof(short),(s, v) => s.Write((int)(short)SerializerHelper.EnsureNotNull(v))),
                     new KeyValuePair<Type, Serialize_Delegate>(typeof(ushort),(s, v) => s.Write((ushort)SerializerHelper.EnsureNotNull(v))),
                     new KeyValuePair<Type, Serialize_Delegate>(typeof(int),(s, v) => s.Write((int)SerializerHelper.EnsureNotNull(v))),
                     new KeyValuePair<Type, Serialize_Delegate>(typeof(uint),(s, v) => s.Write((uint)SerializerHelper.EnsureNotNull(v))),
@@ -66,27 +67,10 @@ namespace wan24.StreamSerializerExtensions
                     new KeyValuePair<Type, Serialize_Delegate>(typeof(decimal),(s, v) => s.Write((decimal)SerializerHelper.EnsureNotNull(v))),
                     new KeyValuePair<Type, Serialize_Delegate>(typeof(byte[]),(s, v) => s.WriteBytes((byte[])SerializerHelper.EnsureNotNull(v))),
                     new KeyValuePair<Type, Serialize_Delegate>(typeof(string),(s, v) => s.WriteString((string)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(Array),(s, v) =>
-                    {
-                        SerializerHelper.EnsureNotNull(v);
-                        StreamExtensions.WriteArrayMethod.MakeGenericMethod(typeof(Stream),v!.GetType().GetElementType()!).InvokeAuto(obj: null, s,v);
-                    }),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(List<>),(s, v) =>
-                    {
-                        SerializerHelper.EnsureNotNull(v);
-                        StreamExtensions.WriteListMethod.MakeGenericMethod(typeof(Stream),v!.GetType().GetGenericArguments()[0]).InvokeAuto(obj: null, s,v);
-                    }),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(Dictionary<,>),(s, v) =>
-                    {
-                        SerializerHelper.EnsureNotNull(v);
-                        Type[] genericArgs=v!.GetType().GetGenericArguments();
-                        StreamExtensions.WriteDictMethod.MakeGenericMethod(typeof(Stream),genericArgs[0], genericArgs[1]).InvokeAuto(obj: null, s,v);
-                    }),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(Enum),(s, v) =>
-                    {
-                        SerializerHelper.EnsureNotNull(v);
-                        StreamExtensions.WriteEnumMethod.MakeGenericMethod(typeof(Stream),v!.GetType()).InvokeAuto(obj: null, s, v);
-                    }),
+                    new KeyValuePair<Type, Serialize_Delegate>(typeof(Array),(s, v) => s.WriteArray((Array)SerializerHelper.EnsureNotNull(v))),
+                    new KeyValuePair<Type, Serialize_Delegate>(typeof(IList),(s, v) => s.WriteList((IList)SerializerHelper.EnsureNotNull(v))),
+                    new KeyValuePair<Type, Serialize_Delegate>(typeof(IDictionary),(s, v) => s.WriteDict((IDictionary)SerializerHelper.EnsureNotNull(v))),
+                    new KeyValuePair<Type, Serialize_Delegate>(typeof(Enum),(s, v) => s.WriteEnum((Enum)SerializerHelper.EnsureNotNull(v))),
                     new KeyValuePair<Type, Serialize_Delegate>(typeof(Stream),(s, v) => s.WriteStream((Stream)SerializerHelper.EnsureNotNull(v)))
                 }
             );
@@ -107,28 +91,11 @@ namespace wan24.StreamSerializerExtensions
                     new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(decimal),(s, v, ct) => s.WriteAsync((decimal)SerializerHelper.EnsureNotNull(v), ct)),
                     new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(byte[]),(s, v, ct) => s.WriteBytesAsync((byte[])SerializerHelper.EnsureNotNull(v), ct)),
                     new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(string),(s, v, ct) => s.WriteStringAsync((string)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(Array),(s, v, ct) =>
-                    {
-                        SerializerHelper.EnsureNotNull(v);
-                        return (Task)StreamExtensions.WriteArrayAsyncMethod.MakeGenericMethod(v!.GetType().GetElementType()!).InvokeAuto(obj: null, s,v,ct)!;
-                    }),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(List<>),(s, v, ct) =>
-                    {
-                        SerializerHelper.EnsureNotNull(v);
-                        return (Task)StreamExtensions.WriteListAsyncMethod.MakeGenericMethod(v!.GetType().GetGenericArguments()[0]).InvokeAuto(obj: null, s,v,ct)!;
-                    }),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(Dictionary<,>),(s, v, ct) =>
-                    {
-                        SerializerHelper.EnsureNotNull(v);
-                        Type[] genericArgs=v!.GetType().GetGenericArguments();
-                        return (Task)StreamExtensions.WriteDictAsyncMethod.MakeGenericMethod(genericArgs[0], genericArgs[1]).InvokeAuto(obj: null, s,v,ct)!;
-                    }),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(Enum),(s, v, ct) =>
-                    {
-                        SerializerHelper.EnsureNotNull(v);
-                        return (Task)StreamExtensions.WriteEnumAsyncMethod.MakeGenericMethod(v !.GetType()).InvokeAuto(obj : null, s, v, ct)!;
-                    }),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(Stream),(s, v, ct) => s.WriteStreamAsync((Stream)SerializerHelper.EnsureNotNull(v), cancellationToken: ct)),
+                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(Array),(s, v, ct) => s.WriteArrayAsync((Array)SerializerHelper.EnsureNotNull(v), ct)),
+                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(IList),(s, v, ct) => s.WriteListAsync((IList)SerializerHelper.EnsureNotNull(v), ct)),
+                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(IDictionary),(s, v, ct) => s.WriteDictAsync((IDictionary)SerializerHelper.EnsureNotNull(v), ct)),
+                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(Enum),(s, v, ct) => s.WriteEnumAsync((Enum)SerializerHelper.EnsureNotNull(v), ct)),
+                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(Stream),(s, v, ct) => s.WriteStreamAsync((Stream)SerializerHelper.EnsureNotNull(v), cancellationToken: ct))
                 }
             );
             SyncDeserializer = new(new KeyValuePair<Type, Deserialize_Delegate>[]
@@ -145,56 +112,47 @@ namespace wan24.StreamSerializerExtensions
                     new KeyValuePair<Type, Deserialize_Delegate>(typeof(float),(s,t,v,o) => s.ReadFloat(v)),
                     new KeyValuePair<Type, Deserialize_Delegate>(typeof(double),(s,t,v,o) => s.ReadDouble(v)),
                     new KeyValuePair<Type, Deserialize_Delegate>(typeof(decimal),(s,t,v,o) => s.ReadDecimal(v)),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(byte[]),(s,t,v,o) => 
+                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(byte[]),(s,t,v,o) =>
                         s.ReadBytes(v, minLen: o?.GetMinLen(0)??0, maxLen: o?.GetMaxLen(int.MaxValue)??int.MaxValue)
                         ),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(string),(s,t,v,o) => 
+                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(string),(s,t,v,o) =>
                         s.ReadString(v, minLen: o?.GetMinLen(0)??0, maxLen: o?.GetMaxLen(int.MaxValue)??int.MaxValue)
                         ),
                     new KeyValuePair<Type, Deserialize_Delegate>(typeof(Array),(s,t,v,o) =>
-                    {
-                        SerializerHelper.EnsureNotNull(v);
-                        return StreamExtensions.ReadArrayMethod.MakeGenericMethod(t.GetElementType()!).InvokeAuto(
-                            obj: null, 
-                            s,
+                        s.ReadArray(
+                            t,
                             v,
                             null,
                             o?.GetMinLen(0)??0,
                             o?.GetMaxLen(int.MaxValue)??int.MaxValue,
-                            o?.Attribute.GetValueSerializerOptions(property: null, s, v, default)
-                            );
-                    }),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(List<>),(s,t,v,o) =>
-                        StreamExtensions.ReadListMethod.MakeGenericMethod(t.GetGenericArguments()[0]).InvokeAuto(
-                            obj : null, 
-                            s, 
-                            v,
-                            null,
-                            o?.GetMinLen(0)??0,
-                            o?.GetMaxLen(int.MaxValue)??int.MaxValue,
-                            o?.Attribute.GetValueSerializerOptions(property: null, s, v, default)
+                            o?.Attribute.GetValueSerializerOptions(property: null, s, v)
                             )
                     ),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(Dictionary<,>),(s,t,v,o) =>
-                    {
-                        Type[] genericArgs=t.GetGenericArguments();
-                        return StreamExtensions.ReadDictMethod.MakeGenericMethod(genericArgs[0], genericArgs[1]).InvokeAuto(
-                            obj : null, 
-                            s, 
+                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(IList),(s,t,v,o) =>
+                        s.ReadList(
+                            t,
                             v,
                             null,
                             o?.GetMinLen(0)??0,
                             o?.GetMaxLen(int.MaxValue)??int.MaxValue,
-                            o?.Attribute.GetKeySerializerOptions(property: null, s, v, default),
-                            o?.Attribute.GetValueSerializerOptions(property: null, s, v, default)
-                            );
-                    }),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(Enum),(s,t,v,o) =>
-                        StreamExtensions.ReadEnumMethod.MakeGenericMethod(t).InvokeAuto(obj : null, s, v)
+                            o?.Attribute.GetValueSerializerOptions(property: null, s, v)
+                            )
                     ),
+                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(IDictionary),(s,t,v,o) =>
+                        s.ReadDict(
+                            t,
+                            v,
+                            null,
+                            o?.GetMinLen(0)??0,
+                            o?.GetMaxLen(int.MaxValue)??int.MaxValue,
+                            o?.Attribute.GetKeySerializerOptions(property: null, s, v),
+                            o?.Attribute.GetValueSerializerOptions(property: null, s, v)
+                            )
+                    ),
+                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(Enum),(s,t,v,o) => s.ReadEnum(t,v)),
                     new KeyValuePair<Type, Deserialize_Delegate>(typeof(Stream),(s,t,v,o) =>
                     {
-                        Stream res = o?.Attribute.GetStream(obj:null,property:null,s,v,default)?? new FileStream(
+                        Stream res = o?.Attribute.GetStream(obj:null,property:null,s,v)?? new FileStream(
                             Path.GetTempFileName(),
                             FileMode.OpenOrCreate,
                             FileAccess.ReadWrite,
@@ -204,8 +162,7 @@ namespace wan24.StreamSerializerExtensions
                             );
                         try
                         {
-                            s.ReadStream(res,v,minLen:o?.GetMinLen(0L)??0, maxLen:o?.GetMaxLen(long.MaxValue)??long.MaxValue);
-                            return res;
+                            return s.ReadStream(res,v,minLen:o?.GetMinLen(0L)??0, maxLen:o?.GetMaxLen(long.MaxValue)??long.MaxValue);
                         }
                         catch
                         {
@@ -235,48 +192,61 @@ namespace wan24.StreamSerializerExtensions
                         s.ReadStringAsync(v, minLen: o?.GetMinLen(0)??0, maxLen: o?.GetMaxLen(int.MaxValue)??int.MaxValue, cancellationToken: ct)
                         ),
                     new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(Array),(s,t,v,o,ct) =>
-                        (Task)StreamExtensions.ReadArrayAsyncMethod.MakeGenericMethod(t.GetElementType()!).InvokeAuto(
-                            obj: null, 
-                            s,
+                        s.ReadArrayAsync(
+                            t,
                             v,
                             null,
                             o?.GetMinLen(0)??0,
                             o?.GetMaxLen(int.MaxValue)??int.MaxValue,
-                            o?.Attribute.GetValueSerializerOptions(property: null, s, v, default),
+                            o?.Attribute.GetValueSerializerOptions(property: null, s, v, ct),
                             ct
-                            )!
+                            )
                     ),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(List<>),(s,t,v,o,ct) =>
-                        (Task)StreamExtensions.ReadListAsyncMethod.MakeGenericMethod(t.GetGenericArguments()[0]).InvokeAuto(
-                            obj: null, 
-                            s,
+                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(IList),(s,t,v,o,ct) =>
+                        s.ReadListAsync(
+                            t,
                             v,
                             null,
                             o?.GetMinLen(0)??0,
                             o?.GetMaxLen(int.MaxValue)??int.MaxValue,
-                            o?.Attribute.GetValueSerializerOptions(property: null, s, v, default),
+                            o?.Attribute.GetValueSerializerOptions(property: null, s, v, ct),
                             ct
-                            )!
+                            )
                     ),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(Dictionary<,>),(s,t,v,o,ct) =>
+                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(IDictionary),(s,t,v,o,ct) =>
+                        s.ReadDictAsync(
+                            t,
+                            v,
+                            null,
+                            o?.GetMinLen(0)??0,
+                            o?.GetMaxLen(int.MaxValue)??int.MaxValue,
+                            o?.Attribute.GetKeySerializerOptions(property: null, s, v, ct),
+                            o?.Attribute.GetValueSerializerOptions(property: null, s, v, ct),
+                            ct
+                            )
+                        ),
+                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(Enum),(s,t,v,o,ct) => s.ReadEnumAsync(t,v,cancellationToken: ct)),
+                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(Stream),(s,t,v,o,ct) =>
                     {
-                        Type[] genericArgs=t.GetGenericArguments();
-                        return (Task)StreamExtensions.ReadDictAsyncMethod.MakeGenericMethod(genericArgs[0], genericArgs[1]).InvokeAuto(
-                            obj : null, 
-                            s, 
-                            v,
-                            null,
-                            o?.GetMinLen(0)??0,
-                            o?.GetMaxLen(int.MaxValue)??int.MaxValue,
-                            o?.Attribute.GetKeySerializerOptions(property: null, s, v, default),
-                            o?.Attribute.GetValueSerializerOptions(property: null, s, v, default),
-                            ct
-                            )!;
-                    }),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(Enum),(s,t,v,o,ct) =>
-                        (Task)StreamExtensions.ReadEnumAsyncMethod.MakeGenericMethod(t).InvokeAuto(obj : null, s, v, null, ct)!
-                    ),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(Stream),(s,t,v,o,ct) => StreamDeserializer(s,t,v,o,ct))
+                        //TODO Should be asynchronous
+                        Stream res = o?.Attribute.GetStream(obj:null,property:null,s,v,ct)?? new FileStream(
+                            Path.GetTempFileName(),
+                            FileMode.OpenOrCreate,
+                            FileAccess.ReadWrite,
+                            FileShare.None,
+                            bufferSize: Settings.BufferSize,
+                            FileOptions.RandomAccess | FileOptions.DeleteOnClose
+                            );
+                        try
+                        {
+                            return s.ReadStreamAsync(res,v,minLen:o?.GetMinLen(0L)??0, maxLen:o?.GetMaxLen(long.MaxValue)??long.MaxValue, cancellationToken: ct);
+                        }
+                        catch
+                        {
+                            res.Dispose();
+                            throw;
+                        }
+                    })
             });
             AllowedTypes = new(new Type[]
             {
@@ -400,7 +370,6 @@ namespace wan24.StreamSerializerExtensions
                     res = types.FirstOrDefault(t => t == typeof(Array));
                 else if (type.IsEnum)
                     res = types.FirstOrDefault(t => t == typeof(Enum));
-
             return res ?? types.FirstOrDefault(t => t.IsAssignableFrom(type));
         }
 
@@ -466,37 +435,6 @@ namespace wan24.StreamSerializerExtensions
                 }
             // Deny
             return false;
-        }
-
-        /// <summary>
-        /// Asynchronous stream deserializer
-        /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="type">Requested return type</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="options">Options</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>File stream</returns>
-        public static async Task<Stream> StreamDeserializer(Stream stream, Type type, int version, ISerializerOptions? options, CancellationToken cancellationToken)
-        {
-            Stream res = options?.Attribute.GetStream(obj: null, property: null, stream, version, cancellationToken) ?? new FileStream(
-                Path.Combine(Settings.TempFolder, Guid.NewGuid().ToString()),
-                FileMode.OpenOrCreate,
-                FileAccess.ReadWrite,
-                FileShare.None,
-                bufferSize: Settings.BufferSize,
-                FileOptions.RandomAccess | FileOptions.DeleteOnClose
-                );
-            if (!type.IsAssignableFrom(res.GetType())) throw new SerializerException($"Requested type {type} isn't compatible with {res.GetType()}");
-            try
-            {
-                return await stream.ReadStreamAsync(res, version, cancellationToken: cancellationToken).DynamicContext();
-            }
-            catch
-            {
-                res.Dispose();
-                throw;
-            }
         }
 
         /// <summary>

@@ -11,98 +11,85 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Write a struct
         /// </summary>
-        /// <typeparam name="tStream">Stream type</typeparam>
-        /// <typeparam name="tStruct">Struct type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Struct</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static tStream WriteStruct<tStream, tStruct>(this tStream stream, tStruct value, bool forceLittleEndian = true)
-            where tStream : Stream
-            where tStruct : struct
-        {
-            using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
-            GCHandle gch = GCHandle.Alloc(buffer.Array, GCHandleType.Pinned);
-            try
+        public static Stream WriteStruct(this Stream stream, object value, bool forceLittleEndian = true)
+            => SerializerException.Wrap(() =>
             {
-                Marshal.StructureToPtr(value, gch.AddrOfPinnedObject(), fDeleteOld: true);
-            }
-            finally
-            {
-                gch.Free();
-            }
-            if (forceLittleEndian && !BitConverter.IsLittleEndian && typeof(tStruct).GetCustomAttribute<StreamSerializerAttribute>() is StreamSerializerAttribute attr)
-                ConvertStructureEndianess(typeof(tStruct), buffer.Memory, attr);
-            return WriteBytes(stream, buffer.Span);
-        }
+                Type structType = value.GetType();
+                ArgumentValidationHelper.EnsureValidArgument(nameof(value), structType.IsValueType, "Not a structure");
+                using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
+                GCHandle gch = GCHandle.Alloc(buffer.Array, GCHandleType.Pinned);
+                try
+                {
+                    Marshal.StructureToPtr(value, gch.AddrOfPinnedObject(), fDeleteOld: true);
+                }
+                finally
+                {
+                    gch.Free();
+                }
+                if (forceLittleEndian && !BitConverter.IsLittleEndian && structType.GetCustomAttributeCached<StreamSerializerAttribute>() is StreamSerializerAttribute attr)
+                    ConvertStructureEndianess(structType, buffer.Memory, attr);
+                return WriteBytes(stream, buffer.Span);
+            });
 
         /// <summary>
         /// Write a struct
         /// </summary>
-        /// <typeparam name="tStream">Stream type</typeparam>
-        /// <typeparam name="tStruct">Struct type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Struct</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static tStream WriteStructNullable<tStream, tStruct>(this tStream stream, tStruct? value, bool forceLittleEndian = true)
-            where tStream : Stream
-            where tStruct : struct
-            => value == null ? stream.Write(false) : stream.Write(true).WriteStruct(value.Value, forceLittleEndian);
+        public static Stream WriteStructNullable(this Stream stream, object? value, bool forceLittleEndian = true)
+            => WriteIfNull(stream, value, () => WriteStruct(stream, value!, forceLittleEndian));
 
         /// <summary>
         /// Write a struct
         /// </summary>
-        /// <typeparam name="tStream">Stream type</typeparam>
-        /// <typeparam name="tStruct">Struct type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Struct</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
-        public static Task WriteStructAsync<tStream, tStruct>(this tStream stream, tStruct value, bool forceLittleEndian = true, CancellationToken cancellationToken = default)
-            where tStream : Stream
-            where tStruct : struct
-        {
-            using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
-            GCHandle gch = GCHandle.Alloc(buffer.Array, GCHandleType.Pinned);
-            try
+        public static Task WriteStructAsync(this Stream stream, object value, bool forceLittleEndian = true, CancellationToken cancellationToken = default)
+            => SerializerException.WrapAsync(() =>
             {
-                Marshal.StructureToPtr(value, gch.AddrOfPinnedObject(), fDeleteOld: true);
-            }
-            finally
-            {
-                gch.Free();
-            }
-            if (forceLittleEndian && !BitConverter.IsLittleEndian && typeof(tStruct).GetCustomAttribute<StreamSerializerAttribute>() is StreamSerializerAttribute attr)
-                ConvertStructureEndianess(typeof(tStruct), buffer.Memory, attr);
-            return WriteBytesAsync(stream, buffer.Memory, cancellationToken);
-        }
+                Type structType = value.GetType();
+                ArgumentValidationHelper.EnsureValidArgument(nameof(value), structType.IsValueType, "Not a structure");
+                using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
+                GCHandle gch = GCHandle.Alloc(buffer.Array, GCHandleType.Pinned);
+                try
+                {
+                    Marshal.StructureToPtr(value, gch.AddrOfPinnedObject(), fDeleteOld: true);
+                }
+                finally
+                {
+                    gch.Free();
+                }
+                if (forceLittleEndian && !BitConverter.IsLittleEndian && structType.GetCustomAttribute<StreamSerializerAttribute>() is StreamSerializerAttribute attr)
+                    ConvertStructureEndianess(structType, buffer.Memory, attr);
+                return WriteBytesAsync(stream, buffer.Memory, cancellationToken);
+            });
 
         /// <summary>
         /// Write a struct
         /// </summary>
-        /// <typeparam name="tStream">Stream type</typeparam>
-        /// <typeparam name="tStruct">Struct type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Struct</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task WriteStructNullableAsync<tStream, tStruct>(
-            this tStream stream,
-            tStruct? value,
+        public static Task WriteStructNullableAsync(
+            this Stream stream,
+            object? value,
             bool forceLittleEndian = true,
             CancellationToken cancellationToken = default
             )
-            where tStream : Stream
-            where tStruct : struct
-        {
-            await WriteAsync(stream, value != null, cancellationToken).DynamicContext();
-            if (value != null) await WriteStructAsync(stream, value.Value, forceLittleEndian, cancellationToken).DynamicContext();
-        }
+            => WriteIfNullAsync(stream, value, () => WriteStructAsync(stream, value!, forceLittleEndian, cancellationToken), cancellationToken);
 
         /// <summary>
         /// Convert the endianess of structure fields

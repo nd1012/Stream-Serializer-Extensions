@@ -11,7 +11,7 @@
         /// </summary>
         Null = 0,
         /// <summary>
-        /// Boolean
+        /// Boolean (boolean <see langword="true"/>)
         /// </summary>
         Bool = 1,
         /// <summary>
@@ -83,7 +83,7 @@
         /// </summary>
         Unsigned = 64,
         /// <summary>
-        /// Empty (or zero)
+        /// Empty (or zero or boolean <see langword="false"/>)
         /// </summary>
         Empty = 128,
         /// <summary>

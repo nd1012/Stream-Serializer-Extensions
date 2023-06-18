@@ -5,6 +5,7 @@
     <RootNamespace>Stream_Serializer_Extensions_Docs</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Configurations>Debug;Release;Trunk</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
