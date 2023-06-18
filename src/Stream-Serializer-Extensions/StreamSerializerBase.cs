@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using wan24.Core;
+﻿using wan24.Core;
 using wan24.ObjectValidation;
 
 namespace wan24.StreamSerializerExtensions
@@ -31,7 +30,8 @@ namespace wan24.StreamSerializerExtensions
         /// Constructor
         /// </summary>
         /// <param name="objectVersion">Object version</param>
-        protected StreamSerializerBase(int? objectVersion = null) : base() => _ObjectVersion = objectVersion ?? GetType().GetCustomAttribute<StreamSerializerAttribute>()?.Version;
+        protected StreamSerializerBase(int? objectVersion = null) : base()
+            => _ObjectVersion = objectVersion ?? GetType().GetCustomAttributeCached<StreamSerializerAttribute>()?.Version;
 
         /// <summary>
         /// Constructor

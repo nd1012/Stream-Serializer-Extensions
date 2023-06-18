@@ -9,13 +9,11 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Write any object
         /// </summary>
-        /// <typeparam name="T">Stream type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
         /// <returns>Stream</returns>
-        public static T WriteAny<T>(this T stream, object obj) where T : Stream
-        {
-            try
+        public static Stream WriteAny(this Stream stream, object obj)
+            => SerializerException.Wrap(() =>
             {
                 (Type type, ObjectTypes objType, bool writeType, bool writeObject) = obj.GetObjectSerializerInfo();
                 using (RentedArray<byte> poolData = new(1))
@@ -27,23 +25,14 @@ namespace wan24.StreamSerializerExtensions
                 if (writeObject)
                     if (objType.IsNumber())
                     {
-                        WriteNumberMethod.MakeGenericMethod(typeof(T), type).InvokeAuto(obj: null, stream, obj);
+                        WriteNumber(stream, obj);
                     }
                     else
                     {
-                        WriteObjectMethod.MakeGenericMethod(typeof(T), type).InvokeAuto(obj: null, stream, obj);
+                        WriteObject(stream, obj);
                     }
                 return stream;
-            }
-            catch (SerializerException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-        }
+            });
 
         /// <summary>
         /// Write any object
@@ -51,9 +40,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        public static async Task WriteAnyAsync(this Stream stream, object obj, CancellationToken cancellationToken = default)
-        {
-            try
+        public static Task WriteAnyAsync(this Stream stream, object obj, CancellationToken cancellationToken = default)
+            => SerializerException.WrapAsync(async () =>
             {
                 (Type type, ObjectTypes objType, bool writeType, bool writeObject) = obj.GetObjectSerializerInfo();
                 using (RentedArray<byte> poolData = new(1))
@@ -63,40 +51,25 @@ namespace wan24.StreamSerializerExtensions
                 }
                 if (writeType) await WriteStringAsync(stream, type.ToString(), cancellationToken).DynamicContext();
                 if (writeObject)
-                {
-                    Task task;
                     if (objType.IsNumber())
                     {
-                        task = (Task)WriteNumberAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, obj, cancellationToken)!;
+                        await WriteNumberAsync(stream, obj, cancellationToken).DynamicContext();
                     }
                     else
                     {
-                        task = (Task)WriteObjectAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, obj, cancellationToken)!;
+                        await WriteObjectAsync(stream, obj, cancellationToken).DynamicContext();
                     }
-                    await task.DynamicContext();
-                }
-            }
-            catch (SerializerException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-        }
+            });
 
         /// <summary>
         /// Write any object
         /// </summary>
-        /// <typeparam name="T">Stream type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static T WriteAnyNullable<T>(this T stream, object? obj) where T : Stream
-        {
-            try
+        public static Stream WriteAnyNullable(this Stream stream, object? obj)
+            => SerializerException.Wrap(() =>
             {
                 if (obj == null)
                 {
@@ -109,16 +82,7 @@ namespace wan24.StreamSerializerExtensions
                     WriteAny(stream, obj);
                 }
                 return stream;
-            }
-            catch (SerializerException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-        }
+            });
 
         /// <summary>
         /// Write any object
@@ -127,9 +91,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="obj">Object</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task WriteAnyNullableAsync(this Stream stream, object? obj, CancellationToken cancellationToken = default)
-        {
-            try
+        public static Task WriteAnyNullableAsync(this Stream stream, object? obj, CancellationToken cancellationToken = default)
+            => SerializerException.WrapAsync(async () =>
             {
                 if (obj == null)
                 {
@@ -141,15 +104,6 @@ namespace wan24.StreamSerializerExtensions
                 {
                     await WriteAnyAsync(stream, obj, cancellationToken).DynamicContext();
                 }
-            }
-            catch (SerializerException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-        }
+            });
     }
 }

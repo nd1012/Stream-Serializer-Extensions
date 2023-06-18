@@ -25,26 +25,27 @@ namespace wan24.StreamSerializerExtensions
             ArrayPool<byte>? pool = null
             )
             where T : struct
-        {
-            int len = Marshal.SizeOf(typeof(T));
-            byte[] data = stream.ReadBytes(version, buffer, pool, len, len).Value;
-            try
+            => SerializerException.Wrap(() =>
             {
-                GCHandle gch = GCHandle.Alloc(data, GCHandleType.Pinned);
+                int len = Marshal.SizeOf(typeof(T));
+                byte[] data = stream.ReadBytes(version, buffer, pool, len, len).Value;
                 try
                 {
-                    return Marshal.PtrToStructure<T>(gch.AddrOfPinnedObject());
+                    GCHandle gch = GCHandle.Alloc(data, GCHandleType.Pinned);
+                    try
+                    {
+                        return Marshal.PtrToStructure<T>(gch.AddrOfPinnedObject());
+                    }
+                    finally
+                    {
+                        gch.Free();
+                    }
                 }
                 finally
                 {
-                    gch.Free();
+                    if (buffer == null && pool != null) pool.Return(data);
                 }
-            }
-            finally
-            {
-                if (buffer == null && pool != null) pool.Return(data);
-            }
-        }
+            });
 
         /// <summary>
         /// Read a struct
@@ -57,7 +58,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Struct</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<T> ReadStructAsync<T>(
+        public static Task<T> ReadStructAsync<T>(
             this Stream stream,
             int? version = null,
             byte[]? buffer = null,
@@ -65,26 +66,27 @@ namespace wan24.StreamSerializerExtensions
             CancellationToken cancellationToken = default
             )
             where T : struct
-        {
-            int len = Marshal.SizeOf(typeof(T));
-            byte[] data = (await stream.ReadBytesAsync(version, buffer, pool, len, len, cancellationToken).DynamicContext()).Value;
-            try
+            => SerializerException.WrapAsync(async () =>
             {
-                GCHandle gch = GCHandle.Alloc(data, GCHandleType.Pinned);
+                int len = Marshal.SizeOf(typeof(T));
+                byte[] data = (await stream.ReadBytesAsync(version, buffer, pool, len, len, cancellationToken).DynamicContext()).Value;
                 try
                 {
-                    return Marshal.PtrToStructure<T>(gch.AddrOfPinnedObject());
+                    GCHandle gch = GCHandle.Alloc(data, GCHandleType.Pinned);
+                    try
+                    {
+                        return Marshal.PtrToStructure<T>(gch.AddrOfPinnedObject());
+                    }
+                    finally
+                    {
+                        gch.Free();
+                    }
                 }
                 finally
                 {
-                    gch.Free();
+                    if (buffer == null && pool != null) pool.Return(data);
                 }
-            }
-            finally
-            {
-                if (buffer == null && pool != null) pool.Return(data);
-            }
-        }
+            });
 
         /// <summary>
         /// Read a struct

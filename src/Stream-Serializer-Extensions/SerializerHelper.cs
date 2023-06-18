@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Runtime;
 using wan24.Core;
+using wan24.ObjectValidation;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -96,6 +97,7 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="type">Type</param>
         /// <returns>A number?</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static bool IsNumber(this ObjectTypes type) => type.RemoveFlags() switch
         {
             ObjectTypes.Short => true,
@@ -116,8 +118,8 @@ namespace wan24.StreamSerializerExtensions
         public static NumberTypes GetNumberType(this object number, bool useFlags = true)
             => number switch
             {
-                sbyte => useFlags
-                    ? (sbyte)number switch
+                sbyte sb => useFlags
+                    ? sb switch
                     {
                         0 => NumberTypes.Zero,
                         sbyte.MinValue => NumberTypes.Byte | NumberTypes.MinValue,
@@ -125,16 +127,16 @@ namespace wan24.StreamSerializerExtensions
                         _ => NumberTypes.Byte
                     }
                     : NumberTypes.Byte,
-                byte => useFlags
-                    ? (byte)number switch
+                byte b => useFlags
+                    ? b switch
                     {
                         0 => NumberTypes.Zero,
                         byte.MaxValue => NumberTypes.Byte | NumberTypes.MaxValue | NumberTypes.Unsigned,
                         _ => NumberTypes.Byte | NumberTypes.Unsigned
                     }
                     : NumberTypes.Byte | NumberTypes.Unsigned,
-                short => useFlags
-                    ? (short)number switch
+                short s => useFlags
+                    ? s switch
                     {
                         0 => NumberTypes.Zero,
                         short.MinValue => NumberTypes.Short | NumberTypes.MinValue,
@@ -142,16 +144,16 @@ namespace wan24.StreamSerializerExtensions
                         _ => NumberTypes.Short
                     }
                     : NumberTypes.Short,
-                ushort => useFlags
-                    ? (ushort)number switch
+                ushort us => useFlags
+                    ? us switch
                     {
                         0 => NumberTypes.Zero,
                         ushort.MaxValue => NumberTypes.Short | NumberTypes.MaxValue | NumberTypes.Unsigned,
                         _ => NumberTypes.Short | NumberTypes.Unsigned
                     }
                     : NumberTypes.Short | NumberTypes.Unsigned,
-                int => useFlags
-                    ? (int)number switch
+                int i => useFlags
+                    ? i switch
                     {
                         0 => NumberTypes.Zero,
                         int.MinValue => NumberTypes.Int | NumberTypes.MinValue,
@@ -159,16 +161,16 @@ namespace wan24.StreamSerializerExtensions
                         _ => NumberTypes.Int
                     }
                     : NumberTypes.Int,
-                uint => useFlags
-                    ? (uint)number switch
+                uint ui => useFlags
+                    ? ui switch
                     {
                         0 => NumberTypes.Zero,
                         uint.MaxValue => NumberTypes.Int | NumberTypes.MaxValue | NumberTypes.Unsigned,
                         _ => NumberTypes.Int | NumberTypes.Unsigned
                     }
                     : NumberTypes.Int | NumberTypes.Unsigned,
-                long => useFlags
-                    ? (long)number switch
+                long l => useFlags
+                    ? l switch
                     {
                         0 => NumberTypes.Zero,
                         long.MinValue => NumberTypes.Long | NumberTypes.MinValue,
@@ -176,16 +178,16 @@ namespace wan24.StreamSerializerExtensions
                         _ => NumberTypes.Long
                     }
                     : NumberTypes.Long,
-                ulong => useFlags
-                    ? (ulong)number switch
+                ulong ul => useFlags
+                    ? ul switch
                     {
                         0 => NumberTypes.Zero,
                         ulong.MaxValue => NumberTypes.Long | NumberTypes.MaxValue | NumberTypes.Unsigned,
                         _ => NumberTypes.Long | NumberTypes.Unsigned
                     }
                     : NumberTypes.Long | NumberTypes.Unsigned,
-                float => useFlags
-                    ? (float)number switch
+                float f => useFlags
+                    ? f switch
                     {
                         0 => NumberTypes.Zero,
                         float.MinValue => NumberTypes.Float | NumberTypes.MinValue,
@@ -193,8 +195,8 @@ namespace wan24.StreamSerializerExtensions
                         _ => NumberTypes.Float
                     }
                     : NumberTypes.Float,
-                double => useFlags
-                    ? (double)number switch
+                double d => useFlags
+                    ? d switch
                     {
                         0 => NumberTypes.Zero,
                         double.MinValue => NumberTypes.Double | NumberTypes.MinValue,
@@ -202,8 +204,8 @@ namespace wan24.StreamSerializerExtensions
                         _ => NumberTypes.Double
                     }
                     : NumberTypes.Double,
-                decimal => useFlags
-                    ? (decimal)number switch
+                decimal m => useFlags
+                    ? m switch
                     {
                         0 => NumberTypes.Zero,
                         decimal.MinValue => NumberTypes.Decimal | NumberTypes.MinValue,
@@ -508,11 +510,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value</param>
         /// <returns>Non-null value</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static object EnsureNotNull(object? value)
-        {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-            return value;
-        }
+        public static object EnsureNotNull(object? value) => value ?? throw new ArgumentNullException(nameof(value));
 
         /// <summary>
         /// Ensure a valid length
@@ -548,12 +546,15 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="value">Value</param>
         /// <returns>Value</returns>
-        public static T ValidateObject<T>(this T value) where T : notnull
+        /// <exception cref="SerializerException">If the validation failed</exception>
+        [TargetedPatchingOptOut("Tiny method")]
+        public static T ValidateDeserializedObject<T>(this T value) where T : notnull
         {
-            List<ValidationResult> results = new();
-            if (!Validator.TryValidateObject(value, new(value, serviceProvider: null, items: null), results, validateAllProperties: true) ||
-                !Validator.TryValidateObject(value, new(value, serviceProvider: null, items: null), results, validateAllProperties: false))
-                throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");
+            if (!value.TryValidateObject(out List<ValidationResult> results))
+                throw new SerializerException(
+                    $"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})",
+                    new ObjectValidationException(results)
+                    );
             return value;
         }
 
@@ -563,6 +564,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="obj">Object</param>
         /// <param name="includeSerializerVersion">Include the serializer version number?</param>
         /// <returns>Bytes</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static byte[] ToBytes(this IStreamSerializer obj, bool includeSerializerVersion = true)
         {
             using MemoryStream ms = new();
@@ -578,6 +580,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="bytes">Bytes</param>
         /// <param name="includesSerializerVersion">Serializer version number included?</param>
         /// <returns>Object</returns>
+        [TargetedPatchingOptOut("Tiny method")]
         public static T ToObject<T>(this byte[] bytes, bool includesSerializerVersion = true) where T : class, IStreamSerializer, new()
         {
             using MemoryStream ms = new(bytes);

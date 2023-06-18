@@ -14,25 +14,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
         public static bool ReadBool(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-#pragma warning restore IDE0060
-        {
-            byte[] data = ReadSerializedData(stream, len: 1, pool);
-            try
-            {
-                return data[0] == 1;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+            => ReadNumeric(stream, sizeof(bool), version, pool, (data) => data[0] == 1);
 
         /// <summary>
         /// Read
@@ -42,25 +26,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<bool> ReadBoolAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = await ReadSerializedDataAsync(stream, len: 1, pool, cancellationToken: cancellationToken).DynamicContext();
-            try
-            {
-                return data[0] == 1;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+        public static Task<bool> ReadBoolAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNumericAsync(stream, sizeof(bool), version, pool, (data) => data[0] == 1, cancellationToken);
 
         /// <summary>
         /// Read
@@ -71,7 +39,23 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         public static bool? ReadBoolNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-            => ReadBool(stream, version, pool) ? ReadBool(stream, version, pool) : default(bool?);
+        {
+            switch (version ??= StreamSerializer.VERSION)
+            {
+                case 1:
+                case 2:
+                    return ReadBool(stream, version, pool) ? ReadBool(stream, version, pool) : null;
+                default:
+                    ObjectTypes type = (ObjectTypes)ReadOneByte(stream, version);
+                    return type switch
+                    {
+                        ObjectTypes.Null => null,
+                        ObjectTypes.Bool => true,
+                        ObjectTypes.Empty => false,
+                        _ => throw new SerializerException($"Invalid boolean {type}", new InvalidDataException())
+                    };
+            }
+        }
 
         /// <summary>
         /// Read
@@ -83,9 +67,25 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         public static async Task<bool?> ReadBoolNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                : default(bool?);
+        {
+            switch (version ??= StreamSerializer.VERSION)
+            {
+                case 1:
+                case 2:
+                    return await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                        ? await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                        : null;
+                default:
+                    ObjectTypes type = (ObjectTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
+                    return type switch
+                    {
+                        ObjectTypes.Null => null,
+                        ObjectTypes.Bool => true,
+                        ObjectTypes.Empty => false,
+                        _ => throw new SerializerException($"Invalid boolean {type}", new InvalidDataException())
+                    };
+            }
+        }
 
         /// <summary>
         /// Read
@@ -95,16 +95,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         public static sbyte ReadOneSByte(this Stream stream, int? version = null)
-        {
-            try
-            {
-                return (sbyte)ReadOneByte(stream, version);
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-        }
+            => (sbyte)ReadOneByte(stream, version);
 
         /// <summary>
         /// Read
@@ -115,12 +106,9 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<sbyte> ReadOneSByteAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
+        public static Task<sbyte> ReadOneSByteAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
 #pragma warning restore IDE0060 // Remove unused parameter
-        {
-            await Task.Yield();
-            return ReadOneSByte(stream, version);
-        }
+            => Task.FromResult(ReadOneSByte(stream, version));
 
         /// <summary>
         /// Read
@@ -130,7 +118,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         public static sbyte? ReadOneSByteNullable(this Stream stream, int? version = null)
-            => ReadBool(stream, version) ? ReadOneSByte(stream, version) : default(sbyte?);
+            => ReadNullableNumeric(stream, sizeof(sbyte), sbyte.MinValue, sbyte.MaxValue, version, pool: null, (data) => (sbyte)data[0]);
 
         /// <summary>
         /// Read
@@ -140,10 +128,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<sbyte?> ReadOneSByteNullableAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
-                ? await ReadOneSByteAsync(stream, version, cancellationToken).DynamicContext()
-                : default(sbyte?);
+        public static Task<sbyte?> ReadOneSByteNullableAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
+            => ReadNullableNumericAsync(stream, sizeof(sbyte), sbyte.MinValue, sbyte.MaxValue, version, pool: null, (data) => Task.FromResult((sbyte)data[0]), cancellationToken);
 
         /// <summary>
         /// Read
@@ -155,18 +141,12 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         public static byte ReadOneByte(this Stream stream, int? version = null)
 #pragma warning restore IDE0060 // Remove unused parameter
-        {
-            try
+            => SerializerException.Wrap(() =>
             {
                 int res = stream.ReadByte();
                 if (res < 0) throw new SerializerException("Failed to read one byte from stream");
                 return (byte)res;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-        }
+            });
 
         /// <summary>
         /// Read
@@ -177,12 +157,9 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<byte> ReadOneByteAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
+        public static Task<byte> ReadOneByteAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
 #pragma warning restore IDE0060 // Remove unused parameter
-        {
-            await Task.Yield();
-            return ReadOneByte(stream, version);
-        }
+            => Task.FromResult(ReadOneByte(stream, version));
 
         /// <summary>
         /// Read
@@ -192,7 +169,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         public static ushort? ReadOneByteNullable(this Stream stream, int? version = null)
-            => ReadBool(stream, version) ? ReadOneByte(stream, version) : default(ushort?);
+            => ReadNullableNumeric(stream, sizeof(byte), byte.MinValue, byte.MaxValue, version, pool: null, (data) => data[0]);
 
         /// <summary>
         /// Read
@@ -202,10 +179,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<ushort?> ReadOneByteNullableAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
-                ? await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext()
-                : default(ushort?);
+        public static Task<byte?> ReadOneByteNullableAsync(this Stream stream, int? version = null, CancellationToken cancellationToken = default)
+            => ReadNullableNumericAsync(stream, sizeof(byte), byte.MinValue, byte.MaxValue, version, pool: null, (data) => Task.FromResult(data[0]), cancellationToken);
 
         /// <summary>
         /// Read
@@ -214,25 +189,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
         public static short ReadShort(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = ReadSerializedData(stream, len: sizeof(short), pool);
-            try
-            {
-                return data.AsSpan().ToShort();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+            => ReadNumeric(stream, sizeof(short), version, pool, (data) => data.AsSpan().ToShort());
 
         /// <summary>
         /// Read
@@ -242,25 +201,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<short> ReadShortAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(short), pool, cancellationToken).DynamicContext();
-            try
-            {
-                return data.AsSpan().ToShort();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+        public static Task<short> ReadShortAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNumericAsync(stream, sizeof(short), version, pool, (data) => data.AsSpan().ToShort(), cancellationToken);
 
         /// <summary>
         /// Read
@@ -271,7 +214,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         public static short? ReadShortNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-            => ReadBool(stream, version, pool) ? ReadShort(stream, version, pool) : default(short?);
+            => ReadNullableNumeric(stream, sizeof(short), short.MinValue, short.MaxValue, version, pool, (data) => data.AsSpan().ToShort());
 
         /// <summary>
         /// Read
@@ -282,10 +225,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<short?> ReadShortNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadShortAsync(stream, version, pool, cancellationToken).DynamicContext()
-                : default(short?);
+        public static Task<short?> ReadShortNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNullableNumericAsync(stream, sizeof(short), short.MinValue, short.MaxValue, version, pool, (data) => Task.FromResult(data.AsSpan().ToShort()), cancellationToken);
 
         /// <summary>
         /// Read
@@ -294,25 +235,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
         public static ushort ReadUShort(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = ReadSerializedData(stream, len: sizeof(ushort), pool);
-            try
-            {
-                return data.AsSpan().ToUShort();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+            => ReadNumeric(stream, sizeof(ushort), version, pool, (data) => data.AsSpan().ToUShort());
 
         /// <summary>
         /// Read
@@ -322,25 +247,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<ushort> ReadUShortAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(ushort), pool, cancellationToken).DynamicContext();
-            try
-            {
-                return data.AsSpan().ToUShort();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+        public static Task<ushort> ReadUShortAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNumericAsync(stream, sizeof(ushort), version, pool, (data) => data.AsSpan().ToUShort(), cancellationToken);
 
         /// <summary>
         /// Read
@@ -351,7 +260,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         public static ushort? ReadUShortNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-            => ReadBool(stream, version, pool) ? ReadUShort(stream, version, pool) : default(ushort?);
+            => ReadNullableNumeric(stream, sizeof(ushort), ushort.MinValue, ushort.MaxValue, version, pool, (data) => data.AsSpan().ToUShort());
 
         /// <summary>
         /// Read
@@ -362,10 +271,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<ushort?> ReadUShortNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadUShortAsync(stream, version, pool, cancellationToken).DynamicContext()
-                : default(ushort?);
+        public static Task<ushort?> ReadUShortNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNullableNumericAsync(stream, sizeof(ushort), ushort.MinValue, ushort.MaxValue, version, pool, (data) => Task.FromResult(data.AsSpan().ToUShort()), cancellationToken);
 
         /// <summary>
         /// Read
@@ -374,25 +281,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
         public static int ReadInt(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = ReadSerializedData(stream, len: sizeof(int), pool);
-            try
-            {
-                return data.AsSpan().ToInt();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+            => ReadNumeric(stream, sizeof(int), version, pool, (data) => data.AsSpan().ToInt());
 
         /// <summary>
         /// Read
@@ -402,25 +293,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<int> ReadIntAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(int), pool, cancellationToken).DynamicContext();
-            try
-            {
-                return data.AsSpan().ToInt();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+        public static Task<int> ReadIntAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNumericAsync(stream, sizeof(int), version, pool, (data) => data.AsSpan().ToInt(), cancellationToken);
 
         /// <summary>
         /// Read
@@ -431,7 +306,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         public static int? ReadIntNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-            => ReadBool(stream, version, pool) ? ReadInt(stream, version, pool) : default(int?);
+            => ReadNullableNumeric(stream, sizeof(int), int.MinValue, int.MaxValue, version, pool, (data) => data.AsSpan().ToInt());
 
         /// <summary>
         /// Read
@@ -442,10 +317,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<int?> ReadIntNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadIntAsync(stream, version, pool, cancellationToken).DynamicContext()
-                : default(int?);
+        public static Task<int?> ReadIntNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNullableNumericAsync(stream, sizeof(int), int.MinValue, int.MaxValue, version, pool, (data) => Task.FromResult(data.AsSpan().ToInt()), cancellationToken);
 
         /// <summary>
         /// Read
@@ -454,25 +327,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
         public static uint ReadUInt(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = ReadSerializedData(stream, len: sizeof(uint), pool);
-            try
-            {
-                return data.AsSpan().ToUInt();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+            => ReadNumeric(stream, sizeof(uint), version, pool, (data) => data.AsSpan().ToUInt());
 
         /// <summary>
         /// Read
@@ -482,25 +339,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<uint> ReadUIntAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(uint), pool, cancellationToken).DynamicContext();
-            try
-            {
-                return data.AsSpan().ToUInt();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+        public static Task<uint> ReadUIntAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNumericAsync(stream, sizeof(uint), version, pool, (data) => data.AsSpan().ToUInt(), cancellationToken);
 
         /// <summary>
         /// Read
@@ -511,7 +352,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         public static uint? ReadUIntNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-            => ReadBool(stream, version, pool) ? ReadUInt(stream, version, pool) : default(uint?);
+            => ReadNullableNumeric(stream, sizeof(uint), uint.MinValue, uint.MaxValue, version, pool, (data) => data.AsSpan().ToUInt());
 
         /// <summary>
         /// Read
@@ -522,10 +363,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<uint?> ReadUIntNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadUIntAsync(stream, version, pool, cancellationToken).DynamicContext()
-                : default(uint?);
+        public static Task<uint?> ReadUIntNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNullableNumericAsync(stream, sizeof(uint), uint.MinValue, uint.MaxValue, version, pool, (data) => Task.FromResult(data.AsSpan().ToUInt()), cancellationToken);
 
         /// <summary>
         /// Read
@@ -534,25 +373,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
         public static long ReadLong(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = ReadSerializedData(stream, len: sizeof(long), pool);
-            try
-            {
-                return data.AsSpan().ToLong();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+            => ReadNumeric(stream, sizeof(long), version, pool, (data) => data.AsSpan().ToLong());
 
         /// <summary>
         /// Read
@@ -562,25 +385,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<long> ReadLongAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(long), pool, cancellationToken).DynamicContext();
-            try
-            {
-                return data.AsSpan().ToLong();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+        public static Task<long> ReadLongAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNumericAsync(stream, sizeof(long), version, pool, (data) => data.AsSpan().ToLong(), cancellationToken);
 
         /// <summary>
         /// Read
@@ -591,7 +398,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         public static long? ReadLongNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-            => ReadBool(stream, version, pool) ? ReadLong(stream, version, pool) : default(long?);
+            => ReadNullableNumeric(stream, sizeof(long), long.MinValue, long.MaxValue, version, pool, (data) => data.AsSpan().ToLong());
 
         /// <summary>
         /// Read
@@ -602,10 +409,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<long?> ReadLongNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadLongAsync(stream, version, pool, cancellationToken).DynamicContext()
-                : default(long?);
+        public static Task<long?> ReadLongNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNullableNumericAsync(stream, sizeof(long), long.MinValue, long.MaxValue, version, pool, (data) => Task.FromResult(data.AsSpan().ToLong()), cancellationToken);
 
         /// <summary>
         /// Read
@@ -614,25 +419,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
         public static ulong ReadULong(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = ReadSerializedData(stream, len: sizeof(ulong), pool);
-            try
-            {
-                return data.AsSpan().ToULong();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+            => ReadNumeric(stream, sizeof(ulong), version, pool, (data) => data.AsSpan().ToULong());
 
         /// <summary>
         /// Read
@@ -642,25 +431,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<ulong> ReadULongAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(ulong), pool, cancellationToken).DynamicContext();
-            try
-            {
-                return data.AsSpan().ToULong();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+        public static Task<ulong> ReadULongAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNumericAsync(stream, sizeof(ulong), version, pool, (data) => data.AsSpan().ToULong(), cancellationToken);
 
         /// <summary>
         /// Read
@@ -671,7 +444,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         public static ulong? ReadULongNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-            => ReadBool(stream, version, pool) ? ReadULong(stream, version, pool) : default(ulong?);
+            => ReadNullableNumeric(stream, sizeof(ulong), ulong.MinValue, ulong.MaxValue, version, pool, (data) => data.AsSpan().ToULong());
 
         /// <summary>
         /// Read
@@ -682,10 +455,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<ulong?> ReadULongNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadULongAsync(stream, version, pool, cancellationToken).DynamicContext()
-                : default(ulong?);
+        public static Task<ulong?> ReadULongNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNullableNumericAsync(stream, sizeof(ulong), ulong.MinValue, ulong.MaxValue, version, pool, (data) => Task.FromResult(data.AsSpan().ToULong()), cancellationToken);
 
         /// <summary>
         /// Read
@@ -694,25 +465,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
         public static float ReadFloat(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = ReadSerializedData(stream, len: sizeof(float), pool);
-            try
-            {
-                return data.AsSpan().ToFloat();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+            => ReadNumeric(stream, sizeof(float), version, pool, (data) => data.AsSpan().ToFloat());
 
         /// <summary>
         /// Read
@@ -722,25 +477,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<float> ReadFloatAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(float), pool, cancellationToken).DynamicContext();
-            try
-            {
-                return data.AsSpan().ToFloat();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+        public static Task<float> ReadFloatAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNumericAsync(stream, sizeof(float), version, pool, (data) => data.AsSpan().ToFloat(), cancellationToken);
 
         /// <summary>
         /// Read
@@ -751,7 +490,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         public static float? ReadFloatNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-            => ReadBool(stream, version, pool) ? ReadFloat(stream, version, pool) : default(float?);
+            => ReadNullableNumeric(stream, sizeof(float), float.MinValue, float.MaxValue, version, pool, (data) => data.AsSpan().ToFloat());
 
         /// <summary>
         /// Read
@@ -762,10 +501,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<float?> ReadFloatNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadFloatAsync(stream, version, pool, cancellationToken).DynamicContext()
-                : default(float?);
+        public static Task<float?> ReadFloatNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNullableNumericAsync(stream, sizeof(float), float.MinValue, float.MaxValue, version, pool, (data) => Task.FromResult(data.AsSpan().ToFloat()), cancellationToken);
 
         /// <summary>
         /// Read
@@ -774,25 +511,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
         public static double ReadDouble(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = ReadSerializedData(stream, len: sizeof(double), pool);
-            try
-            {
-                return data.AsSpan().ToDouble();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+            => ReadNumeric(stream, sizeof(double), version, pool, (data) => data.AsSpan().ToDouble());
 
         /// <summary>
         /// Read
@@ -802,25 +523,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<double> ReadDoubleAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(double), pool, cancellationToken).DynamicContext();
-            try
-            {
-                return data.AsSpan().ToDouble();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+        public static Task<double> ReadDoubleAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNumericAsync(stream, sizeof(double), version, pool, (data) => data.AsSpan().ToDouble(), cancellationToken);
 
         /// <summary>
         /// Read
@@ -831,7 +536,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         public static double? ReadDoubleNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-            => ReadBool(stream, version, pool) ? ReadDouble(stream, version, pool) : default(double?);
+            => ReadNullableNumeric(stream, sizeof(double), double.MinValue, double.MaxValue, version, pool, (data) => data.AsSpan().ToDouble());
 
         /// <summary>
         /// Read
@@ -842,10 +547,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<double?> ReadDoubleNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadDoubleAsync(stream, version, pool, cancellationToken).DynamicContext()
-                : default(double?);
+        public static Task<double?> ReadDoubleNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+            => ReadNullableNumericAsync(stream, sizeof(double), double.MinValue, double.MaxValue, version, pool, (data) => Task.FromResult(data.AsSpan().ToDouble()), cancellationToken);
 
         /// <summary>
         /// Read
@@ -854,25 +557,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
         public static decimal ReadDecimal(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = ReadSerializedData(stream, len: sizeof(int) << 2, pool);
-            try
-            {
-                return data.AsSpan().ToDecimal();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+            => ReadNumeric(stream, sizeof(decimal), version, pool, (data) => data.AsSpan().ToDecimal());
 
         /// <summary>
         /// Read
@@ -882,25 +569,14 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<decimal> ReadDecimalAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-#pragma warning restore IDE0060 // Remove unused parameter
-        {
-            byte[] data = await ReadSerializedDataAsync(stream, len: sizeof(int) << 2, pool, cancellationToken).DynamicContext();
-            try
-            {
-                return data.AsSpan().ToDecimal();
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-            finally
-            {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
-            }
-        }
+        public static Task<decimal> ReadDecimalAsync(
+            this Stream stream,
+            int? version = null,
+            ArrayPool<byte>? pool = null,
+            CancellationToken cancellationToken = default
+            )
+            => ReadNumericAsync(stream, sizeof(decimal), version, pool, (data) => data.AsSpan().ToDecimal(), cancellationToken);
 
         /// <summary>
         /// Read
@@ -911,7 +587,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         public static decimal? ReadDecimalNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
-            => ReadBool(stream, version, pool) ? ReadDecimal(stream, version, pool) : default(decimal?);
+            => ReadNullableNumeric(stream, sizeof(decimal), decimal.MinValue, decimal.MaxValue, version, pool, (data) => data.AsSpan().ToDecimal());
 
         /// <summary>
         /// Read
@@ -922,304 +598,167 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<decimal?> ReadDecimalNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadDecimalAsync(stream, version, pool, cancellationToken).DynamicContext()
-                : default(decimal?);
+        public static Task<decimal?> ReadDecimalNullableAsync(
+            this Stream stream,
+            int? version = null,
+            ArrayPool<byte>? pool = null,
+            CancellationToken cancellationToken = default
+            )
+            => ReadNullableNumericAsync(
+                stream,
+                sizeof(decimal),
+                decimal.MinValue,
+                decimal.MaxValue,
+                version,
+                pool,
+                (data) => Task.FromResult(data.AsSpan().ToDecimal()),
+                cancellationToken
+                );
 
         /// <summary>
-        /// Read
+        /// Read a numeric value
         /// </summary>
+        /// <typeparam name="T">Numeric type</typeparam>
         /// <param name="stream">Stream</param>
+        /// <param name="size">Serialized data size in bytes</param>
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
+        /// <param name="action">Deserializer action</param>
         /// <returns>Value</returns>
-        public static T ReadNumber<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null) where T : struct, IConvertible
-            => ReadNumberInt<T>(stream, version, numberType: null, pool);
-
-        /// <summary>
-        /// Read
-        /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="numberType">Number type</param>
-        /// <param name="pool">Array pool</param>
-        /// <returns>Value</returns>
-        private static T ReadNumberInt<T>(Stream stream, int? version, NumberTypes? numberType, ArrayPool<byte>? pool) where T : struct, IConvertible
+#pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
+        private static T ReadNumeric<T>(Stream stream, int size, int? version, ArrayPool<byte>? pool, Func<byte[], T> action) where T : struct, IConvertible
+#pragma warning restore IDE0060 // Remove unused parameter
         {
-            byte[] data = numberType == null ? ReadSerializedData(stream, len: 1, pool) : (pool ?? StreamSerializer.BufferPool).Rent(minimumLength: 1);
+            byte[] data = ReadSerializedData(stream, size, pool);
             try
             {
-                NumberTypes type = numberType ?? (NumberTypes)data[0];
-                if (type.IsZero()) return (T)Activator.CreateInstance(typeof(T))!;
-                switch (type.RemoveValueFlags())
-                {
-                    case NumberTypes.Byte:
-                        switch (type)
-                        {
-                            case NumberTypes.Byte | NumberTypes.MinValue:
-                                return (T)(object)sbyte.MinValue;
-                            case NumberTypes.Byte | NumberTypes.MaxValue:
-                                return (T)(object)sbyte.MaxValue;
-                        }
-                        if (stream.Read(data.AsSpan(0, 1)) != 1) throw new SerializerException("Failed to read serialized data (1 bytes)");
-                        return data[0].ConvertType<T>();
-                    case NumberTypes.Byte | NumberTypes.Unsigned:
-                        switch (type)
-                        {
-                            case NumberTypes.Byte | NumberTypes.MaxValue | NumberTypes.Unsigned:
-                                return (T)(object)byte.MaxValue;
-                        }
-                        if (stream.Read(data.AsSpan(0, 1)) != 1) throw new SerializerException("Failed to read serialized data (1 bytes)");
-                        return data[0].ConvertType<T>();
-                    case NumberTypes.Short:
-                        return type switch
-                        {
-                            NumberTypes.Short | NumberTypes.MinValue => (T)(object)short.MinValue,
-                            NumberTypes.Short | NumberTypes.MaxValue => (T)(object)short.MaxValue,
-                            _ => ReadShort(stream, version, pool).ConvertType<T>()
-                        };
-                    case NumberTypes.Short | NumberTypes.Unsigned:
-                        return type switch
-                        {
-                            NumberTypes.Short | NumberTypes.MaxValue | NumberTypes.Unsigned => (T)(object)ushort.MaxValue,
-                            _ => ReadUShort(stream, version, pool).ConvertType<T>()
-                        };
-                    case NumberTypes.Int:
-                        return type switch
-                        {
-                            NumberTypes.Int | NumberTypes.MinValue => (T)(object)int.MinValue,
-                            NumberTypes.Int | NumberTypes.MaxValue => (T)(object)int.MaxValue,
-                            _ => ReadInt(stream, version, pool).ConvertType<T>()
-                        };
-                    case NumberTypes.Int | NumberTypes.Unsigned:
-                        return type switch
-                        {
-                            NumberTypes.Int | NumberTypes.MaxValue | NumberTypes.Unsigned => (T)(object)uint.MaxValue,
-                            _ => ReadUInt(stream, version, pool).ConvertType<T>()
-                        };
-                    case NumberTypes.Long:
-                        return type switch
-                        {
-                            NumberTypes.Long | NumberTypes.MinValue => (T)(object)long.MinValue,
-                            NumberTypes.Long | NumberTypes.MaxValue => (T)(object)long.MaxValue,
-                            _ => ReadLong(stream, version, pool).ConvertType<T>()
-                        };
-                    case NumberTypes.Long | NumberTypes.Unsigned:
-                        return type switch
-                        {
-                            NumberTypes.Long | NumberTypes.MaxValue | NumberTypes.Unsigned => (T)(object)ulong.MaxValue,
-                            _ => ReadULong(stream, version, pool).ConvertType<T>()
-                        };
-                    case NumberTypes.Float:
-                        return type switch
-                        {
-                            NumberTypes.Float | NumberTypes.MinValue => (T)(object)float.MinValue,
-                            NumberTypes.Float | NumberTypes.MaxValue => (T)(object)float.MaxValue,
-                            _ => ReadFloat(stream, version, pool).ConvertType<T>()
-                        };
-                    case NumberTypes.Double:
-                        return type switch
-                        {
-                            NumberTypes.Double | NumberTypes.MinValue => (T)(object)double.MinValue,
-                            NumberTypes.Double | NumberTypes.MaxValue => (T)(object)double.MaxValue,
-                            _ => ReadDouble(stream, version, pool).ConvertType<T>()
-                        };
-                    case NumberTypes.Decimal:
-                        return type switch
-                        {
-                            NumberTypes.Decimal | NumberTypes.MinValue => (T)(object)decimal.MinValue,
-                            NumberTypes.Decimal | NumberTypes.MaxValue => (T)(object)decimal.MaxValue,
-                            _ => ReadDecimal(stream, version, pool).ConvertType<T>()
-                        };
-                    default:
-                        throw new SerializerException($"Unknown numeric type {type}");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
+                return action(data);
             }
             finally
             {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data, clearArray: false);
             }
         }
 
         /// <summary>
-        /// Read
+        /// Read a numeric value
         /// </summary>
+        /// <typeparam name="T">Numeric type</typeparam>
         /// <param name="stream">Stream</param>
+        /// <param name="size">Serialized data size in bytes</param>
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
+        /// <param name="action">Deserializer action</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-        public static Task<T> ReadNumberAsync<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
-            where T : struct, IConvertible
-            => ReadNumberIntAsync<T>(stream, version, numberType: null, pool, cancellationToken);
-
-        /// <summary>
-        /// Read
-        /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="numberType">Number type</param>
-        /// <param name="pool">Array pool</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>Value</returns>
-        private static async Task<T> ReadNumberIntAsync<T>(Stream stream, int? version, NumberTypes? numberType, ArrayPool<byte>? pool, CancellationToken cancellationToken)
+#pragma warning disable IDE0060 // Remove unused parameter
+        [TargetedPatchingOptOut("Tiny method")]
+        private static async Task<T> ReadNumericAsync<T>(Stream stream, int size, int? version, ArrayPool<byte>? pool, Func<byte[], T> action, CancellationToken cancellationToken)
+#pragma warning restore IDE0060 // Remove unused parameter
             where T : struct, IConvertible
         {
-            byte[] data = numberType == null
-                ? await ReadSerializedDataAsync(stream, len: 1, pool, cancellationToken).DynamicContext()
-                : (pool ?? StreamSerializer.BufferPool).Rent(minimumLength: 1);
+            byte[] data = await ReadSerializedDataAsync(stream, size, pool, cancellationToken).DynamicContext();
             try
             {
-                NumberTypes type = numberType ?? (NumberTypes)data[0];
-                if (type.IsZero()) return (T)Activator.CreateInstance(typeof(T))!;
-                switch (type.RemoveValueFlags())
-                {
-                    case NumberTypes.Byte:
-                        switch (type)
-                        {
-                            case NumberTypes.Byte | NumberTypes.MinValue:
-                                return (T)(object)sbyte.MinValue;
-                            case NumberTypes.Byte | NumberTypes.MaxValue:
-                                return (T)(object)sbyte.MaxValue;
-                        }
-                        if (await stream.ReadAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext() != 1)
-                            throw new SerializerException("Failed to read serialized data (1 bytes)");
-                        return data[0].ConvertType<T>();
-                    case NumberTypes.Byte | NumberTypes.Unsigned:
-                        switch (type)
-                        {
-                            case NumberTypes.Byte | NumberTypes.MaxValue | NumberTypes.Unsigned:
-                                return (T)(object)byte.MaxValue;
-                        }
-                        if (await stream.ReadAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext() != 1)
-                            throw new SerializerException("Failed to read serialized data (1 bytes)");
-                        return data[0].ConvertType<T>();
-                    case NumberTypes.Short:
-                        return type switch
-                        {
-                            NumberTypes.Short | NumberTypes.MinValue => (T)(object)short.MinValue,
-                            NumberTypes.Short | NumberTypes.MaxValue => (T)(object)short.MaxValue,
-                            _ => (await ReadShortAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
-                        };
-                    case NumberTypes.Short | NumberTypes.Unsigned:
-                        return type switch
-                        {
-                            NumberTypes.Short | NumberTypes.MaxValue | NumberTypes.Unsigned => (T)(object)ushort.MaxValue,
-                            _ => (await ReadUShortAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
-                        };
-                    case NumberTypes.Int:
-                        return type switch
-                        {
-                            NumberTypes.Int | NumberTypes.MinValue => (T)(object)int.MinValue,
-                            NumberTypes.Int | NumberTypes.MaxValue => (T)(object)int.MaxValue,
-                            _ => (await ReadIntAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
-                        };
-                    case NumberTypes.Int | NumberTypes.Unsigned:
-                        return type switch
-                        {
-                            NumberTypes.Int | NumberTypes.MaxValue | NumberTypes.Unsigned => (T)(object)uint.MaxValue,
-                            _ => (await ReadUIntAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
-                        };
-                    case NumberTypes.Long:
-                        return type switch
-                        {
-                            NumberTypes.Long | NumberTypes.MinValue => (T)(object)long.MinValue,
-                            NumberTypes.Long | NumberTypes.MaxValue => (T)(object)long.MaxValue,
-                            _ => (await ReadLongAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
-                        };
-                    case NumberTypes.Long | NumberTypes.Unsigned:
-                        return type switch
-                        {
-                            NumberTypes.Long | NumberTypes.MaxValue | NumberTypes.Unsigned => (T)(object)ulong.MaxValue,
-                            _ => (await ReadULongAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
-                        };
-                    case NumberTypes.Float:
-                        return type switch
-                        {
-                            NumberTypes.Float | NumberTypes.MinValue => (T)(object)float.MinValue,
-                            NumberTypes.Float | NumberTypes.MaxValue => (T)(object)float.MaxValue,
-                            _ => (await ReadFloatAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
-                        };
-                    case NumberTypes.Double:
-                        return type switch
-                        {
-                            NumberTypes.Double | NumberTypes.MinValue => (T)(object)double.MinValue,
-                            NumberTypes.Double | NumberTypes.MaxValue => (T)(object)double.MaxValue,
-                            _ => (await ReadDoubleAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
-                        };
-                    case NumberTypes.Decimal:
-                        return type switch
-                        {
-                            NumberTypes.Decimal | NumberTypes.MinValue => (T)(object)decimal.MinValue,
-                            NumberTypes.Decimal | NumberTypes.MaxValue => (T)(object)decimal.MaxValue,
-                            _ => (await ReadDecimalAsync(stream, version, pool, cancellationToken).DynamicContext()).ConvertType<T>()
-                        };
-                    default:
-                        throw new SerializerException($"Unknown numeric type {type}");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
+                return action(data);
             }
             finally
             {
-                (pool ?? StreamSerializer.BufferPool).Return(data);
+                (pool ?? StreamSerializer.BufferPool).Return(data, clearArray: false);
             }
         }
 
         /// <summary>
-        /// Read
+        /// Read a nullable numeric
         /// </summary>
+        /// <typeparam name="T">Numeric type</typeparam>
         /// <param name="stream">Stream</param>
+        /// <param name="size">Serialized data size in bytes</param>
+        /// <param name="min">Minimum</param>
+        /// <param name="max">Maximum</param>
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
+        /// <param name="action">Action to execute, if the red value isn't a default handleable numeric value</param>
         /// <returns>Value</returns>
-        [TargetedPatchingOptOut("Tiny method")]
-        public static T? ReadNumberNullable<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null) where T : struct, IConvertible
+        private static T? ReadNullableNumeric<T>(Stream stream, int size, T min, T max, int? version, ArrayPool<byte>? pool, Func<byte[], T> action) where T : struct, IConvertible
         {
-            switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
+            switch (version ??= StreamSerializer.VERSION)
             {
                 case 1:
-                    return ReadBool(stream, version, pool) ? ReadNumber<T>(stream, version, pool) : null;
+                case 2:
+                    if (!ReadBool(stream, version, pool)) return null;
+                    break;
                 default:
+                    switch ((NumberTypes)ReadOneByte(stream, version))
                     {
-                        using RentedArray<byte> buffer = new(len: 1, pool, clean: false);
-                        NumberTypes numberType = (NumberTypes)ReadOneByte(stream, version);
-                        return numberType == NumberTypes.Null ? default(T?) : ReadNumberInt<T>(stream, version, numberType, pool);
+                        case NumberTypes.Null: return null;
+                        case NumberTypes.MinValue: return min;
+                        case NumberTypes.MaxValue: return max;
+                        case NumberTypes.Zero: return default(T);
                     }
+                    break;
+            }
+            byte[] data = ReadSerializedData(stream, size, pool);
+            try
+            {
+                return action(data);
+            }
+            finally
+            {
+                (pool ?? StreamSerializer.BufferPool).Return(data, clearArray: false);
             }
         }
 
         /// <summary>
-        /// Read
+        /// Read a nullable numeric
         /// </summary>
+        /// <typeparam name="T">Numeric type</typeparam>
         /// <param name="stream">Stream</param>
+        /// <param name="size">Serialized data size in bytes</param>
+        /// <param name="min">Minimum</param>
+        /// <param name="max">Maximum</param>
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
+        /// <param name="action">Action to execute, if the red value isn't a default handleable numeric value</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-        [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<T?> ReadNumberNullableAsync<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+        private static async Task<T?> ReadNullableNumericAsync<T>(
+            Stream stream,
+            int size,
+            T min,
+            T max,
+            int? version,
+            ArrayPool<byte>? pool,
+            Func<byte[], Task<T>> action,
+            CancellationToken cancellationToken
+            )
             where T : struct, IConvertible
         {
-            switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
+            switch (version ??= StreamSerializer.VERSION)
             {
                 case 1:
-                    return await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext() 
-                        ? await ReadNumberAsync<T>(stream, version, pool, cancellationToken).DynamicContext() 
-                        : null;
+                case 2:
+                    if (!await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()) return null;
+                    break;
                 default:
+                    switch ((NumberTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext())
                     {
-                        using RentedArray<byte> buffer = new(len: 1, pool, clean: false);
-                        NumberTypes numberType = (NumberTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
-                        return numberType == NumberTypes.Null ? null : await ReadNumberIntAsync<T>(stream, version, numberType, pool, cancellationToken).DynamicContext(); ;
+                        case NumberTypes.Null: return null;
+                        case NumberTypes.MinValue: return min;
+                        case NumberTypes.MaxValue: return max;
+                        case NumberTypes.Zero: return default(T);
                     }
+                    break;
+            }
+            byte[] data = await ReadSerializedDataAsync(stream, size, pool, cancellationToken).DynamicContext();
+            try
+            {
+                return await action(data).DynamicContext();
+            }
+            finally
+            {
+                (pool ?? StreamSerializer.BufferPool).Return(data, clearArray: false);
             }
         }
     }

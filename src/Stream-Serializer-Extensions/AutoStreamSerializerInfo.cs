@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿using System.Threading;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -12,17 +12,18 @@ namespace wan24.StreamSerializerExtensions
         /// Constructor
         /// </summary>
         /// <param name="property">Property</param>
-        public AutoStreamSerializerInfo(PropertyInfo property)
+        public AutoStreamSerializerInfo(PropertyInfoExt property)
         {
             Property = property;
-            IsNullable = property.IsNullable();
-            Attribute = Property.GetCustomAttribute<StreamSerializerAttribute>() ?? throw new ArgumentException($"Missing {typeof(StreamSerializerAttribute)}", nameof(property));
+            IsNullable = property.Property.IsNullable();
+            Attribute = property.Property.GetCustomAttributeCached<StreamSerializerAttribute>() 
+                ?? throw new ArgumentException($"Missing {typeof(StreamSerializerAttribute)}", nameof(property));
         }
 
         /// <summary>
         /// Property
         /// </summary>
-        public PropertyInfo Property { get; }
+        public PropertyInfoExt Property { get; }
 
         /// <summary>
         /// Is the property value nullable?
@@ -67,16 +68,19 @@ namespace wan24.StreamSerializerExtensions
             {
                 if (IsNullable)
                 {
-                    stream.WriteObjectNullable(Property.GetValue(obj));
+                    stream.WriteObjectNullable(Property.Getter!(obj));
                 }
                 else
                 {
-                    stream.WriteObject(Property.GetValue(obj) ?? throw new SerializerException($"{Property.DeclaringType}.{Property.Name} value is NULL", new InvalidDataException()));
+                    stream.WriteObject(
+                        Property.Getter!(obj) 
+                        ?? throw new SerializerException($"{Property.Property.DeclaringType}.{Property.Property.Name} value is NULL", new InvalidDataException())
+                        );
                 }
             }
             else
             {
-                Serializer(config, this, obj, Property.GetValue(obj), stream);
+                Serializer(config, this, obj, Property.Getter!(obj), stream);
             }
         }
 
@@ -94,19 +98,19 @@ namespace wan24.StreamSerializerExtensions
             {
                 if (IsNullable)
                 {
-                    await stream.WriteObjectNullableAsync(Property.GetValue(obj), cancellationToken).DynamicContext();
+                    await stream.WriteObjectNullableAsync(Property.Getter!(obj), cancellationToken).DynamicContext();
                 }
                 else
                 {
                     await stream.WriteObjectAsync(
-                        Property.GetValue(obj) ?? throw new SerializerException($"{Property.DeclaringType}.{Property.Name} value is NULL", new InvalidDataException()),
+                        Property.Getter!(obj) ?? throw new SerializerException($"{Property.Property.DeclaringType}.{Property.Property.Name} value is NULL", new InvalidDataException()),
                         cancellationToken
                         ).DynamicContext();
                 }
             }
             else
             {
-                await AsyncSerializer(config, this, obj, Property.GetValue(obj), stream, cancellationToken).DynamicContext();
+                await AsyncSerializer(config, this, obj, Property.Getter!(obj), stream, cancellationToken).DynamicContext();
             }
         }
 
@@ -122,20 +126,14 @@ namespace wan24.StreamSerializerExtensions
         {
             if (Deserializer == null)
             {
-                if (IsNullable)
-                {
-                    Property.SetValue(obj, StreamExtensions.ReadObjectNullableMethod.MakeGenericMethod(Property.PropertyType)
-                        .InvokeAuto(obj: null, stream, version, Property.GetSerializerOptions(stream, version, default)));
-                }
-                else
-                {
-                    Property.SetValue(obj, StreamExtensions.ReadObjectMethod.MakeGenericMethod(Property.PropertyType)
-                        .InvokeAuto(obj: null, stream, version, Property.GetSerializerOptions(stream, version, default)));
-                }
+                ISerializerOptions? options = Property.Property.GetSerializerOptions(stream, version, default);
+                Property.Setter!(obj, IsNullable
+                    ? stream.ReadObjectNullable(Property.Property.PropertyType, version, options)
+                    : stream.ReadObject(Property.Property.PropertyType, version, options));
             }
             else
             {
-                Property.SetValue(obj, Deserializer(config, this, obj, stream, version));
+                Property.Setter!(obj, Deserializer(config, this, obj, stream, version));
             }
         }
 
@@ -148,30 +146,19 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        public async Task DeserializeAsync<T>(IAutoStreamSerializerConfig config, T obj, Stream stream, int version, CancellationToken cancellationToken) where T : IAutoStreamSerializer
+        public async Task DeserializeAsync<T>(IAutoStreamSerializerConfig config, T obj, Stream stream, int version, CancellationToken cancellationToken)
+            where T : IAutoStreamSerializer
         {
             if (AsyncDeserializer == null)
             {
-                if (IsNullable)
-                {
-                    Property.SetValue(
-                        obj,
-                        await StreamExtensions.ReadObjectNullableAsyncMethod.MakeGenericMethod(Property.PropertyType)
-                        .InvokeAutoAsync(obj: null, stream, version, Property.GetSerializerOptions(stream, version, default), cancellationToken).DynamicContext()
-                        );
-                }
-                else
-                {
-                    Property.SetValue(
-                        obj,
-                        await StreamExtensions.ReadObjectAsyncMethod.MakeGenericMethod(Property.PropertyType)
-                        .InvokeAutoAsync(obj: null, stream, version, Property.GetSerializerOptions(stream, version, default), cancellationToken).DynamicContext()
-                        );
-                }
+                ISerializerOptions? options = Property.Property.GetSerializerOptions(stream, version, cancellationToken);
+                Property.Setter!(obj, IsNullable
+                    ? await stream.ReadObjectNullableAsync(Property.Property.PropertyType, version, options, cancellationToken).DynamicContext()
+                    : await stream.ReadObjectAsync(Property.Property.PropertyType, version, options, cancellationToken).DynamicContext());
             }
             else
             {
-                Property.SetValue(obj, await AsyncDeserializer(config, this, obj, stream, version, cancellationToken).DynamicContext());
+                Property.Setter!(obj, await AsyncDeserializer(config, this, obj, stream, version, cancellationToken).DynamicContext());
             }
         }
 

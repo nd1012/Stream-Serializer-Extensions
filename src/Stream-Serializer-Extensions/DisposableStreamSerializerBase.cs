@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 using wan24.Core;
 using wan24.ObjectValidation;
 
@@ -32,7 +31,8 @@ namespace wan24.StreamSerializerExtensions
         /// Constructor
         /// </summary>
         /// <param name="objectVersion">Object version</param>
-        protected DisposableStreamSerializerBase(int? objectVersion = null) : base() => _ObjectVersion = objectVersion ?? GetType().GetCustomAttribute<StreamSerializerAttribute>()?.Version;
+        protected DisposableStreamSerializerBase(int? objectVersion = null) : base()
+            => _ObjectVersion = objectVersion ?? GetType().GetCustomAttributeCached<StreamSerializerAttribute>()?.Version;
 
         /// <summary>
         /// Constructor
@@ -161,7 +161,8 @@ namespace wan24.StreamSerializerExtensions
         void IStreamSerializer.Deserialize(Stream stream, int version) => IfUndisposed(() => DeserializeInt(stream, version));
 
         /// <inheritdoc/>
-        Task IStreamSerializer.DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken) => IfUndisposed(() => DeserializeIntAsync(stream, version, cancellationToken));
+        Task IStreamSerializer.DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken)
+            => IfUndisposed(() => DeserializeIntAsync(stream, version, cancellationToken));
 
         /// <inheritdoc/>
         IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext) => IfUndisposed(() => ValidatableObjectBase.ObjectValidatable(this));

@@ -9,13 +9,9 @@ namespace wan24.StreamSerializerExtensions
     public static partial class StreamExtensions
     {
         /// <summary>
-        /// Read object method
+        /// Array empty method
         /// </summary>
-        public static readonly MethodInfo ReadObjectMethod;
-        /// <summary>
-        /// Read object method
-        /// </summary>
-        public static readonly MethodInfo ReadObjectAsyncMethod;
+        public static readonly MethodInfo ArrayEmptyMethod;
         /// <summary>
         /// Read struct method
         /// </summary>
@@ -24,90 +20,6 @@ namespace wan24.StreamSerializerExtensions
         /// Read struct method
         /// </summary>
         public static readonly MethodInfo ReadStructAsyncMethod;
-        /// <summary>
-        /// Read object method
-        /// </summary>
-        public static readonly MethodInfo ReadObjectNullableMethod;
-        /// <summary>
-        /// Read object method
-        /// </summary>
-        public static readonly MethodInfo ReadObjectNullableAsyncMethod;
-        /// <summary>
-        /// Read any method
-        /// </summary>
-        public static readonly MethodInfo ReadAnyMethod;
-        /// <summary>
-        /// Read any method
-        /// </summary>
-        public static readonly MethodInfo ReadAnyAsyncMethod;
-        /// <summary>
-        /// Read any method
-        /// </summary>
-        public static readonly MethodInfo ReadAnyNullableMethod;
-        /// <summary>
-        /// Read any method
-        /// </summary>
-        public static readonly MethodInfo ReadAnyNullableAsyncMethod;
-        /// <summary>
-        /// Read serialized method
-        /// </summary>
-        public static readonly MethodInfo ReadSerializedMethod;
-        /// <summary>
-        /// Read serialized method
-        /// </summary>
-        public static readonly MethodInfo ReadSerializedAsyncMethod;
-        /// <summary>
-        /// Read number method
-        /// </summary>
-        public static readonly MethodInfo ReadNumberMethod;
-        /// <summary>
-        /// Read number method
-        /// </summary>
-        public static readonly MethodInfo ReadNumberAsyncMethod;
-        /// <summary>
-        /// Read number method
-        /// </summary>
-        public static readonly MethodInfo ReadNumberIntMethod;
-        /// <summary>
-        /// Read number method
-        /// </summary>
-        public static readonly MethodInfo ReadNumberIntAsyncMethod;
-        /// <summary>
-        /// Read enumeration method
-        /// </summary>
-        public static readonly MethodInfo ReadEnumMethod;
-        /// <summary>
-        /// Read enumeration method
-        /// </summary>
-        public static readonly MethodInfo ReadEnumAsyncMethod;
-        /// <summary>
-        /// Read array method
-        /// </summary>
-        public static readonly MethodInfo ReadArrayMethod;
-        /// <summary>
-        /// Read array method
-        /// </summary>
-        public static readonly MethodInfo ReadArrayAsyncMethod;
-        /// <summary>
-        /// Read list method
-        /// </summary>
-        public static readonly MethodInfo ReadListMethod;
-        /// <summary>
-        /// Read list method
-        /// </summary>
-        public static readonly MethodInfo ReadListAsyncMethod;
-        /// <summary>
-        /// Read dictionary method
-        /// </summary>
-        public static readonly MethodInfo ReadDictMethod;
-        /// <summary>
-        /// Read dictionary method
-        /// </summary>
-        public static readonly MethodInfo ReadDictAsyncMethod;
-        /// <summary>
-        /// Array empty method
-        /// </summary>
-        public static readonly MethodInfo ArrayEmptyMethod;
 
         /// <summary>
         /// Require the <see cref="StreamSerializerAttribute"/> attribute when using <see cref="ReadAnyObject{T}(Stream, int?)"/> etc.?
@@ -121,11 +33,12 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Serializer version</returns>
         [TargetedPatchingOptOut("Tiny method")]
         public static int ReadSerializerVersion(this Stream stream)
-        {
-            int res = ReadNumber<int>(stream, version: 1);
-            if (res < 1 || res > StreamSerializer.VERSION) throw new InvalidDataException($"Invalid or unsupported stream serializer version #{res}");
-            return res;
-        }
+            => SerializerException.Wrap(() =>
+            {
+                int res = ReadNumber<int>(stream, version: 1);
+                if (res < 1 || res > StreamSerializer.VERSION) throw new InvalidDataException($"Invalid or unsupported stream serializer version #{res}");
+                return res;
+            });
 
         /// <summary>
         /// Read the serializer version
@@ -134,12 +47,13 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Serializer version</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<int> ReadSerializerVersionAsync(this Stream stream, CancellationToken cancellationToken = default)
-        {
-            int res = await ReadNumberAsync<int>(stream, version: 1, cancellationToken: cancellationToken).DynamicContext();
-            if (res < 1 || res > StreamSerializer.VERSION) throw new InvalidDataException($"Invalid or unsupported stream serializer version #{res}");
-            return res;
-        }
+        public static Task<int> ReadSerializerVersionAsync(this Stream stream, CancellationToken cancellationToken = default)
+            => SerializerException.WrapAsync(async () =>
+            {
+                int res = await ReadNumberAsync<int>(stream, version: 1, cancellationToken: cancellationToken).DynamicContext();
+                if (res < 1 || res > StreamSerializer.VERSION) throw new InvalidDataException($"Invalid or unsupported stream serializer version #{res}");
+                return res;
+            });
 
         /// <summary>
         /// Read serialized data
@@ -153,9 +67,12 @@ namespace wan24.StreamSerializerExtensions
             byte[] res = (pool ?? StreamSerializer.BufferPool).Rent(len);
             try
             {
-                int red = stream.Read(res.AsSpan(0, len));
-                if (red != len) throw new SerializerException($"Failed to read serialized data ({len} bytes expected, {red} bytes red)");
-                return res;
+                return SerializerException.Wrap(() =>
+                {
+                    int red = stream.Read(res.AsSpan(0, len));
+                    if (red != len) throw new SerializerException($"Failed to read serialized data ({len} bytes expected, {red} bytes red)");
+                    return res;
+                });
             }
             catch
             {
@@ -177,9 +94,12 @@ namespace wan24.StreamSerializerExtensions
             byte[] res = (pool ?? StreamSerializer.BufferPool).Rent(len);
             try
             {
-                int red = await stream.ReadAsync(res.AsMemory(0, len), cancellationToken).DynamicContext();
-                if (red != len) throw new SerializerException($"Failed to read serialized data ({len} bytes expected, {red} bytes red)");
-                return res;
+                return await SerializerException.WrapAsync(async () =>
+                {
+                    int red = await stream.ReadAsync(res.AsMemory(0, len), cancellationToken).DynamicContext();
+                    if (red != len) throw new SerializerException($"Failed to read serialized data ({len} bytes expected, {red} bytes red)");
+                    return res;
+                }).DynamicContext();
             }
             catch
             {
