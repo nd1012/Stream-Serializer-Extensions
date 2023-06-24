@@ -12,7 +12,7 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Structure fields which require endianess conversion
         /// </summary>
-        protected List<FieldInfo>? StructureFields = null;
+        protected List<FieldInfo>? NumericStructureFields = null;
 
         /// <summary>
         /// Constructor (used for a type)
@@ -213,7 +213,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Serializer options</returns>
-        public virtual ISerializerOptions GetSerializerOptions(PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken = default)
+        public virtual ISerializerOptions GetSerializerOptions(PropertyInfoExt? property, Stream stream, int version, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -259,7 +259,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Serializer options</returns>
-        public virtual ISerializerOptions GetKeySerializerOptions(PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken = default)
+        public virtual ISerializerOptions GetKeySerializerOptions(PropertyInfoExt? property, Stream stream, int version, CancellationToken cancellationToken = default)
         {
             if (KeySerializerOptions != null) return KeySerializerOptions;
             if (KeySerializerOptionsFactoryType == null) return KeySerializerOptions ??= CreateSerializerOptions(KeyOptionsType, property);
@@ -297,7 +297,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Serializer options</returns>
-        public virtual ISerializerOptions GetValueSerializerOptions(PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken = default)
+        public virtual ISerializerOptions GetValueSerializerOptions(PropertyInfoExt? property, Stream stream, int version, CancellationToken cancellationToken = default)
         {
             if (ValueSerializerOptions != null) return ValueSerializerOptions;
             if (ValueSerializerOptionsFactoryType == null) return ValueSerializerOptions ??= CreateSerializerOptions(ValueOptionsType, property);
@@ -355,10 +355,10 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="type">Structure type</param>
         /// <returns>Fields</returns>
-        public virtual List<FieldInfo> GetStructureFields(Type type)
+        public virtual List<FieldInfo> GetNumericStructureFields(Type type)
         {
             if (!type.IsValueType) throw new ArgumentException("Structure type required", nameof(type));
-            return StructureFields ??= new(from fi in type.GetFieldsCached(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            return NumericStructureFields ??= new(from fi in type.GetFieldsCached(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                                            where !fi.IsStatic &&
                                               fi.GetCustomAttributeCached<StreamSerializerAttribute>() is not null
                                            select fi);
@@ -370,7 +370,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="type">Custom serializer options type</param>
         /// <param name="property">Property</param>
         /// <returns>Serializer options</returns>
-        protected virtual ISerializerOptions CreateSerializerOptions(Type? type, PropertyInfo? property)
+        protected virtual ISerializerOptions CreateSerializerOptions(Type? type, PropertyInfoExt? property)
             => type == null ? new DefaultSerializerOptions(property, this) : type.ConstructAuto(usePrivate: true, property, this) as ISerializerOptions
                 ?? throw new SerializerException($"Invalid serializer options type {type} (must implement {typeof(ISerializerOptions)})", new InvalidProgramException());
 

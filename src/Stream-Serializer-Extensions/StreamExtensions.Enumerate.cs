@@ -18,6 +18,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <returns>Enumerable</returns>
         [TargetedPatchingOptOut("Just a method adapter")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<tObject> Enumerate<tObject, tEnumerator>(this Stream stream, int? version = null)
             where tEnumerator : StreamEnumeratorBase<tObject>
             => StreamEnumeratorBase<tObject>.Enumerate<tEnumerator>(stream, version);
@@ -31,6 +32,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Enumerable</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static async IAsyncEnumerable<tObject> EnumerateAsync<tObject, tEnumerator>(
             this Stream stream,
             int? version = null,
@@ -53,6 +57,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Version</param>
         /// <returns>Enumerable</returns>
         [TargetedPatchingOptOut("Just a method adapter")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<T> EnumerateSerialized<T>(this Stream stream, int? version = null)
             where T : class, IStreamSerializer
             => StreamEnumeratorBase<T>.Enumerate<StreamSerializerEnumerator<T>>(stream, version);
@@ -65,6 +70,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Version</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Enumerable</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static async IAsyncEnumerable<T> EnumerateSerializedAsync<T>(this Stream stream, int? version = null, [EnumeratorCancellation] CancellationToken cancellationToken = default)
             where T : class, IStreamSerializer
         {
@@ -83,6 +91,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Enumerable</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static IEnumerable<T> EnumerateNumber<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
             where T : struct, IConvertible
         {
@@ -99,6 +110,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Enumerable</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static async IAsyncEnumerable<T> EnumerateNumberAsync<T>(
             this Stream stream,
             int? version = null,
@@ -122,6 +136,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="minLen">Minimum UTF-8 string bytes length</param>
         /// <param name="maxLen">Maximum UTF-8 string bytes length</param>
         /// <returns>Enumerable</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static IEnumerable<string> EnumerateString(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
         {
             using StreamStringEnumerator enumerator = new(stream, version, pool, minLen, maxLen);
@@ -138,6 +155,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum UTF-8 string bytes length</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Enumerable</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static async IAsyncEnumerable<string> EnumerateStringAsync(
             this Stream stream,
             int? version = null,

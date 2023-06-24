@@ -1,5 +1,6 @@
 ﻿using System.Buffers;
 using System.Runtime;
+using System.Runtime.CompilerServices;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -52,6 +53,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="chunkLength">Chunk length in bytes</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Stream WriteStreamNullable(this Stream stream, Stream? source, ArrayPool<byte>? pool = null, int? chunkLength = null)
             => source == null ? WriteNumber(stream, long.MinValue) : WriteStream(stream, source, pool, chunkLength);
 
@@ -106,6 +110,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Task WriteStreamNullableAsync(
             this Stream stream,
             Stream? source,

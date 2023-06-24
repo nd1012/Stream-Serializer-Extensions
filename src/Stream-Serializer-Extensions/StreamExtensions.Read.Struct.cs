@@ -1,5 +1,6 @@
 ﻿using System.Buffers;
 using System.Runtime;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using wan24.Core;
 
@@ -18,6 +19,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Buffer pool</param>
         /// <returns>Struct</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static T ReadStruct<T>(
             this Stream stream,
             int? version = null,
@@ -28,6 +32,7 @@ namespace wan24.StreamSerializerExtensions
             => SerializerException.Wrap(() =>
             {
                 int len = Marshal.SizeOf(typeof(T));
+                pool ??= StreamSerializer.BufferPool;
                 byte[] data = stream.ReadBytes(version, buffer, pool, len, len).Value;
                 try
                 {
@@ -43,7 +48,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 finally
                 {
-                    if (buffer == null && pool != null) pool.Return(data);
+                    if (buffer == null) pool.Return(data);
                 }
             });
 
@@ -58,6 +63,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Struct</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Task<T> ReadStructAsync<T>(
             this Stream stream,
             int? version = null,
@@ -69,6 +77,7 @@ namespace wan24.StreamSerializerExtensions
             => SerializerException.WrapAsync(async () =>
             {
                 int len = Marshal.SizeOf(typeof(T));
+                pool ??= StreamSerializer.BufferPool;
                 byte[] data = (await stream.ReadBytesAsync(version, buffer, pool, len, len, cancellationToken).DynamicContext()).Value;
                 try
                 {
@@ -84,7 +93,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 finally
                 {
-                    if (buffer == null && pool != null) pool.Return(data);
+                    if (buffer == null) pool.Return(data);
                 }
             });
 
@@ -98,6 +107,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Buffer pool</param>
         /// <returns>Struct</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static T? ReadStructNullable<T>(
             this Stream stream,
             int? version = null,
@@ -118,6 +130,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Struct</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static async Task<T?> ReadStructNullableAsync<T>(
             this Stream stream,
             int? version = null,

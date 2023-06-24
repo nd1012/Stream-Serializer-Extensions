@@ -1,4 +1,5 @@
 ﻿using System.Runtime;
+using System.Runtime.CompilerServices;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -32,6 +33,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="action">Action</param>
         /// <param name="message">Message</param>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static void Wrap(Action action, string? message = null)
         {
             try
@@ -42,9 +46,9 @@ namespace wan24.StreamSerializerExtensions
             {
                 throw;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                throw new SerializerException(message ?? ex.Message, ex);
+                throw From(ex, message);
             }
         }
 
@@ -55,6 +59,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="func">Function</param>
         /// <param name="message">Message</param>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static T Wrap<T>(Func<T> func, string? message = null)
         {
             try
@@ -67,7 +74,7 @@ namespace wan24.StreamSerializerExtensions
             }
             catch (Exception ex)
             {
-                throw new SerializerException(message ?? ex.Message, ex);
+                throw From(ex, message);
             }
         }
 
@@ -77,6 +84,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="action">Action</param>
         /// <param name="message">Message</param>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static async Task WrapAsync(Func<Task> action, string? message = null)
         {
             try
@@ -89,7 +99,7 @@ namespace wan24.StreamSerializerExtensions
             }
             catch (Exception ex)
             {
-                throw new SerializerException(message ?? ex.Message, ex);
+                throw From(ex, message);
             }
         }
 
@@ -100,6 +110,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="func">Function</param>
         /// <param name="message">Message</param>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static async Task<T> WrapAsync<T>(Func<Task<T>> func, string? message = null)
         {
             try
@@ -112,8 +125,18 @@ namespace wan24.StreamSerializerExtensions
             }
             catch (Exception ex)
             {
-                throw new SerializerException(message ?? ex.Message, ex);
+                throw From(ex, message);
             }
         }
+
+        /// <summary>
+        /// Create a <see cref="SerializerException"/> from an <see cref="Exception"/>
+        /// </summary>
+        /// <param name="ex"><see cref="Exception"/></param>
+        /// <param name="message">Individual message</param>
+        /// <returns><see cref="SerializerException"/> (may be the <c>ex</c>, if it's a <see cref="SerializerException"/> already!)</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SerializerException From(Exception ex, string? message = null) => ex as SerializerException ?? new(message ?? ex.Message, ex);
     }
 }

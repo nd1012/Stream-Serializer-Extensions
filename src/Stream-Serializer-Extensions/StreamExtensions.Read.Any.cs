@@ -1,4 +1,6 @@
-﻿using wan24.Core;
+﻿using System.Runtime;
+using System.Runtime.CompilerServices;
+using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -12,21 +14,12 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="options">Options</param>
         /// <returns>Object</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static object ReadAny(this Stream stream, int? version = null, ISerializerOptions? options = null)
-            => SerializerException.Wrap(() =>
-            {
-                ObjectTypes objType;
-                byte[] data = ReadSerializedData(stream, len: 1);
-                try
-                {
-                    objType = (ObjectTypes)data[0];
-                }
-                finally
-                {
-                    StreamSerializer.BufferPool.Return(data);
-                }
-                return ReadAnyInt(stream, version, objType, options);
-            });
+            => ReadAnyInt(stream, version, (ObjectTypes)ReadOneByte(stream, version), options);
 
         /// <summary>
         /// Read any object
@@ -36,6 +29,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="objType">Object type</param>
         /// <param name="options">Options</param>
         /// <returns>Object</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         private static object ReadAnyInt(Stream stream, int? version, ObjectTypes objType, ISerializerOptions? options)
             => SerializerException.Wrap(() =>
             {
@@ -143,7 +139,7 @@ namespace wan24.StreamSerializerExtensions
                     case ObjectTypes.Stream:
                         Stream res = options?.Attribute.GetStream(obj: null, property: null, stream, version ?? StreamSerializer.VERSION, default) ?? new FileStream(
                             Path.Combine(Settings.TempFolder, Guid.NewGuid().ToString()),
-                            FileMode.OpenOrCreate,
+                            FileMode.CreateNew,
                             FileAccess.ReadWrite,
                             FileShare.None,
                             bufferSize: Settings.BufferSize,
@@ -172,21 +168,13 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="options">Options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Object</returns>
-        public static Task<object> ReadAnyAsync(this Stream stream, int? version = null, ISerializerOptions? options = null, CancellationToken cancellationToken = default)
-            => SerializerException.WrapAsync(async () =>
-            {
-                ObjectTypes objType;
-                byte[] data = await ReadSerializedDataAsync(stream, len: 1, cancellationToken: cancellationToken).DynamicContext();
-                try
-                {
-                    objType = (ObjectTypes)data[0];
-                }
-                finally
-                {
-                    StreamSerializer.BufferPool.Return(data);
-                }
-                return await ReadAnyIntAsync(stream, version, objType, options, cancellationToken).DynamicContext();
-            });
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<object> ReadAnyAsync(this Stream stream, int? version = null, ISerializerOptions? options = null, CancellationToken cancellationToken = default)
+            => await ReadAnyIntAsync(stream, version, (ObjectTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext(), options, cancellationToken)
+                .DynamicContext();
 
         /// <summary>
         /// Read any object
@@ -197,6 +185,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="options">Options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Object</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         private static Task<object> ReadAnyIntAsync(Stream stream, int? version, ObjectTypes objType, ISerializerOptions? options, CancellationToken cancellationToken)
             => SerializerException.WrapAsync(async () =>
             {
@@ -313,7 +304,7 @@ namespace wan24.StreamSerializerExtensions
                     case ObjectTypes.Stream:
                         Stream res = options?.Attribute.GetStream(obj: null, property: null, stream, version ?? StreamSerializer.VERSION, default) ?? new FileStream(
                             Path.Combine(Settings.TempFolder, Guid.NewGuid().ToString()),
-                            FileMode.OpenOrCreate,
+                            FileMode.CreateNew,
                             FileAccess.ReadWrite,
                             FileShare.None,
                             bufferSize: Settings.BufferSize,
@@ -350,21 +341,15 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="options">Options</param>
         /// <returns>Object</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static object? ReadAnyNullable(this Stream stream, int? version = null, ISerializerOptions? options = null)
-            => SerializerException.Wrap(() =>
-            {
-                ObjectTypes objType;
-                byte[] data = ReadSerializedData(stream, len: 1);
-                try
-                {
-                    objType = (ObjectTypes)data[0];
-                }
-                finally
-                {
-                    StreamSerializer.BufferPool.Return(data);
-                }
-                return objType == ObjectTypes.Null ? null : ReadAnyInt(stream, version, objType, options);
-            });
+        {
+            ObjectTypes objType = (ObjectTypes)ReadOneByte(stream, version);
+            return objType == ObjectTypes.Null ? null : ReadAnyInt(stream, version, objType, options);
+        }
 
         /// <summary>
         /// Read any object
@@ -374,25 +359,19 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="options">Options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Object</returns>
-        public static Task<object?> ReadAnyNullableAsync(
-            this Stream stream, 
-            int? version = null, 
-            ISerializerOptions? options = null, 
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<object?> ReadAnyNullableAsync(
+            this Stream stream,
+            int? version = null,
+            ISerializerOptions? options = null,
             CancellationToken cancellationToken = default
             )
-            => SerializerException.WrapAsync(async () =>
-            {
-                ObjectTypes objType;
-                byte[] data = await ReadSerializedDataAsync(stream, len: 1, cancellationToken: cancellationToken).DynamicContext();
-                try
-                {
-                    objType = (ObjectTypes)data[0];
-                }
-                finally
-                {
-                    StreamSerializer.BufferPool.Return(data);
-                }
-                return objType == ObjectTypes.Null ? null : await ReadAnyIntAsync(stream, version, objType, options, cancellationToken).DynamicContext();
-            });
+        {
+            ObjectTypes objType = (ObjectTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
+            return objType == ObjectTypes.Null ? null : await ReadAnyIntAsync(stream, version, objType, options, cancellationToken).DynamicContext();
+        }
     }
 }

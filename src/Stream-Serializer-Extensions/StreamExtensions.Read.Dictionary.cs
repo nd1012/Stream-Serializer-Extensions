@@ -1,6 +1,7 @@
 ﻿using System.Buffers;
 using System.Collections;
 using System.Runtime;
+using System.Runtime.CompilerServices;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -21,6 +22,10 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="keyOptions">Key serializer options</param>
         /// <param name="valueOptions">Value serializer options</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Dictionary<tKey, tValue> ReadDict<tKey, tValue>(
             this Stream stream,
             int? version = null,
@@ -31,16 +36,14 @@ namespace wan24.StreamSerializerExtensions
             ISerializerOptions? valueOptions = null
             )
             where tKey : notnull
-            => SerializerException.Wrap(() =>
-            {
-                int len = ReadNumber<int>(stream, version, pool);
-                SerializerHelper.EnsureValidLength(len, minLen, maxLen);
-                Dictionary<tKey, tValue> res = new(len);
-                for (int i = 0; i < len; i++)
-                    res[ReadObject<tKey>(stream, version, keyOptions)]
-                        = ReadObject<tValue>(stream, version, valueOptions);
-                return res;
-            });
+        {
+            pool ??= StreamSerializer.BufferPool;
+            int len = ReadNumber<int>(stream, version, pool);
+            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+            Dictionary<tKey, tValue> res = new(len);
+            for (int i = 0; i < len; i++) res[ReadObject<tKey>(stream, version, keyOptions)] = ReadObject<tValue>(stream, version, valueOptions);
+            return res;
+        }
 
         /// <summary>
         /// Read
@@ -54,6 +57,10 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="keyOptions">Key serializer options</param>
         /// <param name="valueOptions">Value serializer options</param>
         /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static IDictionary ReadDict(
             this Stream stream,
             Type type,
@@ -64,22 +71,20 @@ namespace wan24.StreamSerializerExtensions
             ISerializerOptions? keyOptions = null,
             ISerializerOptions? valueOptions = null
             )
-            => SerializerException.Wrap(() =>
-            {
-                ArgumentValidationHelper.EnsureValidArgument(
-                    nameof(type),
-                    type.IsGenericType || type.IsGenericTypeDefinition || !typeof(Dictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()),
-                    "Not a dictionary type"
-                    );
-                int len = ReadNumber<int>(stream, version, pool);
-                SerializerHelper.EnsureValidLength(len, minLen, maxLen);
-                Type[] types = type.GetGenericArguments();
-                IDictionary res = (IDictionary)(Activator.CreateInstance(type, len) ?? throw new SerializerException($"Failed to instance {type}"));
-                for (int i = 0; i < len; i++)
-                    res[ReadObject(stream, types[0], version, keyOptions)]
-                        = ReadObject(stream, types[1], version, valueOptions);
-                return res;
-            });
+        {
+            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(
+                nameof(type),
+                type.IsGenericType || type.IsGenericTypeDefinition || !typeof(Dictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()),
+                "Not a dictionary type"
+                ));
+            pool ??= StreamSerializer.BufferPool;
+            int len = ReadNumber<int>(stream, version, pool);
+            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+            Type[] types = type.GetGenericArguments();
+            IDictionary res = (IDictionary)(Activator.CreateInstance(type, len) ?? throw new SerializerException($"Failed to instance {type}"));
+            for (int i = 0; i < len; i++) res[ReadObject(stream, types[0], version, keyOptions)] = ReadObject(stream, types[1], version, valueOptions);
+            return res;
+        }
 
         /// <summary>
         /// Read
@@ -95,7 +100,11 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="valueOptions">Value serializer options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-        public static Task<Dictionary<tKey, tValue>> ReadDictAsync<tKey, tValue>(
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<Dictionary<tKey, tValue>> ReadDictAsync<tKey, tValue>(
             this Stream stream,
             int? version = null,
             ArrayPool<byte>? pool = null,
@@ -106,16 +115,16 @@ namespace wan24.StreamSerializerExtensions
             CancellationToken cancellationToken = default
             )
             where tKey : notnull
-            => SerializerException.WrapAsync(async () =>
-            {
-                int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
-                SerializerHelper.EnsureValidLength(len, minLen, maxLen);
-                Dictionary<tKey, tValue> res = new(len);
-                for (int i = 0; i < len; i++)
-                    res[await ReadObjectAsync<tKey>(stream, version, keyOptions, cancellationToken).DynamicContext()]
-                        = await ReadObjectAsync<tValue>(stream, version, valueOptions, cancellationToken).DynamicContext();
-                return res;
-            });
+        {
+            pool ??= StreamSerializer.BufferPool;
+            int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
+            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+            Dictionary<tKey, tValue> res = new(len);
+            for (int i = 0; i < len; i++)
+                res[await ReadObjectAsync<tKey>(stream, version, keyOptions, cancellationToken).DynamicContext()]
+                    = await ReadObjectAsync<tValue>(stream, version, valueOptions, cancellationToken).DynamicContext();
+            return res;
+        }
 
         /// <summary>
         /// Read
@@ -130,7 +139,11 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="valueOptions">Value serializer options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-        public static Task<IDictionary> ReadDictAsync(
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<IDictionary> ReadDictAsync(
             this Stream stream,
             Type type,
             int? version = null,
@@ -141,22 +154,22 @@ namespace wan24.StreamSerializerExtensions
             ISerializerOptions? valueOptions = null,
             CancellationToken cancellationToken = default
             )
-            => SerializerException.WrapAsync(async () =>
-            {
-                ArgumentValidationHelper.EnsureValidArgument(
-                    nameof(type),
-                    type.IsGenericType || type.IsGenericTypeDefinition || !typeof(Dictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()),
-                    "Not a dictionary type"
-                    );
-                int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
-                SerializerHelper.EnsureValidLength(len, minLen, maxLen);
-                Type[] types = type.GetGenericArguments();
-                IDictionary res = (IDictionary)(Activator.CreateInstance(type, len) ?? throw new SerializerException($"Failed to instance {type}"));
-                for (int i = 0; i < len; i++)
-                    res[await ReadObjectAsync(stream, types[0], version, keyOptions, cancellationToken).DynamicContext()]
-                        = await ReadObjectAsync(stream, types[1], version, valueOptions, cancellationToken).DynamicContext();
-                return res;
-            });
+        {
+            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(
+                nameof(type),
+                type.IsGenericType || type.IsGenericTypeDefinition || !typeof(Dictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()),
+                "Not a dictionary type"
+                ));
+            pool ??= StreamSerializer.BufferPool;
+            int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
+            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+            Type[] types = type.GetGenericArguments();
+            IDictionary res = (IDictionary)(Activator.CreateInstance(type, len) ?? throw new SerializerException($"Failed to instance {type}"));
+            for (int i = 0; i < len; i++)
+                res[await ReadObjectAsync(stream, types[0], version, keyOptions, cancellationToken).DynamicContext()]
+                    = await ReadObjectAsync(stream, types[1], version, valueOptions, cancellationToken).DynamicContext();
+            return res;
+        }
 
         /// <summary>
         /// Read
@@ -172,6 +185,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="valueOptions">Value serializer options</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Dictionary<tKey, tValue>? ReadDictNullable<tKey, tValue>(
             this Stream stream,
             int? version = null,
@@ -182,7 +198,24 @@ namespace wan24.StreamSerializerExtensions
             ISerializerOptions? valueOptions = null
             )
             where tKey : notnull
-            => ReadBool(stream, version, pool) ? ReadDict<tKey, tValue>(stream, version, pool, minLen, maxLen, keyOptions, valueOptions) : null;
+        {
+            pool ??= StreamSerializer.BufferPool;
+            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            {
+                case 1:
+                case 2:
+                    return ReadBool(stream, version, pool) ? ReadDict<tKey, tValue>(stream, version, pool, minLen, maxLen, keyOptions, valueOptions) : null;
+                default:
+                    {
+                        int len = ReadNumber<int>(stream, version, pool);
+                        if (len == -1) return null;
+                        SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+                        Dictionary<tKey, tValue> res = new(len);
+                        for (int i = 0; i < len; i++) res[ReadObject<tKey>(stream, version, keyOptions)] = ReadObject<tValue>(stream, version, valueOptions);
+                        return res;
+                    }
+            }
+        }
 
         /// <summary>
         /// Read
@@ -197,6 +230,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="valueOptions">Value serializer options</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static IDictionary? ReadDictNullable(
             this Stream stream,
             Type type,
@@ -207,7 +243,32 @@ namespace wan24.StreamSerializerExtensions
             ISerializerOptions? keyOptions = null,
             ISerializerOptions? valueOptions = null
             )
-            => ReadBool(stream, version, pool) ? ReadDict(stream, type, version, pool, minLen, maxLen, keyOptions, valueOptions) : null;
+        {
+            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(
+                nameof(type),
+                type.IsGenericType || type.IsGenericTypeDefinition || !typeof(Dictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()),
+                "Not a dictionary type"
+                ));
+            pool ??= StreamSerializer.BufferPool;
+            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            {
+                case 1:
+                case 2:
+                    {
+                        return ReadBool(stream, version, pool) ? ReadDict(stream, type, version, pool, minLen, maxLen, keyOptions, valueOptions) : null;
+                    }
+                default:
+                    {
+                        int len = ReadNumber<int>(stream, version, pool);
+                        if (len == -1) return null;
+                        SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+                        Type[] types = type.GetGenericArguments();
+                        IDictionary res = (IDictionary)(Activator.CreateInstance(type, len) ?? throw new SerializerException($"Failed to instance {type}"));
+                        for (int i = 0; i < len; i++) res[ReadObject(stream, types[0], version, keyOptions)] = ReadObject(stream, types[1], version, valueOptions);
+                        return res;
+                    }
+            }
+        }
 
         /// <summary>
         /// Read
@@ -224,6 +285,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static async Task<Dictionary<tKey, tValue>?> ReadDictNullableAsync<tKey, tValue>(
             this Stream stream,
             int? version = null,
@@ -235,9 +299,30 @@ namespace wan24.StreamSerializerExtensions
             CancellationToken cancellationToken = default
             )
             where tKey : notnull
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadDictAsync<tKey, tValue>(stream, version, pool, minLen, maxLen, keyOptions, valueOptions, cancellationToken).DynamicContext()
-                : null;
+        {
+            pool ??= StreamSerializer.BufferPool;
+            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            {
+                case 1:
+                case 2:
+                    {
+                        return await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                            ? await ReadDictAsync<tKey, tValue>(stream, version, pool, minLen, maxLen, keyOptions, valueOptions, cancellationToken).DynamicContext()
+                            : null;
+                    }
+                default:
+                    {
+                        int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
+                        if (len == -1) return null;
+                        SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+                        Dictionary<tKey, tValue> res = new(len);
+                        for (int i = 0; i < len; i++)
+                            res[await ReadObjectAsync<tKey>(stream, version, keyOptions, cancellationToken).DynamicContext()]
+                                = await ReadObjectAsync<tValue>(stream, version, valueOptions, cancellationToken).DynamicContext();
+                        return res;
+                    }
+            }
+        }
 
         /// <summary>
         /// Read
@@ -253,6 +338,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static async Task<IDictionary?> ReadDictNullableAsync(
             this Stream stream,
             Type type,
@@ -264,8 +352,35 @@ namespace wan24.StreamSerializerExtensions
             ISerializerOptions? valueOptions = null,
             CancellationToken cancellationToken = default
             )
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadDictAsync(stream, type, version, pool, minLen, maxLen, keyOptions, valueOptions, cancellationToken).DynamicContext()
-                : null;
+        {
+            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(
+                nameof(type),
+                type.IsGenericType || type.IsGenericTypeDefinition || !typeof(Dictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()),
+                "Not a dictionary type"
+                ));
+            pool ??= StreamSerializer.BufferPool;
+            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            {
+                case 1:
+                case 2:
+                    {
+                        return await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                            ? await ReadDictAsync(stream, type, version, pool, minLen, maxLen, keyOptions, valueOptions, cancellationToken).DynamicContext()
+                            : null;
+                    }
+                default:
+                    {
+                        int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
+                        if (len == -1) return null;
+                        SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+                        Type[] types = type.GetGenericArguments();
+                        IDictionary res = (IDictionary)(Activator.CreateInstance(type, len) ?? throw new SerializerException($"Failed to instance {type}"));
+                        for (int i = 0; i < len; i++)
+                            res[await ReadObjectAsync(stream, types[0], version, keyOptions, cancellationToken).DynamicContext()]
+                                = await ReadObjectAsync(stream, types[1], version, valueOptions, cancellationToken).DynamicContext();
+                        return res;
+                    }
+            }
+        }
     }
 }

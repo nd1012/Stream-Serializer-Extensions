@@ -18,33 +18,39 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <returns>Value and length</returns>
         public static (byte[] Value, int Length) ReadBytes(
-            this Stream stream, 
-            int? version = null, 
-            byte[]? buffer = null, 
-            ArrayPool<byte>? pool = null, 
-            int minLen = 0, 
+            this Stream stream,
+            int? version = null,
+            byte[]? buffer = null,
+            ArrayPool<byte>? pool = null,
+            int minLen = 0,
             int maxLen = int.MaxValue
             )
         {
             bool rented = false;
             try
             {
-                return SerializerException.Wrap(() =>
+                int len = ReadNumber<int>(stream, version, pool);
+                SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+                if (len == 0 && buffer == null) buffer = Array.Empty<byte>();
+                rented = buffer == null && pool != null;
+                buffer ??= rented ? pool!.Rent(len) : new byte[len];
+                if (buffer.Length < len) throw new SerializerException($"Buffer too small ({len} bytes required)", new ArgumentOutOfRangeException(nameof(buffer)));
+                if (len != 0)
                 {
-                    int len = ReadNumber<int>(stream, version, pool);
-                    SerializerHelper.EnsureValidLength(len, minLen, maxLen);
-                    if (len == 0 && buffer == null) buffer = Array.Empty<byte>();
-                    rented = buffer == null && pool != null;
-                    buffer ??= rented ? pool!.Rent(len) : new byte[len];
-                    if (buffer.Length < len) throw new ArgumentException($"Buffer too small ({len} bytes required)", nameof(buffer));
-                    if (len != 0 && stream.Read(buffer.AsSpan(0, len)) != len) throw new SerializerException($"Failed to read serialized data ({len} bytes)");
-                    return (buffer, len);
-                });
+                    int red = stream.Read(buffer.AsSpan(0, len));
+                    if (red != len) throw new SerializerException($"Failed to read serialized data ({len} bytes expected, {red} bytes red)");
+                }
+                return (buffer, len);
             }
-            catch
+            catch (SerializerException)
             {
                 if (rented) pool!.Return(buffer!);
                 throw;
+            }
+            catch (Exception ex)
+            {
+                if (rented) pool!.Return(buffer!);
+                throw SerializerException.From(ex);
             }
         }
 
@@ -79,16 +85,24 @@ namespace wan24.StreamSerializerExtensions
                     if (len == 0 && buffer == null) buffer = Array.Empty<byte>();
                     rented = buffer == null && pool != null;
                     buffer ??= rented ? pool!.Rent(len) : new byte[len];
-                    if (buffer.Length < len) throw new ArgumentException($"Buffer too small ({len} bytes required)", nameof(buffer));
-                    if (len != 0 && await stream.ReadAsync(buffer.AsMemory(0, len), cancellationToken).DynamicContext() != len)
-                        throw new SerializerException($"Failed to read serialized data ({len} bytes)");
+                    if (buffer.Length < len) throw new SerializerException($"Buffer too small ({len} bytes required)", new ArgumentOutOfRangeException(nameof(buffer)));
+                    if (len != 0)
+                    {
+                        int red = await stream.ReadAsync(buffer.AsMemory(0, len), cancellationToken).DynamicContext();
+                        if (red != len) throw new SerializerException($"Failed to read serialized data ({len} bytes expected, {red} bytes red)");
+                    }
                     return (buffer, len);
                 }).DynamicContext();
             }
-            catch
+            catch (SerializerException)
             {
                 if (rented) pool!.Return(buffer!);
                 throw;
+            }
+            catch (Exception ex)
+            {
+                if (rented) pool!.Return(buffer!);
+                throw SerializerException.From(ex);
             }
         }
 
@@ -111,7 +125,46 @@ namespace wan24.StreamSerializerExtensions
             int minLen = 0,
             int maxLen = int.MaxValue
             )
-            => ReadBool(stream, version, pool) ? ReadBytes(stream, version, buffer, pool, minLen, maxLen) : null;
+        {
+            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            {
+                case 1:
+                case 2:
+                    {
+                        return ReadBool(stream, version, pool) ? ReadBytes(stream, version, buffer, pool, minLen, maxLen) : null;
+                    }
+                default:
+                    {
+                        bool rented = false;
+                        try
+                        {
+                            int len = ReadNumber<int>(stream, version, pool);
+                            if (len == -1) return null;
+                            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+                            if (len == 0 && buffer == null) buffer = Array.Empty<byte>();
+                            rented = buffer == null && pool != null;
+                            buffer ??= rented ? pool!.Rent(len) : new byte[len];
+                            if (buffer.Length < len) throw new SerializerException($"Buffer too small ({len} bytes required)", new ArgumentOutOfRangeException(nameof(buffer)));
+                            if (len != 0)
+                            {
+                                int red = stream.Read(buffer.AsSpan(0, len));
+                                if (red != len) throw new SerializerException($"Failed to read serialized data ({len} bytes expected, {red} bytes red)");
+                            }
+                            return (buffer, len);
+                        }
+                        catch (SerializerException)
+                        {
+                            if (rented) pool!.Return(buffer!);
+                            throw;
+                        }
+                        catch (Exception ex)
+                        {
+                            if (rented) pool!.Return(buffer!);
+                            throw SerializerException.From(ex);
+                        }
+                    }
+            }
+        }
 
         /// <summary>
         /// Read
@@ -134,8 +187,50 @@ namespace wan24.StreamSerializerExtensions
             int maxLen = int.MaxValue,
             CancellationToken cancellationToken = default
             )
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadBytesAsync(stream, version, buffer, pool, minLen, maxLen, cancellationToken).DynamicContext()
-                : null;
+        {
+            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            {
+                case 1:
+                case 2:
+                    {
+                        return await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                            ? await ReadBytesAsync(stream, version, buffer, pool, minLen, maxLen, cancellationToken).DynamicContext()
+                            : null;
+                    }
+                default:
+                    {
+                        bool rented = false;
+                        try
+                        {
+                            return await SerializerException.WrapAsync(async () =>
+                            {
+                                int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
+                                SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+                                if (len == 0 && buffer == null) buffer = Array.Empty<byte>();
+                                rented = buffer == null && pool != null;
+                                buffer ??= rented ? pool!.Rent(len) : new byte[len];
+                                if (buffer.Length < len)
+                                    throw new SerializerException($"Buffer too small ({len} bytes required)", new ArgumentOutOfRangeException(nameof(buffer)));
+                                if (len != 0)
+                                {
+                                    int red = await stream.ReadAsync(buffer.AsMemory(0, len), cancellationToken).DynamicContext();
+                                    if (red != len) throw new SerializerException($"Failed to read serialized data ({len} bytes expected, {red} bytes red)");
+                                }
+                                return (buffer, len);
+                            }).DynamicContext();
+                        }
+                        catch (SerializerException)
+                        {
+                            if (rented) pool!.Return(buffer!);
+                            throw;
+                        }
+                        catch (Exception ex)
+                        {
+                            if (rented) pool!.Return(buffer!);
+                            throw SerializerException.From(ex);
+                        }
+                    }
+            }
+        }
     }
 }

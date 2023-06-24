@@ -1,4 +1,5 @@
 ﻿using System.Runtime;
+using System.Runtime.CompilerServices;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -12,27 +13,26 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Stream WriteAny(this Stream stream, object obj)
-            => SerializerException.Wrap(() =>
-            {
-                (Type type, ObjectTypes objType, bool writeType, bool writeObject) = obj.GetObjectSerializerInfo();
-                using (RentedArray<byte> poolData = new(1))
+        {
+            (Type type, ObjectTypes objType, bool writeType, bool writeObject) = obj.GetObjectSerializerInfo();
+            Write(stream, (byte)objType);
+            if (writeType) WriteString(stream, type.ToString());
+            if (writeObject)
+                if (objType.IsNumber())
                 {
-                    poolData[0] = (byte)objType;
-                    stream.Write(poolData.Span);
+                    WriteNumber(stream, obj);
                 }
-                if (writeType) WriteString(stream, type.ToString());
-                if (writeObject)
-                    if (objType.IsNumber())
-                    {
-                        WriteNumber(stream, obj);
-                    }
-                    else
-                    {
-                        WriteObject(stream, obj);
-                    }
-                return stream;
-            });
+                else
+                {
+                    WriteObject(stream, obj);
+                }
+            return stream;
+        }
 
         /// <summary>
         /// Write any object
@@ -40,26 +40,25 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        public static Task WriteAnyAsync(this Stream stream, object obj, CancellationToken cancellationToken = default)
-            => SerializerException.WrapAsync(async () =>
-            {
-                (Type type, ObjectTypes objType, bool writeType, bool writeObject) = obj.GetObjectSerializerInfo();
-                using (RentedArray<byte> poolData = new(1))
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task WriteAnyAsync(this Stream stream, object obj, CancellationToken cancellationToken = default)
+        {
+            (Type type, ObjectTypes objType, bool writeType, bool writeObject) = obj.GetObjectSerializerInfo();
+            await WriteAsync(stream, (byte)objType, cancellationToken).DynamicContext();
+            if (writeType) await WriteStringAsync(stream, type.ToString(), cancellationToken).DynamicContext();
+            if (writeObject)
+                if (objType.IsNumber())
                 {
-                    poolData[0] = (byte)objType;
-                    await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
+                    await WriteNumberAsync(stream, obj, cancellationToken).DynamicContext();
                 }
-                if (writeType) await WriteStringAsync(stream, type.ToString(), cancellationToken).DynamicContext();
-                if (writeObject)
-                    if (objType.IsNumber())
-                    {
-                        await WriteNumberAsync(stream, obj, cancellationToken).DynamicContext();
-                    }
-                    else
-                    {
-                        await WriteObjectAsync(stream, obj, cancellationToken).DynamicContext();
-                    }
-            });
+                else
+                {
+                    await WriteObjectAsync(stream, obj, cancellationToken).DynamicContext();
+                }
+        }
 
         /// <summary>
         /// Write any object
@@ -68,21 +67,21 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="obj">Object</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Stream WriteAnyNullable(this Stream stream, object? obj)
-            => SerializerException.Wrap(() =>
+        {
+            if (obj == null)
             {
-                if (obj == null)
-                {
-                    using RentedArray<byte> poolData = new(1, clean: false);
-                    poolData[0] = (byte)ObjectTypes.Null;
-                    stream.Write(poolData.Span);
-                }
-                else
-                {
-                    WriteAny(stream, obj);
-                }
-                return stream;
-            });
+                Write(stream, (byte)ObjectTypes.Null);
+            }
+            else
+            {
+                WriteAny(stream, obj);
+            }
+            return stream;
+        }
 
         /// <summary>
         /// Write any object
@@ -91,19 +90,19 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="obj">Object</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
-        public static Task WriteAnyNullableAsync(this Stream stream, object? obj, CancellationToken cancellationToken = default)
-            => SerializerException.WrapAsync(async () =>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task WriteAnyNullableAsync(this Stream stream, object? obj, CancellationToken cancellationToken = default)
+        {
+            if (obj == null)
             {
-                if (obj == null)
-                {
-                    using RentedArray<byte> poolData = new(1, clean: false);
-                    poolData[0] = (byte)ObjectTypes.Null;
-                    await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
-                }
-                else
-                {
-                    await WriteAnyAsync(stream, obj, cancellationToken).DynamicContext();
-                }
-            });
+                await WriteAsync(stream, (byte)ObjectTypes.Null, cancellationToken).DynamicContext();
+            }
+            else
+            {
+                await WriteAnyAsync(stream, obj, cancellationToken).DynamicContext();
+            }
+        }
     }
 }

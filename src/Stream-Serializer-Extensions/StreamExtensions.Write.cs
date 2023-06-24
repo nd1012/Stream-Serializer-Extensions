@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime;
+using System.Runtime.CompilerServices;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -30,7 +31,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static Stream WriteSerializerVersion(this Stream stream) => WriteNumber(stream, StreamSerializer.VERSION);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Stream WriteSerializerVersion(this Stream stream) => WriteNumber(stream, StreamSerializer.Version);
 
         /// <summary>
         /// Write the serializer version
@@ -38,8 +40,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task WriteSerializerVersionAsync(this Stream stream, CancellationToken cancellationToken = default)
-            => WriteNumberAsync(stream, StreamSerializer.VERSION, cancellationToken);
+            => WriteNumberAsync(stream, StreamSerializer.Version, cancellationToken);
 
         /// <summary>
         /// Write a boolean flag if an object is not <see langword="null"/>
@@ -49,7 +52,10 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="obj">Object</param>
         /// <returns>Is not <see langword="null"/>?</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static bool WriteIfNull<T>(this Stream stream, [NotNullWhen(true)] T? obj)
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static bool WriteIfNotNull<T>(this Stream stream, [NotNullWhen(true)] T? obj)
         {
             bool isNotNull = obj != null;
             Write(stream, isNotNull);
@@ -65,12 +71,49 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Is not <see langword="null"/>?</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<bool> WriteIfNullAsync<T>(this Stream stream, [NotNullWhen(true)] T? obj, CancellationToken cancellationToken = default)
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<bool> WriteIfNotNullAsync<T>(this Stream stream, [NotNullWhen(true)] T? obj, CancellationToken cancellationToken = default)
         {
-            //TODO NotNullWhen seems not to work with a task result
+            //TODO NotNullWhen seems not to work with a task result https://github.com/dotnet/roslyn/issues/45228
             bool isNotNull = obj != null;
             await WriteAsync(stream, isNotNull, cancellationToken).DynamicContext();
             return isNotNull;
+        }
+
+        /// <summary>
+        /// Write a nullable count
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="count">Count</param>
+        /// <returns>Is not <see langword="null"/>?</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static bool WriteNullableCount(this Stream stream, [NotNullWhen(true)] long? count)
+        {
+            WriteNumberNullable(stream, count);
+            return count != null;
+        }
+
+        /// <summary>
+        /// Write a nullable count
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="count">Count</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Is not <see langword="null"/>?</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<bool> WriteNullableCountAsync(this Stream stream, [NotNullWhen(true)] long? count, CancellationToken cancellationToken = default)
+        {
+            //TODO NotNullWhen seems not to work with a task result https://github.com/dotnet/roslyn/issues/45228
+            await WriteNumberNullableAsync(stream, count, cancellationToken).DynamicContext();
+            return count != null;
         }
 
         /// <summary>
@@ -82,9 +125,12 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="action">Write action to execute, if the object isn't <see langword="null"/></param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static Stream WriteIfNull<T>(this Stream stream, T? obj, Action action)
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static Stream WriteIfNotNull<T>(this Stream stream, T? obj, Action action)
         {
-            if (WriteIfNull(stream, obj)) action();
+            if (WriteIfNotNull(stream, obj)) action();
             return stream;
         }
 
@@ -97,9 +143,46 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="action">Write action to execute, if the object isn't <see langword="null"/></param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task WriteIfNullAsync<T>(this Stream stream, T? obj, Func<Task> action, CancellationToken cancellationToken = default)
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task WriteIfNotNullAsync<T>(this Stream stream, T? obj, Func<Task> action, CancellationToken cancellationToken = default)
         {
-            if (await WriteIfNullAsync(stream, obj, cancellationToken).DynamicContext())
+            if (await WriteIfNotNullAsync(stream, obj, cancellationToken).DynamicContext())
+                await action().DynamicContext();
+        }
+
+        /// <summary>
+        /// Write a nullable count
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="count">Count</param>
+        /// <param name="action">Write action to execute, if the count isn't <see langword="null"/></param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static Stream WriteNullableCount(this Stream stream, long? count, Action action)
+        {
+            if (WriteNullableCount(stream, count)) action();
+            return stream;
+        }
+
+        /// <summary>
+        /// Write a nullable count
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="count">Count</param>
+        /// <param name="action">Write action to execute, if the count isn't <see langword="null"/></param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task WriteNullableCountAsync(this Stream stream, long? count, Func<Task> action, CancellationToken cancellationToken = default)
+        {
+            if (await WriteNullableCountAsync(stream, count, cancellationToken).DynamicContext())
                 await action().DynamicContext();
         }
 
@@ -107,11 +190,14 @@ namespace wan24.StreamSerializerExtensions
         /// Write serialized Data
         /// </summary>
         /// <param name="stream">Stream</param>
-        /// <param name="data">Serialized data</param>
+        /// <param name="data">Serialized data (will be returned to <c>pool</c>)</param>
         /// <param name="len">Data length in bytes</param>
         /// <param name="pool">Array pool (<c>data</c> will returned to that pool)</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Stream WriteSerializedData(this Stream stream, byte[] data, int len, ArrayPool<byte>? pool = null)
             => SerializerException.Wrap(() =>
             {
@@ -130,11 +216,14 @@ namespace wan24.StreamSerializerExtensions
         /// Write serialized Data
         /// </summary>
         /// <param name="stream">Stream</param>
-        /// <param name="data">Serialized data</param>
+        /// <param name="data">Serialized data (will be returned to <c>pool</c>)</param>
         /// <param name="len">Data length in bytes</param>
         /// <param name="pool">Array pool (<c>data</c> will returned to that pool)</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static async Task WriteSerializedDataAsync(this Stream stream, byte[] data, int len, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             => await SerializerException.WrapAsync(async () =>
             {

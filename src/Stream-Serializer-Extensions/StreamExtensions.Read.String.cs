@@ -1,5 +1,6 @@
 ﻿using System.Buffers;
 using System.Runtime;
+using System.Runtime.CompilerServices;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -16,20 +17,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="minLen">Minimum length in bytes</param>
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <returns>Value</returns>
-        [TargetedPatchingOptOut("Tiny method")]
         public static string ReadString(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
-            => SerializerException.Wrap(() =>
-            {
-                (byte[] data, int len) = ReadBytes(stream, version, buffer: null, pool ?? StreamSerializer.BufferPool, minLen, maxLen);
-                try
-                {
-                    return data.AsSpan(0, len).ToUtf8String();
-                }
-                finally
-                {
-                    (pool ?? StreamSerializer.BufferPool).Return(data);
-                }
-            });
+            => ReadString(stream, version, minLen, maxLen, pool, (data, len) => data.AsSpan(0, len).ToUtf8String());
 
         /// <summary>
         /// Read
@@ -41,7 +30,6 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-        [TargetedPatchingOptOut("Tiny method")]
         public static Task<string> ReadStringAsync(
             this Stream stream,
             int? version = null,
@@ -50,22 +38,7 @@ namespace wan24.StreamSerializerExtensions
             int maxLen = int.MaxValue,
             CancellationToken cancellationToken = default
             )
-            => SerializerException.WrapAsync(async () =>
-            {
-                (byte[] data, int len) = await ReadBytesAsync(stream, version, buffer: null, pool ?? StreamSerializer.BufferPool, minLen, maxLen, cancellationToken).DynamicContext();
-                try
-                {
-                    return data.AsSpan(0, len).ToUtf8String();
-                }
-                catch (Exception ex)
-                {
-                    throw new SerializerException(message: null, ex);
-                }
-                finally
-                {
-                    (pool ?? StreamSerializer.BufferPool).Return(data);
-                }
-            });
+            => ReadStringAsync(stream, version, minLen, maxLen, pool, (data, len) => data.AsSpan(0, len).ToUtf8String(), cancellationToken);
 
         /// <summary>
         /// Read
@@ -76,9 +49,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="minLen">Minimum length in bytes</param>
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <returns>Value</returns>
-        [TargetedPatchingOptOut("Tiny method")]
         public static string? ReadStringNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
-            => ReadBool(stream, version, pool) ? ReadString(stream, version, pool, minLen, maxLen) : null;
+            => ReadNullableString(stream, version, minLen, maxLen, pool, (data, len) => data.AsSpan(0, len).ToUtf8String());
 
         /// <summary>
         /// Read
@@ -90,8 +62,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-        [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<string?> ReadStringNullableAsync(
+        public static Task<string?> ReadStringNullableAsync(
             this Stream stream,
             int? version = null,
             ArrayPool<byte>? pool = null,
@@ -99,9 +70,7 @@ namespace wan24.StreamSerializerExtensions
             int maxLen = int.MaxValue,
             CancellationToken cancellationToken = default
             )
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadStringAsync(stream, version, pool, minLen, maxLen, cancellationToken).DynamicContext()
-                : null;
+            => ReadNullableStringAsync(stream, version, minLen, maxLen, pool, (data, len) => data.AsSpan(0, len).ToUtf8String(), cancellationToken);
 
         /// <summary>
         /// Read UTF-16 (little endian) string
@@ -112,20 +81,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="minLen">Minimum length in bytes</param>
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <returns>Value</returns>
-        [TargetedPatchingOptOut("Tiny method")]
         public static string ReadString16(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
-            => SerializerException.Wrap(() =>
-            {
-                (byte[] data, int len) = ReadBytes(stream, version, buffer: null, pool ?? StreamSerializer.BufferPool, minLen, maxLen);
-                try
-                {
-                    return data.AsSpan(0, len).ToUtf16String();
-                }
-                finally
-                {
-                    (pool ?? StreamSerializer.BufferPool).Return(data);
-                }
-            });
+            => ReadString(stream, version, minLen, maxLen, pool, (data, len) => data.AsSpan(0, len).ToUtf16String());
 
         /// <summary>
         /// Read UTF-16 (little endian) string
@@ -137,7 +94,6 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-        [TargetedPatchingOptOut("Tiny method")]
         public static Task<string> ReadString16Async(
             this Stream stream,
             int? version = null,
@@ -146,18 +102,7 @@ namespace wan24.StreamSerializerExtensions
             int maxLen = int.MaxValue,
             CancellationToken cancellationToken = default
             )
-            => SerializerException.WrapAsync(async () =>
-            {
-                (byte[] data, int len) = await ReadBytesAsync(stream, version, buffer: null, pool ?? StreamSerializer.BufferPool, minLen, maxLen, cancellationToken).DynamicContext();
-                try
-                {
-                    return data.AsSpan(0, len).ToUtf16String();
-                }
-                finally
-                {
-                    (pool ?? StreamSerializer.BufferPool).Return(data);
-                }
-            });
+            => ReadStringAsync(stream, version, minLen, maxLen, pool, (data, len) => data.AsSpan(0, len).ToUtf16String(), cancellationToken);
 
         /// <summary>
         /// Read UTF-16 (little endian) string
@@ -168,9 +113,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="minLen">Minimum length in bytes</param>
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <returns>Value</returns>
-        [TargetedPatchingOptOut("Tiny method")]
         public static string? ReadString16Nullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
-            => ReadBool(stream, version, pool) ? ReadString16(stream, version, pool, minLen, maxLen) : null;
+            => ReadNullableString(stream, version, minLen, maxLen, pool, (data, len) => data.AsSpan(0, len).ToUtf16String());
 
         /// <summary>
         /// Read UTF-16 (little endian) string
@@ -182,8 +126,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-        [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<string?> ReadString16NullableAsync(
+        public static Task<string?> ReadString16NullableAsync(
             this Stream stream,
             int? version = null,
             ArrayPool<byte>? pool = null,
@@ -191,9 +134,7 @@ namespace wan24.StreamSerializerExtensions
             int maxLen = int.MaxValue,
             CancellationToken cancellationToken = default
             )
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadString16Async(stream, version, pool, minLen, maxLen, cancellationToken).DynamicContext()
-                : null;
+            => ReadNullableStringAsync(stream, version, minLen, maxLen, pool, (data, len) => data.AsSpan(0, len).ToUtf16String(), cancellationToken);
 
         /// <summary>
         /// Read UTF-32 (little endian) string
@@ -204,20 +145,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="minLen">Minimum length in bytes</param>
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <returns>Value</returns>
-        [TargetedPatchingOptOut("Tiny method")]
         public static string ReadString32(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
-            => SerializerException.Wrap(() =>
-            {
-                (byte[] data, int len) = ReadBytes(stream, version, buffer: null, pool ?? StreamSerializer.BufferPool, minLen, maxLen);
-                try
-                {
-                    return data.AsSpan(0, len).ToUtf32String();
-                }
-                finally
-                {
-                    (pool ?? StreamSerializer.BufferPool).Return(data);
-                }
-            });
+            => ReadString(stream, version, minLen, maxLen, pool, (data, len) => data.AsSpan(0, len).ToUtf32String());
 
         /// <summary>
         /// Read UTF-32 (little endian) string
@@ -229,7 +158,6 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-        [TargetedPatchingOptOut("Tiny method")]
         public static Task<string> ReadString32Async(
             this Stream stream,
             int? version = null,
@@ -238,18 +166,7 @@ namespace wan24.StreamSerializerExtensions
             int maxLen = int.MaxValue,
             CancellationToken cancellationToken = default
             )
-            => SerializerException.WrapAsync(async () =>
-            {
-                (byte[] data, int len) = await ReadBytesAsync(stream, version, buffer: null, pool ?? StreamSerializer.BufferPool, minLen, maxLen, cancellationToken).DynamicContext();
-                try
-                {
-                    return data.AsSpan(0, len).ToUtf32String();
-                }
-                finally
-                {
-                    (pool ?? StreamSerializer.BufferPool).Return(data);
-                }
-            });
+            => ReadStringAsync(stream, version, minLen, maxLen, pool, (data, len) => data.AsSpan(0, len).ToUtf32String(), cancellationToken);
 
         /// <summary>
         /// Read UTF-32 (little endian) string
@@ -260,9 +177,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="minLen">Minimum length in bytes</param>
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <returns>Value</returns>
-        [TargetedPatchingOptOut("Tiny method")]
         public static string? ReadString32Nullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue)
-            => ReadBool(stream, version, pool) ? ReadString32(stream, version, pool, minLen, maxLen) : null;
+            => ReadNullableString(stream, version, minLen, maxLen, pool, (data, len) => data.AsSpan(0, len).ToUtf32String());
 
         /// <summary>
         /// Read UTF-32 (little endian) string
@@ -274,8 +190,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
-        [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<string?> ReadString32NullableAsync(
+        public static Task<string?> ReadString32NullableAsync(
             this Stream stream,
             int? version = null,
             ArrayPool<byte>? pool = null,
@@ -283,8 +198,178 @@ namespace wan24.StreamSerializerExtensions
             int maxLen = int.MaxValue,
             CancellationToken cancellationToken = default
             )
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadString32Async(stream, version, pool, minLen, maxLen, cancellationToken).DynamicContext()
-                : null;
+            => ReadNullableStringAsync(stream, version, minLen, maxLen, pool, (data, len) => data.AsSpan(0, len).ToUtf32String(), cancellationToken);
+
+        /// <summary>
+        /// Read a string
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="minLen">Minimum length in bytes</param>
+        /// <param name="maxLen">Maximum length in bytes</param>
+        /// <param name="pool">Array pool</param>
+        /// <param name="action">Action to execute for decoding the resulting string</param>
+        /// <returns>String</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private static string ReadString(Stream stream, int? version, int minLen, int maxLen, ArrayPool<byte>? pool, Func<byte[], int, string> action)
+        {
+            version ??= StreamSerializer.VERSION;
+            pool ??= StreamSerializer.BufferPool;
+            int len = ReadNumber<int>(stream, version, pool);
+            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+            byte[] buffer = ReadSerializedData(stream, len, pool);
+            try
+            {
+                return action(buffer, len);
+            }
+            finally
+            {
+                pool.Return(buffer);
+            }
+        }
+
+        /// <summary>
+        /// Read a string
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="minLen">Minimum length in bytes</param>
+        /// <param name="maxLen">Maximum length in bytes</param>
+        /// <param name="pool">Array pool</param>
+        /// <param name="action">Action to execute for decoding the resulting string</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>String</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private static async Task<string> ReadStringAsync(
+            Stream stream,
+            int? version,
+            int minLen,
+            int maxLen,
+            ArrayPool<byte>? pool,
+            Func<byte[], int, string> action,
+            CancellationToken cancellationToken
+            )
+        {
+            version ??= StreamSerializer.VERSION;
+            pool ??= StreamSerializer.BufferPool;
+            int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
+            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+            byte[] buffer = await ReadSerializedDataAsync(stream, len, pool, cancellationToken).DynamicContext();
+            try
+            {
+                return action(buffer, len);
+            }
+            finally
+            {
+                pool.Return(buffer);
+            }
+        }
+
+        /// <summary>
+        /// Read a string
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="minLen">Minimum length in bytes</param>
+        /// <param name="maxLen">Maximum length in bytes</param>
+        /// <param name="pool">Array pool</param>
+        /// <param name="action">Action to execute for decoding the resulting string</param>
+        /// <returns>String</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private static string? ReadNullableString(Stream stream, int? version, int minLen, int maxLen, ArrayPool<byte>? pool, Func<byte[], int, string> action)
+        {
+            pool ??= StreamSerializer.BufferPool;
+            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            {
+                case 1:
+                case 2:
+                    {
+                        if (!ReadBool(stream, version, pool)) return null;
+                    }
+                    break;
+            }
+            int len = ReadNumber<int>(stream, version, pool);
+            switch (version & byte.MaxValue)// Serializer version switch
+            {
+                case 1:
+                case 2:
+                    break;
+                default:
+                    if (len == -1) return null;
+                    break;
+            }
+            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+            byte[] buffer = ReadSerializedData(stream, len, pool);
+            try
+            {
+                return action(buffer, len);
+            }
+            finally
+            {
+                pool.Return(buffer);
+            }
+        }
+
+        /// <summary>
+        /// Read a string
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="minLen">Minimum length in bytes</param>
+        /// <param name="maxLen">Maximum length in bytes</param>
+        /// <param name="pool">Array pool</param>
+        /// <param name="action">Action to execute for decoding the resulting string</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>String</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private static async Task<string?> ReadNullableStringAsync(
+            Stream stream,
+            int? version,
+            int minLen,
+            int maxLen,
+            ArrayPool<byte>? pool,
+            Func<byte[], int, string> action,
+            CancellationToken cancellationToken
+            )
+        {
+            pool ??= StreamSerializer.BufferPool;
+            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            {
+                case 1:
+                case 2:
+                    {
+                        if (!await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()) return null;
+                    }
+                    break;
+            }
+            int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
+            switch (version & byte.MaxValue)// Serializer version switch
+            {
+                case 1:
+                case 2:
+                    break;
+                default:
+                    if (len == -1) return null;
+                    break;
+            }
+            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+            byte[] buffer = await ReadSerializedDataAsync(stream, len, pool, cancellationToken).DynamicContext();
+            try
+            {
+                return action(buffer, len);
+            }
+            finally
+            {
+                pool.Return(buffer);
+            }
+        }
     }
 }
