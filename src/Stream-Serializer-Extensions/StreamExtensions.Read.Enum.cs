@@ -1,5 +1,6 @@
 ﻿using System.Buffers;
 using System.Runtime;
+using System.Runtime.CompilerServices;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -15,6 +16,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static T ReadEnum<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null) where T : struct, Enum
             => (T)ReadEnumInt(stream, typeof(T), version, numberType: null, pool);
 
@@ -26,6 +30,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Enum ReadEnum(this Stream stream, Type type, int? version = null, ArrayPool<byte>? pool = null)
             => ReadEnumInt(stream, type, version, numberType: null, pool);
 
@@ -38,6 +45,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="numberType">Number type</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         private static Enum ReadEnumInt(Stream stream, Type type, int? version, NumberTypes? numberType, ArrayPool<byte>? pool)
             => SerializerException.Wrap(() =>
             {
@@ -64,6 +74,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static async Task<T> ReadEnumAsync<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             where T : struct, Enum
             => (T)await ReadEnumIntAsync(stream, typeof(T), version, numberType: null, pool, cancellationToken).DynamicContext();
@@ -77,6 +90,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Task<Enum> ReadEnumAsync(this Stream stream, Type type, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             => ReadEnumIntAsync(stream, type, version, numberType: null, pool, cancellationToken);
 
@@ -90,6 +106,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         private static Task<Enum> ReadEnumIntAsync(Stream stream, Type type, int? version, NumberTypes? numberType, ArrayPool<byte>? pool, CancellationToken cancellationToken)
             => SerializerException.WrapAsync(async () =>
             {
@@ -112,18 +131,24 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static T? ReadEnumNullable<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null) where T : struct, Enum
-            => SerializerException.Wrap(() =>
+        {
+            switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
             {
-                switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
-                {
-                    case 1:
+                case 1:
+                    {
                         return ReadBool(stream, version, pool) ? ReadEnum<T>(stream, version, pool) : null;
-                    default:
+                    }
+                default:
+                    {
                         NumberTypes numberType = (NumberTypes)ReadOneByte(stream, version);
                         return numberType == NumberTypes.Null ? null : (T?)ReadEnumInt(stream, typeof(T), version, numberType, pool);
-                }
-            });
+                    }
+            }
+        }
 
         /// <summary>
         /// Read
@@ -134,22 +159,28 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Enum? ReadEnumNullable(this Stream stream, Type type, int? version = null, ArrayPool<byte>? pool = null)
-            => SerializerException.Wrap(() =>
+        {
+            switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
             {
-                switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
-                {
-                    case 1:
+                case 1:
+                    {
                         return ReadBool(stream, version, pool)
                             ? ReadEnum(stream, type, version, pool)
                             : (Enum)(Activator.CreateInstance(type) ?? throw new SerializerException($"Failed to instance {type}"));
-                    default:
+                    }
+                default:
+                    {
                         NumberTypes numberType = (NumberTypes)ReadOneByte(stream, version);
                         return numberType == NumberTypes.Null
                             ? (Enum)(Activator.CreateInstance(type) ?? throw new SerializerException($"Failed to instance {type}"))
                             : ReadEnumInt(stream, type, version, numberType, pool);
-                }
-            });
+                    }
+            }
+        }
 
         /// <summary>
         /// Read
@@ -161,23 +192,29 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static Task<T?> ReadEnumNullableAsync<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<T?> ReadEnumNullableAsync<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             where T : struct, Enum
-            => SerializerException.WrapAsync(async () =>
+        {
+            switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
             {
-                switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
-                {
-                    case 1:
+                case 1:
+                    {
                         return await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
                             ? await ReadEnumAsync<T>(stream, version, pool, cancellationToken).DynamicContext()
                             : default(T?);
-                    default:
+                    }
+                default:
+                    {
                         NumberTypes numberType = (NumberTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
                         return numberType == NumberTypes.Null
                             ? default(T?)
                             : (T)await ReadEnumIntAsync(stream, typeof(T), version, numberType, pool, cancellationToken).DynamicContext();
-                }
-            });
+                    }
+            }
+        }
 
         /// <summary>
         /// Read
@@ -189,27 +226,33 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static Task<Enum?> ReadEnumNullableAsync(
-            this Stream stream, 
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<Enum?> ReadEnumNullableAsync(
+            this Stream stream,
             Type type,
-            int? version = null, 
-            ArrayPool<byte>? pool = null, 
+            int? version = null,
+            ArrayPool<byte>? pool = null,
             CancellationToken cancellationToken = default
             )
-            => SerializerException.WrapAsync(async () =>
+        {
+            switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
             {
-                switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
-                {
-                    case 1:
+                case 1:
+                    {
                         return await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
                             ? await ReadEnumAsync(stream, type, version, pool, cancellationToken).DynamicContext()
                             : (Enum?)(Activator.CreateInstance(type) ?? throw new SerializerException($"Failed to instance {type}"));
-                    default:
+                    }
+                default:
+                    {
                         NumberTypes numberType = (NumberTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
                         return numberType == NumberTypes.Null
                             ? (Enum?)(Activator.CreateInstance(type) ?? throw new SerializerException($"Failed to instance {type}"))
                             : await ReadEnumIntAsync(stream, type, version, numberType, pool, cancellationToken).DynamicContext();
-                }
-            });
+                    }
+            }
+        }
     }
 }

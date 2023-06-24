@@ -1,4 +1,5 @@
 ﻿using System.Runtime;
+using System.Runtime.CompilerServices;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -31,7 +32,10 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="type">Number type</param>
         /// <returns>Stream</returns>
-        public static Stream WriteNumberInt(Stream stream, object value, NumberTypes? type)
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private static Stream WriteNumberInt(Stream stream, object value, NumberTypes? type)
             => SerializerException.Wrap(() =>
             {
                 if (type == null) (_, type) = value.GetNumberAndType();
@@ -103,6 +107,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="type">Number type</param>
         /// <param name="cancellationToken">Cancellation token</param>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         private static Task WriteNumberIntAsync(Stream stream, object value, NumberTypes? type, CancellationToken cancellationToken)
             => SerializerException.WrapAsync(async () =>
             {
@@ -156,6 +163,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Stream WriteNumberNullable<T>(this Stream stream, T? value) where T : struct, IConvertible
             => value == null ? WriteEnum(stream, NumberTypes.Null) : WriteNumber(stream, value.Value);
 
@@ -166,6 +176,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Stream WriteNumberNullable(this Stream stream, object? value)
             => value == null ? WriteEnum(stream, NumberTypes.Null) : WriteNumber(stream, value);
 
@@ -177,6 +190,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Task WriteNumberNullableAsync<T>(this Stream stream, T? value, CancellationToken cancellationToken = default)
             where T : struct, IConvertible
             => value == null
@@ -190,6 +206,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Task WriteNumberNullableAsync(this Stream stream, object? value, CancellationToken cancellationToken = default)
             => value == null
                 ? WriteEnumAsync(stream, NumberTypes.Null, cancellationToken)

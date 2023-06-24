@@ -1,4 +1,5 @@
 ﻿using System.Runtime;
+using System.Runtime.CompilerServices;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -14,12 +15,14 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Stream WriteEnum<T>(this Stream stream, T value) where T : struct, Enum
-            => SerializerException.Wrap(() =>
-            {
-                if (ObjectHelper.AreEqual(value, default(T))) return Write(stream, (byte)NumberTypes.Default);
-                return WriteNumber(stream, Convert.ChangeType(value, typeof(T).GetEnumUnderlyingType()));
-            });
+        {
+            if (ObjectHelper.AreEqual(value, default(T))) return Write(stream, (byte)NumberTypes.Default);
+            return WriteNumber(stream, Convert.ChangeType(value, typeof(T).GetEnumUnderlyingType()));
+        }
 
         /// <summary>
         /// Write
@@ -28,14 +31,16 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Stream WriteEnum(this Stream stream, object value)
-            => SerializerException.Wrap(() =>
-            {
-                Type enumType = value.GetType();
-                ArgumentValidationHelper.EnsureValidArgument(nameof(value), enumType.IsEnum, "Not an enumeration value");
-                if (ObjectHelper.AreEqual(value, Activator.CreateInstance(enumType))) return Write(stream, (byte)NumberTypes.Default);
-                return WriteNumber(stream, Convert.ChangeType(value, enumType.GetEnumUnderlyingType()));
-            });
+        {
+            Type enumType = value.GetType();
+            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(value), enumType.IsEnum, "Not an enumeration value"));
+            if (ObjectHelper.AreEqual(value, Activator.CreateInstance(enumType))) return Write(stream, (byte)NumberTypes.Default);
+            return WriteNumber(stream, Convert.ChangeType(value, enumType.GetEnumUnderlyingType()));
+        }
 
         /// <summary>
         /// Write
@@ -45,16 +50,18 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
-        public static Task WriteEnumAsync<T>(this Stream stream, T value, CancellationToken cancellationToken = default) where T : struct, Enum
-            => SerializerException.WrapAsync(async () =>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task WriteEnumAsync<T>(this Stream stream, T value, CancellationToken cancellationToken = default) where T : struct, Enum
+        {
+            if (ObjectHelper.AreEqual(value, default(T)))
             {
-                if (ObjectHelper.AreEqual(value, default(T)))
-                {
-                    await WriteAsync(stream, (byte)NumberTypes.Default, cancellationToken).DynamicContext();
-                    return;
-                }
-                await WriteNumberAsync(stream, Convert.ChangeType(value, value.GetType().GetEnumUnderlyingType()), cancellationToken).DynamicContext();
-            });
+                await WriteAsync(stream, (byte)NumberTypes.Default, cancellationToken).DynamicContext();
+                return;
+            }
+            await WriteNumberAsync(stream, Convert.ChangeType(value, value.GetType().GetEnumUnderlyingType()), cancellationToken).DynamicContext();
+        }
 
         /// <summary>
         /// Write
@@ -63,20 +70,22 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
-        public static Task WriteEnumAsync(this Stream stream, object value, CancellationToken cancellationToken = default)
-            => SerializerException.WrapAsync(async () =>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task WriteEnumAsync(this Stream stream, object value, CancellationToken cancellationToken = default)
+        {
+            Type enumType = value.GetType();
+            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(value), enumType.IsEnum, "Not an enumeration value"));
+            if (ObjectHelper.AreEqual(value, Activator.CreateInstance(enumType)))
             {
-                Type enumType = value.GetType();
-                ArgumentValidationHelper.EnsureValidArgument(nameof(value), enumType.IsEnum, "Not an enumeration value");
-                if (ObjectHelper.AreEqual(value, Activator.CreateInstance(enumType)))
-                {
-                    await WriteAsync(stream, (byte)NumberTypes.Default, cancellationToken).DynamicContext();
-                }
-                else
-                {
-                    await WriteNumberAsync(stream, Convert.ChangeType(value, enumType.GetEnumUnderlyingType()), cancellationToken).DynamicContext();
-                }
-            });
+                await WriteAsync(stream, (byte)NumberTypes.Default, cancellationToken).DynamicContext();
+            }
+            else
+            {
+                await WriteNumberAsync(stream, Convert.ChangeType(value, enumType.GetEnumUnderlyingType()), cancellationToken).DynamicContext();
+            }
+        }
 
         /// <summary>
         /// Write
@@ -86,6 +95,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Stream WriteEnumNullable<T>(this Stream stream, T? value) where T : struct, Enum
             => value == null ? Write(stream, (byte)NumberTypes.Null) : WriteEnum(stream, value.Value);
 
@@ -96,6 +108,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Stream WriteEnumNullable(this Stream stream, object? value)
             => value == null ? Write(stream, (byte)NumberTypes.Null) : WriteEnum(stream, value);
 
@@ -107,6 +122,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Task WriteEnumNullableAsync<T>(this Stream stream, T? value, CancellationToken cancellationToken = default) where T : struct, Enum
             => value == null
                 ? WriteAsync(stream, (byte)NumberTypes.Null, cancellationToken)
@@ -119,6 +137,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Task WriteEnumNullableAsync(this Stream stream, object? value, CancellationToken cancellationToken = default)
             => value == null
                 ? WriteAsync(stream, (byte)NumberTypes.Null, cancellationToken)

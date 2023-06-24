@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 using wan24.Core;
 using wan24.ObjectValidation;
 
@@ -15,16 +14,16 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="property">Target property</param>
         /// <param name="attr">Stream serializer attribute (required, if <c>property</c> is <see langword="null"/>)</param>
-        protected SerializerOptionsBase(PropertyInfo? property, StreamSerializerAttribute? attr = null) : base()
+        protected SerializerOptionsBase(PropertyInfoExt? property, StreamSerializerAttribute? attr = null) : base()
         {
             Property = property;
             Attribute = attr ??
-                property?.GetCustomAttributeCached<StreamSerializerAttribute>() ??
+                property?.Property.GetCustomAttributeCached<StreamSerializerAttribute>() ??
                 throw (property == null ? new ArgumentNullException(nameof(attr)) : new ArgumentException($"{typeof(StreamSerializerAttribute)} attribute required", nameof(property)));
         }
 
         /// <inheritdoc/>
-        public PropertyInfo? Property { get; }
+        public PropertyInfoExt? Property { get; }
 
         /// <inheritdoc/>
         public StreamSerializerAttribute Attribute { get; }

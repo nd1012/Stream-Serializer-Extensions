@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -10,7 +10,7 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Target property
         /// </summary>
-        PropertyInfo? Property { get; }
+        PropertyInfoExt? Property { get; }
         /// <summary>
         /// Stream serializer attribute
         /// </summary>

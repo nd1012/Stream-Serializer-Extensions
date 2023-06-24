@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Concurrent;
 using wan24.Core;
 
+//TODO char (de)serializer
+
 namespace wan24.StreamSerializerExtensions
 {
     /// <summary>
@@ -263,12 +265,15 @@ namespace wan24.StreamSerializerExtensions
                 typeof(double),
                 typeof(decimal),
                 typeof(string),
-                typeof(char)
+                typeof(char),
+                typeof(IDictionary),
+                typeof(IList),
+                typeof(Stream)
             });
         }
 
         /// <summary>
-        /// Version number
+        /// Version number (the first 8 bits are used internal, while other bits can be used for customization)
         /// </summary>
         public static int Version { get; set; } = VERSION;
 
@@ -379,24 +384,14 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="name">Type name</param>
         /// <returns>Type</returns>
         public static Type LoadType(string name)
-        {
-            try
+            => SerializerException.Wrap(() =>
             {
                 if ((Type.GetType(name, throwOnError: false) ?? TypeHelper.Instance.GetType(name)) is Type type && IsTypeAllowed(type)) return type;
                 TypeLoadEventArgs e = new(name);
                 OnLoadType?.Invoke(e);
                 if (e.Type == null) throw new SerializerException($"Failed to load type \"{name}\"");
                 return e.Type;
-            }
-            catch (SerializerException)
-            {
-                throw;
-            }
-            catch(Exception ex)
-            {
-                throw new SerializerException($"Failed to load type \"{name}\"", ex);
-            }
-        }
+            }, $"Failed to load type \"{name}\"");
 
         /// <summary>
         /// Determine if a type is allowed per default for deserializing
@@ -405,34 +400,17 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Is allowed?</returns>
         public static bool IsTypeAllowed(Type type)
         {
-            // Allow all enum types
+            // Allow all enumeration types
             if (type.IsEnum) return true;
             // Get the final element type of an array type
             Type finalType = type;
-            Type? elementType;
-            while (finalType.IsArray)
-            {
-                elementType = finalType.GetElementType();
-                if (elementType == null) break;
-                finalType = elementType;
-            }
-            // Allow registered allowed types
+            while (finalType.IsArray) finalType = finalType.GetElementType()!;
+            // Allow registered allowed types or serializable types
             if (AllowedTypes.Contains(finalType) || typeof(IStreamSerializer).IsAssignableFrom(finalType)) return true;
-            // Allow supported generic types
-            if (finalType.IsGenericType)
-                if (typeof(Dictionary<,>).IsAssignableFrom(finalType.GetGenericTypeDefinition()))
-                {
-                    Type[] gp = finalType.GetGenericArguments();
-                    return IsTypeAllowed(gp[0]) && IsTypeAllowed(gp[1]);
-                }
-                else if (typeof(List<>).IsAssignableFrom(finalType.GetGenericTypeDefinition()))
-                {
-                    return IsTypeAllowed(finalType.GetGenericArguments()[0]);
-                }
-                else if (AllowedTypes.Contains(finalType.GetGenericTypeDefinition()))
-                {
-                    return true;
-                }
+            // Validate generic type arguments also (btw. no risk for an endless recursion here)
+            if (finalType.IsGenericType) foreach (Type gta in finalType.GetGenericArguments()) if (IsTypeAllowed(gta)) return false;
+            // Allow inheriting types
+            if (AllowedTypes.Any(t => t.IsAssignableFrom(finalType))) return true;
             // Deny
             return false;
         }

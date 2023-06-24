@@ -1,5 +1,6 @@
 ﻿using System.Buffers;
 using System.Runtime;
+using System.Runtime.CompilerServices;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -37,6 +38,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="numberType">Number type</param>
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         private static object ReadNumberInt(Stream stream, Type resType, int? version, NumberTypes? numberType, ArrayPool<byte>? pool)
             => SerializerException.Wrap(() =>
             {
@@ -170,6 +174,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         private static Task<object> ReadNumberIntAsync(
             Stream stream,
             Type resType,
@@ -288,6 +295,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static T? ReadNumberNullable<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null) where T : struct, IConvertible
             => SerializerException.Wrap(() =>
             {
@@ -313,6 +323,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static object? ReadNumberNullable(this Stream stream, Type type, int? version = null, ArrayPool<byte>? pool = null)
             => SerializerException.Wrap(() =>
             {
@@ -339,6 +352,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Task<T?> ReadNumberNullableAsync<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             where T : struct, IConvertible
             => SerializerException.WrapAsync(async () =>
@@ -369,6 +385,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Task<object?> ReadNumberNullableAsync(
             this Stream stream,
             Type type,

@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using wan24.Core;
+﻿using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -126,7 +125,7 @@ namespace wan24.StreamSerializerExtensions
         {
             if (Deserializer == null)
             {
-                ISerializerOptions? options = Property.Property.GetSerializerOptions(stream, version, default);
+                ISerializerOptions? options = Property.GetSerializerOptions(stream, version, default);
                 Property.Setter!(obj, IsNullable
                     ? stream.ReadObjectNullable(Property.Property.PropertyType, version, options)
                     : stream.ReadObject(Property.Property.PropertyType, version, options));
@@ -151,7 +150,7 @@ namespace wan24.StreamSerializerExtensions
         {
             if (AsyncDeserializer == null)
             {
-                ISerializerOptions? options = Property.Property.GetSerializerOptions(stream, version, cancellationToken);
+                ISerializerOptions? options = Property.GetSerializerOptions(stream, version, cancellationToken);
                 Property.Setter!(obj, IsNullable
                     ? await stream.ReadObjectNullableAsync(Property.Property.PropertyType, version, options, cancellationToken).DynamicContext()
                     : await stream.ReadObjectAsync(Property.Property.PropertyType, version, options, cancellationToken).DynamicContext());

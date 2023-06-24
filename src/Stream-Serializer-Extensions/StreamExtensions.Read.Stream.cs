@@ -1,5 +1,6 @@
 ﻿using System.Buffers;
 using System.Runtime;
+using System.Runtime.CompilerServices;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -41,6 +42,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum stream length in bytes</param>
         /// <param name="len">Stream/chunk length in bytes (chunk length is negative)</param>
         /// <returns>Target stream</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         private static Stream ReadStreamInt(
             this Stream stream,
             Stream target,
@@ -112,6 +116,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum stream length in bytes</param>
         /// <returns>Target stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Stream? ReadStreamNullable(
             this Stream stream,
             Stream target,
@@ -123,23 +130,27 @@ namespace wan24.StreamSerializerExtensions
             )
             => SerializerException.Wrap(() =>
             {
-                switch (version ??= StreamSerializer.VERSION)
+                switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
                 {
                     case 1:
-                        if (!ReadBool(stream, version, pool))
                         {
-                            target.Dispose();
-                            return null;
+                            if (!ReadBool(stream, version, pool))
+                            {
+                                target.Dispose();
+                                return null;
+                            }
+                            return ReadStream(stream, target, version, pool, maxBufferSize, minLen, maxLen);
                         }
-                        return ReadStream(stream, target, version, pool, maxBufferSize, minLen, maxLen);
                     default:
-                        long len = ReadNumber<long>(stream, version, pool);
-                        if (len == long.MinValue)
                         {
-                            target.Dispose();
-                            return null;
+                            long len = ReadNumber<long>(stream, version, pool);
+                            if (len == long.MinValue)
+                            {
+                                target.Dispose();
+                                return null;
+                            }
+                            return ReadStreamInt(stream, target, version, pool, maxBufferSize, minLen, maxLen, len);
                         }
-                        return ReadStreamInt(stream, target, version, pool, maxBufferSize, minLen, maxLen, len);
                 }
             });
 
@@ -155,6 +166,10 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="maxLen">Maximum stream length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Target stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Task<Stream> ReadStreamAsync(
             this Stream stream,
             Stream target,
@@ -180,6 +195,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="len">Stream/chunk length in bytes (chunk length is negative)</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Target stream</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         private static Task<Stream> ReadStreamIntAsync(
             Stream stream,
             Stream target,
@@ -253,6 +271,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Target stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Task<Stream?> ReadStreamNullableAsync<T>(
             this Stream stream,
             Stream target,
@@ -265,23 +286,27 @@ namespace wan24.StreamSerializerExtensions
             )
             => SerializerException.WrapAsync(async () =>
             {
-                switch (version ??= StreamSerializer.VERSION)
+                switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
                 {
                     case 1:
-                        if (!await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext())
                         {
-                            await target.DisposeAsync().DynamicContext();
-                            return null;
+                            if (!await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext())
+                            {
+                                await target.DisposeAsync().DynamicContext();
+                                return null;
+                            }
+                            return await ReadStreamAsync(stream, target, version, pool, maxBufferSize, minLen, maxLen, cancellationToken).DynamicContext();
                         }
-                        return await ReadStreamAsync(stream, target, version, pool, maxBufferSize, minLen, maxLen, cancellationToken).DynamicContext();
                     default:
-                        long len = await ReadNumberAsync<long>(stream, version, pool, cancellationToken).DynamicContext();
-                        if (len == long.MinValue)
                         {
-                            await target.DisposeAsync().DynamicContext();
-                            return null;
+                            long len = await ReadNumberAsync<long>(stream, version, pool, cancellationToken).DynamicContext();
+                            if (len == long.MinValue)
+                            {
+                                await target.DisposeAsync().DynamicContext();
+                                return null;
+                            }
+                            return await ReadStreamIntAsync(stream, target, version, pool, maxBufferSize, minLen, maxLen, len, cancellationToken).DynamicContext();
                         }
-                        return await ReadStreamIntAsync(stream, target, version, pool, maxBufferSize, minLen, maxLen, len, cancellationToken).DynamicContext();
                 }
             });
     }

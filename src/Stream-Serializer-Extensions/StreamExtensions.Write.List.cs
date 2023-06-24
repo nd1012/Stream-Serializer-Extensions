@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Runtime;
+using System.Runtime.CompilerServices;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -14,15 +15,16 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Stream WriteList(this Stream stream, IList value)
-            => SerializerException.Wrap(() =>
-            {
-                if (value.GetType().GetGenericArgumentsCached()[0] == typeof(byte)) return WriteBytes(stream, (value as byte[])!);
-                WriteNumber(stream, value.Count);
-                if (value.Count == 0) return stream;
-                foreach (object element in value) WriteObject(stream, element);
-                return stream;
-            });
+        {
+            WriteNumber(stream, value.Count);
+            if (value.Count == 0) return stream;
+            foreach (object element in value) WriteObject(stream, element);
+            return stream;
+        }
 
         /// <summary>
         /// Write
@@ -31,18 +33,15 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
-        public static Task WriteListAsync(this Stream stream, IList value, CancellationToken cancellationToken = default)
-            => SerializerException.WrapAsync(async () =>
-            {
-                if (value.GetType().GetGenericArgumentsCached()[0] == typeof(byte))
-                {
-                    await WriteBytesAsync(stream, (value as byte[])!, cancellationToken).DynamicContext();
-                    return;
-                }
-                await WriteNumberAsync(stream, value.Count, cancellationToken).DynamicContext();
-                if (value.Count == 0) return;
-                foreach (object element in value) await WriteObjectAsync(stream, element, cancellationToken).DynamicContext();
-            });
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task WriteListAsync(this Stream stream, IList value, CancellationToken cancellationToken = default)
+        {
+            await WriteNumberAsync(stream, value.Count, cancellationToken).DynamicContext();
+            if (value.Count == 0) return;
+            foreach (object element in value) await WriteObjectAsync(stream, element, cancellationToken).DynamicContext();
+        }
 
         /// <summary>
         /// Write
@@ -51,8 +50,15 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Stream WriteListNullable(this Stream stream, IList? value)
-            => WriteIfNull(stream, value, () => WriteList(stream, value!));
+            => WriteNullableCount(stream, value?.Count, () =>
+            {
+                if (value!.Count == 0) return;
+                foreach (object element in value) WriteObject(stream, element);
+            });
 
         /// <summary>
         /// Write
@@ -61,7 +67,14 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Task WriteListNullableAsync(this Stream stream, IList? value, CancellationToken cancellationToken = default)
-            => WriteIfNullAsync(stream, value, () => WriteListAsync(stream, value!, cancellationToken), cancellationToken);
+            => WriteNullableCountAsync(stream, value?.Count, async () =>
+            {
+                if (value!.Count == 0) return;
+                foreach (object element in value) await WriteObjectAsync(stream, element, cancellationToken).DynamicContext();
+            }, cancellationToken);
     }
 }

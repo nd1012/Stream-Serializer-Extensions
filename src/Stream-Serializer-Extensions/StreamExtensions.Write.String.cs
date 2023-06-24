@@ -1,4 +1,5 @@
 ﻿using System.Runtime;
+using System.Runtime.CompilerServices;
 using System.Text;
 using wan24.Core;
 
@@ -13,14 +14,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
-        [TargetedPatchingOptOut("Tiny method")]
         public static Stream WriteString(this Stream stream, string value)
-            => SerializerException.Wrap(() =>
-            {
-                using RentedArray<byte> buffer = new(value.Length << 2, clean: false);
-                WriteBytes(stream, buffer.Span[..value.GetBytes(buffer)]);
-                return stream;
-            });
+            => WriteString(stream, value, lenShift: 2, (buffer) => value.GetBytes(buffer));
 
         /// <summary>
         /// Write
@@ -28,13 +23,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        [TargetedPatchingOptOut("Tiny method")]
         public static Task WriteStringAsync(this Stream stream, string value, CancellationToken cancellationToken = default)
-            => SerializerException.WrapAsync(async () =>
-            {
-                using RentedArray<byte> buffer = new(value.Length << 2, clean: false);
-                await WriteBytesAsync(stream, buffer.Memory[..value.GetBytes(buffer)], cancellationToken).DynamicContext();
-            });
+            => WriteStringAsync(stream, value, lenShift: 2, (buffer) => value.GetBytes(buffer), cancellationToken);
 
         /// <summary>
         /// Write
@@ -42,9 +32,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
-        [TargetedPatchingOptOut("Tiny method")]
         public static Stream WriteStringNullable(this Stream stream, string? value)
-            => WriteIfNull(stream, value, () => WriteString(stream, value!));
+            => WriteNullableString(stream, value, lenShift: 2, (buffer) => value!.GetBytes(buffer));
 
         /// <summary>
         /// Write
@@ -52,9 +41,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        [TargetedPatchingOptOut("Tiny method")]
         public static Task WriteStringNullableAsync(this Stream stream, string? value, CancellationToken cancellationToken = default)
-            => WriteIfNullAsync(stream, value, async () => await WriteStringAsync(stream, value!, cancellationToken).DynamicContext(), cancellationToken);
+            => WriteNullableStringAsync(stream, value, lenShift: 2, (buffer) => value!.GetBytes(buffer), cancellationToken);
 
         /// <summary>
         /// Write UTF-16 (little endian) string
@@ -62,14 +50,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
-        [TargetedPatchingOptOut("Tiny method")]
         public static Stream WriteString16(this Stream stream, string value)
-            => SerializerException.Wrap(() =>
-            {
-                using RentedArray<byte> buffer = new(value.Length << 2, clean: false);
-                WriteBytes(stream, buffer.Span[..value.GetBytes16(buffer)]);
-                return stream;
-            });
+            => WriteString(stream, value, lenShift: 1, (buffer) => value.GetBytes16(buffer));
 
         /// <summary>
         /// Write UTF-16 (little endian) string
@@ -77,13 +59,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        [TargetedPatchingOptOut("Tiny method")]
         public static Task WriteString16Async(this Stream stream, string value, CancellationToken cancellationToken = default)
-            => SerializerException.WrapAsync(async () =>
-            {
-                using RentedArray<byte> buffer = new(value.Length << 2, clean: false);
-                await WriteBytesAsync(stream, buffer.Memory[..value.GetBytes16(buffer)], cancellationToken).DynamicContext();
-            });
+            => WriteStringAsync(stream, value, lenShift: 1, (buffer) => value.GetBytes16(buffer), cancellationToken);
 
         /// <summary>
         /// Write UTF-16 (little endian) string
@@ -91,9 +68,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
-        [TargetedPatchingOptOut("Tiny method")]
         public static Stream WriteString16Nullable<T>(this Stream stream, string? value)
-            => WriteIfNull(stream, value, () => WriteString16(stream, value!));
+            => WriteNullableString(stream, value, lenShift: 1, (buffer) => value!.GetBytes16(buffer));
 
         /// <summary>
         /// Write UTF-16 (little endian) string
@@ -101,9 +77,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        [TargetedPatchingOptOut("Tiny method")]
         public static Task WriteString16NullableAsync(this Stream stream, string? value, CancellationToken cancellationToken = default)
-            => WriteIfNullAsync(stream, value, async () => await WriteString16Async(stream, value!, cancellationToken).DynamicContext(), cancellationToken);
+            => WriteNullableStringAsync(stream, value, lenShift: 1, (buffer) => value!.GetBytes16(buffer), cancellationToken);
 
         /// <summary>
         /// Write UTF-32 (little endian) string
@@ -111,14 +86,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
-        [TargetedPatchingOptOut("Tiny method")]
         public static Stream WriteString32(this Stream stream, string value)
-            => SerializerException.Wrap(() =>
-            {
-                using RentedArray<byte> buffer = new(value.Length << 2, clean: false);
-                WriteBytes(stream, buffer.Span[..value.GetBytes32(buffer)]);
-                return stream;
-            });
+            => WriteString(stream, value, lenShift: 2, (buffer) => value.GetBytes32(buffer));
 
         /// <summary>
         /// Write UTF-32 (little endian) string
@@ -126,13 +95,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        [TargetedPatchingOptOut("Tiny method")]
         public static Task WriteString32Async(this Stream stream, string value, CancellationToken cancellationToken = default)
-            => SerializerException.WrapAsync(async () =>
-            {
-                using RentedArray<byte> buffer = new(value.Length << 2, clean: false);
-                await WriteBytesAsync(stream, buffer.Memory[..value.GetBytes32(buffer)], cancellationToken).DynamicContext();
-            });
+            => WriteStringAsync(stream, value, lenShift: 2, (buffer) => value.GetBytes32(buffer), cancellationToken);
 
         /// <summary>
         /// Write UTF-32 (little endian) string
@@ -140,9 +104,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
-        [TargetedPatchingOptOut("Tiny method")]
         public static Stream WriteString32Nullable(this Stream stream, string? value)
-            => WriteIfNull(stream, value, () => WriteString32(stream, value!));
+            => WriteNullableString(stream, value, lenShift: 2, (buffer) => value!.GetBytes32(buffer));
 
         /// <summary>
         /// Write UTF-32 (little endian) string
@@ -150,8 +113,83 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        [TargetedPatchingOptOut("Tiny method")]
         public static Task WriteString32NullableAsync(this Stream stream, string? value, CancellationToken cancellationToken = default)
-            => WriteIfNullAsync(stream, value, async () => await WriteString32Async(stream, value!, cancellationToken).DynamicContext(), cancellationToken);
+            => WriteNullableStringAsync(stream, value, lenShift: 2, (buffer) => value!.GetBytes32(buffer), cancellationToken);
+
+        /// <summary>
+        /// Write a string
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value</param>
+        /// <param name="lenShift">Buffer length bit-shifting value</param>
+        /// <param name="action">Writing action to execute</param>
+        /// <returns>Stream</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private static Stream WriteString(Stream stream, string value, int lenShift, Func<byte[], int> action)
+        {
+            WriteNumber(stream, value);
+            if (value.Length == 0) return stream;
+            byte[] data = StreamSerializer.BufferPool.Rent(value.Length << lenShift);
+            return WriteSerializedData(stream, data, action(data));
+        }
+
+        /// <summary>
+        /// Write a string
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value</param>
+        /// <param name="lenShift">Buffer length bit-shifting value</param>
+        /// <param name="action">Writing action to execut</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private static async Task WriteStringAsync(Stream stream, string value, int lenShift, Func<byte[], int> action, CancellationToken cancellationToken)
+        {
+            await WriteNumberAsync(stream, value, cancellationToken).DynamicContext();
+            if (value.Length == 0) return;
+            byte[] data = StreamSerializer.BufferPool.Rent(value.Length << lenShift);
+            await WriteSerializedDataAsync(stream, data, action(data), cancellationToken: cancellationToken).DynamicContext();
+        }
+
+        /// <summary>
+        /// Write a nullable string
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value</param>
+        /// <param name="lenShift">Buffer length bit-shifting value</param>
+        /// <param name="action">Writing action to execute if the string isn't <see langword="null"/></param>
+        /// <returns>Stream</returns>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private static Stream WriteNullableString(Stream stream, string? value, int lenShift, Func<byte[], int> action)
+        {
+            WriteNumberNullable(stream, value);
+            if (value == null || value.Length == 0) return stream;
+            byte[] data = StreamSerializer.BufferPool.Rent(value.Length << lenShift);
+            return WriteSerializedData(stream, data, action(data), StreamSerializer.BufferPool);
+        }
+
+        /// <summary>
+        /// Write a nullable string
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value</param>
+        /// <param name="lenShift">Buffer length bit-shifting value</param>
+        /// <param name="action">Writing action to execute if the string isn't <see langword="null"/></param>
+        /// <param name="cancellationToken">Cancellation token</param>
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private static async Task WriteNullableStringAsync(Stream stream, string? value, int lenShift, Func<byte[], int> action, CancellationToken cancellationToken)
+        {
+            await WriteNumberNullableAsync(stream, value, cancellationToken).DynamicContext();
+            if (value == null || value.Length == 0) return;
+            byte[] data = StreamSerializer.BufferPool.Rent(value.Length << lenShift);
+            await WriteSerializedDataAsync(stream, data, action(data), StreamSerializer.BufferPool, cancellationToken).DynamicContext();
+        }
     }
 }
