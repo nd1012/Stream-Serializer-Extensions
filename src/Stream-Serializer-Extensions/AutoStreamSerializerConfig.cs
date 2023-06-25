@@ -232,7 +232,7 @@ namespace wan24.StreamSerializerExtensions
             usedDefaultValue = new();
             try
             {
-                Bitmap bits = new(defaultValueBits);
+                Bitmap bits = new(defaultValueBits!);
                 PropertyInfoExt pi;
                 for (int i = 0, len = properties.Length; i < len; i++)
                 {
@@ -250,7 +250,7 @@ namespace wan24.StreamSerializerExtensions
             }
             finally
             {
-                StreamSerializer.BufferPool.Return(defaultValueBits);
+                StreamSerializer.BufferPool.Return(defaultValueBits!);
             }
             return usedDefaultValue;
         }

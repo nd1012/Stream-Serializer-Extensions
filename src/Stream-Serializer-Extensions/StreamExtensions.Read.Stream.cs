@@ -59,8 +59,8 @@ namespace wan24.StreamSerializerExtensions
             {
                 ArgumentValidationHelper.EnsureValidArgument(nameof(target), target.CanWrite, () => "Writable stream required");
                 if (maxBufferSize != null) ArgumentValidationHelper.EnsureValidArgument(nameof(maxBufferSize), 1, int.MaxValue, maxBufferSize.Value);
-                ArgumentValidationHelper.EnsureValidArgument(nameof(minLen), 0, int.MaxValue, minLen);
-                ArgumentValidationHelper.EnsureValidArgument(nameof(maxLen), 0, minLen, maxLen);
+                ArgumentValidationHelper.EnsureValidArgument(nameof(minLen), 0, long.MaxValue, minLen);
+                ArgumentValidationHelper.EnsureValidArgument(nameof(maxLen), minLen, long.MaxValue, maxLen);
                 len ??= stream.ReadNumber<long>(version, pool);
                 if (len == 0)
                 {
@@ -213,8 +213,8 @@ namespace wan24.StreamSerializerExtensions
             {
                 ArgumentValidationHelper.EnsureValidArgument(nameof(target), target.CanWrite, () => "Writable stream required");
                 if (maxBufferSize != null) ArgumentValidationHelper.EnsureValidArgument(nameof(maxBufferSize), 1, int.MaxValue, maxBufferSize.Value);
-                ArgumentValidationHelper.EnsureValidArgument(nameof(minLen), 0, int.MaxValue, minLen);
-                ArgumentValidationHelper.EnsureValidArgument(nameof(maxLen), 0, minLen, maxLen);
+                ArgumentValidationHelper.EnsureValidArgument(nameof(minLen), 0, long.MaxValue, minLen);
+                ArgumentValidationHelper.EnsureValidArgument(nameof(maxLen), minLen, long.MaxValue, maxLen);
                 len ??= await stream.ReadNumberAsync<long>(version, pool, cancellationToken).DynamicContext();
                 if (len == 0)
                 {
