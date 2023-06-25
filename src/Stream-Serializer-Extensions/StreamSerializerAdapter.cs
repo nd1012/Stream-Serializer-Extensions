@@ -19,7 +19,8 @@ namespace wan24.StreamSerializerExtensions
         public static int ReadSerializedObjectVersion(Stream stream, int serializerVersion, int objectVersion)
         {
             int res = stream.ReadNumber<int>(serializerVersion);
-            if (res > objectVersion) throw new SerializerException($"Unsupported object version {res} (max. supported version is {objectVersion})");
+            if (res > objectVersion)
+                throw new SerializerException($"Unsupported object version {res} (max. supported version is {objectVersion})", new InvalidDataException());
             return res;
         }
 
@@ -35,7 +36,8 @@ namespace wan24.StreamSerializerExtensions
         public static async Task<int> ReadSerializedObjectVersionAsync(Stream stream, int serializerVersion, int objectVersion, CancellationToken cancellationToken = default)
         {
             int res = await stream.ReadNumberAsync<int>(serializerVersion, cancellationToken: cancellationToken).DynamicContext();
-            if (res > objectVersion) throw new SerializerException($"Unsupported object version {res} (max. supported version is {objectVersion})");
+            if (res > objectVersion)
+                throw new SerializerException($"Unsupported object version {res} (max. supported version is {objectVersion})", new InvalidDataException());
             return res;
         }
     }

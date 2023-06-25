@@ -144,7 +144,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteStructAsync(this Task<Stream> stream, object value, bool forceLittleEndian = true, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteStructAsync(s, value, forceLittleEndian, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, forceLittleEndian, cancellationToken, WriteStructAsync);
 
         /// <summary>
         /// Write a struct
@@ -192,7 +192,7 @@ namespace wan24.StreamSerializerExtensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteStructAsync<T>(this Task<Stream> stream, T value, bool forceLittleEndian = true, CancellationToken cancellationToken = default)
             where T : struct
-            => FluentAsync(stream, (s) => WriteStructAsync(s, value, forceLittleEndian, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, forceLittleEndian, cancellationToken, WriteStructAsync);
 
         /// <summary>
         /// Write a struct
@@ -230,7 +230,7 @@ namespace wan24.StreamSerializerExtensions
             bool forceLittleEndian = true,
             CancellationToken cancellationToken = default
             )
-            => FluentAsync(stream, (s) => WriteStructNullableAsync(s, value, forceLittleEndian, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, forceLittleEndian, cancellationToken, WriteStructNullableAsync);
 
         /// <summary>
         /// Write a struct
@@ -272,7 +272,7 @@ namespace wan24.StreamSerializerExtensions
             CancellationToken cancellationToken = default
             )
             where T : struct
-            => FluentAsync(stream, (s) => WriteStructNullableAsync(s, value, forceLittleEndian, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, forceLittleEndian, cancellationToken, WriteStructNullableAsync);
 
         /// <summary>
         /// Convert the endianess of structure fields

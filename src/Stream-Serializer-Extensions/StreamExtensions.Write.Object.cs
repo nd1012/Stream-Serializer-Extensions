@@ -64,7 +64,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteObjectAsync(this Task<Stream> stream, object obj, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteObjectAsync(s, obj, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, obj, cancellationToken, WriteObjectAsync);
 
         /// <summary>
         /// Write
@@ -103,7 +103,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteObjectNullableAsync(this Task<Stream> stream, object? obj, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteObjectNullableAsync(s, obj, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, obj, cancellationToken, WriteObjectNullableAsync);
 
         /// <summary>
         /// Write any object
@@ -178,7 +178,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteAnyObjectAsync(this Task<Stream> stream, object obj, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteAnyObjectAsync(s, obj, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, obj, cancellationToken, WriteAnyObjectAsync);
 
         /// <summary>
         /// Write any object
@@ -217,6 +217,6 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteAnyObjectNullableAsync(this Task<Stream> stream, object? obj, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteAnyObjectNullableAsync(s, obj, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, obj, cancellationToken, WriteAnyObjectNullableAsync);
     }
 }

@@ -103,7 +103,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNumberAsync<T>(this Task<Stream> stream, T value, CancellationToken cancellationToken = default) where T : struct, IConvertible
-            => FluentAsync(stream, (s) => WriteNumberAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteNumberAsync);
 
         /// <summary>
         /// Write
@@ -125,7 +125,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNumberAsync(this Task<Stream> stream, object value, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteNumberAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteNumberAsync);
 
         /// <summary>
         /// Write
@@ -241,7 +241,7 @@ namespace wan24.StreamSerializerExtensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNumberNullableAsync<T>(this Task<Stream> stream, T? value, CancellationToken cancellationToken = default)
             where T : struct, IConvertible
-            => FluentAsync(stream, (s) => WriteNumberNullableAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteNumberNullableAsync);
 
         /// <summary>
         /// Write
@@ -269,6 +269,6 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNumberNullableAsync(this Task<Stream> stream, object? value, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteNumberNullableAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteNumberNullableAsync);
     }
 }

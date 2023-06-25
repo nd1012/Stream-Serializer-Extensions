@@ -78,7 +78,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteEnumAsync<T>(this Task<Stream> stream, T value, CancellationToken cancellationToken = default) where T : struct, Enum
-            => FluentAsync(stream, (s) => WriteEnumAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteEnumAsync);
 
         /// <summary>
         /// Write
@@ -116,7 +116,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteEnumAsync(this Task<Stream> stream, object value, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteEnumAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteEnumAsync);
 
         /// <summary>
         /// Write
@@ -173,7 +173,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteEnumNullableAsync<T>(this Task<Stream> stream, T? value, CancellationToken cancellationToken = default) where T : struct, Enum
-            => FluentAsync(stream, (s) => WriteEnumNullableAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteEnumNullableAsync);
 
         /// <summary>
         /// Write
@@ -201,6 +201,6 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteEnumNullableAsync(this Task<Stream> stream, object? value, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteEnumNullableAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteEnumNullableAsync);
     }
 }

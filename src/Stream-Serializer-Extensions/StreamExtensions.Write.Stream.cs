@@ -120,7 +120,7 @@ namespace wan24.StreamSerializerExtensions
             int? chunkLength = null,
             CancellationToken cancellationToken = default
             )
-            => FluentAsync(stream, (s) => WriteStreamAsync(s, source, pool, chunkLength, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, source, pool, chunkLength, cancellationToken, WriteStreamAsync);
 
         /// <summary>
         /// Write a stream
@@ -164,6 +164,6 @@ namespace wan24.StreamSerializerExtensions
             int? chunkLength = null,
             CancellationToken cancellationToken = default
             )
-            => FluentAsync(stream, (s) => WriteStreamNullableAsync(s, source, pool, chunkLength, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, source, pool, chunkLength, cancellationToken, WriteStreamNullableAsync);
     }
 }

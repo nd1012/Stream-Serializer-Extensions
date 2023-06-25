@@ -37,7 +37,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteStringAsync(this Task<Stream> stream, string value, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteStringAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteStringAsync);
 
         /// <summary>
         /// Write
@@ -68,7 +68,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteStringNullableAsync(this Task<Stream> stream, string? value, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteStringNullableAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteStringNullableAsync);
 
         /// <summary>
         /// Write UTF-16 (little endian) string
@@ -99,7 +99,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteString16Async(this Task<Stream> stream, string value, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteString16Async(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteString16Async);
 
         /// <summary>
         /// Write UTF-16 (little endian) string
@@ -130,7 +130,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteString16NullableAsync(this Task<Stream> stream, string? value, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteString16NullableAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteString16NullableAsync);
 
         /// <summary>
         /// Write UTF-32 (little endian) string
@@ -161,7 +161,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteString32Async(this Task<Stream> stream, string value, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteString32Async(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteString32Async);
 
         /// <summary>
         /// Write UTF-32 (little endian) string
@@ -192,7 +192,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteString32NullableAsync(this Task<Stream> stream, string? value, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteString32NullableAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteString32NullableAsync);
 
         /// <summary>
         /// Write a string

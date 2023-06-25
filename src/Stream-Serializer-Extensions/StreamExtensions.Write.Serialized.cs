@@ -90,7 +90,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteSerializedAsync(this Task<Stream> stream, IStreamSerializer obj, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteSerializedAsync(s, obj, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, obj, cancellationToken, WriteSerializedAsync);
 
         /// <summary>
         /// Write
@@ -122,7 +122,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteSerializedAsync<T>(this Task<Stream> stream, T obj, CancellationToken cancellationToken = default) where T : class, IStreamSerializer
-            => FluentAsync(stream, (s) => WriteSerializedAsync(s, obj, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, obj, cancellationToken, WriteSerializedAsync);
 
         /// <summary>
         /// Write
@@ -154,7 +154,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteSerializedStructAsync<T>(this Task<Stream> stream, T obj, CancellationToken cancellationToken = default) where T : struct, IStreamSerializer
-            => FluentAsync(stream, (s) => WriteSerializedStructAsync(s, obj, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, obj, cancellationToken, WriteSerializedStructAsync);
 
         /// <summary>
         /// Write
@@ -221,7 +221,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteSerializedNullableAsync(this Task<Stream> stream, IStreamSerializer? obj, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteSerializedNullableAsync(s, obj, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, obj, cancellationToken, WriteSerializedNullableAsync);
 
         /// <summary>
         /// Write
@@ -250,7 +250,7 @@ namespace wan24.StreamSerializerExtensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteSerializedNullableAsync<T>(this Task<Stream> stream, T? obj, CancellationToken cancellationToken = default)
             where T : class, IStreamSerializer
-            => FluentAsync(stream, (s) => WriteSerializedNullableAsync(s, obj, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, obj, cancellationToken, WriteSerializedNullableAsync);
 
         /// <summary>
         /// Write
@@ -280,6 +280,6 @@ namespace wan24.StreamSerializerExtensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteSerializedNullableStructAsync<T>(this Task<Stream> stream, T? obj, CancellationToken cancellationToken = default)
             where T : struct, IStreamSerializer
-            => FluentAsync(stream, (s) => WriteSerializedNullableStructAsync(s, obj, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, obj, cancellationToken, WriteSerializedNullableStructAsync);
     }
 }
