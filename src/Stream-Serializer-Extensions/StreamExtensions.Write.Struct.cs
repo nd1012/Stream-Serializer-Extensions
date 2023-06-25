@@ -108,6 +108,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Struct</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -139,6 +140,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Struct</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteStructAsync(this Task<Stream> stream, object value, bool forceLittleEndian = true, CancellationToken cancellationToken = default)
@@ -152,6 +154,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Struct</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -184,6 +187,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Struct</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteStructAsync<T>(this Task<Stream> stream, T value, bool forceLittleEndian = true, CancellationToken cancellationToken = default)
@@ -197,6 +201,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Struct</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -216,6 +221,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Struct</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteStructNullableAsync(
@@ -234,6 +240,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Struct</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -255,6 +262,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Struct</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteStructNullableAsync<T>(
