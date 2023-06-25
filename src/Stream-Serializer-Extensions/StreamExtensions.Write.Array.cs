@@ -56,7 +56,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteArrayAsync(this Task<Stream> stream, Array value, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteArrayAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteArrayAsync);
 
         /// <summary>
         /// Write
@@ -95,7 +95,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteArrayNullableAsync(this Task<Stream> stream, Array? value, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteArrayNullableAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteArrayNullableAsync);
 
         /// <summary>
         /// Write
@@ -179,7 +179,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Just a method adapter")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteFixedArrayAsync<T>(this Task<Stream> stream, Memory<T> value, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteFixedArrayAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteFixedArrayAsync);
 
         /// <summary>
         /// Write
@@ -211,7 +211,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteFixedArrayAsync<T>(this Task<Stream> stream, ReadOnlyMemory<T> value, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteFixedArrayAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteFixedArrayAsync);
 
         /// <summary>
         /// Write
@@ -242,6 +242,6 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteFixedArrayAsync(this Task<Stream> stream, Array value, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteFixedArrayAsync(s, value, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteFixedArrayAsync);
     }
 }

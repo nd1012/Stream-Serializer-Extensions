@@ -7,6 +7,7 @@ using System.Runtime;
 using wan24.Core;
 
 //TODO char (de)serializer
+//TODO Use ArgumentValidationHelper methods
 
 namespace wan24.StreamSerializerExtensions
 {

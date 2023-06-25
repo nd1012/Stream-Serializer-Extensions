@@ -72,7 +72,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteAnyAsync(this Task<Stream> stream, object obj, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteAnyAsync(s, obj, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, obj, cancellationToken, WriteAnyAsync);
 
         /// <summary>
         /// Write any object
@@ -131,6 +131,6 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteAnyNullableAsync(this Task<Stream> stream, object? obj, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteAnyNullableAsync(s, obj, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, obj, cancellationToken, WriteAnyNullableAsync);
     }
 }

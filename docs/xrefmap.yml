@@ -2750,22 +2750,6 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateStringAsync
   nameWithType: StreamExtensions.EnumerateStringAsync
-- uid: wan24.StreamSerializerExtensions.StreamExtensions.FluentAsync(Task{Stream},Func{Stream,Task{Stream}})
-  name: FluentAsync(Task<Stream>, Func<Stream, Task<Stream>>)
-  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_FluentAsync_Task_Stream__Func_Stream_Task_Stream___
-  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.FluentAsync(Task{Stream},Func{Stream,Task{Stream}})
-  name.vb: FluentAsync(Task(Of Stream), Func(Of Stream, Task(Of Stream)))
-  fullName: wan24.StreamSerializerExtensions.StreamExtensions.FluentAsync(Task<Stream>, Func<Stream, Task<Stream>>)
-  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.FluentAsync(Task(Of Stream), Func(Of Stream, Task(Of Stream)))
-  nameWithType: StreamExtensions.FluentAsync(Task<Stream>, Func<Stream, Task<Stream>>)
-  nameWithType.vb: StreamExtensions.FluentAsync(Task(Of Stream), Func(Of Stream, Task(Of Stream)))
-- uid: wan24.StreamSerializerExtensions.StreamExtensions.FluentAsync*
-  name: FluentAsync
-  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_FluentAsync_
-  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.FluentAsync
-  isSpec: "True"
-  fullName: wan24.StreamSerializerExtensions.StreamExtensions.FluentAsync
-  nameWithType: StreamExtensions.FluentAsync
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadAny(Stream,System.Nullable{System.Int32},wan24.StreamSerializerExtensions.ISerializerOptions)
   name: ReadAny(Stream, Nullable<Int32>, ISerializerOptions)
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadAny_Stream_System_Nullable_System_Int32__wan24_StreamSerializerExtensions_ISerializerOptions_
@@ -5854,6 +5838,47 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync(Of T)(Task(Of Stream), ReadOnlyMemory(Of T), CancellationToken)
   nameWithType: StreamExtensions.WriteFixedArrayAsync<T>(Task<Stream>, ReadOnlyMemory<T>, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteFixedArrayAsync(Of T)(Task(Of Stream), ReadOnlyMemory(Of T), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteIf(Stream,System.Boolean,Func{Stream,Stream})
+  name: WriteIf(Stream, Boolean, Func<Stream, Stream>)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteIf_Stream_System_Boolean_Func_Stream_Stream__
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteIf(Stream,System.Boolean,Func{Stream,Stream})
+  name.vb: WriteIf(Stream, Boolean, Func(Of Stream, Stream))
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteIf(Stream, System.Boolean, Func<Stream, Stream>)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteIf(Stream, System.Boolean, Func(Of Stream, Stream))
+  nameWithType: StreamExtensions.WriteIf(Stream, Boolean, Func<Stream, Stream>)
+  nameWithType.vb: StreamExtensions.WriteIf(Stream, Boolean, Func(Of Stream, Stream))
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteIf*
+  name: WriteIf
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteIf_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.WriteIf
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteIf
+  nameWithType: StreamExtensions.WriteIf
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteIfAsync(Stream,System.Boolean,Func{Stream,Task{Stream}})
+  name: WriteIfAsync(Stream, Boolean, Func<Stream, Task<Stream>>)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteIfAsync_Stream_System_Boolean_Func_Stream_Task_Stream___
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteIfAsync(Stream,System.Boolean,Func{Stream,Task{Stream}})
+  name.vb: WriteIfAsync(Stream, Boolean, Func(Of Stream, Task(Of Stream)))
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteIfAsync(Stream, System.Boolean, Func<Stream, Task<Stream>>)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteIfAsync(Stream, System.Boolean, Func(Of Stream, Task(Of Stream)))
+  nameWithType: StreamExtensions.WriteIfAsync(Stream, Boolean, Func<Stream, Task<Stream>>)
+  nameWithType.vb: StreamExtensions.WriteIfAsync(Stream, Boolean, Func(Of Stream, Task(Of Stream)))
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteIfAsync(Task{Stream},System.Boolean,Func{Stream,Task{Stream}})
+  name: WriteIfAsync(Task<Stream>, Boolean, Func<Stream, Task<Stream>>)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteIfAsync_Task_Stream__System_Boolean_Func_Stream_Task_Stream___
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteIfAsync(Task{Stream},System.Boolean,Func{Stream,Task{Stream}})
+  name.vb: WriteIfAsync(Task(Of Stream), Boolean, Func(Of Stream, Task(Of Stream)))
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteIfAsync(Task<Stream>, System.Boolean, Func<Stream, Task<Stream>>)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteIfAsync(Task(Of Stream), System.Boolean, Func(Of Stream, Task(Of Stream)))
+  nameWithType: StreamExtensions.WriteIfAsync(Task<Stream>, Boolean, Func<Stream, Task<Stream>>)
+  nameWithType.vb: StreamExtensions.WriteIfAsync(Task(Of Stream), Boolean, Func(Of Stream, Task(Of Stream)))
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteIfAsync*
+  name: WriteIfAsync
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteIfAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.WriteIfAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteIfAsync
+  nameWithType: StreamExtensions.WriteIfAsync
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteIfNotNull*
   name: WriteIfNotNull
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteIfNotNull_

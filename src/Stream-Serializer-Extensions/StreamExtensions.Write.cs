@@ -85,7 +85,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteSerializerVersionAsync(this Task<Stream> stream, CancellationToken cancellationToken = default)
-            => FluentAsync(stream, (s) => WriteSerializerVersionAsync(s, cancellationToken));
+            => AsyncHelper.FluentAsync(stream, cancellationToken, WriteSerializerVersionAsync);
 
         /// <summary>
         /// Write a boolean flag if an object is not <see langword="null"/>
@@ -293,16 +293,43 @@ namespace wan24.StreamSerializerExtensions
             });
 
         /// <summary>
-        /// Fluent API action executor
+        /// Write if a condition is <see langword="true"/>
         /// </summary>
-        /// <param name="task">Stream task</param>
-        /// <param name="action">Action to execute</param>
+        /// <param name="stream">Stream</param>
+        /// <param name="condition">Condition</param>
+        /// <param name="action">Write action to execute, if the condition is <see langword="true"/></param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task<Stream> FluentAsync(Task<Stream> task, Func<Stream, Task<Stream>> action)
-            => await action(await task.DynamicContext()).DynamicContext();
+        public static Stream WriteIf(this Stream stream, bool condition, Func<Stream, Stream> action)
+            => condition ? action(stream) : stream;
+
+        /// <summary>
+        /// Write if a condition is <see langword="true"/>
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="condition">Condition</param>
+        /// <param name="action">Write action to execute, if the condition is <see langword="true"/></param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<Stream> WriteIfAsync(this Stream stream, bool condition, Func<Stream, Task<Stream>> action)
+            => condition ? await action(stream).DynamicContext() : stream;
+
+        /// <summary>
+        /// Write if a condition is <see langword="true"/>
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="condition">Condition</param>
+        /// <param name="action">Write action to execute, if the condition is <see langword="true"/></param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<Stream> WriteIfAsync(this Task<Stream> stream, bool condition, Func<Stream, Task<Stream>> action)
+            => AsyncHelper.FluentAsync(stream, async (s) => condition ? await action(s).DynamicContext() : s);
     }
 }
