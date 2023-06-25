@@ -57,10 +57,10 @@ namespace wan24.StreamSerializerExtensions
             )
             => SerializerException.Wrap(() =>
             {
-                if (!target.CanWrite) throw new ArgumentException("Writable stream required", nameof(target));
-                if (maxBufferSize != null && maxBufferSize.Value < 1) throw new ArgumentOutOfRangeException(nameof(maxBufferSize));
-                if (minLen < 0) throw new ArgumentOutOfRangeException(nameof(minLen));
-                if (maxLen < 0 || maxLen < minLen) throw new ArgumentOutOfRangeException(nameof(maxLen));
+                ArgumentValidationHelper.EnsureValidArgument(nameof(target), target.CanWrite, () => "Writable stream required");
+                if (maxBufferSize != null) ArgumentValidationHelper.EnsureValidArgument(nameof(maxBufferSize), 1, int.MaxValue, maxBufferSize.Value);
+                ArgumentValidationHelper.EnsureValidArgument(nameof(minLen), 0, int.MaxValue, minLen);
+                ArgumentValidationHelper.EnsureValidArgument(nameof(maxLen), 0, minLen, maxLen);
                 len ??= stream.ReadNumber<long>(version, pool);
                 if (len == 0)
                 {
@@ -130,7 +130,7 @@ namespace wan24.StreamSerializerExtensions
             )
             => SerializerException.Wrap(() =>
             {
-                switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+                switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
                 {
                     case 1:
                         {
@@ -211,10 +211,10 @@ namespace wan24.StreamSerializerExtensions
             )
             => SerializerException.WrapAsync(async () =>
             {
-                if (!target.CanWrite) throw new ArgumentException("Writable stream required", nameof(target));
-                if (maxBufferSize != null && maxBufferSize.Value < 1) throw new ArgumentOutOfRangeException(nameof(maxBufferSize));
-                if (minLen < 0) throw new ArgumentOutOfRangeException(nameof(minLen));
-                if (maxLen < 0 || maxLen < minLen) throw new ArgumentOutOfRangeException(nameof(maxLen));
+                ArgumentValidationHelper.EnsureValidArgument(nameof(target), target.CanWrite, () => "Writable stream required");
+                if (maxBufferSize != null) ArgumentValidationHelper.EnsureValidArgument(nameof(maxBufferSize), 1, int.MaxValue, maxBufferSize.Value);
+                ArgumentValidationHelper.EnsureValidArgument(nameof(minLen), 0, int.MaxValue, minLen);
+                ArgumentValidationHelper.EnsureValidArgument(nameof(maxLen), 0, minLen, maxLen);
                 len ??= await stream.ReadNumberAsync<long>(version, pool, cancellationToken).DynamicContext();
                 if (len == 0)
                 {
@@ -286,7 +286,7 @@ namespace wan24.StreamSerializerExtensions
             )
             => SerializerException.WrapAsync(async () =>
             {
-                switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+                switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
                 {
                     case 1:
                         {

@@ -228,7 +228,7 @@ namespace wan24.StreamSerializerExtensions
         {
             List<string>? usedDefaultValue = null;
             if (DefaultValues == null) return usedDefaultValue;
-            if (defaultValueBits == null) throw new ArgumentNullException(nameof(defaultValueBits));
+            ArgumentValidationHelper.EnsureValidArgument(nameof(defaultValueBits), defaultValueBits);
             usedDefaultValue = new();
             try
             {

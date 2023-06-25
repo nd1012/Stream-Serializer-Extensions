@@ -22,7 +22,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="skipPropertyNameChecksum">Skip the property name checksum?</param>
         public StreamSerializerAttribute(StreamSerializerModes mode = StreamSerializerModes.OptOut, int version = 0, bool skipPropertyNameChecksum = false) : base()
         {
-            if (mode == StreamSerializerModes.Auto) throw new ArgumentException($"Type serializer mode can't be {StreamSerializerModes.Auto}", nameof(mode));
+            ArgumentValidationHelper.EnsureValidArgument(nameof(mode), mode != StreamSerializerModes.Auto, () => $"Type serializer mode can't be {StreamSerializerModes.Auto}");
             Mode = mode;
             Version = version == 0 ? null : version;
             SkipPropertyNameChecksum = skipPropertyNameChecksum;
@@ -172,8 +172,8 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Stream to use for deserializing an embedded stream</returns>
         public virtual Stream? GetStream(object? obj, PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken = default)
         {
-            if (obj == null && property != null) throw new ArgumentNullException(nameof(obj));
-            if (obj != null && property == null) throw new ArgumentNullException(nameof(property));
+            if (obj == null) ArgumentValidationHelper.EnsureValidArgument(nameof(obj), property);
+            if (property == null) ArgumentValidationHelper.EnsureValidArgument(nameof(property), obj);
             if (StreamFactory == null)
             {
                 if (StreamFactoryType == null) return null;
@@ -335,7 +335,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value is included?</returns>
         public virtual bool IsIncluded(StreamSerializerModes mode, int version)
         {
-            if (mode == StreamSerializerModes.Auto) throw new ArgumentException($"Type stream serializer mode can't be {StreamSerializerModes.Auto}", nameof(mode));
+            ArgumentValidationHelper.EnsureValidArgument(nameof(mode), mode != StreamSerializerModes.Auto, () => $"Type serializer mode can't be {StreamSerializerModes.Auto}");
             return (version == 0 || (FromVersion == null && Version == null) || (FromVersion == null || version >= FromVersion) && (Version == null || version <= Version)) &&
                 (
                     (mode == StreamSerializerModes.OptOut && Mode.In(StreamSerializerModes.OptOut, StreamSerializerModes.Auto)) ||
@@ -357,7 +357,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Fields</returns>
         public virtual List<FieldInfo> GetNumericStructureFields(Type type)
         {
-            if (!type.IsValueType) throw new ArgumentException("Structure type required", nameof(type));
+            ArgumentValidationHelper.EnsureValidArgument(nameof(type), type.IsValueType, () => "Structure type required");
             return NumericStructureFields ??= new(from fi in type.GetFieldsCached(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                                            where !fi.IsStatic &&
                                               fi.GetCustomAttributeCached<StreamSerializerAttribute>() is not null

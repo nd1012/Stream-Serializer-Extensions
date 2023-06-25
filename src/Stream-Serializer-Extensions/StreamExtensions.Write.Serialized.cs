@@ -2,8 +2,6 @@
 using System.Runtime.CompilerServices;
 using wan24.Core;
 
-//TODO Write(Serialized/*) -> Write
-
 namespace wan24.StreamSerializerExtensions
 {
     // Serialized

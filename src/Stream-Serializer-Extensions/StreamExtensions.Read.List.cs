@@ -68,7 +68,7 @@ namespace wan24.StreamSerializerExtensions
             SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(
                 nameof(type),
                 type.IsGenericType || type.IsGenericTypeDefinition || !typeof(List<>).IsAssignableFrom(type.GetGenericTypeDefinition()),
-                "Not a list type"
+                () => "Not a list type"
                 ));
             int len = ReadNumber<int>(stream, version, pool);
             SerializerHelper.EnsureValidLength(len, minLen, maxLen);
@@ -141,7 +141,7 @@ namespace wan24.StreamSerializerExtensions
             SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(
                 nameof(type),
                 type.IsGenericType || type.IsGenericTypeDefinition || !typeof(List<>).IsAssignableFrom(type.GetGenericTypeDefinition()),
-                "Not a list type"
+                () => "Not a list type"
                 ));
             int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
             SerializerHelper.EnsureValidLength(len, minLen, maxLen);
@@ -175,7 +175,7 @@ namespace wan24.StreamSerializerExtensions
             ISerializerOptions? valueOptions = null
             )
         {
-            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:
@@ -221,9 +221,9 @@ namespace wan24.StreamSerializerExtensions
             SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(
                 nameof(type),
                 type.IsGenericType || type.IsGenericTypeDefinition || !typeof(List<>).IsAssignableFrom(type.GetGenericTypeDefinition()),
-                "Not a list type"
+                () => "Not a list type"
                 ));
-            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:
@@ -268,7 +268,7 @@ namespace wan24.StreamSerializerExtensions
             CancellationToken cancellationToken = default
             )
         {
-            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:
@@ -318,9 +318,9 @@ namespace wan24.StreamSerializerExtensions
             SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(
                 nameof(type),
                 type.IsGenericType || type.IsGenericTypeDefinition || !typeof(List<>).IsAssignableFrom(type.GetGenericTypeDefinition()),
-                "Not a list type"
+                () => "Not a list type"
                 ));
-            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:

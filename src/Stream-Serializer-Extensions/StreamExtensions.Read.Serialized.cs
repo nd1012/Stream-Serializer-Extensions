@@ -5,8 +5,6 @@ using System.Runtime.CompilerServices;
 using wan24.Core;
 using wan24.ObjectValidation;
 
-//TODO Check use of StreamSerializer.VERSION/Version
-
 namespace wan24.StreamSerializerExtensions
 {
     // Serialized

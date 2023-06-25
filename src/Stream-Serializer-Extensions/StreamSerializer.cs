@@ -6,9 +6,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime;
 using wan24.Core;
 
-//TODO char (de)serializer
-//TODO Use ArgumentValidationHelper methods
-
 namespace wan24.StreamSerializerExtensions
 {
     /// <summary>
@@ -238,7 +235,6 @@ namespace wan24.StreamSerializerExtensions
                     new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(Enum),(s,t,v,o,ct) => s.ReadEnumAsync(t,v,cancellationToken: ct)),
                     new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(Stream),(s,t,v,o,ct) =>
                     {
-                        //TODO Should be asynchronous
                         Stream res = o?.Attribute.GetStream(obj:null,property:null,s,v,ct)?? new FileStream(
                             Path.GetTempFileName(),
                             FileMode.OpenOrCreate,
@@ -253,7 +249,7 @@ namespace wan24.StreamSerializerExtensions
                         }
                         catch
                         {
-                            res.Dispose();
+                            res.Dispose();//TODO Should be DisposeAsync
                             throw;
                         }
                     })
@@ -273,7 +269,6 @@ namespace wan24.StreamSerializerExtensions
                 typeof(double),
                 typeof(decimal),
                 typeof(string),
-                typeof(char),
                 typeof(IDictionary),
                 typeof(IList),
                 typeof(Stream)

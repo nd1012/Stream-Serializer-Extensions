@@ -3,8 +3,6 @@ using System.Runtime;
 using System.Runtime.CompilerServices;
 using wan24.Core;
 
-//TODO Use Predicate?
-
 namespace wan24.StreamSerializerExtensions
 {
     // Basic
@@ -44,7 +42,7 @@ namespace wan24.StreamSerializerExtensions
 #endif
         public static bool? ReadBoolNullable(this Stream stream, int? version = null, ArrayPool<byte>? pool = null)
         {
-            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:
@@ -79,7 +77,7 @@ namespace wan24.StreamSerializerExtensions
 #endif
         public static async Task<bool?> ReadBoolNullableAsync(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
         {
-            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:
@@ -681,7 +679,7 @@ namespace wan24.StreamSerializerExtensions
             where T : struct, IConvertible
         {
             pool ??= StreamSerializer.BufferPool;
-            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:
@@ -741,7 +739,7 @@ namespace wan24.StreamSerializerExtensions
             where T : struct, IConvertible
         {
             pool ??= StreamSerializer.BufferPool;
-            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:

@@ -105,7 +105,7 @@ namespace wan24.StreamSerializerExtensions
                             pool: null,
                             options?.GetMinLen(0) ?? 0,
                             options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
-                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, default)
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.Version, default)
                             );
                     case ObjectTypes.List:
                         if (isEmpty) return Activator.CreateInstance(type!)!;
@@ -116,7 +116,7 @@ namespace wan24.StreamSerializerExtensions
                             pool: null,
                             options?.GetMinLen(0) ?? 0,
                             options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
-                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, default)
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.Version, default)
                             );
                     case ObjectTypes.Dict:
                         if (isEmpty) return Activator.CreateInstance(type!)!;
@@ -127,8 +127,8 @@ namespace wan24.StreamSerializerExtensions
                             pool: null,
                             options?.GetMinLen(0) ?? 0,
                             options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
-                            options?.Attribute.GetKeySerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION),
-                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION)
+                            options?.Attribute.GetKeySerializerOptions(property: null, stream, version ?? StreamSerializer.Version),
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.Version)
                             );
                     case ObjectTypes.Object:
                         return ReadObject(stream, type!, version, options);
@@ -137,7 +137,7 @@ namespace wan24.StreamSerializerExtensions
                     case ObjectTypes.Serializable:
                         return ReadSerializedObject(stream, type!, version);
                     case ObjectTypes.Stream:
-                        Stream res = options?.Attribute.GetStream(obj: null, property: null, stream, version ?? StreamSerializer.VERSION, default) ?? new FileStream(
+                        Stream res = options?.Attribute.GetStream(obj: null, property: null, stream, version ?? StreamSerializer.Version, default) ?? new FileStream(
                             Path.Combine(Settings.TempFolder, Guid.NewGuid().ToString()),
                             FileMode.CreateNew,
                             FileAccess.ReadWrite,
@@ -266,7 +266,7 @@ namespace wan24.StreamSerializerExtensions
                             pool: null,
                             options?.GetMinLen(0) ?? 0,
                             options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
-                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, default),
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.Version, default),
                             cancellationToken
                             ).DynamicContext();
                     case ObjectTypes.List:
@@ -278,7 +278,7 @@ namespace wan24.StreamSerializerExtensions
                             pool: null,
                             options?.GetMinLen(0) ?? 0,
                             options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
-                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, default),
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.Version, default),
                             cancellationToken
                             ).DynamicContext();
                     case ObjectTypes.Dict:
@@ -290,8 +290,8 @@ namespace wan24.StreamSerializerExtensions
                             pool: null,
                             options?.GetMinLen(0) ?? 0,
                             options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
-                            options?.Attribute.GetKeySerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, cancellationToken),
-                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, cancellationToken),
+                            options?.Attribute.GetKeySerializerOptions(property: null, stream, version ?? StreamSerializer.Version, cancellationToken),
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.Version, cancellationToken),
                             cancellationToken
                             ).DynamicContext();
                     case ObjectTypes.Object:
@@ -302,7 +302,7 @@ namespace wan24.StreamSerializerExtensions
                     case ObjectTypes.Serializable:
                         return await ReadSerializedObjectAsync(stream, type!, version, cancellationToken)!.DynamicContext();
                     case ObjectTypes.Stream:
-                        Stream res = options?.Attribute.GetStream(obj: null, property: null, stream, version ?? StreamSerializer.VERSION, default) ?? new FileStream(
+                        Stream res = options?.Attribute.GetStream(obj: null, property: null, stream, version ?? StreamSerializer.Version, default) ?? new FileStream(
                             Path.Combine(Settings.TempFolder, Guid.NewGuid().ToString()),
                             FileMode.CreateNew,
                             FileAccess.ReadWrite,

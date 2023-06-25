@@ -34,7 +34,7 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         /// <param name="cancellationToken">Cancellation token</param>
         protected StreamAsyncEnumeratorBase(Stream stream, int? version = null, CancellationToken cancellationToken = default) : base()
         {
-            SerializerVersion = version ?? StreamSerializer.VERSION;
+            SerializerVersion = version ?? StreamSerializer.Version;
             Cancellation = cancellationToken;
             Stream = stream;
         }
@@ -85,7 +85,7 @@ namespace wan24.StreamSerializerExtensions.Enumerator
             where tEnumerator : StreamAsyncEnumeratorBase<T>
         {
             Type type = typeof(tEnumerator);
-            if (type.IsAbstract) throw new ArgumentException("Non-abstract type required", nameof(tEnumerator));
+            ArgumentValidationHelper.EnsureValidArgument(nameof(type), !type.IsAbstract, () => "Non-abstract type required");
             StreamAsyncEnumeratorBase<T> enumerator = Activator.CreateInstance(type, stream, version, cancellationToken) as StreamAsyncEnumeratorBase<T>
                 ?? throw new InvalidProgramException($"Failed to instance {type}");
             await using (enumerator.DynamicContext())

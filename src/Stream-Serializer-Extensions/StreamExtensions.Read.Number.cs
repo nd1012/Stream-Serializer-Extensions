@@ -44,7 +44,7 @@ namespace wan24.StreamSerializerExtensions
         private static object ReadNumberInt(Stream stream, Type resType, int? version, NumberTypes? numberType, ArrayPool<byte>? pool)
             => SerializerException.Wrap(() =>
             {
-                ArgumentValidationHelper.EnsureValidArgument(nameof(resType), resType.IsValueType && typeof(IConvertible).IsAssignableFrom(resType), "Not a valid number type");
+                ArgumentValidationHelper.EnsureValidArgument(nameof(resType), resType.IsValueType && typeof(IConvertible).IsAssignableFrom(resType), () => "Not a valid number type");
                 byte[] data = numberType == null ? ReadSerializedData(stream, len: 1, pool) : (pool ?? StreamSerializer.BufferPool).Rent(minimumLength: 1);
                 try
                 {
@@ -187,7 +187,7 @@ namespace wan24.StreamSerializerExtensions
             )
             => SerializerException.WrapAsync(async () =>
             {
-                ArgumentValidationHelper.EnsureValidArgument(nameof(resType), resType.IsValueType && typeof(IConvertible).IsAssignableFrom(resType), "Not a valid number type");
+                ArgumentValidationHelper.EnsureValidArgument(nameof(resType), resType.IsValueType && typeof(IConvertible).IsAssignableFrom(resType), () => "Not a valid number type");
                 byte[] data = numberType == null
                     ? await ReadSerializedDataAsync(stream, len: 1, pool, cancellationToken).DynamicContext()
                     : (pool ?? StreamSerializer.BufferPool).Rent(minimumLength: 1);
@@ -301,7 +301,7 @@ namespace wan24.StreamSerializerExtensions
         public static T? ReadNumberNullable<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null) where T : struct, IConvertible
             => SerializerException.Wrap(() =>
             {
-                switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
+                switch ((version ?? StreamSerializer.Version) & byte.MaxValue)
                 {
                     case 1:
                         {
@@ -335,7 +335,7 @@ namespace wan24.StreamSerializerExtensions
         public static object? ReadNumberNullable(this Stream stream, Type type, int? version = null, ArrayPool<byte>? pool = null)
             => SerializerException.Wrap(() =>
             {
-                switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
+                switch ((version ?? StreamSerializer.Version) & byte.MaxValue)
                 {
                     case 1:
                         {
@@ -371,7 +371,7 @@ namespace wan24.StreamSerializerExtensions
             where T : struct, IConvertible
             => SerializerException.WrapAsync(async () =>
             {
-                switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
+                switch ((version ?? StreamSerializer.Version) & byte.MaxValue)
                 {
                     case 1:
                         {
@@ -416,7 +416,7 @@ namespace wan24.StreamSerializerExtensions
             )
             => SerializerException.WrapAsync(async () =>
             {
-                switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
+                switch ((version ?? StreamSerializer.Version) & byte.MaxValue)
                 {
                     case 1:
                         {
