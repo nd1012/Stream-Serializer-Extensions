@@ -49,11 +49,12 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task WriteEnumAsync<T>(this Stream stream, T value, CancellationToken cancellationToken = default) where T : struct, Enum
+        public static async Task<Stream> WriteEnumAsync<T>(this Stream stream, T value, CancellationToken cancellationToken = default) where T : struct, Enum
         {
             if (ObjectHelper.AreEqual(value, default(T)))
             {
@@ -63,7 +64,21 @@ namespace wan24.StreamSerializerExtensions
             {
                 await WriteNumberAsync(stream, Convert.ChangeType(value, value.GetType().GetEnumUnderlyingType()), cancellationToken).DynamicContext();
             }
+            return stream;
         }
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <typeparam name="T">Enumeration type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value to write</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<Stream> WriteEnumAsync<T>(this Task<Stream> stream, T value, CancellationToken cancellationToken = default) where T : struct, Enum
+            => FluentAsync(stream, (s) => WriteEnumAsync(s, value, cancellationToken));
 
         /// <summary>
         /// Write
@@ -71,11 +86,12 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task WriteEnumAsync(this Stream stream, object value, CancellationToken cancellationToken = default)
+        public static async Task<Stream> WriteEnumAsync(this Stream stream, object value, CancellationToken cancellationToken = default)
         {
             Type enumType = value.GetType();
             SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(value), enumType.IsEnum, "Not an enumeration value"));
@@ -87,7 +103,20 @@ namespace wan24.StreamSerializerExtensions
             {
                 await WriteNumberAsync(stream, Convert.ChangeType(value, enumType.GetEnumUnderlyingType()), cancellationToken).DynamicContext();
             }
+            return stream;
         }
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value to write</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<Stream> WriteEnumAsync(this Task<Stream> stream, object value, CancellationToken cancellationToken = default)
+            => FluentAsync(stream, (s) => WriteEnumAsync(s, value, cancellationToken));
 
         /// <summary>
         /// Write
@@ -127,10 +156,22 @@ namespace wan24.StreamSerializerExtensions
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task WriteEnumNullableAsync<T>(this Stream stream, T? value, CancellationToken cancellationToken = default) where T : struct, Enum
+        public static Task<Stream> WriteEnumNullableAsync<T>(this Stream stream, T? value, CancellationToken cancellationToken = default) where T : struct, Enum
             => value == null
                 ? WriteAsync(stream, (byte)NumberTypes.Null, cancellationToken)
                 : WriteEnumAsync(stream, value.Value, cancellationToken);
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <typeparam name="T">Enumeration type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value to write</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<Stream> WriteEnumNullableAsync<T>(this Task<Stream> stream, T? value, CancellationToken cancellationToken = default) where T : struct, Enum
+            => FluentAsync(stream, (s) => WriteEnumNullableAsync(s, value, cancellationToken));
 
         /// <summary>
         /// Write
@@ -142,9 +183,22 @@ namespace wan24.StreamSerializerExtensions
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task WriteEnumNullableAsync(this Stream stream, object? value, CancellationToken cancellationToken = default)
+        public static Task<Stream> WriteEnumNullableAsync(this Stream stream, object? value, CancellationToken cancellationToken = default)
             => value == null
                 ? WriteAsync(stream, (byte)NumberTypes.Null, cancellationToken)
                 : WriteEnumAsync(stream, value, cancellationToken);
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value to write</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static Task<Stream> WriteEnumNullableAsync(this Task<Stream> stream, object? value, CancellationToken cancellationToken = default)
+            => FluentAsync(stream, (s) => WriteEnumNullableAsync(s, value, cancellationToken));
     }
 }

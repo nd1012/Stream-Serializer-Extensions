@@ -67,7 +67,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="pool">Array pool</param>
         /// <param name="chunkLength">Chunk length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        public static Task WriteStreamAsync(
+        /// <returns>Stream</returns>
+        public static Task<Stream> WriteStreamAsync(
             this Stream stream,
             Stream source,
             ArrayPool<byte>? pool = null,
@@ -98,7 +99,26 @@ namespace wan24.StreamSerializerExtensions
                             await stream.WriteBytesAsync(buffer.Memory, cancellationToken).DynamicContext();
                         }
                     }
+                return stream;
             });
+
+        /// <summary>
+        /// Write a stream
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="source">Source stream</param>
+        /// <param name="pool">Array pool</param>
+        /// <param name="chunkLength">Chunk length in bytes</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
+        public static Task<Stream> WriteStreamAsync(
+            this Task<Stream> stream,
+            Stream source,
+            ArrayPool<byte>? pool = null,
+            int? chunkLength = null,
+            CancellationToken cancellationToken = default
+            )
+            => FluentAsync(stream, (s) => WriteStreamAsync(s, source, pool, chunkLength, cancellationToken));
 
         /// <summary>
         /// Write a stream
@@ -113,7 +133,7 @@ namespace wan24.StreamSerializerExtensions
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task WriteStreamNullableAsync(
+        public static Task<Stream> WriteStreamNullableAsync(
             this Stream stream,
             Stream? source,
             ArrayPool<byte>? pool = null,
@@ -123,5 +143,25 @@ namespace wan24.StreamSerializerExtensions
             => source == null
                 ? WriteNumberAsync(stream, long.MinValue, cancellationToken)
                 : WriteStreamAsync(stream, source, pool, chunkLength, cancellationToken);
+
+        /// <summary>
+        /// Write a stream
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="source">Source stream</param>
+        /// <param name="pool">Array pool</param>
+        /// <param name="chunkLength">Chunk length in bytes</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<Stream> WriteStreamNullableAsync(
+            this Task<Stream> stream,
+            Stream? source,
+            ArrayPool<byte>? pool = null,
+            int? chunkLength = null,
+            CancellationToken cancellationToken = default
+            )
+            => FluentAsync(stream, (s) => WriteStreamNullableAsync(s, source, pool, chunkLength, cancellationToken));
     }
 }

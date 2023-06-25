@@ -36,20 +36,34 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task WriteDictAsync(this Stream stream, IDictionary value, CancellationToken cancellationToken = default)
+        public static async Task<Stream> WriteDictAsync(this Stream stream, IDictionary value, CancellationToken cancellationToken = default)
         {
             await WriteNumberAsync(stream, value.Count, cancellationToken).DynamicContext();
-            if (value.Count == 0) return;
+            if (value.Count == 0) return stream;
             foreach (object key in value.Keys)
             {
                 await WriteObjectAsync(stream, key, cancellationToken).DynamicContext();
                 await WriteObjectAsync(stream, value[key]!, cancellationToken).DynamicContext();
             }
+            return stream;
         }
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value to write</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<Stream> WriteDictAsync(this Task<Stream> stream, IDictionary value, CancellationToken cancellationToken = default)
+            => FluentAsync(stream, (s) => WriteDictAsync(s, value, cancellationToken));
 
         /// <summary>
         /// Write
@@ -82,7 +96,7 @@ namespace wan24.StreamSerializerExtensions
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task WriteDictNullableAsync(this Stream stream, IDictionary? value, CancellationToken cancellationToken = default)
+        public static Task<Stream> WriteDictNullableAsync(this Stream stream, IDictionary? value, CancellationToken cancellationToken = default)
             => WriteNullableCountAsync(stream, value?.Count, async () =>
             {
                 if (value!.Count == 0) return;
@@ -92,5 +106,16 @@ namespace wan24.StreamSerializerExtensions
                     await WriteObjectAsync(stream, value[key]!, cancellationToken).DynamicContext();
                 }
             }, cancellationToken);
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value to write</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<Stream> WriteDictNullableAsync(this Task<Stream> stream, IDictionary? value, CancellationToken cancellationToken = default)
+            => FluentAsync(stream, (s) => WriteDictNullableAsync(s, value, cancellationToken));
     }
 }
