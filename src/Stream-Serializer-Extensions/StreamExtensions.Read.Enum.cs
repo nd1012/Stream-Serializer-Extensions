@@ -52,16 +52,10 @@ namespace wan24.StreamSerializerExtensions
             => SerializerException.Wrap(() =>
             {
                 IEnumInfo info = type.GetEnumInfo();
-                if ((numberType ?? NumberTypes.None) == NumberTypes.Default)
-                    return (Enum)(Activator.CreateInstance(type) ?? throw new SerializerException($"Failed to instance {type}"));
                 numberType ??= (NumberTypes)ReadOneByte(stream, version);
-                if ((version ?? StreamSerializer.VERSION) > 1 && numberType == NumberTypes.Default)
-                    return (Enum)(Activator.CreateInstance(type) ?? throw new SerializerException($"Failed to instance {type}"));
-                Enum res = (Enum)Enum.ToObject(
-                    type,
-                    ReadNumber(stream, type.GetEnumUnderlyingType()!, version, pool)
-                    );
-                if (!info.IsValidEnumerationValue()) throw new SerializerException($"Unknown enumeration value {res} for {type}");
+                if (numberType == NumberTypes.Default) return info.DefaultValue;
+                Enum res = (Enum)Enum.ToObject(type, ReadNumberInt(stream, type.GetEnumUnderlyingType()!, version, numberType, pool));
+                if (!info.IsValidValue(res)) throw new SerializerException($"Unknown enumeration value {res} for {type}");
                 return res;
             });
 
@@ -112,13 +106,11 @@ namespace wan24.StreamSerializerExtensions
         private static Task<Enum> ReadEnumIntAsync(Stream stream, Type type, int? version, NumberTypes? numberType, ArrayPool<byte>? pool, CancellationToken cancellationToken)
             => SerializerException.WrapAsync(async () =>
             {
-                if ((numberType ?? NumberTypes.None) == NumberTypes.Default)
-                    return (Enum)(Activator.CreateInstance(type) ?? throw new SerializerException($"Failed to instance {type}"));
+                IEnumInfo info = type.GetEnumInfo();
                 numberType ??= (NumberTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
-                if ((version ?? StreamSerializer.VERSION) > 1 && numberType == NumberTypes.Default)
-                    return (Enum)(Activator.CreateInstance(type) ?? throw new SerializerException($"Failed to instance {type}"));
+                if (numberType == NumberTypes.Default) return info.DefaultValue;
                 Enum res = (Enum)Enum.ToObject(type, await ReadNumberIntAsync(stream, type.GetEnumUnderlyingType(), version, numberType, pool, cancellationToken).DynamicContext());
-                if (!res.IsValidEnumerationValue()) throw new SerializerException($"Unknown enumeration value {res} for {type}");
+                if (!info.IsValidValue(res)) throw new SerializerException($"Unknown enumeration value {res} for {type}");
                 return res;
             });
 
@@ -170,13 +162,13 @@ namespace wan24.StreamSerializerExtensions
                     {
                         return ReadBool(stream, version, pool)
                             ? ReadEnum(stream, type, version, pool)
-                            : (Enum)(Activator.CreateInstance(type) ?? throw new SerializerException($"Failed to instance {type}"));
+                            : null;
                     }
                 default:
                     {
                         NumberTypes numberType = (NumberTypes)ReadOneByte(stream, version);
                         return numberType == NumberTypes.Null
-                            ? (Enum)(Activator.CreateInstance(type) ?? throw new SerializerException($"Failed to instance {type}"))
+                            ? null
                             : ReadEnumInt(stream, type, version, numberType, pool);
                     }
             }
@@ -204,13 +196,13 @@ namespace wan24.StreamSerializerExtensions
                     {
                         return await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
                             ? await ReadEnumAsync<T>(stream, version, pool, cancellationToken).DynamicContext()
-                            : default(T?);
+                            : null;
                     }
                 default:
                     {
                         NumberTypes numberType = (NumberTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
                         return numberType == NumberTypes.Null
-                            ? default(T?)
+                            ? null
                             : (T)await ReadEnumIntAsync(stream, typeof(T), version, numberType, pool, cancellationToken).DynamicContext();
                     }
             }
@@ -243,13 +235,13 @@ namespace wan24.StreamSerializerExtensions
                     {
                         return await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
                             ? await ReadEnumAsync(stream, type, version, pool, cancellationToken).DynamicContext()
-                            : (Enum?)(Activator.CreateInstance(type) ?? throw new SerializerException($"Failed to instance {type}"));
+                            : null;
                     }
                 default:
                     {
                         NumberTypes numberType = (NumberTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
                         return numberType == NumberTypes.Null
-                            ? (Enum?)(Activator.CreateInstance(type) ?? throw new SerializerException($"Failed to instance {type}"))
+                            ? null
                             : await ReadEnumIntAsync(stream, type, version, numberType, pool, cancellationToken).DynamicContext();
                     }
             }

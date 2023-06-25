@@ -51,7 +51,7 @@ namespace wan24.StreamSerializerExtensions
                             stream.Write(poolData.Span);
                             break;
                         case NumberTypes.Short:
-                            Write(stream, (int)value.ConvertType<short>());
+                            Write(stream, value.ConvertType<short>());
                             break;
                         case NumberTypes.Short | NumberTypes.Unsigned:
                             Write(stream, value.ConvertType<ushort>());
@@ -167,7 +167,7 @@ namespace wan24.StreamSerializerExtensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
         public static Stream WriteNumberNullable<T>(this Stream stream, T? value) where T : struct, IConvertible
-            => value == null ? WriteEnum(stream, NumberTypes.Null) : WriteNumber(stream, value.Value);
+            => value == null ? Write(stream, (byte)NumberTypes.Null) : WriteNumber(stream, value.Value);
 
         /// <summary>
         /// Write
@@ -180,7 +180,7 @@ namespace wan24.StreamSerializerExtensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
         public static Stream WriteNumberNullable(this Stream stream, object? value)
-            => value == null ? WriteEnum(stream, NumberTypes.Null) : WriteNumber(stream, value);
+            => value == null ? Write(stream, (byte)NumberTypes.Null) : WriteNumber(stream, value);
 
         /// <summary>
         /// Write
@@ -196,7 +196,7 @@ namespace wan24.StreamSerializerExtensions
         public static Task WriteNumberNullableAsync<T>(this Stream stream, T? value, CancellationToken cancellationToken = default)
             where T : struct, IConvertible
             => value == null
-                ? WriteEnumAsync(stream, NumberTypes.Null, cancellationToken)
+                ? WriteAsync(stream, (byte)NumberTypes.Null, cancellationToken)
                 : WriteNumberAsync(stream, value.Value, cancellationToken);
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace wan24.StreamSerializerExtensions
 #endif
         public static Task WriteNumberNullableAsync(this Stream stream, object? value, CancellationToken cancellationToken = default)
             => value == null
-                ? WriteEnumAsync(stream, NumberTypes.Null, cancellationToken)
+                ? WriteAsync(stream, (byte)NumberTypes.Null, cancellationToken)
                 : WriteNumberAsync(stream, value, cancellationToken);
     }
 }

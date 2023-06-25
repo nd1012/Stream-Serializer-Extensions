@@ -43,7 +43,7 @@ namespace wan24.StreamSerializerExtensions
         protected DisposableStreamSerializerBase(Stream stream, int version, int? objectVersion = null) : base()
         {
             _ObjectVersion = objectVersion;
-            Deserialize(stream, version);
+            DeserializeInt(stream, version);
         }
 
         /// <inheritdoc/>

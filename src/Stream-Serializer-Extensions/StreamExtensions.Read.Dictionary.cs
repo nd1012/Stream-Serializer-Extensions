@@ -207,8 +207,7 @@ namespace wan24.StreamSerializerExtensions
                     return ReadBool(stream, version, pool) ? ReadDict<tKey, tValue>(stream, version, pool, minLen, maxLen, keyOptions, valueOptions) : null;
                 default:
                     {
-                        int len = ReadNumber<int>(stream, version, pool);
-                        if (len == -1) return null;
+                        if (ReadNumberNullable<int>(stream, version, pool) is not int len) return null;
                         SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                         Dictionary<tKey, tValue> res = new(len);
                         for (int i = 0; i < len; i++) res[ReadObject<tKey>(stream, version, keyOptions)] = ReadObject<tValue>(stream, version, valueOptions);
@@ -259,8 +258,7 @@ namespace wan24.StreamSerializerExtensions
                     }
                 default:
                     {
-                        int len = ReadNumber<int>(stream, version, pool);
-                        if (len == -1) return null;
+                        if (ReadNumberNullable<int>(stream, version, pool) is not int len) return null;
                         SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                         Type[] types = type.GetGenericArguments();
                         IDictionary res = (IDictionary)(Activator.CreateInstance(type, len) ?? throw new SerializerException($"Failed to instance {type}"));
@@ -312,8 +310,7 @@ namespace wan24.StreamSerializerExtensions
                     }
                 default:
                     {
-                        int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
-                        if (len == -1) return null;
+                        if(await ReadNumberNullableAsync<int>(stream, version, pool, cancellationToken).DynamicContext() is not int len) return null;
                         SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                         Dictionary<tKey, tValue> res = new(len);
                         for (int i = 0; i < len; i++)
@@ -370,8 +367,7 @@ namespace wan24.StreamSerializerExtensions
                     }
                 default:
                     {
-                        int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
-                        if (len == -1) return null;
+                        if (await ReadNumberNullableAsync<int>(stream, version, pool, cancellationToken).DynamicContext() is not int len) return null;
                         SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                         Type[] types = type.GetGenericArguments();
                         IDictionary res = (IDictionary)(Activator.CreateInstance(type, len) ?? throw new SerializerException($"Failed to instance {type}"));

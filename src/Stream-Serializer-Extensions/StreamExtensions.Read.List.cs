@@ -184,8 +184,7 @@ namespace wan24.StreamSerializerExtensions
                     }
                 default:
                     {
-                        int len = ReadNumber<int>(stream, version, pool);
-                        if (len == -1) return null;
+                        if (ReadNumberNullable<int>(stream, version, pool) is not int len) return null;
                         SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                         List<T> res = new(len);
                         for (int i = 0; i < len; res.Add(ReadObject<T>(stream, version, valueOptions)), i++) ;
@@ -233,8 +232,7 @@ namespace wan24.StreamSerializerExtensions
                     }
                 default:
                     {
-                        int len = ReadNumber<int>(stream, version, pool);
-                        if (len == -1) return null;
+                        if (ReadNumberNullable<int>(stream, version, pool) is not int len) return null;
                         SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                         Type itemType = type.GetGenericArgumentsCached()[0];
                         IList res = (IList)(Activator.CreateInstance(type, len) ?? throw new SerializerException($"Failed to instance {type}"));
@@ -281,8 +279,7 @@ namespace wan24.StreamSerializerExtensions
                     }
                 default:
                     {
-                        int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
-                        if (len == -1) return null;
+                        if (await ReadNumberNullableAsync<int>(stream, version, pool, cancellationToken).DynamicContext() is not int len) return null;
                         SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                         List<T> res = new(len);
                         for (int i = 0; i < len; res.Add(await ReadObjectAsync<T>(stream, version, valueOptions, cancellationToken).DynamicContext()), i++) ;
@@ -334,8 +331,7 @@ namespace wan24.StreamSerializerExtensions
                     }
                 default:
                     {
-                        int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
-                        if (len == -1) return null;
+                        if (await ReadNumberNullableAsync<int>(stream, version, pool, cancellationToken).DynamicContext() is not int len) return null;
                         SerializerHelper.EnsureValidLength(len, minLen, maxLen);
                         Type itemType = type.GetGenericArgumentsCached()[0];
                         IList res = (IList)(Activator.CreateInstance(type, len) ?? throw new SerializerException($"Failed to instance {type}"));

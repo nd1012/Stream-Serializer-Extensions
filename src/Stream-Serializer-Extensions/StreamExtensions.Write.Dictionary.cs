@@ -64,8 +64,7 @@ namespace wan24.StreamSerializerExtensions
         public static Stream WriteDictNullable(this Stream stream, IDictionary? value)
             => WriteNullableCount(stream, value?.Count, () =>
             {
-                WriteNumber(stream, value!.Count);
-                if (value.Count == 0) return;
+                if (value!.Count == 0) return;
                 foreach (object key in value.Keys)
                 {
                     WriteObject(stream, key);
@@ -86,8 +85,7 @@ namespace wan24.StreamSerializerExtensions
         public static Task WriteDictNullableAsync(this Stream stream, IDictionary? value, CancellationToken cancellationToken = default)
             => WriteNullableCountAsync(stream, value?.Count, async () =>
             {
-                await WriteNumberAsync(stream, value!.Count, cancellationToken).DynamicContext();
-                if (value.Count == 0) return;
+                if (value!.Count == 0) return;
                 foreach (object key in value.Keys)
                 {
                     await WriteObjectAsync(stream, key, cancellationToken).DynamicContext();
