@@ -51,6 +51,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Just a method adapter")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteBytesAsync(this Stream stream, Memory<byte> value, CancellationToken cancellationToken = default)
@@ -62,6 +63,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Just a method adapter")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteBytesAsync(this Task<Stream> stream, Memory<byte> value, CancellationToken cancellationToken = default)
@@ -117,6 +119,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -135,6 +138,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteBytesNullableAsync(this Task<Stream> stream, byte[]? value, CancellationToken cancellationToken = default)

@@ -88,6 +88,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         public static Task<Stream> WriteNumberAsync<T>(this Stream stream, T value, CancellationToken cancellationToken = default) where T : struct, IConvertible
             => WriteNumberIntAsync(stream, value, type: null, cancellationToken);
 
@@ -98,6 +99,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         public static Task<Stream> WriteNumberAsync<T>(this Task<Stream> stream, T value, CancellationToken cancellationToken = default) where T : struct, IConvertible
             => FluentAsync(stream, (s) => WriteNumberAsync(s, value, cancellationToken));
 
@@ -107,6 +109,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         public static Task<Stream> WriteNumberAsync(this Stream stream, object value, CancellationToken cancellationToken = default)
             => WriteNumberIntAsync(stream, value, type: null, cancellationToken);
 
@@ -116,6 +119,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         public static Task<Stream> WriteNumberAsync(this Task<Stream> stream, object value, CancellationToken cancellationToken = default)
             => FluentAsync(stream, (s) => WriteNumberAsync(s, value, cancellationToken));
 
@@ -210,6 +214,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -227,6 +232,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNumberNullableAsync<T>(this Task<Stream> stream, T? value, CancellationToken cancellationToken = default)
@@ -239,6 +245,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -254,6 +261,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNumberNullableAsync(this Task<Stream> stream, object? value, CancellationToken cancellationToken = default)

@@ -77,6 +77,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -90,6 +91,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteArrayNullableAsync(this Task<Stream> stream, Array? value, CancellationToken cancellationToken = default)
@@ -160,6 +162,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Just a method adapter")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteFixedArrayAsync<T>(this Stream stream, Memory<T> value, CancellationToken cancellationToken = default)
@@ -172,6 +175,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Just a method adapter")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteFixedArrayAsync<T>(this Task<Stream> stream, Memory<T> value, CancellationToken cancellationToken = default)
