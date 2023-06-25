@@ -322,11 +322,11 @@ references:
   commentId: T:wan24.StreamSerializerExtensions.AutoStreamSerializerInfo
   fullName: wan24.StreamSerializerExtensions.AutoStreamSerializerInfo
   nameWithType: AutoStreamSerializerInfo
-- uid: wan24.StreamSerializerExtensions.AutoStreamSerializerInfo.#ctor(PropertyInfoExt)
+- uid: wan24.StreamSerializerExtensions.AutoStreamSerializerInfo.#ctor(wan24.Core.PropertyInfoExt)
   name: AutoStreamSerializerInfo(PropertyInfoExt)
-  href: api/wan24.StreamSerializerExtensions.AutoStreamSerializerInfo.html#wan24_StreamSerializerExtensions_AutoStreamSerializerInfo__ctor_PropertyInfoExt_
-  commentId: M:wan24.StreamSerializerExtensions.AutoStreamSerializerInfo.#ctor(PropertyInfoExt)
-  fullName: wan24.StreamSerializerExtensions.AutoStreamSerializerInfo.AutoStreamSerializerInfo(PropertyInfoExt)
+  href: api/wan24.StreamSerializerExtensions.AutoStreamSerializerInfo.html#wan24_StreamSerializerExtensions_AutoStreamSerializerInfo__ctor_wan24_Core_PropertyInfoExt_
+  commentId: M:wan24.StreamSerializerExtensions.AutoStreamSerializerInfo.#ctor(wan24.Core.PropertyInfoExt)
+  fullName: wan24.StreamSerializerExtensions.AutoStreamSerializerInfo.AutoStreamSerializerInfo(wan24.Core.PropertyInfoExt)
   nameWithType: AutoStreamSerializerInfo.AutoStreamSerializerInfo(PropertyInfoExt)
 - uid: wan24.StreamSerializerExtensions.AutoStreamSerializerInfo.#ctor*
   name: AutoStreamSerializerInfo
@@ -520,15 +520,12 @@ references:
   commentId: T:wan24.StreamSerializerExtensions.DefaultSerializerOptions
   fullName: wan24.StreamSerializerExtensions.DefaultSerializerOptions
   nameWithType: DefaultSerializerOptions
-- uid: wan24.StreamSerializerExtensions.DefaultSerializerOptions.#ctor(System.Nullable{PropertyInfoExt},wan24.StreamSerializerExtensions.StreamSerializerAttribute)
-  name: DefaultSerializerOptions(Nullable<PropertyInfoExt>, StreamSerializerAttribute)
-  href: api/wan24.StreamSerializerExtensions.DefaultSerializerOptions.html#wan24_StreamSerializerExtensions_DefaultSerializerOptions__ctor_System_Nullable_PropertyInfoExt__wan24_StreamSerializerExtensions_StreamSerializerAttribute_
-  commentId: M:wan24.StreamSerializerExtensions.DefaultSerializerOptions.#ctor(System.Nullable{PropertyInfoExt},wan24.StreamSerializerExtensions.StreamSerializerAttribute)
-  name.vb: DefaultSerializerOptions(Nullable(Of PropertyInfoExt), StreamSerializerAttribute)
-  fullName: wan24.StreamSerializerExtensions.DefaultSerializerOptions.DefaultSerializerOptions(System.Nullable<PropertyInfoExt>, wan24.StreamSerializerExtensions.StreamSerializerAttribute)
-  fullName.vb: wan24.StreamSerializerExtensions.DefaultSerializerOptions.DefaultSerializerOptions(System.Nullable(Of PropertyInfoExt), wan24.StreamSerializerExtensions.StreamSerializerAttribute)
-  nameWithType: DefaultSerializerOptions.DefaultSerializerOptions(Nullable<PropertyInfoExt>, StreamSerializerAttribute)
-  nameWithType.vb: DefaultSerializerOptions.DefaultSerializerOptions(Nullable(Of PropertyInfoExt), StreamSerializerAttribute)
+- uid: wan24.StreamSerializerExtensions.DefaultSerializerOptions.#ctor(wan24.Core.PropertyInfoExt,wan24.StreamSerializerExtensions.StreamSerializerAttribute)
+  name: DefaultSerializerOptions(PropertyInfoExt, StreamSerializerAttribute)
+  href: api/wan24.StreamSerializerExtensions.DefaultSerializerOptions.html#wan24_StreamSerializerExtensions_DefaultSerializerOptions__ctor_wan24_Core_PropertyInfoExt_wan24_StreamSerializerExtensions_StreamSerializerAttribute_
+  commentId: M:wan24.StreamSerializerExtensions.DefaultSerializerOptions.#ctor(wan24.Core.PropertyInfoExt,wan24.StreamSerializerExtensions.StreamSerializerAttribute)
+  fullName: wan24.StreamSerializerExtensions.DefaultSerializerOptions.DefaultSerializerOptions(wan24.Core.PropertyInfoExt, wan24.StreamSerializerExtensions.StreamSerializerAttribute)
+  nameWithType: DefaultSerializerOptions.DefaultSerializerOptions(PropertyInfoExt, StreamSerializerAttribute)
 - uid: wan24.StreamSerializerExtensions.DefaultSerializerOptions.#ctor*
   name: DefaultSerializerOptions
   href: api/wan24.StreamSerializerExtensions.DefaultSerializerOptions.html#wan24_StreamSerializerExtensions_DefaultSerializerOptions__ctor_
@@ -2224,11 +2221,11 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength
   nameWithType: SerializerHelper.EnsureValidLength
-- uid: wan24.StreamSerializerExtensions.SerializerHelper.GetKeySerializerOptions(PropertyInfoExt,Stream,System.Int32,CancellationToken)
+- uid: wan24.StreamSerializerExtensions.SerializerHelper.GetKeySerializerOptions(wan24.Core.PropertyInfoExt,Stream,System.Int32,CancellationToken)
   name: GetKeySerializerOptions(PropertyInfoExt, Stream, Int32, CancellationToken)
-  href: api/wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetKeySerializerOptions_PropertyInfoExt_Stream_System_Int32_CancellationToken_
-  commentId: M:wan24.StreamSerializerExtensions.SerializerHelper.GetKeySerializerOptions(PropertyInfoExt,Stream,System.Int32,CancellationToken)
-  fullName: wan24.StreamSerializerExtensions.SerializerHelper.GetKeySerializerOptions(PropertyInfoExt, Stream, System.Int32, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetKeySerializerOptions_wan24_Core_PropertyInfoExt_Stream_System_Int32_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.SerializerHelper.GetKeySerializerOptions(wan24.Core.PropertyInfoExt,Stream,System.Int32,CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.SerializerHelper.GetKeySerializerOptions(wan24.Core.PropertyInfoExt, Stream, System.Int32, CancellationToken)
   nameWithType: SerializerHelper.GetKeySerializerOptions(PropertyInfoExt, Stream, Int32, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.SerializerHelper.GetKeySerializerOptions*
   name: GetKeySerializerOptions
@@ -2282,11 +2279,11 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.SerializerHelper.GetObjectSerializerInfo
   nameWithType: SerializerHelper.GetObjectSerializerInfo
-- uid: wan24.StreamSerializerExtensions.SerializerHelper.GetSerializerOptions(PropertyInfoExt,Stream,System.Int32,CancellationToken)
+- uid: wan24.StreamSerializerExtensions.SerializerHelper.GetSerializerOptions(wan24.Core.PropertyInfoExt,Stream,System.Int32,CancellationToken)
   name: GetSerializerOptions(PropertyInfoExt, Stream, Int32, CancellationToken)
-  href: api/wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetSerializerOptions_PropertyInfoExt_Stream_System_Int32_CancellationToken_
-  commentId: M:wan24.StreamSerializerExtensions.SerializerHelper.GetSerializerOptions(PropertyInfoExt,Stream,System.Int32,CancellationToken)
-  fullName: wan24.StreamSerializerExtensions.SerializerHelper.GetSerializerOptions(PropertyInfoExt, Stream, System.Int32, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetSerializerOptions_wan24_Core_PropertyInfoExt_Stream_System_Int32_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.SerializerHelper.GetSerializerOptions(wan24.Core.PropertyInfoExt,Stream,System.Int32,CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.SerializerHelper.GetSerializerOptions(wan24.Core.PropertyInfoExt, Stream, System.Int32, CancellationToken)
   nameWithType: SerializerHelper.GetSerializerOptions(PropertyInfoExt, Stream, Int32, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.SerializerHelper.GetSerializerOptions*
   name: GetSerializerOptions
@@ -2295,11 +2292,11 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.SerializerHelper.GetSerializerOptions
   nameWithType: SerializerHelper.GetSerializerOptions
-- uid: wan24.StreamSerializerExtensions.SerializerHelper.GetValueSerializerOptions(PropertyInfoExt,Stream,System.Int32,CancellationToken)
+- uid: wan24.StreamSerializerExtensions.SerializerHelper.GetValueSerializerOptions(wan24.Core.PropertyInfoExt,Stream,System.Int32,CancellationToken)
   name: GetValueSerializerOptions(PropertyInfoExt, Stream, Int32, CancellationToken)
-  href: api/wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetValueSerializerOptions_PropertyInfoExt_Stream_System_Int32_CancellationToken_
-  commentId: M:wan24.StreamSerializerExtensions.SerializerHelper.GetValueSerializerOptions(PropertyInfoExt,Stream,System.Int32,CancellationToken)
-  fullName: wan24.StreamSerializerExtensions.SerializerHelper.GetValueSerializerOptions(PropertyInfoExt, Stream, System.Int32, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetValueSerializerOptions_wan24_Core_PropertyInfoExt_Stream_System_Int32_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.SerializerHelper.GetValueSerializerOptions(wan24.Core.PropertyInfoExt,Stream,System.Int32,CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.SerializerHelper.GetValueSerializerOptions(wan24.Core.PropertyInfoExt, Stream, System.Int32, CancellationToken)
   nameWithType: SerializerHelper.GetValueSerializerOptions(PropertyInfoExt, Stream, Int32, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.SerializerHelper.GetValueSerializerOptions*
   name: GetValueSerializerOptions
@@ -2501,15 +2498,12 @@ references:
   commentId: T:wan24.StreamSerializerExtensions.SerializerOptionsBase
   fullName: wan24.StreamSerializerExtensions.SerializerOptionsBase
   nameWithType: SerializerOptionsBase
-- uid: wan24.StreamSerializerExtensions.SerializerOptionsBase.#ctor(System.Nullable{PropertyInfoExt},wan24.StreamSerializerExtensions.StreamSerializerAttribute)
-  name: SerializerOptionsBase(Nullable<PropertyInfoExt>, StreamSerializerAttribute)
-  href: api/wan24.StreamSerializerExtensions.SerializerOptionsBase.html#wan24_StreamSerializerExtensions_SerializerOptionsBase__ctor_System_Nullable_PropertyInfoExt__wan24_StreamSerializerExtensions_StreamSerializerAttribute_
-  commentId: M:wan24.StreamSerializerExtensions.SerializerOptionsBase.#ctor(System.Nullable{PropertyInfoExt},wan24.StreamSerializerExtensions.StreamSerializerAttribute)
-  name.vb: SerializerOptionsBase(Nullable(Of PropertyInfoExt), StreamSerializerAttribute)
-  fullName: wan24.StreamSerializerExtensions.SerializerOptionsBase.SerializerOptionsBase(System.Nullable<PropertyInfoExt>, wan24.StreamSerializerExtensions.StreamSerializerAttribute)
-  fullName.vb: wan24.StreamSerializerExtensions.SerializerOptionsBase.SerializerOptionsBase(System.Nullable(Of PropertyInfoExt), wan24.StreamSerializerExtensions.StreamSerializerAttribute)
-  nameWithType: SerializerOptionsBase.SerializerOptionsBase(Nullable<PropertyInfoExt>, StreamSerializerAttribute)
-  nameWithType.vb: SerializerOptionsBase.SerializerOptionsBase(Nullable(Of PropertyInfoExt), StreamSerializerAttribute)
+- uid: wan24.StreamSerializerExtensions.SerializerOptionsBase.#ctor(wan24.Core.PropertyInfoExt,wan24.StreamSerializerExtensions.StreamSerializerAttribute)
+  name: SerializerOptionsBase(PropertyInfoExt, StreamSerializerAttribute)
+  href: api/wan24.StreamSerializerExtensions.SerializerOptionsBase.html#wan24_StreamSerializerExtensions_SerializerOptionsBase__ctor_wan24_Core_PropertyInfoExt_wan24_StreamSerializerExtensions_StreamSerializerAttribute_
+  commentId: M:wan24.StreamSerializerExtensions.SerializerOptionsBase.#ctor(wan24.Core.PropertyInfoExt,wan24.StreamSerializerExtensions.StreamSerializerAttribute)
+  fullName: wan24.StreamSerializerExtensions.SerializerOptionsBase.SerializerOptionsBase(wan24.Core.PropertyInfoExt, wan24.StreamSerializerExtensions.StreamSerializerAttribute)
+  nameWithType: SerializerOptionsBase.SerializerOptionsBase(PropertyInfoExt, StreamSerializerAttribute)
 - uid: wan24.StreamSerializerExtensions.SerializerOptionsBase.#ctor*
   name: SerializerOptionsBase
   href: api/wan24.StreamSerializerExtensions.SerializerOptionsBase.html#wan24_StreamSerializerExtensions_SerializerOptionsBase__ctor_
@@ -7631,15 +7625,15 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.StreamSerializerAttribute.StreamSerializerAttribute
   nameWithType: StreamSerializerAttribute.StreamSerializerAttribute
-- uid: wan24.StreamSerializerExtensions.StreamSerializerAttribute.CreateSerializerOptions(System.Nullable{Type},System.Nullable{PropertyInfoExt})
-  name: CreateSerializerOptions(Nullable<Type>, Nullable<PropertyInfoExt>)
-  href: api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.html#wan24_StreamSerializerExtensions_StreamSerializerAttribute_CreateSerializerOptions_System_Nullable_Type__System_Nullable_PropertyInfoExt__
-  commentId: M:wan24.StreamSerializerExtensions.StreamSerializerAttribute.CreateSerializerOptions(System.Nullable{Type},System.Nullable{PropertyInfoExt})
-  name.vb: CreateSerializerOptions(Nullable(Of Type), Nullable(Of PropertyInfoExt))
-  fullName: wan24.StreamSerializerExtensions.StreamSerializerAttribute.CreateSerializerOptions(System.Nullable<Type>, System.Nullable<PropertyInfoExt>)
-  fullName.vb: wan24.StreamSerializerExtensions.StreamSerializerAttribute.CreateSerializerOptions(System.Nullable(Of Type), System.Nullable(Of PropertyInfoExt))
-  nameWithType: StreamSerializerAttribute.CreateSerializerOptions(Nullable<Type>, Nullable<PropertyInfoExt>)
-  nameWithType.vb: StreamSerializerAttribute.CreateSerializerOptions(Nullable(Of Type), Nullable(Of PropertyInfoExt))
+- uid: wan24.StreamSerializerExtensions.StreamSerializerAttribute.CreateSerializerOptions(System.Nullable{Type},wan24.Core.PropertyInfoExt)
+  name: CreateSerializerOptions(Nullable<Type>, PropertyInfoExt)
+  href: api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.html#wan24_StreamSerializerExtensions_StreamSerializerAttribute_CreateSerializerOptions_System_Nullable_Type__wan24_Core_PropertyInfoExt_
+  commentId: M:wan24.StreamSerializerExtensions.StreamSerializerAttribute.CreateSerializerOptions(System.Nullable{Type},wan24.Core.PropertyInfoExt)
+  name.vb: CreateSerializerOptions(Nullable(Of Type), PropertyInfoExt)
+  fullName: wan24.StreamSerializerExtensions.StreamSerializerAttribute.CreateSerializerOptions(System.Nullable<Type>, wan24.Core.PropertyInfoExt)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamSerializerAttribute.CreateSerializerOptions(System.Nullable(Of Type), wan24.Core.PropertyInfoExt)
+  nameWithType: StreamSerializerAttribute.CreateSerializerOptions(Nullable<Type>, PropertyInfoExt)
+  nameWithType.vb: StreamSerializerAttribute.CreateSerializerOptions(Nullable(Of Type), PropertyInfoExt)
 - uid: wan24.StreamSerializerExtensions.StreamSerializerAttribute.CreateSerializerOptions*
   name: CreateSerializerOptions
   href: api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.html#wan24_StreamSerializerExtensions_StreamSerializerAttribute_CreateSerializerOptions_
@@ -7660,15 +7654,12 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.StreamSerializerAttribute.FromVersion
   nameWithType: StreamSerializerAttribute.FromVersion
-- uid: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetKeySerializerOptions(System.Nullable{PropertyInfoExt},Stream,System.Int32,CancellationToken)
-  name: GetKeySerializerOptions(Nullable<PropertyInfoExt>, Stream, Int32, CancellationToken)
-  href: api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.html#wan24_StreamSerializerExtensions_StreamSerializerAttribute_GetKeySerializerOptions_System_Nullable_PropertyInfoExt__Stream_System_Int32_CancellationToken_
-  commentId: M:wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetKeySerializerOptions(System.Nullable{PropertyInfoExt},Stream,System.Int32,CancellationToken)
-  name.vb: GetKeySerializerOptions(Nullable(Of PropertyInfoExt), Stream, Int32, CancellationToken)
-  fullName: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetKeySerializerOptions(System.Nullable<PropertyInfoExt>, Stream, System.Int32, CancellationToken)
-  fullName.vb: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetKeySerializerOptions(System.Nullable(Of PropertyInfoExt), Stream, System.Int32, CancellationToken)
-  nameWithType: StreamSerializerAttribute.GetKeySerializerOptions(Nullable<PropertyInfoExt>, Stream, Int32, CancellationToken)
-  nameWithType.vb: StreamSerializerAttribute.GetKeySerializerOptions(Nullable(Of PropertyInfoExt), Stream, Int32, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetKeySerializerOptions(wan24.Core.PropertyInfoExt,Stream,System.Int32,CancellationToken)
+  name: GetKeySerializerOptions(PropertyInfoExt, Stream, Int32, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.html#wan24_StreamSerializerExtensions_StreamSerializerAttribute_GetKeySerializerOptions_wan24_Core_PropertyInfoExt_Stream_System_Int32_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetKeySerializerOptions(wan24.Core.PropertyInfoExt,Stream,System.Int32,CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetKeySerializerOptions(wan24.Core.PropertyInfoExt, Stream, System.Int32, CancellationToken)
+  nameWithType: StreamSerializerAttribute.GetKeySerializerOptions(PropertyInfoExt, Stream, Int32, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetKeySerializerOptions*
   name: GetKeySerializerOptions
   href: api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.html#wan24_StreamSerializerExtensions_StreamSerializerAttribute_GetKeySerializerOptions_
@@ -7705,15 +7696,12 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetReadProperties
   nameWithType: StreamSerializerAttribute.GetReadProperties
-- uid: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetSerializerOptions(System.Nullable{PropertyInfoExt},Stream,System.Int32,CancellationToken)
-  name: GetSerializerOptions(Nullable<PropertyInfoExt>, Stream, Int32, CancellationToken)
-  href: api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.html#wan24_StreamSerializerExtensions_StreamSerializerAttribute_GetSerializerOptions_System_Nullable_PropertyInfoExt__Stream_System_Int32_CancellationToken_
-  commentId: M:wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetSerializerOptions(System.Nullable{PropertyInfoExt},Stream,System.Int32,CancellationToken)
-  name.vb: GetSerializerOptions(Nullable(Of PropertyInfoExt), Stream, Int32, CancellationToken)
-  fullName: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetSerializerOptions(System.Nullable<PropertyInfoExt>, Stream, System.Int32, CancellationToken)
-  fullName.vb: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetSerializerOptions(System.Nullable(Of PropertyInfoExt), Stream, System.Int32, CancellationToken)
-  nameWithType: StreamSerializerAttribute.GetSerializerOptions(Nullable<PropertyInfoExt>, Stream, Int32, CancellationToken)
-  nameWithType.vb: StreamSerializerAttribute.GetSerializerOptions(Nullable(Of PropertyInfoExt), Stream, Int32, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetSerializerOptions(wan24.Core.PropertyInfoExt,Stream,System.Int32,CancellationToken)
+  name: GetSerializerOptions(PropertyInfoExt, Stream, Int32, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.html#wan24_StreamSerializerExtensions_StreamSerializerAttribute_GetSerializerOptions_wan24_Core_PropertyInfoExt_Stream_System_Int32_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetSerializerOptions(wan24.Core.PropertyInfoExt,Stream,System.Int32,CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetSerializerOptions(wan24.Core.PropertyInfoExt, Stream, System.Int32, CancellationToken)
+  nameWithType: StreamSerializerAttribute.GetSerializerOptions(PropertyInfoExt, Stream, Int32, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetSerializerOptions*
   name: GetSerializerOptions
   href: api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.html#wan24_StreamSerializerExtensions_StreamSerializerAttribute_GetSerializerOptions_
@@ -7747,15 +7735,12 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetUseDefaultValue
   nameWithType: StreamSerializerAttribute.GetUseDefaultValue
-- uid: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetValueSerializerOptions(System.Nullable{PropertyInfoExt},Stream,System.Int32,CancellationToken)
-  name: GetValueSerializerOptions(Nullable<PropertyInfoExt>, Stream, Int32, CancellationToken)
-  href: api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.html#wan24_StreamSerializerExtensions_StreamSerializerAttribute_GetValueSerializerOptions_System_Nullable_PropertyInfoExt__Stream_System_Int32_CancellationToken_
-  commentId: M:wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetValueSerializerOptions(System.Nullable{PropertyInfoExt},Stream,System.Int32,CancellationToken)
-  name.vb: GetValueSerializerOptions(Nullable(Of PropertyInfoExt), Stream, Int32, CancellationToken)
-  fullName: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetValueSerializerOptions(System.Nullable<PropertyInfoExt>, Stream, System.Int32, CancellationToken)
-  fullName.vb: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetValueSerializerOptions(System.Nullable(Of PropertyInfoExt), Stream, System.Int32, CancellationToken)
-  nameWithType: StreamSerializerAttribute.GetValueSerializerOptions(Nullable<PropertyInfoExt>, Stream, Int32, CancellationToken)
-  nameWithType.vb: StreamSerializerAttribute.GetValueSerializerOptions(Nullable(Of PropertyInfoExt), Stream, Int32, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetValueSerializerOptions(wan24.Core.PropertyInfoExt,Stream,System.Int32,CancellationToken)
+  name: GetValueSerializerOptions(PropertyInfoExt, Stream, Int32, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.html#wan24_StreamSerializerExtensions_StreamSerializerAttribute_GetValueSerializerOptions_wan24_Core_PropertyInfoExt_Stream_System_Int32_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetValueSerializerOptions(wan24.Core.PropertyInfoExt,Stream,System.Int32,CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetValueSerializerOptions(wan24.Core.PropertyInfoExt, Stream, System.Int32, CancellationToken)
+  nameWithType: StreamSerializerAttribute.GetValueSerializerOptions(PropertyInfoExt, Stream, Int32, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamSerializerAttribute.GetValueSerializerOptions*
   name: GetValueSerializerOptions
   href: api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.html#wan24_StreamSerializerExtensions_StreamSerializerAttribute_GetValueSerializerOptions_
