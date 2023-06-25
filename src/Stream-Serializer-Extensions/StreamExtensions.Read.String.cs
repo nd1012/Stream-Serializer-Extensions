@@ -1,5 +1,4 @@
 ﻿using System.Buffers;
-using System.Runtime;
 using System.Runtime.CompilerServices;
 using wan24.Core;
 
@@ -219,6 +218,7 @@ namespace wan24.StreamSerializerExtensions
             pool ??= StreamSerializer.BufferPool;
             int len = ReadNumber<int>(stream, version, pool);
             SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+            if (len == 0) return string.Empty;
             byte[] buffer = ReadSerializedData(stream, len, pool);
             try
             {
@@ -258,6 +258,7 @@ namespace wan24.StreamSerializerExtensions
             pool ??= StreamSerializer.BufferPool;
             int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
             SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+            if (len == 0) return string.Empty;
             byte[] buffer = await ReadSerializedDataAsync(stream, len, pool, cancellationToken).DynamicContext();
             try
             {
@@ -285,30 +286,29 @@ namespace wan24.StreamSerializerExtensions
         private static string? ReadNullableString(Stream stream, int? version, int minLen, int maxLen, ArrayPool<byte>? pool, Func<byte[], int, string> action)
         {
             pool ??= StreamSerializer.BufferPool;
+            int? len;
             switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:
                     {
                         if (!ReadBool(stream, version, pool)) return null;
+                        len = ReadNumber<int>(stream, version, pool);
+                    }
+                    break;
+                default:
+                    {
+                        len = ReadNumberNullable<int>(stream, version, pool);
+                        if (len == null) return null;
                     }
                     break;
             }
-            int len = ReadNumber<int>(stream, version, pool);
-            switch (version & byte.MaxValue)// Serializer version switch
-            {
-                case 1:
-                case 2:
-                    break;
-                default:
-                    if (len == -1) return null;
-                    break;
-            }
-            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
-            byte[] buffer = ReadSerializedData(stream, len, pool);
+            SerializerHelper.EnsureValidLength(len.Value, minLen, maxLen);
+            if (len == 0) return string.Empty;
+            byte[] buffer = ReadSerializedData(stream, len.Value, pool);
             try
             {
-                return action(buffer, len);
+                return action(buffer, len.Value);
             }
             finally
             {
@@ -341,30 +341,29 @@ namespace wan24.StreamSerializerExtensions
             )
         {
             pool ??= StreamSerializer.BufferPool;
+            int? len;
             switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:
                     {
                         if (!await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()) return null;
+                        len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
+                    }
+                    break;
+                default:
+                    {
+                        len = await ReadNumberNullableAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
+                        if (len == null) return null;
                     }
                     break;
             }
-            int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
-            switch (version & byte.MaxValue)// Serializer version switch
-            {
-                case 1:
-                case 2:
-                    break;
-                default:
-                    if (len == -1) return null;
-                    break;
-            }
-            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
-            byte[] buffer = await ReadSerializedDataAsync(stream, len, pool, cancellationToken).DynamicContext();
+            SerializerHelper.EnsureValidLength(len.Value, minLen, maxLen);
+            if (len == 0) return string.Empty;
+            byte[] buffer = await ReadSerializedDataAsync(stream, len.Value, pool, cancellationToken).DynamicContext();
             try
             {
-                return action(buffer, len);
+                return action(buffer, len.Value);
             }
             finally
             {

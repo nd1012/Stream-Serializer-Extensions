@@ -6,7 +6,7 @@ namespace wan24.StreamSerializerExtensions
     /// <summary>
     /// Attribute for stream serializable classes and properties
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Property | AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Constructor)]
     public class StreamSerializerAttribute : Attribute
     {
         /// <summary>

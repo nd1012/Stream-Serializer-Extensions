@@ -304,10 +304,16 @@ namespace wan24.StreamSerializerExtensions
                 switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
                 {
                     case 1:
-                        return ReadBool(stream, version, pool) ? ReadNumber<T>(stream, version, pool) : null;
+                        {
+                            return ReadBool(stream, version, pool) ? ReadNumber<T>(stream, version, pool) : null;
+                        }
+                    case 2:
+                        {
+                            NumberTypes numberType = ReadEnum<NumberTypes>(stream, version, pool);
+                            return numberType == NumberTypes.Null ? null : (T?)ReadNumberInt(stream, typeof(T), version, numberType, pool);
+                        }
                     default:
                         {
-                            using RentedArray<byte> buffer = new(len: 1, pool, clean: false);
                             NumberTypes numberType = (NumberTypes)ReadOneByte(stream, version);
                             return numberType == NumberTypes.Null ? null : (T?)ReadNumberInt(stream, typeof(T), version, numberType, pool);
                         }
@@ -332,10 +338,16 @@ namespace wan24.StreamSerializerExtensions
                 switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
                 {
                     case 1:
-                        return ReadBool(stream, version, pool) ? ReadNumber(stream, type, version, pool) : null;
+                        {
+                            return ReadBool(stream, version, pool) ? ReadNumber(stream, type, version, pool) : null;
+                        }
+                    case 2:
+                        {
+                            NumberTypes numberType = ReadEnum<NumberTypes>(stream, version, pool);
+                            return numberType == NumberTypes.Null ? null : ReadNumberInt(stream, type, version, numberType, pool);
+                        }
                     default:
                         {
-                            using RentedArray<byte> buffer = new(len: 1, pool, clean: false);
                             NumberTypes numberType = (NumberTypes)ReadOneByte(stream, version);
                             return numberType == NumberTypes.Null ? null : ReadNumberInt(stream, type, version, numberType, pool);
                         }
@@ -362,15 +374,22 @@ namespace wan24.StreamSerializerExtensions
                 switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
                 {
                     case 1:
-                        return await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                            ? await ReadNumberAsync<T>(stream, version, pool, cancellationToken).DynamicContext()
-                            : null;
+                        {
+                            return await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                                ? await ReadNumberAsync<T>(stream, version, pool, cancellationToken).DynamicContext()
+                                : null;
+                        }
+                    case 2:
+                        {
+                            NumberTypes numberType = await ReadEnumAsync<NumberTypes>(stream, version, pool, cancellationToken).DynamicContext();
+                            return numberType == NumberTypes.Null ? null : (T?)await ReadNumberIntAsync(stream, typeof(T), version, numberType, pool, cancellationToken)
+                                .DynamicContext();
+                        }
                     default:
                         {
-                            using RentedArray<byte> buffer = new(len: 1, pool, clean: false);
                             NumberTypes numberType = (NumberTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
                             return numberType == NumberTypes.Null ? null : (T?)await ReadNumberIntAsync(stream, typeof(T), version, numberType, pool, cancellationToken)
-                                .DynamicContext(); ;
+                                .DynamicContext();
                         }
                 }
             });
@@ -400,14 +419,21 @@ namespace wan24.StreamSerializerExtensions
                 switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)
                 {
                     case 1:
-                        return await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                            ? await ReadNumberAsync(stream, type, version, pool, cancellationToken).DynamicContext()
-                            : null;
+                        {
+                            return await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
+                                ? await ReadNumberAsync(stream, type, version, pool, cancellationToken).DynamicContext()
+                                : null;
+                        }
+                    case 2:
+                        {
+                            NumberTypes numberType = await ReadEnumAsync<NumberTypes>(stream, version, pool, cancellationToken).DynamicContext();
+                            return numberType == NumberTypes.Null ? null : await ReadNumberIntAsync(stream, type, version, numberType, pool, cancellationToken)
+                                .DynamicContext();
+                        }
                     default:
                         {
-                            using RentedArray<byte> buffer = new(len: 1, pool, clean: false);
                             NumberTypes numberType = (NumberTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
-                            return numberType == NumberTypes.Null ? null : await ReadNumberIntAsync(stream, type, version, numberType, pool, cancellationToken).DynamicContext(); ;
+                            return numberType == NumberTypes.Null ? null : await ReadNumberIntAsync(stream, type, version, numberType, pool, cancellationToken).DynamicContext();
                         }
                 }
             });

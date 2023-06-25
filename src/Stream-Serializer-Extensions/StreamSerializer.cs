@@ -1,6 +1,9 @@
 ﻿using System.Buffers;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime;
 using wan24.Core;
 
 //TODO char (de)serializer
@@ -46,6 +49,10 @@ namespace wan24.StreamSerializerExtensions
         /// Allowed (non-array) types
         /// </summary>
         public static readonly ConcurrentBag<Type> AllowedTypes;
+        /// <summary>
+        /// Type instance factories
+        /// </summary>
+        public static readonly ConcurrentDictionary<Type, InstanceFactory_Delegate> InstanceFactories = new();
 
         /// <summary>
         /// Constructor
@@ -416,6 +423,59 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <summary>
+        /// Create an instance
+        /// </summary>
+        /// <param name="usedConstructor">Used constructor</param>
+        /// <param name="type">Requested type</param>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="options">Serializer options</param>
+        /// <returns>Instance</returns>
+        public static object CreateInstance(out ConstructorInfo? usedConstructor, Type type, Stream stream, int? version = null, ISerializerOptions? options = null)
+        {
+            usedConstructor = null;
+            if (InstanceFactories.TryGetValue(type, out InstanceFactory_Delegate? factory)) return factory(type, stream, version ?? VERSION, options);
+            if (type.IsGenericType && InstanceFactories.TryGetValue(type.GetGenericTypeDefinition(), out factory))
+                return factory(type, stream, version ?? VERSION, options);
+            if (
+                InstanceFactories.Keys.FirstOrDefault(t => t.IsAssignableFrom(type)) is Type inheritedType &&
+                InstanceFactories.TryGetValue(inheritedType, out factory)
+                )
+                return factory(type, stream, version ?? VERSION, options);
+            if (typeof(IStreamSerializer).IsAssignableFrom(type))
+            {
+                ConstructorInfo? ci = (from c in type.GetConstructorsCached()
+                                       where c.GetParametersCached().Length == 0 ||
+                                           c.IsSerializerConstructor()
+                                       orderby c.GetCustomAttributeCached<StreamSerializerAttribute>() is not null descending
+                                       orderby c.GetParametersCached().Length descending
+                                       select c)
+                                      .FirstOrDefault();
+                if (ci != null)
+                {
+                    usedConstructor = ci;
+                    return ci.GetParametersCached().Length == 0 ? ci.InvokeAuto() : ci.InvokeAuto(stream, version ?? Version);
+                }
+            }
+            return type.ConstructAuto(out usedConstructor, usePrivate: true, stream, version, options)
+                ?? throw new SerializerException($"Failed to instance {type}", new InvalidProgramException());
+        }
+
+        /// <summary>
+        /// Create an instance
+        /// </summary>
+        /// <typeparam name="T">Requested type</typeparam>
+        /// <param name="usedConstructor">Used constructor</param>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="options">Serializer options</param>
+        /// <returns>Instance</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T CreateInstance<T>(out ConstructorInfo? usedConstructor, Stream stream, int? version = null, ISerializerOptions? options = null)
+            => (T)CreateInstance(out usedConstructor, typeof(T), stream, version, options);
+
+        /// <summary>
         /// Serializer delegate
         /// </summary>
         /// <param name="stream">Stream</param>
@@ -450,6 +510,16 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Deserialized value (task will be handled as <c>Task&lt;T&gt;</c>, a result is required!)</returns>
         public delegate Task AsyncDeserialize_Delegate(Stream stream, Type type, int version, ISerializerOptions? options, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Delegate for an instance factory
+        /// </summary>
+        /// <param name="type">Requested type</param>
+        /// <param name="stream">Stream</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="options">Serializer options</param>
+        /// <returns>Instance</returns>
+        public delegate object InstanceFactory_Delegate(Type type, Stream stream, int version, ISerializerOptions? options);
 
         /// <summary>
         /// Delegate for finding a serializer

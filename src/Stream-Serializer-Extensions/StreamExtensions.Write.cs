@@ -31,8 +31,24 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Stream WriteSerializerVersion(this Stream stream) => WriteNumber(stream, StreamSerializer.Version);
+#endif
+        public static Stream WriteSerializerVersion(this Stream stream)
+        {
+            (object n, NumberTypes nt) = StreamSerializer.Version.GetNumberAndType();
+            Write(stream, (byte)nt);
+            switch (n)
+            {
+                case sbyte sb: Write(stream, sb); break;
+                case byte b: Write(stream, b); break;
+                case short s: Write(stream, s); break;
+                case ushort us: Write(stream, us); break;
+                case int i: Write(stream, i); break;
+                default: throw new SerializerException($"Invalid numeric type {nt} for serializer version {StreamSerializer.Version}");
+            }
+            return stream;
+        }
 
         /// <summary>
         /// Write the serializer version
@@ -40,9 +56,23 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task WriteSerializerVersionAsync(this Stream stream, CancellationToken cancellationToken = default)
-            => WriteNumberAsync(stream, StreamSerializer.Version, cancellationToken);
+#endif
+        public static async Task WriteSerializerVersionAsync(this Stream stream, CancellationToken cancellationToken = default)
+        {
+            (object n, NumberTypes nt) = StreamSerializer.Version.GetNumberAndType();
+            await WriteAsync(stream, (byte)nt, cancellationToken).DynamicContext();
+            switch (n)
+            {
+                case sbyte sb: await WriteAsync(stream, sb, cancellationToken).DynamicContext(); break;
+                case byte b: await WriteAsync(stream, b, cancellationToken).DynamicContext(); break;
+                case short s: await WriteAsync(stream, s, cancellationToken).DynamicContext(); break;
+                case ushort us: await WriteAsync(stream, us, cancellationToken).DynamicContext(); break;
+                case int i: await WriteAsync(stream, i, cancellationToken).DynamicContext(); break;
+                default: throw new SerializerException($"Invalid numeric type {nt} for serializer version {StreamSerializer.Version}");
+            }
+        }
 
         /// <summary>
         /// Write a boolean flag if an object is not <see langword="null"/>

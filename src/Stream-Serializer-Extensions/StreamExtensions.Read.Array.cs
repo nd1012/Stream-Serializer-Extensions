@@ -177,10 +177,10 @@ namespace wan24.StreamSerializerExtensions
                     }
                 default:
                     {
-                        int? len = ReadNumberNullable<int>(stream, version, pool);
-                        if (len == null) return null;
-                        if (len < 1) return Array.Empty<T>();
-                        T[] res = new T[SerializerHelper.EnsureValidLength(len!.Value, minLen, maxLen)];
+                        if (ReadNumberNullable<int>(stream, version, pool) is not int len) return null;
+                        SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+                        if (len == 0) return Array.Empty<T>();
+                        T[] res = new T[len];
                         ReadFixedArray(stream, res.AsSpan(), version, valueOptions);
                         return res;
                     }
@@ -221,13 +221,12 @@ namespace wan24.StreamSerializerExtensions
                     }
                 default:
                     {
-                        int? len = ReadNumberNullable<int>(stream, version, pool);
-                        if (len == null) return null;
+                        if (ReadNumberNullable<int>(stream, version, pool) is not int len) return null;
                         return len < 1
                             ? Array.CreateInstance(type.GetElementType()!, length: 0)
                             : ReadFixedArray(
                                 stream,
-                                Array.CreateInstance(type.GetElementType()!, SerializerHelper.EnsureValidLength(len!.Value, minLen, maxLen)),
+                                Array.CreateInstance(type.GetElementType()!, SerializerHelper.EnsureValidLength(len, minLen, maxLen)),
                                 version,
                                 valueOptions
                                 );
@@ -272,10 +271,10 @@ namespace wan24.StreamSerializerExtensions
                     }
                 default:
                     {
-                        int? len = await ReadNumberNullableAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
-                        if (len == null) return null;
-                        if (len < 1) return Array.Empty<T>();
-                        T[] res = new T[SerializerHelper.EnsureValidLength(len!.Value, minLen, maxLen)];
+                        if (await ReadNumberNullableAsync<int>(stream, version, pool, cancellationToken).DynamicContext() is not int len) return null;
+                        SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+                        if (len == 0) return Array.Empty<T>();
+                        T[] res = new T[len];
                         await ReadFixedArrayAsync(stream, res.AsMemory(), version, valueOptions, cancellationToken).DynamicContext();
                         return res;
                     }
@@ -320,13 +319,12 @@ namespace wan24.StreamSerializerExtensions
                     }
                 default:
                     {
-                        int? len = await ReadNumberNullableAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
-                        if (len == null) return null;
+                        if (await ReadNumberNullableAsync<int>(stream, version, pool, cancellationToken).DynamicContext() is not int len) return null;
                         return len < 1
                             ? Array.CreateInstance(type.GetElementType()!, length: 0)
                             : await ReadFixedArrayAsync(
                                 stream,
-                                Array.CreateInstance(type.GetElementType()!, SerializerHelper.EnsureValidLength(len!.Value, minLen, maxLen)),
+                                Array.CreateInstance(type.GetElementType()!, SerializerHelper.EnsureValidLength(len, minLen, maxLen)),
                                 version,
                                 valueOptions,
                                 cancellationToken
@@ -478,7 +476,11 @@ namespace wan24.StreamSerializerExtensions
             )
         {
             Type elementType = arr.GetType().GetElementType()!;
-            for (int i = 0, len = arr.Length; i < len; arr.SetValue(await ReadObjectAsync(stream, elementType, version, valueOptions, cancellationToken).DynamicContext(), i), i++) ;
+            for (
+                int i = 0, len = arr.Length;
+                i < len;
+                arr.SetValue(await ReadObjectAsync(stream, elementType, version, valueOptions, cancellationToken).DynamicContext(), i), i++
+                ) ;
             return arr;
         }
     }

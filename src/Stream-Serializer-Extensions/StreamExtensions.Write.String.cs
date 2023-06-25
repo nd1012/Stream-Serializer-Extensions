@@ -1,5 +1,4 @@
-﻿using System.Runtime;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using System.Text;
 using wan24.Core;
 
@@ -129,10 +128,23 @@ namespace wan24.StreamSerializerExtensions
 #endif
         private static Stream WriteString(Stream stream, string value, int lenShift, Func<byte[], int> action)
         {
-            WriteNumber(stream, value);
-            if (value.Length == 0) return stream;
+            if (value.Length == 0)
+            {
+                Write(stream, (byte)NumberTypes.Zero);
+                return stream;
+            }
             byte[] data = StreamSerializer.BufferPool.Rent(value.Length << lenShift);
-            return WriteSerializedData(stream, data, action(data));
+            try
+            {
+                int len = action(data);
+                WriteNumber(stream, len);
+                return WriteSerializedData(stream, data, len);
+            }
+            catch
+            {
+                StreamSerializer.BufferPool.Return(data);
+                throw;
+            }
         }
 
         /// <summary>
@@ -148,10 +160,23 @@ namespace wan24.StreamSerializerExtensions
 #endif
         private static async Task WriteStringAsync(Stream stream, string value, int lenShift, Func<byte[], int> action, CancellationToken cancellationToken)
         {
-            await WriteNumberAsync(stream, value, cancellationToken).DynamicContext();
-            if (value.Length == 0) return;
+            if (value.Length == 0)
+            {
+                await WriteAsync(stream, (byte)NumberTypes.Zero, cancellationToken).DynamicContext();
+                return;
+            }
             byte[] data = StreamSerializer.BufferPool.Rent(value.Length << lenShift);
-            await WriteSerializedDataAsync(stream, data, action(data), cancellationToken: cancellationToken).DynamicContext();
+            try
+            {
+                int len = action(data);
+                await WriteNumberAsync(stream, len, cancellationToken).DynamicContext();
+                await WriteSerializedDataAsync(stream, data, len, cancellationToken: cancellationToken).DynamicContext();
+            }
+            catch
+            {
+                StreamSerializer.BufferPool.Return(data);
+                throw;
+            }
         }
 
         /// <summary>
@@ -167,10 +192,28 @@ namespace wan24.StreamSerializerExtensions
 #endif
         private static Stream WriteNullableString(Stream stream, string? value, int lenShift, Func<byte[], int> action)
         {
-            WriteNumberNullable(stream, value);
-            if (value == null || value.Length == 0) return stream;
+            if (value == null)
+            {
+                Write(stream, (byte)NumberTypes.Null);
+                return stream;
+            }
+            if (value.Length == 0)
+            {
+                Write(stream, (byte)NumberTypes.Zero);
+                return stream;
+            }
             byte[] data = StreamSerializer.BufferPool.Rent(value.Length << lenShift);
-            return WriteSerializedData(stream, data, action(data), StreamSerializer.BufferPool);
+            try
+            {
+                int len = action(data);
+                WriteNumber(stream, len);
+                return WriteSerializedData(stream, data, action(data), StreamSerializer.BufferPool);
+            }
+            catch
+            {
+                StreamSerializer.BufferPool.Return(data);
+                throw;
+            }
         }
 
         /// <summary>
@@ -186,10 +229,28 @@ namespace wan24.StreamSerializerExtensions
 #endif
         private static async Task WriteNullableStringAsync(Stream stream, string? value, int lenShift, Func<byte[], int> action, CancellationToken cancellationToken)
         {
-            await WriteNumberNullableAsync(stream, value, cancellationToken).DynamicContext();
-            if (value == null || value.Length == 0) return;
+            if (value == null)
+            {
+                await WriteAsync(stream, (byte)NumberTypes.Null, cancellationToken).DynamicContext();
+                return;
+            }
+            if (value.Length == 0)
+            {
+                await WriteAsync(stream, (byte)NumberTypes.Zero, cancellationToken).DynamicContext();
+                return;
+            }
             byte[] data = StreamSerializer.BufferPool.Rent(value.Length << lenShift);
-            await WriteSerializedDataAsync(stream, data, action(data), StreamSerializer.BufferPool, cancellationToken).DynamicContext();
+            try
+            {
+                int len = action(data);
+                await WriteNumberAsync(stream, len, cancellationToken).DynamicContext();
+                await WriteSerializedDataAsync(stream, data, action(data), StreamSerializer.BufferPool, cancellationToken).DynamicContext();
+            }
+            catch
+            {
+                StreamSerializer.BufferPool.Return(data);
+                throw;
+            }
         }
     }
 }

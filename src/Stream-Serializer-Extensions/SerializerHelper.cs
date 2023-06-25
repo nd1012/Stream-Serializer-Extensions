@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using wan24.Core;
@@ -125,10 +127,11 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Get the type of a number
         /// </summary>
+        /// <typeparam name="T">Number type</typeparam>
         /// <param name="number">Number</param>
         /// <param name="useFlags">Use the flags?</param>
         /// <returns>Number type</returns>
-        public static NumberTypes GetNumberType(this object number, bool useFlags = true)
+        public static NumberTypes GetNumberType<T>(this T number, bool useFlags = true)
             => number switch
             {
                 sbyte sb => useFlags
@@ -232,13 +235,18 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Get the best matching number type
         /// </summary>
+        /// <typeparam name="T">Number type</typeparam>
         /// <param name="number">Number</param>
         /// <returns>Number and type</returns>
-        public static (object Number, NumberTypes Type) GetNumberAndType(this object number)
+        public static (object Number, NumberTypes Type) GetNumberAndType<T>(this T number)
         {
+            ArgumentValidationHelper.EnsureValidArgument(nameof(number), number);
+#if DEBUG
+            Debug.Assert(number != null);
+#endif
             NumberTypes origin = GetNumberType(number),
                 type;
-            if (origin == NumberTypes.None) throw new ArgumentException("Not a supported numeric type", nameof(number));
+            ArgumentValidationHelper.EnsureValidArgument(nameof(number), origin != NumberTypes.None, "Not a supported numeric type");
             if (origin.IsZero() || origin.IsMinValue() || origin.IsMaxValue()) return (0, origin);
             object num;
             switch (origin.RemoveFlags())
@@ -293,22 +301,17 @@ namespace wan24.StreamSerializerExtensions
                         else if ((int)value > short.MaxValue)
                         {
                             num = (ushort)value;
-                            type = NumberTypes.Int | NumberTypes.Unsigned;
+                            type = NumberTypes.Short | NumberTypes.Unsigned;
                         }
                         else if (value > byte.MaxValue)
                         {
                             num = (short)value;
-                            type = NumberTypes.Int;
-                        }
-                        else if ((short)value > sbyte.MaxValue)
-                        {
-                            num = (byte)value;
-                            type = NumberTypes.Int | NumberTypes.Unsigned;
+                            type = NumberTypes.Short;
                         }
                         else
                         {
-                            num = (sbyte)value;
-                            type = NumberTypes.Int;
+                            num = (byte)value;
+                            type = NumberTypes.Byte | NumberTypes.Unsigned;
                         }
                     }
                     else
@@ -357,22 +360,17 @@ namespace wan24.StreamSerializerExtensions
                             else if ((int)value > short.MaxValue)
                             {
                                 num = (ushort)value;
-                                type = NumberTypes.Int | NumberTypes.Unsigned;
+                                type = NumberTypes.Short | NumberTypes.Unsigned;
                             }
                             else if (value > byte.MaxValue)
                             {
                                 num = (short)value;
-                                type = NumberTypes.Int;
-                            }
-                            else if ((short)value > sbyte.MaxValue)
-                            {
-                                num = (byte)value;
-                                type = NumberTypes.Int | NumberTypes.Unsigned;
+                                type = NumberTypes.Short;
                             }
                             else
                             {
-                                num = (sbyte)value;
-                                type = NumberTypes.Int;
+                                num = (byte)value;
+                                type = NumberTypes.Byte | NumberTypes.Unsigned;
                             }
                         }
                     }
@@ -388,6 +386,10 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Informations</returns>
         public static (Type Type, ObjectTypes ObjectType, bool WriteType, bool WriteObject) GetObjectSerializerInfo(this object obj)
         {
+            ArgumentValidationHelper.EnsureValidArgument(nameof(obj), obj);
+#if DEBUG
+            Debug.Assert(obj != null);
+#endif
             Type type = obj.GetType();
             ObjectTypes objType = obj switch
             {
@@ -414,11 +416,11 @@ namespace wan24.StreamSerializerExtensions
                 {
                     objType = ObjectTypes.Array;
                 }
-                else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+                else if (typeof(IList).IsAssignableFrom(type))
                 {
                     objType = ObjectTypes.List;
                 }
-                else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+                else if (typeof(IDictionary).IsAssignableFrom(type))
                 {
                     objType = ObjectTypes.Dict;
                 }
@@ -520,11 +522,13 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Ensure a non-null value
         /// </summary>
+        /// <typeparam name="T">Value type</typeparam>
         /// <param name="value">Value</param>
         /// <returns>Non-null value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static object EnsureNotNull(object? value) => value ?? throw new SerializerException($"Argument {nameof(value)} is NULL", new ArgumentNullException(nameof(value)));
+        public static T EnsureNotNull<T>(T? value)
+            => value ?? throw new SerializerException($"Argument {nameof(value)} is NULL", new ArgumentNullException(nameof(value)));
 
         /// <summary>
         /// Ensure a valid length
@@ -652,5 +656,22 @@ namespace wan24.StreamSerializerExtensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ISerializerOptions? GetValueSerializerOptions(this PropertyInfoExt pi, Stream stream, int version, CancellationToken cancellationToken)
             => pi.GetCustomAttributeCached<StreamSerializerAttribute>()?.GetValueSerializerOptions(pi, stream, version, cancellationToken);
+
+        /// <summary>
+        /// Determine if the constructor is the serializer constructor
+        /// </summary>
+        /// <param name="ci">Constructor</param>
+        /// <param name="requireAttribute">Require the <see cref="StreamSerializerAttribute"/>?</param>
+        /// <returns>Is the serializer constructor?</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsSerializerConstructor(this ConstructorInfo ci, bool requireAttribute = false)
+        {
+            ParameterInfo[] pis = ci.GetParametersCached();
+            return pis.Select(p => p.ParameterType).ContainsAll(typeof(Stream), typeof(int)) &&
+                pis[0].ParameterType == typeof(Stream) &&
+                pis[1].ParameterType == typeof(int) &&
+                (!requireAttribute || ci.GetCustomAttributeCached<StreamSerializerAttribute>() is not null);
+        }
     }
 }

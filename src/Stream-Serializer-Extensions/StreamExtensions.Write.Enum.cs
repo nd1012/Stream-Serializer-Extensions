@@ -58,9 +58,11 @@ namespace wan24.StreamSerializerExtensions
             if (ObjectHelper.AreEqual(value, default(T)))
             {
                 await WriteAsync(stream, (byte)NumberTypes.Default, cancellationToken).DynamicContext();
-                return;
             }
-            await WriteNumberAsync(stream, Convert.ChangeType(value, value.GetType().GetEnumUnderlyingType()), cancellationToken).DynamicContext();
+            else
+            {
+                await WriteNumberAsync(stream, Convert.ChangeType(value, value.GetType().GetEnumUnderlyingType()), cancellationToken).DynamicContext();
+            }
         }
 
         /// <summary>

@@ -1,6 +1,8 @@
 ﻿using System.Runtime;
 using System.Runtime.CompilerServices;
 
+//TODO Write(Serialized/*) -> Write
+
 namespace wan24.StreamSerializerExtensions
 {
     // Serialized
@@ -179,7 +181,7 @@ namespace wan24.StreamSerializerExtensions
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task WriteSerializedNullableAsync<T>(this Stream stream, T? obj, CancellationToken cancellationToken = default) where T : struct, IStreamSerializer
+        public static Task WriteSerializedNullableStructAsync<T>(this Stream stream, T? obj, CancellationToken cancellationToken = default) where T : struct, IStreamSerializer
             => WriteIfNotNullAsync(stream, obj, () => WriteSerializedAsync(stream, obj!.Value, cancellationToken), cancellationToken);
     }
 }

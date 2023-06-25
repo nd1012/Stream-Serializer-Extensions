@@ -21,7 +21,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "31xEXtlTOylVjAwoClUnE3apTrHUGXslSx13lGZiGcw="
+          "hash": "wpRBFsXPBUohplXVE+G5c9FXFo6PHSHR1kPFsfoKtJs="
         }
       },
       "is_incremental": false,
@@ -33,7 +33,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.AutoStreamSerializerBase-1.html",
-          "hash": "TOCbuzMz9EW5xMASqOaxHjVW96ailgxZtLNwCr26zjo="
+          "hash": "ftSUCO9iHO5QbPabthTJMWEWfJpnAJMRVDYzUxuDEss="
         }
       },
       "is_incremental": false,
@@ -45,7 +45,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.AutoStreamSerializerConfig-1.html",
-          "hash": "hHcVw3zMjdnZpd2Hoolh+dstQgRxVqIS4TQRnlKMOuY="
+          "hash": "ZseFcf9PEmJ2YNJvfiCnXTrtgB8jIpDGWOr66cvIF0s="
         }
       },
       "is_incremental": false,
@@ -57,7 +57,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.AutoStreamSerializerInfo.AsyncDeserializer_Delegate.html",
-          "hash": "iqb2GPbwDkIxhrGlQRXekbkSbIaIrJTmhuFCEsCTH2k="
+          "hash": "9tb/lVyFo8Yy1VPf8S5psdnmY1o1883UaKokXao2nXs="
         }
       },
       "is_incremental": false,
@@ -69,7 +69,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.AutoStreamSerializerInfo.AsyncSerializer_Delegate.html",
-          "hash": "V07afv/pWlD1kFGRIJfwbQUeIiMYeea0wgcGhsWsWyg="
+          "hash": "DidvaEZMN6tGdBlralJmu30viTjDZ+FMVYvoX1afL7U="
         }
       },
       "is_incremental": false,
@@ -81,7 +81,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.AutoStreamSerializerInfo.Deserializer_Delegate.html",
-          "hash": "lKrEeEHgymfhIs/hQ2Myeoy6NP/83AO2yjNicGkUHck="
+          "hash": "z6sg7EJsavtNSY7NVWGBqAOYoq0r0gSKVAJhFN/4ABg="
         }
       },
       "is_incremental": false,
@@ -93,7 +93,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.AutoStreamSerializerInfo.Serializer_Delegate.html",
-          "hash": "46/RM2odGXLa9VXFdWZZO+GuvmThcvUmSKNBvAdZ4CM="
+          "hash": "VCU7ZZYjm5cE/IblC1eMT+S3G7hvCbXb91RG1bLFkUg="
         }
       },
       "is_incremental": false,
@@ -105,7 +105,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.AutoStreamSerializerInfo.html",
-          "hash": "gNRzPisPhHeQitoshItJNv0oVHvrGEwO5GR2znxL1WE="
+          "hash": "2ia8UHV4TUekW6Gnponk6U2Odwveh+exkl/aZjv4uUg="
         }
       },
       "is_incremental": false,
@@ -117,7 +117,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.DefaultSerializerOptions.html",
-          "hash": "ZU7aICTQ7vxXd4JiH9UAl/dAyUrKQP00valeraygoN4="
+          "hash": "YG3P7zzDXhBzY+UXmFvCpi/tVrFTsBCNv/wC+1b1rro="
         }
       },
       "is_incremental": false,
@@ -129,7 +129,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.DisposableAutoStreamSerializerBase-1.html",
-          "hash": "WMv9nrO8OaPB4s9F6Rj6jHTQvawwxZQrSduJJS2NRyo="
+          "hash": "z/l9ZUOMevhDeJGO1Q3CAeKk47/SzQjPB9RRHgk8eHw="
         }
       },
       "is_incremental": false,
@@ -141,7 +141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.html",
-          "hash": "MtAVJyeuzh4vDZ7aoyaXQEHbjEDeyguwOpud6FqdZhI="
+          "hash": "kJd0jtJud/64A3UlxhHitpaejeeHC7d+Xg7/9aBm1vg="
         }
       },
       "is_incremental": false,
@@ -153,7 +153,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.Enumerator.StreamAsyncEnumeratorBase-1.html",
-          "hash": "qUnhJFPMHJ3kFYwPM8/EytmnD2QkNMrIX4vIoBV5GN4="
+          "hash": "tF7RVBibixrrqgyT6uCg0C3vM0KOmwaxRFaNLF35z+0="
         }
       },
       "is_incremental": false,
@@ -165,7 +165,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html",
-          "hash": "IlkdQWIpd2yadiZemDeW7Z2EGCZFVb2Oh3HcWK6ZWfQ="
+          "hash": "M89eGonTKnEpwPTfKjAMkJa3WMbXCA/+/HRdWmeE4PA="
         }
       },
       "is_incremental": false,
@@ -177,7 +177,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.Enumerator.StreamNumberAsyncEnumerator-1.html",
-          "hash": "Cmgk0O+OhzvZZsF1Dsz01IgYkhn8TXeQ3V7lG0rC8UQ="
+          "hash": "SrC5YWfKXtZdubLkvr6keewq47CiAe8Ew/F8eRgl1Js="
         }
       },
       "is_incremental": false,
@@ -189,7 +189,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator-1.html",
-          "hash": "s6dKlDqeYNENuQim65WMktog0sZ0qCqrEu/jwvTA1Zc="
+          "hash": "g3zwKwAlypqwygZsFfjbwAeRiY42+RhvSeMgoRdNvQY="
         }
       },
       "is_incremental": false,
@@ -201,7 +201,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.Enumerator.StreamSerializerAsyncEnumerator-1.html",
-          "hash": "UJ34GERJXBfnsakejmgjzFlh3htLOdl0Xd8keZ9hM34="
+          "hash": "oMsywutPug5X2r1dFT4LGbah+KOi2fFTP5pqCCD3v2Q="
         }
       },
       "is_incremental": false,
@@ -213,7 +213,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator-1.html",
-          "hash": "F2kP43fUKNiA84013W8rcjzzUBnIW1Cs/3DYChAy59s="
+          "hash": "I1qVCsduwYmE9r+bKRq3sDx/iqimIatE27mlLJQ1E8g="
         }
       },
       "is_incremental": false,
@@ -225,7 +225,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.Enumerator.StreamStringAsyncEnumerator.html",
-          "hash": "Sdq6tTsrhUmBphC/Q7EUMg0pZNhTyuBesDyimEp99D4="
+          "hash": "RE8FteBfXrxQ6L/KA0y7Ukv7F67bl6+87jJ6Tpd+fH8="
         }
       },
       "is_incremental": false,
@@ -237,7 +237,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.html",
-          "hash": "dw1J5uFihxr2kn+SnrS96W1IsJvM7isO7QL2tIeQ8ro="
+          "hash": "nU9xeo5eG0oxjWFmGySrmnBGQrfxfDHn0i7pcXn3xYY="
         }
       },
       "is_incremental": false,
@@ -261,7 +261,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.IAutoStreamSerializer.html",
-          "hash": "MxQRcnXnqOCrP3wQt6H2CbNx+IhN4JdvE5wsHigiJ5o="
+          "hash": "TjeOA+SVNx5ndDhqFRkelywINGPVN5Rs6VfxY+dQ7Lk="
         }
       },
       "is_incremental": false,
@@ -273,7 +273,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.IAutoStreamSerializerConfig.html",
-          "hash": "UjHV4OYl0w2uNkuVNh/0WLGPbozYXVD6UWVnGKxIGBg="
+          "hash": "anexlR2VqaIdMNfELvHgbDrX+LeeA5GKNls+JcyHktM="
         }
       },
       "is_incremental": false,
@@ -285,7 +285,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.ISerializerOptions.html",
-          "hash": "iPspk1MQHhraB7VRlNZlVGi5SmryUIcpg16c704S+bs="
+          "hash": "jvUfIrC8hMLVFBRd7jRw3JlKMdi++qfD0BmwHPlvhPE="
         }
       },
       "is_incremental": false,
@@ -297,7 +297,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.IStreamSerializer.html",
-          "hash": "eI6lGM1plhXldVK4rC8ytM99rJb8TgTlHXwe35bUi3s="
+          "hash": "CgFdpt1m5K53PZEf85rV/Bh+g9lukffpeWx5XSPATdQ="
         }
       },
       "is_incremental": false,
@@ -309,7 +309,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.IStreamSerializerVersion.html",
-          "hash": "mEtLSm8XGlmS1PdxRQPkjmawRtkn/1unk5+U3eSMLiU="
+          "hash": "ykBM4GcgrlL/EUuOMXOb3zGHt6LpnMBz4TaXha+5ZLM="
         }
       },
       "is_incremental": false,
@@ -321,7 +321,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.NumberTypes.html",
-          "hash": "FvSX++vhTkrL+GsGx+dcU14ec3Je3fK9kPlkzXHdA3c="
+          "hash": "ojybFav1LhAMsS+k3nExCUnNlfvbf2y3XaFJDdflclU="
         }
       },
       "is_incremental": false,
@@ -333,7 +333,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.ObjectTypes.html",
-          "hash": "pt+zGBD8aJ0jvXQo2LET4Nn5LMqqalKoA9J9z8e5ENc="
+          "hash": "uDencMrjaOkRsytRfYfzQiZU9yzdjhdZmH2WNSH+/2w="
         }
       },
       "is_incremental": false,
@@ -345,7 +345,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.SerializerEventArgs-1.html",
-          "hash": "AiwT9llb75KRGJR4vPO98tsBPMBmx6+pyR3P5nt7fmc="
+          "hash": "Kz9CJqwgUw/qrfCzQzp+53jh3YLftyKrY++if9cBQ6E="
         }
       },
       "is_incremental": false,
@@ -357,7 +357,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.SerializerException.html",
-          "hash": "wx2/t2umrTTQBUNt9QwZtm9YvVer7FtPuiYGpKrZaNM="
+          "hash": "Ir3m+pF4R95akt//bN1/emEa+TmtqMC4cZ8NjHGxJOQ="
         }
       },
       "is_incremental": false,
@@ -369,7 +369,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.SerializerHelper.html",
-          "hash": "qvpjeHU2MH1u5D4XKPEPnoSj9l25YGSZBvfW+J/sx+4="
+          "hash": "QbSTYjO7Z6HVugDIGudmS9HkpVbqnsDshVPhv2h18BM="
         }
       },
       "is_incremental": false,
@@ -381,7 +381,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.SerializerOptionsBase.html",
-          "hash": "b4arXOWMp6EnF5VcKU903H+QEBP5rGvmFFadvoee2As="
+          "hash": "dodbqIduzfXVlaoksmwEBCyrWOh4sr7LTn54RQVHBco="
         }
       },
       "is_incremental": false,
@@ -393,7 +393,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamExtensions.html",
-          "hash": "8pbBzxVVsTV2gqL0SG6B4E1q//gnqq9hvsJpQRBqokY="
+          "hash": "b5m8woBFj4XvcqP5E/0qFWP/J9zex/IVeIXZLh5asQU="
         }
       },
       "is_incremental": false,
@@ -405,7 +405,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.AsyncDeserialize_Delegate.html",
-          "hash": "ghxSX6wJwGT4ZEdzKsuoZiLF8Zd2Ftc9ChaSUKxFkKk="
+          "hash": "zO9lY/KRno3Nh4TpBrgvqd5WweZN3h8KpESJ4bNxhmg="
         }
       },
       "is_incremental": false,
@@ -417,7 +417,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.AsyncSerialize_Delegate.html",
-          "hash": "aw4qpFELAOFdAzWvtmDbSaIlgyxH73Qh7JEZbpfRZOo="
+          "hash": "GYKAMZCQ9Vhehwwz6kJGC+PV26D7WljWn9VEQ9X2J9U="
         }
       },
       "is_incremental": false,
@@ -429,7 +429,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.Deserialize_Delegate.html",
-          "hash": "hnHiRb5Ygxna6QLy/Ch8e2UwmQIK1LR3ubWvE0uFYKg="
+          "hash": "3ZvkMA731sGaikL4RUUM6bKG0vtP9NqjDRknomg2Aww="
         }
       },
       "is_incremental": false,
@@ -441,7 +441,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.FindAsyncDeserializer_Delegate.html",
-          "hash": "Yv9Ym4TKoDkxCiLsRi3POWtRQ9h02eRwCZI+8I8NX2Y="
+          "hash": "66sEAXLLAldHDPu8IyVEc8tx/aczxvCYilmpsD+7IU8="
         }
       },
       "is_incremental": false,
@@ -453,7 +453,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.FindAsyncSerializer_Delegate.html",
-          "hash": "Y+1WN+22TaAwl7ZCqmeHx6EG2OvUlKNw/ks6nzXXMng="
+          "hash": "5LHGIxnKMHzA2x7Zt3huL9EqLZ7kq5szBLQDKSH1xkM="
         }
       },
       "is_incremental": false,
@@ -465,7 +465,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.FindSyncDeserializer_Delegate.html",
-          "hash": "5+q5/DOzq3OuxeKbLqRA2/s1BkfqXiyKlbm0P3HBTNc="
+          "hash": "LzZhrQ+T7xDuPeChLzK1tLtYwzfs5ipSegKnDHID4FE="
         }
       },
       "is_incremental": false,
@@ -477,7 +477,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.FindSyncSerializer_Delegate.html",
-          "hash": "orzzLi6ZcVE3mbj6/NU8vA4wrwhTgaH6higm/lXYDd0="
+          "hash": "wHBwftCLQnDOXelEabdiWLVBgP0gTDmxHCTADlWT2O0="
         }
       },
       "is_incremental": false,
@@ -489,7 +489,19 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.Init_Delegate.html",
-          "hash": "Sq/Ifqpp2PU3EMM3n/daPOZk0OC9X1s324U17VrqTyQ="
+          "hash": "R/np5q+A/k4GvOIgzMkmzQ1pQBc2g6jvpymvCUjBSMs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.InstanceFactory_Delegate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.InstanceFactory_Delegate.html",
+          "hash": "cfAlpwTTWiPePl+7HHJX6Zd+EVDBtRDOWhVIkoWfXnI="
         }
       },
       "is_incremental": false,
@@ -501,7 +513,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.LoadType_Delegate.html",
-          "hash": "zmm4UL5bTLgsBC63uXqUqZPN2cnjG8GEkmbe3mHlW9Y="
+          "hash": "DCPKZCxwDhDmYJ/Ur2QaMxmbdKsUwAxfTf+afSqpFXY="
         }
       },
       "is_incremental": false,
@@ -513,7 +525,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.Serialize_Delegate.html",
-          "hash": "wJvfdIZxVrkWwvXE2EDvGUoFxfqFm4HPg/24qpA+cnU="
+          "hash": "l9ZnWLUNsCGv3yKm0owT3R1F3yu8eAu8QVF13AsxTII="
         }
       },
       "is_incremental": false,
@@ -525,7 +537,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializer.html",
-          "hash": "ASuFpeqoa/RPfWFR1yFNrM8GCYZRtB+Ua5SqL37mkXI="
+          "hash": "9kOZFwDra/gEyg/TMDxU8nU5Z8hpk3LSo230zchvmtI="
         }
       },
       "is_incremental": false,
@@ -549,7 +561,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.SerializerOptionsFactory_Delegate.html",
-          "hash": "FylKxfWvU4V6lNqNOxLSS90hE/sG1o6FO9ydDvGyqkM="
+          "hash": "whx0LKbQaF2aC2XcIypZXRYbNZ+YljJe5kNmYwZDnpI="
         }
       },
       "is_incremental": false,
@@ -561,7 +573,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.StreamFactory_Delegate.html",
-          "hash": "KjMFow82U9ejIVT5i1ypiEF0HREQPYlBU6hNXdxZWbo="
+          "hash": "DIToYuV2ovfutZbpVCVwFZRROdbBybF0vQmU39ub8ww="
         }
       },
       "is_incremental": false,
@@ -573,7 +585,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializerAttribute.html",
-          "hash": "bRVZbbW7ch4z7GwFIkBR8f6CF7Ewf9KeAXhGxMpCDRY="
+          "hash": "TorZnMb+npT1sju+s1iog40mq+QmI6fI/AzzWr1gfnk="
         }
       },
       "is_incremental": false,
@@ -585,7 +597,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializerBase.html",
-          "hash": "hPdmbjSGW0e/o1FwFfrVsC6LjnqIsz/7znXF4BjX3dY="
+          "hash": "DMsrqzvJdcSCAJUC/e8+c4Zxdfmott0wBccKzeXM1Cg="
         }
       },
       "is_incremental": false,
@@ -597,7 +609,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.StreamSerializerModes.html",
-          "hash": "D2WEUdyNgLVnf9UC5S90hHeHHiB/GPzXsIsgX3Dp000="
+          "hash": "4i9d0pmJraM76N3McQl7wHBxaqfuz55cLO01+pkSUGM="
         }
       },
       "is_incremental": false,
@@ -609,7 +621,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.TypeLoadEventArgs.html",
-          "hash": "+c9HJJ9/eZtzoa9MxxSwpn5csRwENatqKHOFtWR1FYc="
+          "hash": "vzexxRJwAaEJ4/Qaf9Szu8eoQZ/sM1LgNi/iF61lv6Q="
         }
       },
       "is_incremental": false,
@@ -621,7 +633,7 @@
       "output": {
         ".html": {
           "relative_path": "api/wan24.StreamSerializerExtensions.html",
-          "hash": "U4AOXd9VNbkUlYgP9+6vhtg9jsfUlZ/LxcgokdjE2og="
+          "hash": "8a39+Avjooz8fF2g14yVXFuzb6ghi8T98Q+lgbPLmsM="
         }
       },
       "is_incremental": false,
@@ -696,7 +708,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 50,
+          "total_file_count": 51,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
