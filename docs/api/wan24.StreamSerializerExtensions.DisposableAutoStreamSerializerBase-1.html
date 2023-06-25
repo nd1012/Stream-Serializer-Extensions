@@ -79,12 +79,17 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.html">DisposableStreamSerializerBase</a></div>
-    <div class="level2"><span class="xref">DisposableAutoStreamSerializerBase&lt;T&gt;</span></div>
+    <div class="level1"><span class="xref">wan24.Core.DisposableBase</span></div>
+    <div class="level2"><a class="xref" href="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.html">DisposableStreamSerializerBase</a></div>
+    <div class="level3"><span class="xref">DisposableAutoStreamSerializerBase&lt;T&gt;</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><span class="xref">IObjectValidatable</span></div>
+    <div><span class="xref">wan24.Core.IDisposableObject</span></div>
+    <div><span class="xref">System.IDisposable</span></div>
+    <div><span class="xref">System.IAsyncDisposable</span></div>
+    <div><span class="xref">wan24.ObjectValidation.IObjectValidatable</span></div>
+    <div><span class="xref">System.ComponentModel.DataAnnotations.IValidatableObject</span></div>
     <div><a class="xref" href="wan24.StreamSerializerExtensions.IAutoStreamSerializer.html">IAutoStreamSerializer</a></div>
     <div><a class="xref" href="wan24.StreamSerializerExtensions.IStreamSerializerVersion.html">IStreamSerializerVersion</a></div>
     <div><a class="xref" href="wan24.StreamSerializerExtensions.IStreamSerializer.html">IStreamSerializer</a></div>
@@ -115,12 +120,81 @@
     <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.html#wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_DeserializeAsync_Stream_System_Int32_CancellationToken_">DisposableStreamSerializerBase.IStreamSerializer.DeserializeAsync(Stream, Int32, CancellationToken)</a>
     </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.DisposeSyncObject</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.EnsureUndisposed(System.Boolean, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.IfUndisposed&lt;T&gt;(T, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.IfUndisposed(System.Action, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.IfUndisposed&lt;T&gt;(System.Func&lt;T&gt;, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.IfUndisposedNullable&lt;T&gt;(System.Func&lt;T&gt;, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.Dispose(System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.DisposeCore()</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.DisposeAttributes()</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.DisposeAttributesAsync()</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.DisposeAsync()</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.IsDisposing</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.IsDisposed</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.OnDisposing</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.OnDisposed</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="wan24.StreamSerializerExtensions.html">wan24.StreamSerializerExtensions</a></h6>
   <h6><strong>Assembly</strong>: StreamSerializerExtensions.dll</h6>
   <h5 id="wan24_StreamSerializerExtensions_DisposableAutoStreamSerializerBase_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class DisposableAutoStreamSerializerBase&lt;T&gt; : DisposableStreamSerializerBase, IAutoStreamSerializer, IStreamSerializerVersion, IStreamSerializer where T : DisposableAutoStreamSerializerBase&lt;T&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class DisposableAutoStreamSerializerBase&lt;T&gt; : DisposableStreamSerializerBase, IDisposableObject, IDisposable, IAsyncDisposable, IObjectValidatable, IValidatableObject, IAutoStreamSerializer, IStreamSerializerVersion, IStreamSerializer where T : DisposableAutoStreamSerializerBase&lt;T&gt;</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -423,7 +497,19 @@
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">IObjectValidatable</span>
+      <span class="xref">wan24.Core.IDisposableObject</span>
+  </div>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
+  <div>
+      <span class="xref">System.IAsyncDisposable</span>
+  </div>
+  <div>
+      <span class="xref">wan24.ObjectValidation.IObjectValidatable</span>
+  </div>
+  <div>
+      <span class="xref">System.ComponentModel.DataAnnotations.IValidatableObject</span>
   </div>
   <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.IAutoStreamSerializer.html">IAutoStreamSerializer</a>

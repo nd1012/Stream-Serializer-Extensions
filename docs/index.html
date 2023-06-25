@@ -79,9 +79,20 @@ binary stream sequence.</p>
 <li>possibly any other objects with a parameterless public constructor</li>
 <li>streams</li>
 </ul>
+<p>and exports an asynchronous fluent API for writing operations, too.</p>
 <p><strong>NOTE</strong>: Arrays, lists and dictionaries with nullable values aren't supported.</p>
 <p>It's possible to override the build in serializers, and to add custom type
 serializers, too.</p>
+<p>Using an attribute for your types and their properties you can make them
+binary serializable with backward compatibility, easily.</p>
+<p>The serializer is designed to produce only a minimum of absolutely required
+overhead, which sometimes can result in even less data, too (compared to
+usually used serialization methods).</p>
+<p>The API is fully synchronous and asynchronous - you choose depending on the
+used stream type.</p>
+<p>Cold storage of serialized sequences can be challenging. Using the build in
+sequencer versioning you can ensure that a sequence can be deserialized at any
+time after a component was updated.</p>
 <h2 id="methods">Methods</h2>
 <p>The <code>Write</code> and <code>WriteAsync</code> methods will be extended with supported types,
 while serializing some types is being done with specialized methods:</p>
@@ -197,7 +208,8 @@ more generic. This is when to choose which method:</p>
 serialization method for a given number. For example, if you give an Int32
 value which could be fit into an UInt16, the value will be converted for
 serialization, and you can save one byte (because the methods will store the
-used numeric type in an extra byte).</p>
+used numeric type in an extra byte). There's also a chance to end up with only
+a single byte when serializing a <code>decimal</code>, if the value was zero, for example.</p>
 <p><strong>NOTE</strong>: All numbers will be serialized using little endian.</p>
 <h2 id="embedded-streams">Embedded streams</h2>
 <p>Using <code>WriteStream*</code> and <code>ReadStream*</code> you can embed a stream in serialized
@@ -207,7 +219,8 @@ while non-seekable streams will be embedded chunked.</p>
 <code>ReadObject</code> or <code>ReadAny</code>), a temporary <code>FileStream</code> will be created, which
 will delete the temporary file when disposing. You can define a stream factory
 using <code>StreamSerializerAttribute.StreamFactoryType</code> and
-<code>StreamSerializerAttribute.StreamFactoryMethod</code>.</p>
+<code>StreamSerializerAttribute.StreamFactoryMethod</code>. Or you create a custom
+<code>StreamSerializerAttribute</code> and override the <code>GetStream</code> method.</p>
 <h2 id="structure-serialization">Structure serialization</h2>
 <p>The <code>WriteStruct*</code> methods use <code>Marshal</code> for structure serialization, which
 produce little or big endian bits depending on the processors endianess. To
@@ -231,9 +244,13 @@ only:</p>
 <li>No object referencing fields</li>
 <li>Fixed length contents</li>
 </ul>
+<p><strong>CAUTION</strong>: If the structure changes, it can't be deserialized using
+<code>Marshal</code> anymre. For cold storage consider to implement
+<code>IStreamSerializerVersion</code> and use <code>WriteSerializedStruct*</code> and
+<code>ReadSerializedStruct*</code> instead.</p>
 <p><strong>TIP</strong>: A structure may implement the <code>IStreamSerializer</code> inferface and be
-written using the <code>WriteSerialized*</code> methods. For reading you can use the
-<code>ReadSerializedStruct*</code> methods.</p>
+written using the <code>WriteSerializedStruct*</code> methods. For reading you can use
+the <code>ReadSerializedStruct*</code> methods.</p>
 <h2 id="custom-serializer">Custom serializer</h2>
 <h3 id="using-the-streamserializerattribute-attribute">Using the <code>StreamSerializerAttribute</code> attribute</h3>
 <p>The type needs to have a constructor without parameters. Properties with a
@@ -412,19 +429,6 @@ interface. Then you can use the <code>WriteSerialized*</code>, <code>WriteObject
     }
 }
 </code></pre>
-<p>When deserializing using the <code>ReadAny*</code> methods, the target type needs to be
-loaded from the environment. You can add your own type loading handler using
-the <code>StreamSerializer.OnLoadType</code> event. The library uses the <code>wan24-Core</code>
-NuGet package. If you want to use the <code>wan24-Core</code> type helper for loading
-types:</p>
-<pre><code class="lang-cs">StreamSerializer.OnInit += (e) =&gt; StreamSerializer.OnLoadType += (s, e) =&gt;
-{
-    if(e.Type != null) return;
-    e.Type = TypeHelper.Instance.GetType(e.Name);
-};
-</code></pre>
-<p><strong>CAUTION</strong>: By adding the <code>wan24-Core</code> type helper like this, any type may be
-deserialized, which <del>may be</del> is a security issue!</p>
 <p>When using the <code>StreamSerializerBase</code> base class, you can also give a value
 for the parameter <code>objectVersion</code> to the base constructor to enable object
 versioning. This makes it possible that newer object versions are able to
@@ -456,6 +460,15 @@ version you can switch and handle the binary sequence in the required way. To
 access the versioning information of an object, you can use the optional
 <code>IStreamSerializerVersion</code> interface, which is implemented by
 <code>StreamSerializerBase</code>, too.</p>
+<h3 id="type-instance-factory">Type instance factory</h3>
+<p>When deserializing an object which implements the <code>IStreamSerializer</code>
+interface, but needs a special construction, you can register an instance
+factory:</p>
+<pre><code class="lang-cs">StreamSerializer.InstanceFactories[typeof(YourType)] = (type, stream, version, options) =&gt; 
+{
+    // Return the deserialized instance here
+};
+</code></pre>
 <h2 id="deserializer-limitations">Deserializer limitations</h2>
 <p>When deserializing variable length objects (like arrays or strings), you can
 limit the allowed number of items/bytes (or request a minimum count) using the

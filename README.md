@@ -18,10 +18,26 @@ The built in serializer supports binary serialization of
 - possibly any other objects with a parameterless public constructor
 - streams
 
+and exports an asynchronous fluent API for writing operations, too.
+
 **NOTE**: Arrays, lists and dictionaries with nullable values aren't supported.
 
 It's possible to override the build in serializers, and to add custom type 
 serializers, too.
+
+Using an attribute for your types and their properties you can make them 
+binary serializable with backward compatibility, easily.
+
+The serializer is designed to produce only a minimum of absolutely required 
+overhead, which sometimes can result in even less data, too (compared to 
+usually used serialization methods).
+
+The API is fully synchronous and asynchronous - you choose depending on the 
+used stream type.
+
+Cold storage of serialized sequences can be challenging. Using the build in 
+sequencer versioning you can ensure that a sequence can be deserialized at any 
+time after a component was updated.
 
 ## Methods
 
@@ -77,7 +93,8 @@ The `WriteNumber*` and `ReadNumber*` methods will find the best matching
 serialization method for a given number. For example, if you give an Int32 
 value which could be fit into an UInt16, the value will be converted for 
 serialization, and you can save one byte (because the methods will store the 
-used numeric type in an extra byte).
+used numeric type in an extra byte). There's also a chance to end up with only 
+a single byte when serializing a `decimal`, if the value was zero, for example.
 
 **NOTE**: All numbers will be serialized using little endian.
 
@@ -91,7 +108,8 @@ When deserializing an embedded stream using generic read-methods (like
 `ReadObject` or `ReadAny`), a temporary `FileStream` will be created, which 
 will delete the temporary file when disposing. You can define a stream factory 
 using `StreamSerializerAttribute.StreamFactoryType` and 
-`StreamSerializerAttribute.StreamFactoryMethod`.
+`StreamSerializerAttribute.StreamFactoryMethod`. Or you create a custom 
+`StreamSerializerAttribute` and override the `GetStream` method.
 
 ## Structure serialization
 
@@ -118,9 +136,14 @@ only:
 - No object referencing fields
 - Fixed length contents
 
+**CAUTION**: If the structure changes, it can't be deserialized using 
+`Marshal` anymre. For cold storage consider to implement 
+`IStreamSerializerVersion` and use `WriteSerializedStruct*` and 
+`ReadSerializedStruct*` instead.
+
 **TIP**: A structure may implement the `IStreamSerializer` inferface and be 
-written using the `WriteSerialized*` methods. For reading you can use the 
-`ReadSerializedStruct*` methods.
+written using the `WriteSerializedStruct*` methods. For reading you can use 
+the `ReadSerializedStruct*` methods.
 
 ## Custom serializer
 
@@ -329,23 +352,6 @@ public class YourType : StreamSerializerBase
 }
 ```
 
-When deserializing using the `ReadAny*` methods, the target type needs to be 
-loaded from the environment. You can add your own type loading handler using 
-the `StreamSerializer.OnLoadType` event. The library uses the `wan24-Core` 
-NuGet package. If you want to use the `wan24-Core` type helper for loading 
-types:
-
-```cs
-StreamSerializer.OnInit += (e) => StreamSerializer.OnLoadType += (s, e) =>
-{
-    if(e.Type != null) return;
-    e.Type = TypeHelper.Instance.GetType(e.Name);
-};
-```
-
-**CAUTION**: By adding the `wan24-Core` type helper like this, any type may be 
-deserialized, which ~~may be~~ is a security issue!
-
 When using the `StreamSerializerBase` base class, you can also give a value 
 for the parameter `objectVersion` to the base constructor to enable object 
 versioning. This makes it possible that newer object versions are able to 
@@ -380,6 +386,19 @@ version you can switch and handle the binary sequence in the required way. To
 access the versioning information of an object, you can use the optional 
 `IStreamSerializerVersion` interface, which is implemented by 
 `StreamSerializerBase`, too.
+
+### Type instance factory
+
+When deserializing an object which implements the `IStreamSerializer` 
+interface, but needs a special construction, you can register an instance 
+factory:
+
+```cs
+StreamSerializer.InstanceFactories[typeof(YourType)] = (type, stream, version, options) => 
+{
+    // Return the deserialized instance here
+};
+```
 
 ## Deserializer limitations
 

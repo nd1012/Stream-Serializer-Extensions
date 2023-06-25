@@ -79,11 +79,15 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html">StreamEnumeratorBase</a>&lt;T&gt;</div>
-    <div class="level2"><span class="xref">StreamNumberEnumerator&lt;T&gt;</span></div>
+    <div class="level1"><span class="xref">wan24.Core.DisposableBase</span></div>
+    <div class="level2"><a class="xref" href="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html">StreamEnumeratorBase</a>&lt;T&gt;</div>
+    <div class="level3"><span class="xref">StreamNumberEnumerator&lt;T&gt;</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
+    <div><span class="xref">wan24.Core.IDisposableObject</span></div>
+    <div><span class="xref">System.IDisposable</span></div>
+    <div><span class="xref">System.IAsyncDisposable</span></div>
     <div><span class="xref">System.Collections.IEnumerator</span>&lt;T&gt;</div>
   </div>
   <div class="inheritedMembers">
@@ -118,12 +122,78 @@
     <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase-1.html#wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Enumerate__1_Stream_System_Nullable_System_Int32__">StreamEnumeratorBase&lt;T&gt;.Enumerate&lt;tEnumerator&gt;(Stream, Nullable&lt;Int32&gt;)</a>
     </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.DisposeSyncObject</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.EnsureUndisposed(System.Boolean, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.IfUndisposed&lt;T&gt;(T, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.IfUndisposed(System.Action, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.IfUndisposed&lt;T&gt;(System.Func&lt;T&gt;, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.IfUndisposedNullable&lt;T&gt;(System.Func&lt;T&gt;, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.DisposeCore()</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.DisposeAttributes()</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.DisposeAttributesAsync()</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.DisposeAsync()</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.IsDisposing</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.IsDisposed</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.OnDisposing</span>
+    </div>
+    <div>
+      <span class="xref">wan24.Core.DisposableBase.OnDisposed</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="wan24.StreamSerializerExtensions.Enumerator.html">wan24.StreamSerializerExtensions.Enumerator</a></h6>
   <h6><strong>Assembly</strong>: StreamSerializerExtensions.dll</h6>
   <h5 id="wan24_StreamSerializerExtensions_Enumerator_StreamNumberEnumerator_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class StreamNumberEnumerator&lt;T&gt; : StreamEnumeratorBase&lt;T&gt; where T : struct, IConvertible</code></pre>
+    <pre><code class="lang-csharp hljs">public class StreamNumberEnumerator&lt;T&gt; : StreamEnumeratorBase&lt;T&gt;, IDisposableObject, IDisposable, IAsyncDisposable where T : struct, IConvertible</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -298,6 +368,15 @@
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase&lt;T&gt;.ReadObject()</span></div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">wan24.Core.IDisposableObject</span>
+  </div>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
+  <div>
+      <span class="xref">System.IAsyncDisposable</span>
+  </div>
   <div>
       <span class="xref">System.Collections.IEnumerator&lt;&gt;</span>
   </div>
