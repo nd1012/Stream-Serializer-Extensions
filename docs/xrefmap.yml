@@ -2750,6 +2750,22 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.EnumerateStringAsync
   nameWithType: StreamExtensions.EnumerateStringAsync
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.FluentAsync(Task{Stream},Func{Stream,Task{Stream}})
+  name: FluentAsync(Task<Stream>, Func<Stream, Task<Stream>>)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_FluentAsync_Task_Stream__Func_Stream_Task_Stream___
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.FluentAsync(Task{Stream},Func{Stream,Task{Stream}})
+  name.vb: FluentAsync(Task(Of Stream), Func(Of Stream, Task(Of Stream)))
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.FluentAsync(Task<Stream>, Func<Stream, Task<Stream>>)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.FluentAsync(Task(Of Stream), Func(Of Stream, Task(Of Stream)))
+  nameWithType: StreamExtensions.FluentAsync(Task<Stream>, Func<Stream, Task<Stream>>)
+  nameWithType.vb: StreamExtensions.FluentAsync(Task(Of Stream), Func(Of Stream, Task(Of Stream)))
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.FluentAsync*
+  name: FluentAsync
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_FluentAsync_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamExtensions.FluentAsync
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.FluentAsync
+  nameWithType: StreamExtensions.FluentAsync
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.ReadAny(Stream,System.Nullable{System.Int32},wan24.StreamSerializerExtensions.ISerializerOptions)
   name: ReadAny(Stream, Nullable<Int32>, ISerializerOptions)
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_ReadAny_Stream_System_Nullable_System_Int32__wan24_StreamSerializerExtensions_ISerializerOptions_
@@ -5062,6 +5078,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyAsync(Stream,System.Object,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyAsync(Stream, System.Object, CancellationToken)
   nameWithType: StreamExtensions.WriteAnyAsync(Stream, Object, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyAsync(Task{Stream},System.Object,CancellationToken)
+  name: WriteAnyAsync(Task<Stream>, Object, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyAsync_Task_Stream__System_Object_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyAsync(Task{Stream},System.Object,CancellationToken)
+  name.vb: WriteAnyAsync(Task(Of Stream), Object, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyAsync(Task<Stream>, System.Object, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyAsync(Task(Of Stream), System.Object, CancellationToken)
+  nameWithType: StreamExtensions.WriteAnyAsync(Task<Stream>, Object, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteAnyAsync(Task(Of Stream), Object, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyAsync*
   name: WriteAnyAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyAsync_
@@ -5088,6 +5113,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyNullableAsync(Stream,System.Object,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyNullableAsync(Stream, System.Object, CancellationToken)
   nameWithType: StreamExtensions.WriteAnyNullableAsync(Stream, Object, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyNullableAsync(Task{Stream},System.Object,CancellationToken)
+  name: WriteAnyNullableAsync(Task<Stream>, Object, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyNullableAsync_Task_Stream__System_Object_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyNullableAsync(Task{Stream},System.Object,CancellationToken)
+  name.vb: WriteAnyNullableAsync(Task(Of Stream), Object, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyNullableAsync(Task<Stream>, System.Object, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyNullableAsync(Task(Of Stream), System.Object, CancellationToken)
+  nameWithType: StreamExtensions.WriteAnyNullableAsync(Task<Stream>, Object, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteAnyNullableAsync(Task(Of Stream), Object, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyNullableAsync*
   name: WriteAnyNullableAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyNullableAsync_
@@ -5114,6 +5148,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectAsync(Stream,System.Object,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectAsync(Stream, System.Object, CancellationToken)
   nameWithType: StreamExtensions.WriteAnyObjectAsync(Stream, Object, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectAsync(Task{Stream},System.Object,CancellationToken)
+  name: WriteAnyObjectAsync(Task<Stream>, Object, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyObjectAsync_Task_Stream__System_Object_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectAsync(Task{Stream},System.Object,CancellationToken)
+  name.vb: WriteAnyObjectAsync(Task(Of Stream), Object, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectAsync(Task<Stream>, System.Object, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectAsync(Task(Of Stream), System.Object, CancellationToken)
+  nameWithType: StreamExtensions.WriteAnyObjectAsync(Task<Stream>, Object, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteAnyObjectAsync(Task(Of Stream), Object, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectAsync*
   name: WriteAnyObjectAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyObjectAsync_
@@ -5140,6 +5183,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectNullableAsync(Stream,System.Object,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectNullableAsync(Stream, System.Object, CancellationToken)
   nameWithType: StreamExtensions.WriteAnyObjectNullableAsync(Stream, Object, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectNullableAsync(Task{Stream},System.Object,CancellationToken)
+  name: WriteAnyObjectNullableAsync(Task<Stream>, Object, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyObjectNullableAsync_Task_Stream__System_Object_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectNullableAsync(Task{Stream},System.Object,CancellationToken)
+  name.vb: WriteAnyObjectNullableAsync(Task(Of Stream), Object, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectNullableAsync(Task<Stream>, System.Object, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectNullableAsync(Task(Of Stream), System.Object, CancellationToken)
+  nameWithType: StreamExtensions.WriteAnyObjectNullableAsync(Task<Stream>, Object, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteAnyObjectNullableAsync(Task(Of Stream), Object, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAnyObjectNullableAsync*
   name: WriteAnyObjectNullableAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAnyObjectNullableAsync_
@@ -5166,6 +5218,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayAsync(Stream,Array,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayAsync(Stream, Array, CancellationToken)
   nameWithType: StreamExtensions.WriteArrayAsync(Stream, Array, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayAsync(Task{Stream},Array,CancellationToken)
+  name: WriteArrayAsync(Task<Stream>, Array, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteArrayAsync_Task_Stream__Array_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayAsync(Task{Stream},Array,CancellationToken)
+  name.vb: WriteArrayAsync(Task(Of Stream), Array, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayAsync(Task<Stream>, Array, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayAsync(Task(Of Stream), Array, CancellationToken)
+  nameWithType: StreamExtensions.WriteArrayAsync(Task<Stream>, Array, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteArrayAsync(Task(Of Stream), Array, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayAsync*
   name: WriteArrayAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteArrayAsync_
@@ -5198,6 +5259,15 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayNullableAsync(Stream, System.Nullable(Of Array), CancellationToken)
   nameWithType: StreamExtensions.WriteArrayNullableAsync(Stream, Nullable<Array>, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteArrayNullableAsync(Stream, Nullable(Of Array), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayNullableAsync(Task{Stream},System.Nullable{Array},CancellationToken)
+  name: WriteArrayNullableAsync(Task<Stream>, Nullable<Array>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteArrayNullableAsync_Task_Stream__System_Nullable_Array__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayNullableAsync(Task{Stream},System.Nullable{Array},CancellationToken)
+  name.vb: WriteArrayNullableAsync(Task(Of Stream), Nullable(Of Array), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayNullableAsync(Task<Stream>, System.Nullable<Array>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayNullableAsync(Task(Of Stream), System.Nullable(Of Array), CancellationToken)
+  nameWithType: StreamExtensions.WriteArrayNullableAsync(Task<Stream>, Nullable<Array>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteArrayNullableAsync(Task(Of Stream), Nullable(Of Array), CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteArrayNullableAsync*
   name: WriteArrayNullableAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteArrayNullableAsync_
@@ -5277,6 +5347,114 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Stream,System.UInt64,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Stream, System.UInt64, CancellationToken)
   nameWithType: StreamExtensions.WriteAsync(Stream, UInt64, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.Boolean,CancellationToken)
+  name: WriteAsync(Task<Stream>, Boolean, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAsync_Task_Stream__System_Boolean_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.Boolean,CancellationToken)
+  name.vb: WriteAsync(Task(Of Stream), Boolean, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task<Stream>, System.Boolean, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task(Of Stream), System.Boolean, CancellationToken)
+  nameWithType: StreamExtensions.WriteAsync(Task<Stream>, Boolean, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteAsync(Task(Of Stream), Boolean, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.Byte,CancellationToken)
+  name: WriteAsync(Task<Stream>, Byte, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAsync_Task_Stream__System_Byte_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.Byte,CancellationToken)
+  name.vb: WriteAsync(Task(Of Stream), Byte, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task<Stream>, System.Byte, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task(Of Stream), System.Byte, CancellationToken)
+  nameWithType: StreamExtensions.WriteAsync(Task<Stream>, Byte, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteAsync(Task(Of Stream), Byte, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.Decimal,CancellationToken)
+  name: WriteAsync(Task<Stream>, Decimal, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAsync_Task_Stream__System_Decimal_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.Decimal,CancellationToken)
+  name.vb: WriteAsync(Task(Of Stream), Decimal, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task<Stream>, System.Decimal, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task(Of Stream), System.Decimal, CancellationToken)
+  nameWithType: StreamExtensions.WriteAsync(Task<Stream>, Decimal, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteAsync(Task(Of Stream), Decimal, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.Double,CancellationToken)
+  name: WriteAsync(Task<Stream>, Double, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAsync_Task_Stream__System_Double_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.Double,CancellationToken)
+  name.vb: WriteAsync(Task(Of Stream), Double, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task<Stream>, System.Double, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task(Of Stream), System.Double, CancellationToken)
+  nameWithType: StreamExtensions.WriteAsync(Task<Stream>, Double, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteAsync(Task(Of Stream), Double, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.Int16,CancellationToken)
+  name: WriteAsync(Task<Stream>, Int16, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAsync_Task_Stream__System_Int16_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.Int16,CancellationToken)
+  name.vb: WriteAsync(Task(Of Stream), Int16, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task<Stream>, System.Int16, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task(Of Stream), System.Int16, CancellationToken)
+  nameWithType: StreamExtensions.WriteAsync(Task<Stream>, Int16, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteAsync(Task(Of Stream), Int16, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.Int32,CancellationToken)
+  name: WriteAsync(Task<Stream>, Int32, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAsync_Task_Stream__System_Int32_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.Int32,CancellationToken)
+  name.vb: WriteAsync(Task(Of Stream), Int32, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task<Stream>, System.Int32, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task(Of Stream), System.Int32, CancellationToken)
+  nameWithType: StreamExtensions.WriteAsync(Task<Stream>, Int32, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteAsync(Task(Of Stream), Int32, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.Int64,CancellationToken)
+  name: WriteAsync(Task<Stream>, Int64, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAsync_Task_Stream__System_Int64_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.Int64,CancellationToken)
+  name.vb: WriteAsync(Task(Of Stream), Int64, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task<Stream>, System.Int64, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task(Of Stream), System.Int64, CancellationToken)
+  nameWithType: StreamExtensions.WriteAsync(Task<Stream>, Int64, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteAsync(Task(Of Stream), Int64, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.SByte,CancellationToken)
+  name: WriteAsync(Task<Stream>, SByte, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAsync_Task_Stream__System_SByte_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.SByte,CancellationToken)
+  name.vb: WriteAsync(Task(Of Stream), SByte, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task<Stream>, System.SByte, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task(Of Stream), System.SByte, CancellationToken)
+  nameWithType: StreamExtensions.WriteAsync(Task<Stream>, SByte, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteAsync(Task(Of Stream), SByte, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.Single,CancellationToken)
+  name: WriteAsync(Task<Stream>, Single, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAsync_Task_Stream__System_Single_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.Single,CancellationToken)
+  name.vb: WriteAsync(Task(Of Stream), Single, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task<Stream>, System.Single, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task(Of Stream), System.Single, CancellationToken)
+  nameWithType: StreamExtensions.WriteAsync(Task<Stream>, Single, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteAsync(Task(Of Stream), Single, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.UInt16,CancellationToken)
+  name: WriteAsync(Task<Stream>, UInt16, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAsync_Task_Stream__System_UInt16_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.UInt16,CancellationToken)
+  name.vb: WriteAsync(Task(Of Stream), UInt16, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task<Stream>, System.UInt16, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task(Of Stream), System.UInt16, CancellationToken)
+  nameWithType: StreamExtensions.WriteAsync(Task<Stream>, UInt16, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteAsync(Task(Of Stream), UInt16, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.UInt32,CancellationToken)
+  name: WriteAsync(Task<Stream>, UInt32, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAsync_Task_Stream__System_UInt32_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.UInt32,CancellationToken)
+  name.vb: WriteAsync(Task(Of Stream), UInt32, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task<Stream>, System.UInt32, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task(Of Stream), System.UInt32, CancellationToken)
+  nameWithType: StreamExtensions.WriteAsync(Task<Stream>, UInt32, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteAsync(Task(Of Stream), UInt32, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.UInt64,CancellationToken)
+  name: WriteAsync(Task<Stream>, UInt64, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAsync_Task_Stream__System_UInt64_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task{Stream},System.UInt64,CancellationToken)
+  name.vb: WriteAsync(Task(Of Stream), UInt64, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task<Stream>, System.UInt64, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync(Task(Of Stream), System.UInt64, CancellationToken)
+  nameWithType: StreamExtensions.WriteAsync(Task<Stream>, UInt64, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteAsync(Task(Of Stream), UInt64, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteAsync*
   name: WriteAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteAsync_
@@ -5327,6 +5505,24 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Stream, ReadOnlyMemory(Of System.Byte), CancellationToken)
   nameWithType: StreamExtensions.WriteBytesAsync(Stream, ReadOnlyMemory<Byte>, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteBytesAsync(Stream, ReadOnlyMemory(Of Byte), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Task{Stream},Memory{System.Byte},CancellationToken)
+  name: WriteBytesAsync(Task<Stream>, Memory<Byte>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesAsync_Task_Stream__Memory_System_Byte__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Task{Stream},Memory{System.Byte},CancellationToken)
+  name.vb: WriteBytesAsync(Task(Of Stream), Memory(Of Byte), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Task<Stream>, Memory<System.Byte>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Task(Of Stream), Memory(Of System.Byte), CancellationToken)
+  nameWithType: StreamExtensions.WriteBytesAsync(Task<Stream>, Memory<Byte>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteBytesAsync(Task(Of Stream), Memory(Of Byte), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Task{Stream},ReadOnlyMemory{System.Byte},CancellationToken)
+  name: WriteBytesAsync(Task<Stream>, ReadOnlyMemory<Byte>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesAsync_Task_Stream__ReadOnlyMemory_System_Byte__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Task{Stream},ReadOnlyMemory{System.Byte},CancellationToken)
+  name.vb: WriteBytesAsync(Task(Of Stream), ReadOnlyMemory(Of Byte), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Task<Stream>, ReadOnlyMemory<System.Byte>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync(Task(Of Stream), ReadOnlyMemory(Of System.Byte), CancellationToken)
+  nameWithType: StreamExtensions.WriteBytesAsync(Task<Stream>, ReadOnlyMemory<Byte>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteBytesAsync(Task(Of Stream), ReadOnlyMemory(Of Byte), CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesAsync*
   name: WriteBytesAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesAsync_
@@ -5359,6 +5555,15 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesNullableAsync(Stream, System.Byte(), CancellationToken)
   nameWithType: StreamExtensions.WriteBytesNullableAsync(Stream, Byte[], CancellationToken)
   nameWithType.vb: StreamExtensions.WriteBytesNullableAsync(Stream, Byte(), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesNullableAsync(Task{Stream},System.Byte[],CancellationToken)
+  name: WriteBytesNullableAsync(Task<Stream>, Byte[], CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesNullableAsync_Task_Stream__System_Byte___CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesNullableAsync(Task{Stream},System.Byte[],CancellationToken)
+  name.vb: WriteBytesNullableAsync(Task(Of Stream), Byte(), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesNullableAsync(Task<Stream>, System.Byte[], CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesNullableAsync(Task(Of Stream), System.Byte(), CancellationToken)
+  nameWithType: StreamExtensions.WriteBytesNullableAsync(Task<Stream>, Byte[], CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteBytesNullableAsync(Task(Of Stream), Byte(), CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteBytesNullableAsync*
   name: WriteBytesNullableAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteBytesNullableAsync_
@@ -5385,6 +5590,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteDictAsync(Stream,System.Collections.IDictionary,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteDictAsync(Stream, System.Collections.IDictionary, CancellationToken)
   nameWithType: StreamExtensions.WriteDictAsync(Stream, IDictionary, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteDictAsync(Task{Stream},System.Collections.IDictionary,CancellationToken)
+  name: WriteDictAsync(Task<Stream>, IDictionary, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteDictAsync_Task_Stream__System_Collections_IDictionary_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteDictAsync(Task{Stream},System.Collections.IDictionary,CancellationToken)
+  name.vb: WriteDictAsync(Task(Of Stream), IDictionary, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteDictAsync(Task<Stream>, System.Collections.IDictionary, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteDictAsync(Task(Of Stream), System.Collections.IDictionary, CancellationToken)
+  nameWithType: StreamExtensions.WriteDictAsync(Task<Stream>, IDictionary, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteDictAsync(Task(Of Stream), IDictionary, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteDictAsync*
   name: WriteDictAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteDictAsync_
@@ -5411,6 +5625,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteDictNullableAsync(Stream,System.Collections.IDictionary,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteDictNullableAsync(Stream, System.Collections.IDictionary, CancellationToken)
   nameWithType: StreamExtensions.WriteDictNullableAsync(Stream, IDictionary, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteDictNullableAsync(Task{Stream},System.Collections.IDictionary,CancellationToken)
+  name: WriteDictNullableAsync(Task<Stream>, IDictionary, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteDictNullableAsync_Task_Stream__System_Collections_IDictionary_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteDictNullableAsync(Task{Stream},System.Collections.IDictionary,CancellationToken)
+  name.vb: WriteDictNullableAsync(Task(Of Stream), IDictionary, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteDictNullableAsync(Task<Stream>, System.Collections.IDictionary, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteDictNullableAsync(Task(Of Stream), System.Collections.IDictionary, CancellationToken)
+  nameWithType: StreamExtensions.WriteDictNullableAsync(Task<Stream>, IDictionary, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteDictNullableAsync(Task(Of Stream), IDictionary, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteDictNullableAsync*
   name: WriteDictNullableAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteDictNullableAsync_
@@ -5446,6 +5669,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumAsync(Stream,System.Object,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumAsync(Stream, System.Object, CancellationToken)
   nameWithType: StreamExtensions.WriteEnumAsync(Stream, Object, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumAsync(Task{Stream},System.Object,CancellationToken)
+  name: WriteEnumAsync(Task<Stream>, Object, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteEnumAsync_Task_Stream__System_Object_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumAsync(Task{Stream},System.Object,CancellationToken)
+  name.vb: WriteEnumAsync(Task(Of Stream), Object, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumAsync(Task<Stream>, System.Object, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumAsync(Task(Of Stream), System.Object, CancellationToken)
+  nameWithType: StreamExtensions.WriteEnumAsync(Task<Stream>, Object, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteEnumAsync(Task(Of Stream), Object, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumAsync*
   name: WriteEnumAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteEnumAsync_
@@ -5462,6 +5694,15 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumAsync(Of T)(Stream, T, CancellationToken)
   nameWithType: StreamExtensions.WriteEnumAsync<T>(Stream, T, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteEnumAsync(Of T)(Stream, T, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumAsync``1(Task{Stream},``0,CancellationToken)
+  name: WriteEnumAsync<T>(Task<Stream>, T, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteEnumAsync__1_Task_Stream____0_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumAsync``1(Task{Stream},``0,CancellationToken)
+  name.vb: WriteEnumAsync(Of T)(Task(Of Stream), T, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumAsync<T>(Task<Stream>, T, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumAsync(Of T)(Task(Of Stream), T, CancellationToken)
+  nameWithType: StreamExtensions.WriteEnumAsync<T>(Task<Stream>, T, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteEnumAsync(Of T)(Task(Of Stream), T, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumNullable(Stream,System.Object)
   name: WriteEnumNullable(Stream, Object)
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteEnumNullable_Stream_System_Object_
@@ -5490,6 +5731,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumNullableAsync(Stream,System.Object,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumNullableAsync(Stream, System.Object, CancellationToken)
   nameWithType: StreamExtensions.WriteEnumNullableAsync(Stream, Object, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumNullableAsync(Task{Stream},System.Object,CancellationToken)
+  name: WriteEnumNullableAsync(Task<Stream>, Object, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteEnumNullableAsync_Task_Stream__System_Object_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumNullableAsync(Task{Stream},System.Object,CancellationToken)
+  name.vb: WriteEnumNullableAsync(Task(Of Stream), Object, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumNullableAsync(Task<Stream>, System.Object, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumNullableAsync(Task(Of Stream), System.Object, CancellationToken)
+  nameWithType: StreamExtensions.WriteEnumNullableAsync(Task<Stream>, Object, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteEnumNullableAsync(Task(Of Stream), Object, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumNullableAsync*
   name: WriteEnumNullableAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteEnumNullableAsync_
@@ -5506,6 +5756,15 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumNullableAsync(Of T)(Stream, System.Nullable(Of T), CancellationToken)
   nameWithType: StreamExtensions.WriteEnumNullableAsync<T>(Stream, Nullable<T>, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteEnumNullableAsync(Of T)(Stream, Nullable(Of T), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumNullableAsync``1(Task{Stream},System.Nullable{``0},CancellationToken)
+  name: WriteEnumNullableAsync<T>(Task<Stream>, Nullable<T>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteEnumNullableAsync__1_Task_Stream__System_Nullable___0__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumNullableAsync``1(Task{Stream},System.Nullable{``0},CancellationToken)
+  name.vb: WriteEnumNullableAsync(Of T)(Task(Of Stream), Nullable(Of T), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumNullableAsync<T>(Task<Stream>, System.Nullable<T>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteEnumNullableAsync(Of T)(Task(Of Stream), System.Nullable(Of T), CancellationToken)
+  nameWithType: StreamExtensions.WriteEnumNullableAsync<T>(Task<Stream>, Nullable<T>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteEnumNullableAsync(Of T)(Task(Of Stream), Nullable(Of T), CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArray(Stream,Array)
   name: WriteFixedArray(Stream, Array)
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteFixedArray_Stream_Array_
@@ -5543,6 +5802,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync(Stream,Array,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync(Stream, Array, CancellationToken)
   nameWithType: StreamExtensions.WriteFixedArrayAsync(Stream, Array, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync(Task{Stream},Array,CancellationToken)
+  name: WriteFixedArrayAsync(Task<Stream>, Array, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteFixedArrayAsync_Task_Stream__Array_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync(Task{Stream},Array,CancellationToken)
+  name.vb: WriteFixedArrayAsync(Task(Of Stream), Array, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync(Task<Stream>, Array, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync(Task(Of Stream), Array, CancellationToken)
+  nameWithType: StreamExtensions.WriteFixedArrayAsync(Task<Stream>, Array, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteFixedArrayAsync(Task(Of Stream), Array, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync*
   name: WriteFixedArrayAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteFixedArrayAsync_
@@ -5568,6 +5836,24 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync(Of T)(Stream, ReadOnlyMemory(Of T), CancellationToken)
   nameWithType: StreamExtensions.WriteFixedArrayAsync<T>(Stream, ReadOnlyMemory<T>, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteFixedArrayAsync(Of T)(Stream, ReadOnlyMemory(Of T), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync``1(Task{Stream},Memory{``0},CancellationToken)
+  name: WriteFixedArrayAsync<T>(Task<Stream>, Memory<T>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteFixedArrayAsync__1_Task_Stream__Memory___0__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync``1(Task{Stream},Memory{``0},CancellationToken)
+  name.vb: WriteFixedArrayAsync(Of T)(Task(Of Stream), Memory(Of T), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync<T>(Task<Stream>, Memory<T>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync(Of T)(Task(Of Stream), Memory(Of T), CancellationToken)
+  nameWithType: StreamExtensions.WriteFixedArrayAsync<T>(Task<Stream>, Memory<T>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteFixedArrayAsync(Of T)(Task(Of Stream), Memory(Of T), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync``1(Task{Stream},ReadOnlyMemory{``0},CancellationToken)
+  name: WriteFixedArrayAsync<T>(Task<Stream>, ReadOnlyMemory<T>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteFixedArrayAsync__1_Task_Stream__ReadOnlyMemory___0__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync``1(Task{Stream},ReadOnlyMemory{``0},CancellationToken)
+  name.vb: WriteFixedArrayAsync(Of T)(Task(Of Stream), ReadOnlyMemory(Of T), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync<T>(Task<Stream>, ReadOnlyMemory<T>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteFixedArrayAsync(Of T)(Task(Of Stream), ReadOnlyMemory(Of T), CancellationToken)
+  nameWithType: StreamExtensions.WriteFixedArrayAsync<T>(Task<Stream>, ReadOnlyMemory<T>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteFixedArrayAsync(Of T)(Task(Of Stream), ReadOnlyMemory(Of T), CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteIfNotNull*
   name: WriteIfNotNull
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteIfNotNull_
@@ -5637,6 +5923,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteListAsync(Stream,System.Collections.IList,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteListAsync(Stream, System.Collections.IList, CancellationToken)
   nameWithType: StreamExtensions.WriteListAsync(Stream, IList, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteListAsync(Task{Stream},System.Collections.IList,CancellationToken)
+  name: WriteListAsync(Task<Stream>, IList, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteListAsync_Task_Stream__System_Collections_IList_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteListAsync(Task{Stream},System.Collections.IList,CancellationToken)
+  name.vb: WriteListAsync(Task(Of Stream), IList, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteListAsync(Task<Stream>, System.Collections.IList, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteListAsync(Task(Of Stream), System.Collections.IList, CancellationToken)
+  nameWithType: StreamExtensions.WriteListAsync(Task<Stream>, IList, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteListAsync(Task(Of Stream), IList, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteListAsync*
   name: WriteListAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteListAsync_
@@ -5663,6 +5958,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteListNullableAsync(Stream,System.Collections.IList,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteListNullableAsync(Stream, System.Collections.IList, CancellationToken)
   nameWithType: StreamExtensions.WriteListNullableAsync(Stream, IList, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteListNullableAsync(Task{Stream},System.Collections.IList,CancellationToken)
+  name: WriteListNullableAsync(Task<Stream>, IList, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteListNullableAsync_Task_Stream__System_Collections_IList_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteListNullableAsync(Task{Stream},System.Collections.IList,CancellationToken)
+  name.vb: WriteListNullableAsync(Task(Of Stream), IList, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteListNullableAsync(Task<Stream>, System.Collections.IList, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteListNullableAsync(Task(Of Stream), System.Collections.IList, CancellationToken)
+  nameWithType: StreamExtensions.WriteListNullableAsync(Task<Stream>, IList, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteListNullableAsync(Task(Of Stream), IList, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteListNullableAsync*
   name: WriteListNullableAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteListNullableAsync_
@@ -5893,6 +6197,114 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Stream, System.Nullable(Of System.UInt64), CancellationToken)
   nameWithType: StreamExtensions.WriteNullableAsync(Stream, Nullable<UInt64>, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteNullableAsync(Stream, Nullable(Of UInt64), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.Boolean},CancellationToken)
+  name: WriteNullableAsync(Task<Stream>, Nullable<Boolean>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableAsync_Task_Stream__System_Nullable_System_Boolean__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.Boolean},CancellationToken)
+  name.vb: WriteNullableAsync(Task(Of Stream), Nullable(Of Boolean), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task<Stream>, System.Nullable<System.Boolean>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task(Of Stream), System.Nullable(Of System.Boolean), CancellationToken)
+  nameWithType: StreamExtensions.WriteNullableAsync(Task<Stream>, Nullable<Boolean>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteNullableAsync(Task(Of Stream), Nullable(Of Boolean), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.Byte},CancellationToken)
+  name: WriteNullableAsync(Task<Stream>, Nullable<Byte>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableAsync_Task_Stream__System_Nullable_System_Byte__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.Byte},CancellationToken)
+  name.vb: WriteNullableAsync(Task(Of Stream), Nullable(Of Byte), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task<Stream>, System.Nullable<System.Byte>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task(Of Stream), System.Nullable(Of System.Byte), CancellationToken)
+  nameWithType: StreamExtensions.WriteNullableAsync(Task<Stream>, Nullable<Byte>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteNullableAsync(Task(Of Stream), Nullable(Of Byte), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.Decimal},CancellationToken)
+  name: WriteNullableAsync(Task<Stream>, Nullable<Decimal>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableAsync_Task_Stream__System_Nullable_System_Decimal__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.Decimal},CancellationToken)
+  name.vb: WriteNullableAsync(Task(Of Stream), Nullable(Of Decimal), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task<Stream>, System.Nullable<System.Decimal>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task(Of Stream), System.Nullable(Of System.Decimal), CancellationToken)
+  nameWithType: StreamExtensions.WriteNullableAsync(Task<Stream>, Nullable<Decimal>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteNullableAsync(Task(Of Stream), Nullable(Of Decimal), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.Double},CancellationToken)
+  name: WriteNullableAsync(Task<Stream>, Nullable<Double>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableAsync_Task_Stream__System_Nullable_System_Double__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.Double},CancellationToken)
+  name.vb: WriteNullableAsync(Task(Of Stream), Nullable(Of Double), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task<Stream>, System.Nullable<System.Double>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task(Of Stream), System.Nullable(Of System.Double), CancellationToken)
+  nameWithType: StreamExtensions.WriteNullableAsync(Task<Stream>, Nullable<Double>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteNullableAsync(Task(Of Stream), Nullable(Of Double), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.Int16},CancellationToken)
+  name: WriteNullableAsync(Task<Stream>, Nullable<Int16>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableAsync_Task_Stream__System_Nullable_System_Int16__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.Int16},CancellationToken)
+  name.vb: WriteNullableAsync(Task(Of Stream), Nullable(Of Int16), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task<Stream>, System.Nullable<System.Int16>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task(Of Stream), System.Nullable(Of System.Int16), CancellationToken)
+  nameWithType: StreamExtensions.WriteNullableAsync(Task<Stream>, Nullable<Int16>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteNullableAsync(Task(Of Stream), Nullable(Of Int16), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.Int32},CancellationToken)
+  name: WriteNullableAsync(Task<Stream>, Nullable<Int32>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableAsync_Task_Stream__System_Nullable_System_Int32__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.Int32},CancellationToken)
+  name.vb: WriteNullableAsync(Task(Of Stream), Nullable(Of Int32), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task<Stream>, System.Nullable<System.Int32>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task(Of Stream), System.Nullable(Of System.Int32), CancellationToken)
+  nameWithType: StreamExtensions.WriteNullableAsync(Task<Stream>, Nullable<Int32>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteNullableAsync(Task(Of Stream), Nullable(Of Int32), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.Int64},CancellationToken)
+  name: WriteNullableAsync(Task<Stream>, Nullable<Int64>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableAsync_Task_Stream__System_Nullable_System_Int64__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.Int64},CancellationToken)
+  name.vb: WriteNullableAsync(Task(Of Stream), Nullable(Of Int64), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task<Stream>, System.Nullable<System.Int64>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task(Of Stream), System.Nullable(Of System.Int64), CancellationToken)
+  nameWithType: StreamExtensions.WriteNullableAsync(Task<Stream>, Nullable<Int64>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteNullableAsync(Task(Of Stream), Nullable(Of Int64), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.SByte},CancellationToken)
+  name: WriteNullableAsync(Task<Stream>, Nullable<SByte>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableAsync_Task_Stream__System_Nullable_System_SByte__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.SByte},CancellationToken)
+  name.vb: WriteNullableAsync(Task(Of Stream), Nullable(Of SByte), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task<Stream>, System.Nullable<System.SByte>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task(Of Stream), System.Nullable(Of System.SByte), CancellationToken)
+  nameWithType: StreamExtensions.WriteNullableAsync(Task<Stream>, Nullable<SByte>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteNullableAsync(Task(Of Stream), Nullable(Of SByte), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.Single},CancellationToken)
+  name: WriteNullableAsync(Task<Stream>, Nullable<Single>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableAsync_Task_Stream__System_Nullable_System_Single__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.Single},CancellationToken)
+  name.vb: WriteNullableAsync(Task(Of Stream), Nullable(Of Single), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task<Stream>, System.Nullable<System.Single>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task(Of Stream), System.Nullable(Of System.Single), CancellationToken)
+  nameWithType: StreamExtensions.WriteNullableAsync(Task<Stream>, Nullable<Single>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteNullableAsync(Task(Of Stream), Nullable(Of Single), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.UInt16},CancellationToken)
+  name: WriteNullableAsync(Task<Stream>, Nullable<UInt16>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableAsync_Task_Stream__System_Nullable_System_UInt16__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.UInt16},CancellationToken)
+  name.vb: WriteNullableAsync(Task(Of Stream), Nullable(Of UInt16), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task<Stream>, System.Nullable<System.UInt16>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task(Of Stream), System.Nullable(Of System.UInt16), CancellationToken)
+  nameWithType: StreamExtensions.WriteNullableAsync(Task<Stream>, Nullable<UInt16>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteNullableAsync(Task(Of Stream), Nullable(Of UInt16), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.UInt32},CancellationToken)
+  name: WriteNullableAsync(Task<Stream>, Nullable<UInt32>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableAsync_Task_Stream__System_Nullable_System_UInt32__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.UInt32},CancellationToken)
+  name.vb: WriteNullableAsync(Task(Of Stream), Nullable(Of UInt32), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task<Stream>, System.Nullable<System.UInt32>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task(Of Stream), System.Nullable(Of System.UInt32), CancellationToken)
+  nameWithType: StreamExtensions.WriteNullableAsync(Task<Stream>, Nullable<UInt32>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteNullableAsync(Task(Of Stream), Nullable(Of UInt32), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.UInt64},CancellationToken)
+  name: WriteNullableAsync(Task<Stream>, Nullable<UInt64>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableAsync_Task_Stream__System_Nullable_System_UInt64__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task{Stream},System.Nullable{System.UInt64},CancellationToken)
+  name.vb: WriteNullableAsync(Task(Of Stream), Nullable(Of UInt64), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task<Stream>, System.Nullable<System.UInt64>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync(Task(Of Stream), System.Nullable(Of System.UInt64), CancellationToken)
+  nameWithType: StreamExtensions.WriteNullableAsync(Task<Stream>, Nullable<UInt64>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteNullableAsync(Task(Of Stream), Nullable(Of UInt64), CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNullableAsync*
   name: WriteNullableAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableAsync_
@@ -5978,6 +6390,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberAsync(Stream,System.Object,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberAsync(Stream, System.Object, CancellationToken)
   nameWithType: StreamExtensions.WriteNumberAsync(Stream, Object, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberAsync(Task{Stream},System.Object,CancellationToken)
+  name: WriteNumberAsync(Task<Stream>, Object, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNumberAsync_Task_Stream__System_Object_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberAsync(Task{Stream},System.Object,CancellationToken)
+  name.vb: WriteNumberAsync(Task(Of Stream), Object, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberAsync(Task<Stream>, System.Object, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberAsync(Task(Of Stream), System.Object, CancellationToken)
+  nameWithType: StreamExtensions.WriteNumberAsync(Task<Stream>, Object, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteNumberAsync(Task(Of Stream), Object, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberAsync*
   name: WriteNumberAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNumberAsync_
@@ -5994,6 +6415,15 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberAsync(Of T)(Stream, T, CancellationToken)
   nameWithType: StreamExtensions.WriteNumberAsync<T>(Stream, T, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteNumberAsync(Of T)(Stream, T, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberAsync``1(Task{Stream},``0,CancellationToken)
+  name: WriteNumberAsync<T>(Task<Stream>, T, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNumberAsync__1_Task_Stream____0_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberAsync``1(Task{Stream},``0,CancellationToken)
+  name.vb: WriteNumberAsync(Of T)(Task(Of Stream), T, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberAsync<T>(Task<Stream>, T, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberAsync(Of T)(Task(Of Stream), T, CancellationToken)
+  nameWithType: StreamExtensions.WriteNumberAsync<T>(Task<Stream>, T, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteNumberAsync(Of T)(Task(Of Stream), T, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberNullable(Stream,System.Object)
   name: WriteNumberNullable(Stream, Object)
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNumberNullable_Stream_System_Object_
@@ -6022,6 +6452,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberNullableAsync(Stream,System.Object,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberNullableAsync(Stream, System.Object, CancellationToken)
   nameWithType: StreamExtensions.WriteNumberNullableAsync(Stream, Object, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberNullableAsync(Task{Stream},System.Object,CancellationToken)
+  name: WriteNumberNullableAsync(Task<Stream>, Object, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNumberNullableAsync_Task_Stream__System_Object_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberNullableAsync(Task{Stream},System.Object,CancellationToken)
+  name.vb: WriteNumberNullableAsync(Task(Of Stream), Object, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberNullableAsync(Task<Stream>, System.Object, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberNullableAsync(Task(Of Stream), System.Object, CancellationToken)
+  nameWithType: StreamExtensions.WriteNumberNullableAsync(Task<Stream>, Object, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteNumberNullableAsync(Task(Of Stream), Object, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberNullableAsync*
   name: WriteNumberNullableAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNumberNullableAsync_
@@ -6038,6 +6477,15 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberNullableAsync(Of T)(Stream, System.Nullable(Of T), CancellationToken)
   nameWithType: StreamExtensions.WriteNumberNullableAsync<T>(Stream, Nullable<T>, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteNumberNullableAsync(Of T)(Stream, Nullable(Of T), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberNullableAsync``1(Task{Stream},System.Nullable{``0},CancellationToken)
+  name: WriteNumberNullableAsync<T>(Task<Stream>, Nullable<T>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNumberNullableAsync__1_Task_Stream__System_Nullable___0__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberNullableAsync``1(Task{Stream},System.Nullable{``0},CancellationToken)
+  name.vb: WriteNumberNullableAsync(Of T)(Task(Of Stream), Nullable(Of T), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberNullableAsync<T>(Task<Stream>, System.Nullable<T>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteNumberNullableAsync(Of T)(Task(Of Stream), System.Nullable(Of T), CancellationToken)
+  nameWithType: StreamExtensions.WriteNumberNullableAsync<T>(Task<Stream>, Nullable<T>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteNumberNullableAsync(Of T)(Task(Of Stream), Nullable(Of T), CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteObject(Stream,System.Object)
   name: WriteObject(Stream, Object)
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteObject_Stream_System_Object_
@@ -6057,6 +6505,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteObjectAsync(Stream,System.Object,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteObjectAsync(Stream, System.Object, CancellationToken)
   nameWithType: StreamExtensions.WriteObjectAsync(Stream, Object, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteObjectAsync(Task{Stream},System.Object,CancellationToken)
+  name: WriteObjectAsync(Task<Stream>, Object, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteObjectAsync_Task_Stream__System_Object_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteObjectAsync(Task{Stream},System.Object,CancellationToken)
+  name.vb: WriteObjectAsync(Task(Of Stream), Object, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteObjectAsync(Task<Stream>, System.Object, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteObjectAsync(Task(Of Stream), System.Object, CancellationToken)
+  nameWithType: StreamExtensions.WriteObjectAsync(Task<Stream>, Object, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteObjectAsync(Task(Of Stream), Object, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteObjectAsync*
   name: WriteObjectAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteObjectAsync_
@@ -6083,6 +6540,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteObjectNullableAsync(Stream,System.Object,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteObjectNullableAsync(Stream, System.Object, CancellationToken)
   nameWithType: StreamExtensions.WriteObjectNullableAsync(Stream, Object, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteObjectNullableAsync(Task{Stream},System.Object,CancellationToken)
+  name: WriteObjectNullableAsync(Task<Stream>, Object, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteObjectNullableAsync_Task_Stream__System_Object_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteObjectNullableAsync(Task{Stream},System.Object,CancellationToken)
+  name.vb: WriteObjectNullableAsync(Task(Of Stream), Object, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteObjectNullableAsync(Task<Stream>, System.Object, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteObjectNullableAsync(Task(Of Stream), System.Object, CancellationToken)
+  nameWithType: StreamExtensions.WriteObjectNullableAsync(Task<Stream>, Object, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteObjectNullableAsync(Task(Of Stream), Object, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteObjectNullableAsync*
   name: WriteObjectNullableAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteObjectNullableAsync_
@@ -6118,6 +6584,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedAsync(Stream,wan24.StreamSerializerExtensions.IStreamSerializer,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedAsync(Stream, wan24.StreamSerializerExtensions.IStreamSerializer, CancellationToken)
   nameWithType: StreamExtensions.WriteSerializedAsync(Stream, IStreamSerializer, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedAsync(Task{Stream},wan24.StreamSerializerExtensions.IStreamSerializer,CancellationToken)
+  name: WriteSerializedAsync(Task<Stream>, IStreamSerializer, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedAsync_Task_Stream__wan24_StreamSerializerExtensions_IStreamSerializer_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedAsync(Task{Stream},wan24.StreamSerializerExtensions.IStreamSerializer,CancellationToken)
+  name.vb: WriteSerializedAsync(Task(Of Stream), IStreamSerializer, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedAsync(Task<Stream>, wan24.StreamSerializerExtensions.IStreamSerializer, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedAsync(Task(Of Stream), wan24.StreamSerializerExtensions.IStreamSerializer, CancellationToken)
+  nameWithType: StreamExtensions.WriteSerializedAsync(Task<Stream>, IStreamSerializer, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteSerializedAsync(Task(Of Stream), IStreamSerializer, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedAsync*
   name: WriteSerializedAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedAsync_
@@ -6134,6 +6609,15 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedAsync(Of T)(Stream, T, CancellationToken)
   nameWithType: StreamExtensions.WriteSerializedAsync<T>(Stream, T, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteSerializedAsync(Of T)(Stream, T, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedAsync``1(Task{Stream},``0,CancellationToken)
+  name: WriteSerializedAsync<T>(Task<Stream>, T, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedAsync__1_Task_Stream____0_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedAsync``1(Task{Stream},``0,CancellationToken)
+  name.vb: WriteSerializedAsync(Of T)(Task(Of Stream), T, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedAsync<T>(Task<Stream>, T, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedAsync(Of T)(Task(Of Stream), T, CancellationToken)
+  nameWithType: StreamExtensions.WriteSerializedAsync<T>(Task<Stream>, T, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteSerializedAsync(Of T)(Task(Of Stream), T, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedData(Stream,System.Byte[],System.Int32,System.Buffers.ArrayPool{System.Byte})
   name: WriteSerializedData(Stream, Byte[], Int32, ArrayPool<Byte>)
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedData_Stream_System_Byte___System_Int32_System_Buffers_ArrayPool_System_Byte__
@@ -6194,6 +6678,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableAsync(Stream,wan24.StreamSerializerExtensions.IStreamSerializer,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableAsync(Stream, wan24.StreamSerializerExtensions.IStreamSerializer, CancellationToken)
   nameWithType: StreamExtensions.WriteSerializedNullableAsync(Stream, IStreamSerializer, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableAsync(Task{Stream},wan24.StreamSerializerExtensions.IStreamSerializer,CancellationToken)
+  name: WriteSerializedNullableAsync(Task<Stream>, IStreamSerializer, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedNullableAsync_Task_Stream__wan24_StreamSerializerExtensions_IStreamSerializer_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableAsync(Task{Stream},wan24.StreamSerializerExtensions.IStreamSerializer,CancellationToken)
+  name.vb: WriteSerializedNullableAsync(Task(Of Stream), IStreamSerializer, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableAsync(Task<Stream>, wan24.StreamSerializerExtensions.IStreamSerializer, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableAsync(Task(Of Stream), wan24.StreamSerializerExtensions.IStreamSerializer, CancellationToken)
+  nameWithType: StreamExtensions.WriteSerializedNullableAsync(Task<Stream>, IStreamSerializer, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteSerializedNullableAsync(Task(Of Stream), IStreamSerializer, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableAsync*
   name: WriteSerializedNullableAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedNullableAsync_
@@ -6210,6 +6703,15 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableAsync(Of T)(Stream, T, CancellationToken)
   nameWithType: StreamExtensions.WriteSerializedNullableAsync<T>(Stream, T, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteSerializedNullableAsync(Of T)(Stream, T, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableAsync``1(Task{Stream},``0,CancellationToken)
+  name: WriteSerializedNullableAsync<T>(Task<Stream>, T, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedNullableAsync__1_Task_Stream____0_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableAsync``1(Task{Stream},``0,CancellationToken)
+  name.vb: WriteSerializedNullableAsync(Of T)(Task(Of Stream), T, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableAsync<T>(Task<Stream>, T, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableAsync(Of T)(Task(Of Stream), T, CancellationToken)
+  nameWithType: StreamExtensions.WriteSerializedNullableAsync<T>(Task<Stream>, T, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteSerializedNullableAsync(Of T)(Task(Of Stream), T, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableStruct*
   name: WriteSerializedNullableStruct
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedNullableStruct_
@@ -6242,6 +6744,15 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableStructAsync(Of T)(Stream, System.Nullable(Of T), CancellationToken)
   nameWithType: StreamExtensions.WriteSerializedNullableStructAsync<T>(Stream, Nullable<T>, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteSerializedNullableStructAsync(Of T)(Stream, Nullable(Of T), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableStructAsync``1(Task{Stream},System.Nullable{``0},CancellationToken)
+  name: WriteSerializedNullableStructAsync<T>(Task<Stream>, Nullable<T>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedNullableStructAsync__1_Task_Stream__System_Nullable___0__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableStructAsync``1(Task{Stream},System.Nullable{``0},CancellationToken)
+  name.vb: WriteSerializedNullableStructAsync(Of T)(Task(Of Stream), Nullable(Of T), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableStructAsync<T>(Task<Stream>, System.Nullable<T>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedNullableStructAsync(Of T)(Task(Of Stream), System.Nullable(Of T), CancellationToken)
+  nameWithType: StreamExtensions.WriteSerializedNullableStructAsync<T>(Task<Stream>, Nullable<T>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteSerializedNullableStructAsync(Of T)(Task(Of Stream), Nullable(Of T), CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedStruct*
   name: WriteSerializedStruct
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedStruct_
@@ -6274,6 +6785,15 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedStructAsync(Of T)(Stream, T, CancellationToken)
   nameWithType: StreamExtensions.WriteSerializedStructAsync<T>(Stream, T, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteSerializedStructAsync(Of T)(Stream, T, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedStructAsync``1(Task{Stream},``0,CancellationToken)
+  name: WriteSerializedStructAsync<T>(Task<Stream>, T, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedStructAsync__1_Task_Stream____0_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedStructAsync``1(Task{Stream},``0,CancellationToken)
+  name.vb: WriteSerializedStructAsync(Of T)(Task(Of Stream), T, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedStructAsync<T>(Task<Stream>, T, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializedStructAsync(Of T)(Task(Of Stream), T, CancellationToken)
+  nameWithType: StreamExtensions.WriteSerializedStructAsync<T>(Task<Stream>, T, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteSerializedStructAsync(Of T)(Task(Of Stream), T, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializerVersion(Stream)
   name: WriteSerializerVersion(Stream)
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializerVersion_Stream_
@@ -6293,6 +6813,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializerVersionAsync(Stream,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializerVersionAsync(Stream, CancellationToken)
   nameWithType: StreamExtensions.WriteSerializerVersionAsync(Stream, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializerVersionAsync(Task{Stream},CancellationToken)
+  name: WriteSerializerVersionAsync(Task<Stream>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializerVersionAsync_Task_Stream__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializerVersionAsync(Task{Stream},CancellationToken)
+  name.vb: WriteSerializerVersionAsync(Task(Of Stream), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializerVersionAsync(Task<Stream>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializerVersionAsync(Task(Of Stream), CancellationToken)
+  nameWithType: StreamExtensions.WriteSerializerVersionAsync(Task<Stream>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteSerializerVersionAsync(Task(Of Stream), CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteSerializerVersionAsync*
   name: WriteSerializerVersionAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializerVersionAsync_
@@ -6325,6 +6854,15 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamAsync(Stream, Stream, System.Buffers.ArrayPool(Of System.Byte), System.Nullable(Of System.Int32), CancellationToken)
   nameWithType: StreamExtensions.WriteStreamAsync(Stream, Stream, ArrayPool<Byte>, Nullable<Int32>, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteStreamAsync(Stream, Stream, ArrayPool(Of Byte), Nullable(Of Int32), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamAsync(Task{Stream},Stream,System.Buffers.ArrayPool{System.Byte},System.Nullable{System.Int32},CancellationToken)
+  name: WriteStreamAsync(Task<Stream>, Stream, ArrayPool<Byte>, Nullable<Int32>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStreamAsync_Task_Stream__Stream_System_Buffers_ArrayPool_System_Byte__System_Nullable_System_Int32__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamAsync(Task{Stream},Stream,System.Buffers.ArrayPool{System.Byte},System.Nullable{System.Int32},CancellationToken)
+  name.vb: WriteStreamAsync(Task(Of Stream), Stream, ArrayPool(Of Byte), Nullable(Of Int32), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamAsync(Task<Stream>, Stream, System.Buffers.ArrayPool<System.Byte>, System.Nullable<System.Int32>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamAsync(Task(Of Stream), Stream, System.Buffers.ArrayPool(Of System.Byte), System.Nullable(Of System.Int32), CancellationToken)
+  nameWithType: StreamExtensions.WriteStreamAsync(Task<Stream>, Stream, ArrayPool<Byte>, Nullable<Int32>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteStreamAsync(Task(Of Stream), Stream, ArrayPool(Of Byte), Nullable(Of Int32), CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamAsync*
   name: WriteStreamAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStreamAsync_
@@ -6357,6 +6895,15 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamNullableAsync(Stream, System.Nullable(Of Stream), System.Buffers.ArrayPool(Of System.Byte), System.Nullable(Of System.Int32), CancellationToken)
   nameWithType: StreamExtensions.WriteStreamNullableAsync(Stream, Nullable<Stream>, ArrayPool<Byte>, Nullable<Int32>, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteStreamNullableAsync(Stream, Nullable(Of Stream), ArrayPool(Of Byte), Nullable(Of Int32), CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamNullableAsync(Task{Stream},System.Nullable{Stream},System.Buffers.ArrayPool{System.Byte},System.Nullable{System.Int32},CancellationToken)
+  name: WriteStreamNullableAsync(Task<Stream>, Nullable<Stream>, ArrayPool<Byte>, Nullable<Int32>, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStreamNullableAsync_Task_Stream__System_Nullable_Stream__System_Buffers_ArrayPool_System_Byte__System_Nullable_System_Int32__CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamNullableAsync(Task{Stream},System.Nullable{Stream},System.Buffers.ArrayPool{System.Byte},System.Nullable{System.Int32},CancellationToken)
+  name.vb: WriteStreamNullableAsync(Task(Of Stream), Nullable(Of Stream), ArrayPool(Of Byte), Nullable(Of Int32), CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamNullableAsync(Task<Stream>, System.Nullable<Stream>, System.Buffers.ArrayPool<System.Byte>, System.Nullable<System.Int32>, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamNullableAsync(Task(Of Stream), System.Nullable(Of Stream), System.Buffers.ArrayPool(Of System.Byte), System.Nullable(Of System.Int32), CancellationToken)
+  nameWithType: StreamExtensions.WriteStreamNullableAsync(Task<Stream>, Nullable<Stream>, ArrayPool<Byte>, Nullable<Int32>, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteStreamNullableAsync(Task(Of Stream), Nullable(Of Stream), ArrayPool(Of Byte), Nullable(Of Int32), CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStreamNullableAsync*
   name: WriteStreamNullableAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStreamNullableAsync_
@@ -6396,6 +6943,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteString16Async(Stream,System.String,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteString16Async(Stream, System.String, CancellationToken)
   nameWithType: StreamExtensions.WriteString16Async(Stream, String, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteString16Async(Task{Stream},System.String,CancellationToken)
+  name: WriteString16Async(Task<Stream>, String, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteString16Async_Task_Stream__System_String_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteString16Async(Task{Stream},System.String,CancellationToken)
+  name.vb: WriteString16Async(Task(Of Stream), String, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteString16Async(Task<Stream>, System.String, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteString16Async(Task(Of Stream), System.String, CancellationToken)
+  nameWithType: StreamExtensions.WriteString16Async(Task<Stream>, String, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteString16Async(Task(Of Stream), String, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteString16Async*
   name: WriteString16Async
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteString16Async_
@@ -6425,6 +6981,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteString16NullableAsync(Stream,System.String,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteString16NullableAsync(Stream, System.String, CancellationToken)
   nameWithType: StreamExtensions.WriteString16NullableAsync(Stream, String, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteString16NullableAsync(Task{Stream},System.String,CancellationToken)
+  name: WriteString16NullableAsync(Task<Stream>, String, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteString16NullableAsync_Task_Stream__System_String_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteString16NullableAsync(Task{Stream},System.String,CancellationToken)
+  name.vb: WriteString16NullableAsync(Task(Of Stream), String, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteString16NullableAsync(Task<Stream>, System.String, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteString16NullableAsync(Task(Of Stream), System.String, CancellationToken)
+  nameWithType: StreamExtensions.WriteString16NullableAsync(Task<Stream>, String, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteString16NullableAsync(Task(Of Stream), String, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteString16NullableAsync*
   name: WriteString16NullableAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteString16NullableAsync_
@@ -6451,6 +7016,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteString32Async(Stream,System.String,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteString32Async(Stream, System.String, CancellationToken)
   nameWithType: StreamExtensions.WriteString32Async(Stream, String, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteString32Async(Task{Stream},System.String,CancellationToken)
+  name: WriteString32Async(Task<Stream>, String, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteString32Async_Task_Stream__System_String_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteString32Async(Task{Stream},System.String,CancellationToken)
+  name.vb: WriteString32Async(Task(Of Stream), String, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteString32Async(Task<Stream>, System.String, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteString32Async(Task(Of Stream), System.String, CancellationToken)
+  nameWithType: StreamExtensions.WriteString32Async(Task<Stream>, String, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteString32Async(Task(Of Stream), String, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteString32Async*
   name: WriteString32Async
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteString32Async_
@@ -6477,6 +7051,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteString32NullableAsync(Stream,System.String,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteString32NullableAsync(Stream, System.String, CancellationToken)
   nameWithType: StreamExtensions.WriteString32NullableAsync(Stream, String, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteString32NullableAsync(Task{Stream},System.String,CancellationToken)
+  name: WriteString32NullableAsync(Task<Stream>, String, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteString32NullableAsync_Task_Stream__System_String_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteString32NullableAsync(Task{Stream},System.String,CancellationToken)
+  name.vb: WriteString32NullableAsync(Task(Of Stream), String, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteString32NullableAsync(Task<Stream>, System.String, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteString32NullableAsync(Task(Of Stream), System.String, CancellationToken)
+  nameWithType: StreamExtensions.WriteString32NullableAsync(Task<Stream>, String, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteString32NullableAsync(Task(Of Stream), String, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteString32NullableAsync*
   name: WriteString32NullableAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteString32NullableAsync_
@@ -6490,6 +7073,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteStringAsync(Stream,System.String,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStringAsync(Stream, System.String, CancellationToken)
   nameWithType: StreamExtensions.WriteStringAsync(Stream, String, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStringAsync(Task{Stream},System.String,CancellationToken)
+  name: WriteStringAsync(Task<Stream>, String, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStringAsync_Task_Stream__System_String_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteStringAsync(Task{Stream},System.String,CancellationToken)
+  name.vb: WriteStringAsync(Task(Of Stream), String, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStringAsync(Task<Stream>, System.String, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteStringAsync(Task(Of Stream), System.String, CancellationToken)
+  nameWithType: StreamExtensions.WriteStringAsync(Task<Stream>, String, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteStringAsync(Task(Of Stream), String, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStringAsync*
   name: WriteStringAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStringAsync_
@@ -6516,6 +7108,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteStringNullableAsync(Stream,System.String,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStringNullableAsync(Stream, System.String, CancellationToken)
   nameWithType: StreamExtensions.WriteStringNullableAsync(Stream, String, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStringNullableAsync(Task{Stream},System.String,CancellationToken)
+  name: WriteStringNullableAsync(Task<Stream>, String, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStringNullableAsync_Task_Stream__System_String_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteStringNullableAsync(Task{Stream},System.String,CancellationToken)
+  name.vb: WriteStringNullableAsync(Task(Of Stream), String, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStringNullableAsync(Task<Stream>, System.String, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteStringNullableAsync(Task(Of Stream), System.String, CancellationToken)
+  nameWithType: StreamExtensions.WriteStringNullableAsync(Task<Stream>, String, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteStringNullableAsync(Task(Of Stream), String, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStringNullableAsync*
   name: WriteStringNullableAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStringNullableAsync_
@@ -6551,6 +7152,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync(Stream,System.Object,System.Boolean,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync(Stream, System.Object, System.Boolean, CancellationToken)
   nameWithType: StreamExtensions.WriteStructAsync(Stream, Object, Boolean, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync(Task{Stream},System.Object,System.Boolean,CancellationToken)
+  name: WriteStructAsync(Task<Stream>, Object, Boolean, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStructAsync_Task_Stream__System_Object_System_Boolean_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync(Task{Stream},System.Object,System.Boolean,CancellationToken)
+  name.vb: WriteStructAsync(Task(Of Stream), Object, Boolean, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync(Task<Stream>, System.Object, System.Boolean, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync(Task(Of Stream), System.Object, System.Boolean, CancellationToken)
+  nameWithType: StreamExtensions.WriteStructAsync(Task<Stream>, Object, Boolean, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteStructAsync(Task(Of Stream), Object, Boolean, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync*
   name: WriteStructAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStructAsync_
@@ -6567,6 +7177,15 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync(Of T)(Stream, T, System.Boolean, CancellationToken)
   nameWithType: StreamExtensions.WriteStructAsync<T>(Stream, T, Boolean, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteStructAsync(Of T)(Stream, T, Boolean, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync``1(Task{Stream},``0,System.Boolean,CancellationToken)
+  name: WriteStructAsync<T>(Task<Stream>, T, Boolean, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStructAsync__1_Task_Stream____0_System_Boolean_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync``1(Task{Stream},``0,System.Boolean,CancellationToken)
+  name.vb: WriteStructAsync(Of T)(Task(Of Stream), T, Boolean, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync<T>(Task<Stream>, T, System.Boolean, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructAsync(Of T)(Task(Of Stream), T, System.Boolean, CancellationToken)
+  nameWithType: StreamExtensions.WriteStructAsync<T>(Task<Stream>, T, Boolean, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteStructAsync(Of T)(Task(Of Stream), T, Boolean, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullable(Stream,System.Object,System.Boolean)
   name: WriteStructNullable(Stream, Object, Boolean)
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStructNullable_Stream_System_Object_System_Boolean_
@@ -6595,6 +7214,15 @@ references:
   commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync(Stream,System.Object,System.Boolean,CancellationToken)
   fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync(Stream, System.Object, System.Boolean, CancellationToken)
   nameWithType: StreamExtensions.WriteStructNullableAsync(Stream, Object, Boolean, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync(Task{Stream},System.Object,System.Boolean,CancellationToken)
+  name: WriteStructNullableAsync(Task<Stream>, Object, Boolean, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStructNullableAsync_Task_Stream__System_Object_System_Boolean_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync(Task{Stream},System.Object,System.Boolean,CancellationToken)
+  name.vb: WriteStructNullableAsync(Task(Of Stream), Object, Boolean, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync(Task<Stream>, System.Object, System.Boolean, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync(Task(Of Stream), System.Object, System.Boolean, CancellationToken)
+  nameWithType: StreamExtensions.WriteStructNullableAsync(Task<Stream>, Object, Boolean, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteStructNullableAsync(Task(Of Stream), Object, Boolean, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync*
   name: WriteStructNullableAsync
   href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStructNullableAsync_
@@ -6611,6 +7239,15 @@ references:
   fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync(Of T)(Stream, System.Nullable(Of T), System.Boolean, CancellationToken)
   nameWithType: StreamExtensions.WriteStructNullableAsync<T>(Stream, Nullable<T>, Boolean, CancellationToken)
   nameWithType.vb: StreamExtensions.WriteStructNullableAsync(Of T)(Stream, Nullable(Of T), Boolean, CancellationToken)
+- uid: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync``1(Task{Stream},System.Nullable{``0},System.Boolean,CancellationToken)
+  name: WriteStructNullableAsync<T>(Task<Stream>, Nullable<T>, Boolean, CancellationToken)
+  href: api/wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteStructNullableAsync__1_Task_Stream__System_Nullable___0__System_Boolean_CancellationToken_
+  commentId: M:wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync``1(Task{Stream},System.Nullable{``0},System.Boolean,CancellationToken)
+  name.vb: WriteStructNullableAsync(Of T)(Task(Of Stream), Nullable(Of T), Boolean, CancellationToken)
+  fullName: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync<T>(Task<Stream>, System.Nullable<T>, System.Boolean, CancellationToken)
+  fullName.vb: wan24.StreamSerializerExtensions.StreamExtensions.WriteStructNullableAsync(Of T)(Task(Of Stream), System.Nullable(Of T), System.Boolean, CancellationToken)
+  nameWithType: StreamExtensions.WriteStructNullableAsync<T>(Task<Stream>, Nullable<T>, Boolean, CancellationToken)
+  nameWithType.vb: StreamExtensions.WriteStructNullableAsync(Of T)(Task(Of Stream), Nullable(Of T), Boolean, CancellationToken)
 - uid: wan24.StreamSerializerExtensions.StreamSerializer
   name: StreamSerializer
   href: api/wan24.StreamSerializerExtensions.StreamSerializer.html

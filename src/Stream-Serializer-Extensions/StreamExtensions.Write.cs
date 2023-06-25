@@ -55,11 +55,12 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task WriteSerializerVersionAsync(this Stream stream, CancellationToken cancellationToken = default)
+        public static async Task<Stream> WriteSerializerVersionAsync(this Stream stream, CancellationToken cancellationToken = default)
         {
             (object n, NumberTypes nt) = StreamSerializer.Version.GetNumberAndType();
             await WriteAsync(stream, (byte)nt, cancellationToken).DynamicContext();
@@ -72,7 +73,19 @@ namespace wan24.StreamSerializerExtensions
                 case int i: await WriteAsync(stream, i, cancellationToken).DynamicContext(); break;
                 default: throw new SerializerException($"Invalid numeric type {nt} for serializer version {StreamSerializer.Version}");
             }
+            return stream;
         }
+
+        /// <summary>
+        /// Write the serializer version
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<Stream> WriteSerializerVersionAsync(this Task<Stream> stream, CancellationToken cancellationToken = default)
+            => FluentAsync(stream, (s) => WriteSerializerVersionAsync(s, cancellationToken));
 
         /// <summary>
         /// Write a boolean flag if an object is not <see langword="null"/>
@@ -172,14 +185,16 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="obj">Object</param>
         /// <param name="action">Write action to execute, if the object isn't <see langword="null"/></param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task WriteIfNotNullAsync<T>(this Stream stream, T? obj, Func<Task> action, CancellationToken cancellationToken = default)
+        public static async Task<Stream> WriteIfNotNullAsync<T>(this Stream stream, T? obj, Func<Task> action, CancellationToken cancellationToken = default)
         {
             if (await WriteIfNotNullAsync(stream, obj, cancellationToken).DynamicContext())
                 await action().DynamicContext();
+            return stream;
         }
 
         /// <summary>
@@ -206,14 +221,16 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="count">Count</param>
         /// <param name="action">Write action to execute, if the count isn't <see langword="null"/></param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task WriteNullableCountAsync(this Stream stream, long? count, Func<Task> action, CancellationToken cancellationToken = default)
+        public static async Task<Stream> WriteNullableCountAsync(this Stream stream, long? count, Func<Task> action, CancellationToken cancellationToken = default)
         {
             if (await WriteNullableCountAsync(stream, count, cancellationToken).DynamicContext())
                 await action().DynamicContext();
+            return stream;
         }
 
         /// <summary>
@@ -250,11 +267,18 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="len">Data length in bytes</param>
         /// <param name="pool">Array pool (<c>data</c> will returned to that pool)</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task WriteSerializedDataAsync(this Stream stream, byte[] data, int len, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+        public static async Task<Stream> WriteSerializedDataAsync(
+            this Stream stream, 
+            byte[] data, 
+            int len, 
+            ArrayPool<byte>? pool = null, 
+            CancellationToken cancellationToken = default
+            )
             => await SerializerException.WrapAsync(async () =>
             {
                 try
@@ -265,6 +289,16 @@ namespace wan24.StreamSerializerExtensions
                 {
                     (pool ?? StreamSerializer.BufferPool).Return(data, clearArray: false);
                 }
+                return stream;
             });
+
+        /// <summary>
+        /// Fluent API action executor
+        /// </summary>
+        /// <param name="task">Stream task</param>
+        /// <param name="action">Action to execute</param>
+        /// <returns>Stream</returns>
+        public static async Task<Stream> FluentAsync(Task<Stream> task, Func<Stream, Task<Stream>> action)
+            => await action(await task.DynamicContext()).DynamicContext();
     }
 }

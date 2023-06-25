@@ -32,16 +32,30 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task WriteListAsync(this Stream stream, IList value, CancellationToken cancellationToken = default)
+        public static async Task<Stream> WriteListAsync(this Stream stream, IList value, CancellationToken cancellationToken = default)
         {
             await WriteNumberAsync(stream, value.Count, cancellationToken).DynamicContext();
-            if (value.Count == 0) return;
+            if (value.Count == 0) return stream;
             foreach (object element in value) await WriteObjectAsync(stream, element, cancellationToken).DynamicContext();
+            return stream;
         }
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value to write</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<Stream> WriteListAsync(this Task<Stream> stream, IList value, CancellationToken cancellationToken = default)
+            => FluentAsync(stream, (s) => WriteListAsync(s, value, cancellationToken));
 
         /// <summary>
         /// Write
@@ -70,11 +84,22 @@ namespace wan24.StreamSerializerExtensions
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task WriteListNullableAsync(this Stream stream, IList? value, CancellationToken cancellationToken = default)
+        public static Task<Stream> WriteListNullableAsync(this Stream stream, IList? value, CancellationToken cancellationToken = default)
             => WriteNullableCountAsync(stream, value?.Count, async () =>
             {
                 if (value!.Count == 0) return;
                 foreach (object element in value) await WriteObjectAsync(stream, element, cancellationToken).DynamicContext();
             }, cancellationToken);
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="value">Value to write</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<Stream> WriteListNullableAsync(this Task<Stream> stream, IList? value, CancellationToken cancellationToken = default)
+            => FluentAsync(stream, (s) => WriteListNullableAsync(s, value, cancellationToken));
     }
 }
