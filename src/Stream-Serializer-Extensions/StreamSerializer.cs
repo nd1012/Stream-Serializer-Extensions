@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime;
 using wan24.Core;
+using System.Diagnostics;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -403,6 +404,9 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Is allowed?</returns>
         public static bool IsTypeAllowed(Type type)
         {
+            if (type == typeof(List<bool>)) Debugger.Break();
+            // Deny abstract types
+            if (type.IsAbstract || type.IsInterface) return false;
             // Allow all enumeration types
             if (type.IsEnum) return true;
             // Get the final element type of an array type
@@ -411,7 +415,7 @@ namespace wan24.StreamSerializerExtensions
             // Allow registered allowed types or serializable types
             if (AllowedTypes.Contains(finalType) || typeof(IStreamSerializer).IsAssignableFrom(finalType)) return true;
             // Validate generic type arguments also (btw. no risk for an endless recursion here)
-            if (finalType.IsGenericType) foreach (Type gta in finalType.GetGenericArguments()) if (IsTypeAllowed(gta)) return false;
+            if (finalType.IsGenericType) foreach (Type gta in finalType.GetGenericArguments()) if (!IsTypeAllowed(gta)) return false;
             // Allow inheriting types
             if (AllowedTypes.Any(t => t.IsAssignableFrom(finalType))) return true;
             // Deny

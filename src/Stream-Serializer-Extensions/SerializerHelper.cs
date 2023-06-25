@@ -115,6 +115,7 @@ namespace wan24.StreamSerializerExtensions
 #endif
         public static bool IsNumber(this ObjectTypes type) => type.RemoveFlags() switch
         {
+            ObjectTypes.Byte => true,
             ObjectTypes.Short => true,
             ObjectTypes.Int => true,
             ObjectTypes.Long => true,

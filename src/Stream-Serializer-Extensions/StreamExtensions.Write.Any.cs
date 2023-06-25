@@ -22,16 +22,10 @@ namespace wan24.StreamSerializerExtensions
             (Type type, ObjectTypes objType, bool writeType, bool writeObject) = obj.GetObjectSerializerInfo();
             Write(stream, (byte)objType);
             if (writeType) WriteString(stream, type.ToString());
-            if (writeObject)
-                if (objType.IsNumber())
-                {
-                    WriteNumber(stream, obj);
-                }
-                else
-                {
-                    WriteObject(stream, obj);
-                }
-            return stream;
+            if (!writeObject) return stream;
+            return objType.IsNumber()
+                ? WriteNumber(stream, obj)
+                : WriteObject(stream, obj);
         }
 
         /// <summary>
@@ -50,16 +44,10 @@ namespace wan24.StreamSerializerExtensions
             (Type type, ObjectTypes objType, bool writeType, bool writeObject) = obj.GetObjectSerializerInfo();
             await WriteAsync(stream, (byte)objType, cancellationToken).DynamicContext();
             if (writeType) await WriteStringAsync(stream, type.ToString(), cancellationToken).DynamicContext();
-            if (writeObject)
-                if (objType.IsNumber())
-                {
-                    await WriteNumberAsync(stream, obj, cancellationToken).DynamicContext();
-                }
-                else
-                {
-                    await WriteObjectAsync(stream, obj, cancellationToken).DynamicContext();
-                }
-            return stream;
+            if (!writeObject) return stream;
+            return objType.IsNumber()
+                ? await WriteNumberAsync(stream, obj, cancellationToken).DynamicContext()
+                : await WriteObjectAsync(stream, obj, cancellationToken).DynamicContext();
         }
 
         /// <summary>
@@ -85,17 +73,7 @@ namespace wan24.StreamSerializerExtensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
         public static Stream WriteAnyNullable(this Stream stream, object? obj)
-        {
-            if (obj == null)
-            {
-                Write(stream, (byte)ObjectTypes.Null);
-            }
-            else
-            {
-                WriteAny(stream, obj);
-            }
-            return stream;
-        }
+            => obj == null ? Write(stream, (byte)ObjectTypes.Null) : WriteAny(stream, obj);
 
         /// <summary>
         /// Write any object
@@ -109,17 +87,9 @@ namespace wan24.StreamSerializerExtensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
         public static async Task<Stream> WriteAnyNullableAsync(this Stream stream, object? obj, CancellationToken cancellationToken = default)
-        {
-            if (obj == null)
-            {
-                await WriteAsync(stream, (byte)ObjectTypes.Null, cancellationToken).DynamicContext();
-            }
-            else
-            {
-                await WriteAnyAsync(stream, obj, cancellationToken).DynamicContext();
-            }
-            return stream;
-        }
+            => obj == null 
+                ? await WriteAsync(stream, (byte)ObjectTypes.Null, cancellationToken).DynamicContext() 
+                : await WriteAnyAsync(stream, obj, cancellationToken).DynamicContext();
 
         /// <summary>
         /// Write any object

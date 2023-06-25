@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -27,9 +26,9 @@ namespace wan24.StreamSerializerExtensions
             => SerializerException.Wrap(() =>
             {
                 if (typeof(IStreamSerializer).IsAssignableFrom(typeof(T))) return (T)ReadSerializedObject(stream, typeof(T), version);
-                StreamSerializer.Deserialize_Delegate deserializer = StreamSerializer.FindDeserializer(typeof(T))
-                    ?? throw new SerializerException($"No deserializer found for {typeof(T)}");
-                return (T)(deserializer(stream, typeof(T), version ?? StreamSerializer.Version, options) ?? throw new SerializerException($"{typeof(T)} deserialized to NULL"));
+                return StreamSerializer.FindDeserializer(typeof(T)) is StreamSerializer.Deserialize_Delegate deserializer
+                    ? (T)(deserializer(stream, typeof(T), version ?? StreamSerializer.Version, options) ?? throw new SerializerException($"{typeof(T)} deserialized to NULL"))
+                    : (T)ReadAnyObject(stream, typeof(T), version);
             });
 
         /// <summary>
@@ -48,9 +47,9 @@ namespace wan24.StreamSerializerExtensions
             => SerializerException.Wrap(() =>
             {
                 if (typeof(IStreamSerializer).IsAssignableFrom(type)) return ReadSerializedObject(stream, type, version);
-                StreamSerializer.Deserialize_Delegate deserializer = StreamSerializer.FindDeserializer(type)
-                    ?? throw new SerializerException($"No deserializer found for {type}");
-                return deserializer(stream, type, version ?? StreamSerializer.Version, options) ?? throw new SerializerException($"{type} deserialized to NULL");
+                return StreamSerializer.FindDeserializer(type) is StreamSerializer.Deserialize_Delegate deserializer
+                    ? (deserializer(stream, type, version ?? StreamSerializer.Version, options) ?? throw new SerializerException($"{type} deserialized to NULL"))
+                    : ReadAnyObject(stream, type, version);
             });
 
         /// <summary>
@@ -72,7 +71,9 @@ namespace wan24.StreamSerializerExtensions
                 if (typeof(IStreamSerializer).IsAssignableFrom(typeof(T)))
                     return (T)await ReadSerializedObjectAsync(stream, typeof(T), version, cancellationToken).DynamicContext();
                 if (StreamSerializer.FindAsyncDeserializer(typeof(T)) is not StreamSerializer.AsyncDeserialize_Delegate deserializer)
-                    return ReadObject<T>(stream, version, options);
+                    return StreamSerializer.FindDeserializer(typeof(T)) is not null
+                        ? ReadObject<T>(stream, version, options)
+                        : (T)ReadAnyObject(stream, typeof(T), version);
                 Task task = deserializer(stream, typeof(T), version ?? StreamSerializer.Version, options, cancellationToken);
                 await task.DynamicContext();
                 return task.GetResult<T>();
@@ -92,10 +93,10 @@ namespace wan24.StreamSerializerExtensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
         public static Task<object> ReadObjectAsync(
-            this Stream stream, 
-            Type type, 
-            int? version = null, 
-            ISerializerOptions? options = null, 
+            this Stream stream,
+            Type type,
+            int? version = null,
+            ISerializerOptions? options = null,
             CancellationToken cancellationToken = default
             )
             => SerializerException.WrapAsync(async () =>
@@ -103,7 +104,9 @@ namespace wan24.StreamSerializerExtensions
                 if (typeof(IStreamSerializer).IsAssignableFrom(type))
                     return await ReadSerializedObjectAsync(stream, type, version, cancellationToken).DynamicContext();
                 if (StreamSerializer.FindAsyncDeserializer(type) is not StreamSerializer.AsyncDeserialize_Delegate deserializer)
-                    return ReadObject(stream, type, version, options);
+                    return StreamSerializer.FindDeserializer(type) is not null
+                        ? ReadObject(stream, type, version, options)
+                        : ReadAnyObject(stream, type, version);
                 Task task = deserializer(stream, type, version ?? StreamSerializer.Version, options, cancellationToken);
                 await task.DynamicContext();
                 return task.GetResult(type);

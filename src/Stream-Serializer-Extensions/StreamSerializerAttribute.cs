@@ -172,8 +172,8 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Stream to use for deserializing an embedded stream</returns>
         public virtual Stream? GetStream(object? obj, PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken = default)
         {
-            if (obj == null) ArgumentValidationHelper.EnsureValidArgument(nameof(obj), property);
-            if (property == null) ArgumentValidationHelper.EnsureValidArgument(nameof(property), obj);
+            if (obj == null) ArgumentValidationHelper.EnsureValidArgument(nameof(obj), property == null);
+            if (property == null) ArgumentValidationHelper.EnsureValidArgument(nameof(property), obj == null);
             if (StreamFactory == null)
             {
                 if (StreamFactoryType == null) return null;
