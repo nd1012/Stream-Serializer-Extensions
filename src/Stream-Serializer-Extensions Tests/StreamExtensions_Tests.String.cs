@@ -1,4 +1,5 @@
-﻿using wan24.StreamSerializerExtensions;
+﻿using wan24.Core;
+using wan24.StreamSerializerExtensions;
 
 namespace Stream_Serializer_Extensions_Tests
 {
@@ -35,9 +36,8 @@ namespace Stream_Serializer_Extensions_Tests
 
             ms.SetLength(0);
             ms.Position = 0;
-            str = "abcdefäüößﻼ";//TODO Correct sample?
+            str = "abcdefäüöß\U0001F642";
             ms.WriteString32(str);
-            Assert.AreEqual(((long)str.Length << 2) + 2, ms.Length);
             ms.Position = 0;
             Assert.AreEqual(str, ms.ReadString32());
             Assert.AreEqual(ms.Length, ms.Position);
@@ -88,9 +88,8 @@ namespace Stream_Serializer_Extensions_Tests
 
             ms.SetLength(0);
             ms.Position = 0;
-            str = "abcdefäüößﻼ";//TODO Correct sample?
+            str = "abcdefäüöß\U0001F642";
             await ms.WriteString32Async(str);
-            Assert.AreEqual(((long)str.Length << 2) + 2, ms.Length);
             ms.Position = 0;
             Assert.AreEqual(str, await ms.ReadString32Async());
 

@@ -37,7 +37,7 @@ namespace wan24.StreamSerializerExtensions
         public static Stream WriteEnum(this Stream stream, object value)
         {
             Type enumType = value.GetType();
-            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(value), enumType.IsEnum, "Not an enumeration value"));
+            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(value), enumType.IsEnum, () => "Not an enumeration value"));
             if (ObjectHelper.AreEqual(value, Activator.CreateInstance(enumType))) return Write(stream, (byte)NumberTypes.Default);
             return WriteNumber(stream, Convert.ChangeType(value, enumType.GetEnumUnderlyingType()));
         }
@@ -94,7 +94,7 @@ namespace wan24.StreamSerializerExtensions
         public static async Task<Stream> WriteEnumAsync(this Stream stream, object value, CancellationToken cancellationToken = default)
         {
             Type enumType = value.GetType();
-            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(value), enumType.IsEnum, "Not an enumeration value"));
+            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(value), enumType.IsEnum, () => "Not an enumeration value"));
             if (ObjectHelper.AreEqual(value, Activator.CreateInstance(enumType)))
             {
                 await WriteAsync(stream, (byte)NumberTypes.Default, cancellationToken).DynamicContext();

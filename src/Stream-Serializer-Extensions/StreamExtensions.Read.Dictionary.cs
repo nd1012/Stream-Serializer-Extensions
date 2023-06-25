@@ -75,7 +75,7 @@ namespace wan24.StreamSerializerExtensions
             SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(
                 nameof(type),
                 type.IsGenericType || type.IsGenericTypeDefinition || !typeof(Dictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()),
-                "Not a dictionary type"
+                () => "Not a dictionary type"
                 ));
             pool ??= StreamSerializer.BufferPool;
             int len = ReadNumber<int>(stream, version, pool);
@@ -158,7 +158,7 @@ namespace wan24.StreamSerializerExtensions
             SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(
                 nameof(type),
                 type.IsGenericType || type.IsGenericTypeDefinition || !typeof(Dictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()),
-                "Not a dictionary type"
+                () => "Not a dictionary type"
                 ));
             pool ??= StreamSerializer.BufferPool;
             int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
@@ -200,7 +200,7 @@ namespace wan24.StreamSerializerExtensions
             where tKey : notnull
         {
             pool ??= StreamSerializer.BufferPool;
-            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:
@@ -246,10 +246,10 @@ namespace wan24.StreamSerializerExtensions
             SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(
                 nameof(type),
                 type.IsGenericType || type.IsGenericTypeDefinition || !typeof(Dictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()),
-                "Not a dictionary type"
+                () => "Not a dictionary type"
                 ));
             pool ??= StreamSerializer.BufferPool;
-            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:
@@ -299,7 +299,7 @@ namespace wan24.StreamSerializerExtensions
             where tKey : notnull
         {
             pool ??= StreamSerializer.BufferPool;
-            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:
@@ -353,10 +353,10 @@ namespace wan24.StreamSerializerExtensions
             SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(
                 nameof(type),
                 type.IsGenericType || type.IsGenericTypeDefinition || !typeof(Dictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()),
-                "Not a dictionary type"
+                () => "Not a dictionary type"
                 ));
             pool ??= StreamSerializer.BufferPool;
-            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:

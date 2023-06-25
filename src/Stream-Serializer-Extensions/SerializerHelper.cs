@@ -246,7 +246,7 @@ namespace wan24.StreamSerializerExtensions
 #endif
             NumberTypes origin = GetNumberType(number),
                 type;
-            ArgumentValidationHelper.EnsureValidArgument(nameof(number), origin != NumberTypes.None, "Not a supported numeric type");
+            ArgumentValidationHelper.EnsureValidArgument(nameof(number), origin != NumberTypes.None, () => "Not a supported numeric type");
             if (origin.IsZero() || origin.IsMinValue() || origin.IsMaxValue()) return (0, origin);
             object num;
             switch (origin.RemoveFlags())
@@ -613,9 +613,7 @@ namespace wan24.StreamSerializerExtensions
         public static T ToObject<T>(this byte[] bytes, bool includesSerializerVersion = true) where T : class, IStreamSerializer, new()
         {
             using MemoryStream ms = new(bytes);
-            int serializerVersion = StreamSerializer.VERSION;
-            if (includesSerializerVersion) serializerVersion = ms.ReadSerializerVersion();
-            return ms.ReadSerialized<T>(serializerVersion);
+            return ms.ReadSerialized<T>(includesSerializerVersion ? ms.ReadSerializerVersion() : StreamSerializer.Version);
         }
 
         /// <summary>

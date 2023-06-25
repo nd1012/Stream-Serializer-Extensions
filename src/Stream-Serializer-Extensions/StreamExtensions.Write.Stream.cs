@@ -19,7 +19,7 @@ namespace wan24.StreamSerializerExtensions
         public static Stream WriteStream(this Stream stream, Stream source, ArrayPool<byte>? pool = null, int? chunkLength = null)
             => SerializerException.Wrap(() =>
             {
-                if (chunkLength != null && chunkLength.Value < 1) throw new ArgumentOutOfRangeException(nameof(chunkLength));
+                if (chunkLength != null) ArgumentValidationHelper.EnsureValidArgument(nameof(chunkLength), 1, int.MaxValue, chunkLength.Value);
                 long len = source.CanSeek ? source.Length - source.Position : 0 - (chunkLength ?? Settings.BufferSize);
                 WriteNumber(stream, len);
                 if (len != 0)
@@ -77,7 +77,7 @@ namespace wan24.StreamSerializerExtensions
             )
             => SerializerException.WrapAsync(async () =>
             {
-                if (chunkLength != null && chunkLength.Value < 1) throw new ArgumentOutOfRangeException(nameof(chunkLength));
+                if (chunkLength != null) ArgumentValidationHelper.EnsureValidArgument(nameof(chunkLength), 1, int.MaxValue, chunkLength.Value);
                 long len = source.CanSeek ? source.Length - source.Position : 0 - (chunkLength ?? Settings.BufferSize);
                 await WriteNumberAsync(stream, len, cancellationToken).DynamicContext();
                 if (len != 0)

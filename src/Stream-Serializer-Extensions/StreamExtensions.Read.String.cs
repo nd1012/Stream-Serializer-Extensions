@@ -214,7 +214,7 @@ namespace wan24.StreamSerializerExtensions
 #endif
         private static string ReadString(Stream stream, int? version, int minLen, int maxLen, ArrayPool<byte>? pool, Func<byte[], int, string> action)
         {
-            version ??= StreamSerializer.VERSION;
+            version ??= StreamSerializer.Version;
             pool ??= StreamSerializer.BufferPool;
             int len = ReadNumber<int>(stream, version, pool);
             SerializerHelper.EnsureValidLength(len, minLen, maxLen);
@@ -254,7 +254,7 @@ namespace wan24.StreamSerializerExtensions
             CancellationToken cancellationToken
             )
         {
-            version ??= StreamSerializer.VERSION;
+            version ??= StreamSerializer.Version;
             pool ??= StreamSerializer.BufferPool;
             int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
             SerializerHelper.EnsureValidLength(len, minLen, maxLen);
@@ -287,7 +287,7 @@ namespace wan24.StreamSerializerExtensions
         {
             pool ??= StreamSerializer.BufferPool;
             int? len;
-            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:
@@ -342,7 +342,7 @@ namespace wan24.StreamSerializerExtensions
         {
             pool ??= StreamSerializer.BufferPool;
             int? len;
-            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:

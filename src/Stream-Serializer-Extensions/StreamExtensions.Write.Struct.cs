@@ -24,7 +24,7 @@ namespace wan24.StreamSerializerExtensions
             => SerializerException.Wrap(() =>
             {
                 Type structType = value.GetType();
-                ArgumentValidationHelper.EnsureValidArgument(nameof(value), structType.IsValueType, "Not a structure");
+                ArgumentValidationHelper.EnsureValidArgument(nameof(value), structType.IsValueType, () => "Not a structure");
                 using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
                 GCHandle gch = GCHandle.Alloc(buffer.Array, GCHandleType.Pinned);
                 try
@@ -56,7 +56,7 @@ namespace wan24.StreamSerializerExtensions
             => SerializerException.Wrap(() =>
             {
                 Type structType = typeof(T);
-                ArgumentValidationHelper.EnsureValidArgument(nameof(value), structType.IsValueType, "Not a structure");
+                ArgumentValidationHelper.EnsureValidArgument(nameof(value), structType.IsValueType, () => "Not a structure");
                 using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
                 GCHandle gch = GCHandle.Alloc(buffer.Array, GCHandleType.Pinned);
                 try
@@ -117,7 +117,7 @@ namespace wan24.StreamSerializerExtensions
             => SerializerException.WrapAsync(() =>
             {
                 Type structType = value.GetType();
-                ArgumentValidationHelper.EnsureValidArgument(nameof(value), structType.IsValueType, "Not a structure");
+                ArgumentValidationHelper.EnsureValidArgument(nameof(value), structType.IsValueType, () => "Not a structure");
                 using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
                 GCHandle gch = GCHandle.Alloc(buffer.Array, GCHandleType.Pinned);
                 try
@@ -163,7 +163,7 @@ namespace wan24.StreamSerializerExtensions
             => SerializerException.WrapAsync(() =>
             {
                 Type structType = typeof(T);
-                ArgumentValidationHelper.EnsureValidArgument(nameof(value), structType.IsValueType, "Not a structure");
+                ArgumentValidationHelper.EnsureValidArgument(nameof(value), structType.IsValueType, () => "Not a structure");
                 using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
                 GCHandle gch = GCHandle.Alloc(buffer.Array, GCHandleType.Pinned);
                 try
@@ -282,7 +282,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="attr">Stream serializer attribute of the structure type</param>
         public static void ConvertStructureEndianess(Type type, Memory<byte> data, StreamSerializerAttribute? attr = null)
         {
-            if (!type.IsValueType) throw new ArgumentException("Structure type required", nameof(type));
+            ArgumentValidationHelper.EnsureValidArgument(nameof(type), type.IsValueType, () => "Structure type required");
             attr ??= type.GetCustomAttribute<StreamSerializerAttribute>()
                 ?? throw new ArgumentException($"{type} requires a {typeof(StreamSerializerAttribute)}", nameof(type));
             Queue<(Type Type, Memory<byte> Data, StreamSerializerAttribute Attribute)> queue = new();

@@ -128,7 +128,7 @@ namespace wan24.StreamSerializerExtensions
 #endif
         public static T? ReadEnumNullable<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null) where T : struct, Enum
         {
-            switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ?? StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                     {
@@ -156,7 +156,7 @@ namespace wan24.StreamSerializerExtensions
 #endif
         public static Enum? ReadEnumNullable(this Stream stream, Type type, int? version = null, ArrayPool<byte>? pool = null)
         {
-            switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ?? StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                     {
@@ -190,7 +190,7 @@ namespace wan24.StreamSerializerExtensions
         public static async Task<T?> ReadEnumNullableAsync<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
             where T : struct, Enum
         {
-            switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ?? StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                     {
@@ -229,7 +229,7 @@ namespace wan24.StreamSerializerExtensions
             CancellationToken cancellationToken = default
             )
         {
-            switch ((version ?? StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ?? StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                     {

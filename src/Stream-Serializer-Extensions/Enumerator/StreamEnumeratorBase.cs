@@ -33,7 +33,7 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         /// <param name="version">Serializer version</param>
         protected StreamEnumeratorBase(Stream stream, int? version = null) : base()
         {
-            SerializerVersion = version ?? StreamSerializer.VERSION;
+            SerializerVersion = version ?? StreamSerializer.Version;
             StartPosition = stream.CanSeek ? stream.Position : 0;
             Stream = stream;
         }
@@ -94,7 +94,7 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         public static IEnumerable<T> Enumerate<tEnumerator>(Stream stream, int? version = null) where tEnumerator : StreamEnumeratorBase<T>
         {
             Type type = typeof(tEnumerator);
-            if (type.IsAbstract) throw new ArgumentException("Non-abstract type required", nameof(tEnumerator));
+            ArgumentValidationHelper.EnsureValidArgument(nameof(tEnumerator), !type.IsAbstract, () => "Non-abstract type required");
             using StreamEnumeratorBase<T> enumerator = Activator.CreateInstance(type, stream, version) as StreamEnumeratorBase<T>
                 ?? throw new InvalidProgramException($"Failed to instance {type}");
             while (enumerator.MoveNext()) yield return enumerator.Current;

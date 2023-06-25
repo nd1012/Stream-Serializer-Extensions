@@ -127,7 +127,7 @@ namespace wan24.StreamSerializerExtensions
             int maxLen = int.MaxValue
             )
         {
-            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:
@@ -189,7 +189,7 @@ namespace wan24.StreamSerializerExtensions
             CancellationToken cancellationToken = default
             )
         {
-            switch ((version ??= StreamSerializer.VERSION) & byte.MaxValue)// Serializer version switch
+            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
             {
                 case 1:
                 case 2:
