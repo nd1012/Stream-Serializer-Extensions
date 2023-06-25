@@ -3,8 +3,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using wan24.Core;
 
-//TODO Check all fluent API methods are inlined
-
 namespace wan24.StreamSerializerExtensions
 {
     // Basic types
@@ -186,6 +184,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNullableAsync(this Task<Stream> stream, sbyte? value, CancellationToken cancellationToken = default)
             => FluentAsync(stream, (s) => WriteNullableAsync(s, value, cancellationToken));
 
@@ -263,6 +263,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNullableAsync(this Task<Stream> stream, byte? value, CancellationToken cancellationToken = default)
             => FluentAsync(stream, (s) => WriteNullableAsync(s, value, cancellationToken));
 
@@ -331,6 +333,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNullableAsync(this Task<Stream> stream, short? value, CancellationToken cancellationToken = default)
             => FluentAsync(stream, (s) => WriteNullableAsync(s, value, cancellationToken));
 
@@ -399,6 +403,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNullableAsync(this Task<Stream> stream, ushort? value, CancellationToken cancellationToken = default)
             => FluentAsync(stream, (s) => WriteNullableAsync(s, value, cancellationToken));
 
@@ -467,6 +473,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNullableAsync(this Task<Stream> stream, int? value, CancellationToken cancellationToken = default)
             => FluentAsync(stream, (s) => WriteNullableAsync(s, value, cancellationToken));
 
@@ -535,6 +543,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNullableAsync(this Task<Stream> stream, uint? value, CancellationToken cancellationToken = default)
             => FluentAsync(stream, (s) => WriteNullableAsync(s, value, cancellationToken));
 
@@ -603,6 +613,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNullableAsync(this Task<Stream> stream, long? value, CancellationToken cancellationToken = default)
             => FluentAsync(stream, (s) => WriteNullableAsync(s, value, cancellationToken));
 
@@ -671,6 +683,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNullableAsync(this Task<Stream> stream, ulong? value, CancellationToken cancellationToken = default)
             => FluentAsync(stream, (s) => WriteNullableAsync(s, value, cancellationToken));
 
@@ -739,6 +753,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNullableAsync(this Task<Stream> stream, float? value, CancellationToken cancellationToken = default)
             => FluentAsync(stream, (s) => WriteNullableAsync(s, value, cancellationToken));
 
@@ -807,6 +823,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNullableAsync(this Task<Stream> stream, double? value, CancellationToken cancellationToken = default)
             => FluentAsync(stream, (s) => WriteNullableAsync(s, value, cancellationToken));
 
@@ -875,6 +893,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteNullableAsync(this Task<Stream> stream, decimal? value, CancellationToken cancellationToken = default)
             => FluentAsync(stream, (s) => WriteNullableAsync(s, value, cancellationToken));
 

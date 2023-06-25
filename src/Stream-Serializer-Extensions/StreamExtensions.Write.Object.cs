@@ -175,6 +175,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="obj">Object</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteAnyObjectAsync(this Task<Stream> stream, object obj, CancellationToken cancellationToken = default)
             => FluentAsync(stream, (s) => WriteAnyObjectAsync(s, obj, cancellationToken));
 

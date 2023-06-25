@@ -111,6 +111,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="chunkLength">Chunk length in bytes</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteStreamAsync(
             this Task<Stream> stream,
             Stream source,

@@ -298,6 +298,10 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="task">Stream task</param>
         /// <param name="action">Action to execute</param>
         /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static async Task<Stream> FluentAsync(Task<Stream> task, Func<Stream, Task<Stream>> action)
             => await action(await task.DynamicContext()).DynamicContext();
     }
