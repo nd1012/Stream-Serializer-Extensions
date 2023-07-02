@@ -158,6 +158,7 @@ namespace wan24.StreamSerializerExtensions
                                 );
                             Logging.WriteInfo($"WRITE {i} {stream.Position} {objType} {(int)objType} {itemType}");
                             if (!isComplete)
+                            {
                                 if (itemSerializer == SerializerTypes.Serializer)
                                 {
                                     WriteItem(stream, item, nullable: false, itemSerializer, itemSyncSerializer);
@@ -166,6 +167,8 @@ namespace wan24.StreamSerializerExtensions
                                 {
                                     WriteAny(stream, item, objType, writeObject);
                                 }
+                                Logging.WriteInfo($"\t\tWROTE {stream.Position}");
+                            }
                         }
                     }
                     finally

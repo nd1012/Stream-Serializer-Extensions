@@ -13,7 +13,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="type">Type</param>
         /// <returns>Stream</returns>
-        public static Stream Write(this Stream stream, Type type) => WriteSerialized(stream, new SerializedTypeInfo(type));
+        public static Stream Write(this Stream stream, Type type) => WriteSerialized(stream, SerializedTypeInfo.From(type));
 
         /// <summary>
         /// Write
@@ -23,7 +23,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
         public static Task<Stream> WriteAsync(this Stream stream, Type type, CancellationToken cancellationToken = default)
-            => WriteSerializedAsync(stream, new SerializedTypeInfo(type), cancellationToken);
+            => WriteSerializedAsync(stream, SerializedTypeInfo.From(type), cancellationToken);
 
         /// <summary>
         /// Write

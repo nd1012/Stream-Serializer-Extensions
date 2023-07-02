@@ -46,6 +46,7 @@ namespace wan24.StreamSerializerExtensions
                 ObjectTypes.Short | ObjectTypes.Unsigned => Write(stream, (ushort)obj),
                 ObjectTypes.String16 => WriteString16(stream, (string)obj),
                 ObjectTypes.String32 => WriteString32(stream, (string)obj),
+                ObjectTypes.Serializable | ObjectTypes.CachedSerializable => Write(stream, obj.GetHashCode()),
                 _ => objType.Value.IsNumber()
                     ? WriteNumber(stream, obj)
                     : WriteObject(stream, obj)
@@ -104,6 +105,7 @@ namespace wan24.StreamSerializerExtensions
                 ObjectTypes.Short | ObjectTypes.Unsigned => await WriteAsync(stream, (ushort)obj, cancellationToken).DynamicContext(),
                 ObjectTypes.String16 => await WriteString16Async(stream, (string)obj, cancellationToken).DynamicContext(),
                 ObjectTypes.String32 => await WriteString32Async(stream, (string)obj, cancellationToken).DynamicContext(),
+                ObjectTypes.Serializable | ObjectTypes.CachedSerializable => await WriteAsync(stream, obj.GetHashCode(), cancellationToken).DynamicContext(),
                 _ => objType.Value.IsNumber()
                     ? await WriteNumberAsync(stream, obj, cancellationToken).DynamicContext()
                     : await WriteObjectAsync(stream, obj, cancellationToken).DynamicContext()

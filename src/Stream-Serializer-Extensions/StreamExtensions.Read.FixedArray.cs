@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.Diagnostics;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using wan24.Core;
@@ -118,9 +119,16 @@ namespace wan24.StreamSerializerExtensions
                                             arr[i] = (itemSerializer == SerializerTypes.Serializer
                                                 ? (T?)(obj = ReadItem(stream, version.Value, nullable: false, itemSerializer, itemType, pool, valueOptions, itemSyncDeserializer))
                                                 : (T?)(obj = ReadAnyInt(stream, version.Value, objType, itemType, valueOptions)))!;
-                                            objIndex = objectCache.IndexOf(null);
-                                            if (objIndex != -1) objectCache[objIndex] = obj!;
-                                            Logging.WriteInfo($"RED {obj}");
+                                            if (obj!.GetObjectSerializerInfo().WriteObject)
+                                            {
+                                                objIndex = objectCache.IndexOf(null);
+                                                if (objIndex != -1) objectCache[objIndex] = obj!;
+                                                Logging.WriteInfo($"\t\tRED {obj} {stream.Position} {objIndex}");
+                                            }
+                                            else
+                                            {
+                                                Logging.WriteInfo($"\t\tRED {obj} {stream.Position}");
+                                            }
                                         }
                                         else
                                         {

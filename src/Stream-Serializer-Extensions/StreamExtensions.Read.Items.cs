@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using wan24.Core;
 
@@ -231,35 +232,50 @@ namespace wan24.StreamSerializerExtensions
             bool requireType;
             // Read the object type
             objType = (ObjectTypes)ReadOneByte(stream, version);
+            Logging.WriteInfo($"\tRED OBJECT TYPE {objType}");
             if (objType == ObjectTypes.Null) return null;
             // Use the object cache
             if (objType == ObjectTypes.Cached)
             {
+                Logging.WriteInfo("\t\tUSING CACHE");
                 int objIndex = ReadOneByte(stream, version);
+                Logging.WriteInfo($"\t\tCACHE INDEX {objIndex}");
                 object? res = objectCache[objIndex] ?? throw new SerializerException($"Invalid object cache index #{objIndex}", new InvalidDataException());
                 itemType = res.GetType();
-                objType = itemType.GetObjectSerializerInfo().ObjectType;
+                Logging.WriteInfo($"\t\tCACHED TYPE {itemType} {res}");
+                objType = res.GetObjectSerializerInfo().ObjectType;
                 (itemSerializer, itemSyncDeserializer, _) = itemType.GetItemDeserializerInfo(isAsync: false);
                 lastObjType = objType;
                 return res;
             }
             // Prepare the deserialization
-            lastObjType = objType.RequiresObjectWriting() ? objType : default;
             if (objType == ObjectTypes.LastItemType)
             {
+                Logging.WriteInfo($"\t\tUSING LAST OBJ TYPE {lastObjType}");
                 // Use the last object type
-                if (index == 0) throw new SerializerException($"Invalid object type for item #{index}", new InvalidDataException());
+                if (index == 0) throw new SerializerException($"Invalid object type {objType} for item #{index}", new InvalidDataException());
                 requireType = false;
             }
             else
             {
+                Logging.WriteInfo("\t\tGETTING TYPE");
                 // Ensure correct deserializer informations
+                lastObjType = objType.RequiresObjectWriting() ? objType : default;
                 requireType = objType.RequiresTypeName();
+                Logging.WriteInfo($"\t\tREQUIRE TYPE {requireType}");
                 if (requireType)
                 {
                     // An object type is required
+                    if (objType.IsBasicTypeInfo())
+                    {
+                        Logging.WriteInfo($"\t\tUSING BASIC TYPE INFO");
+                        // Read a basic type information
+                        itemType = new SerializedTypeInfo((ObjectTypes)stream.ReadOneByte(version)).ToSerializableType();
+                        objType &= ~ObjectTypes.BasicTypeInfo;
+                    }
                     if (objType.IsCached())
                     {
+                        Logging.WriteInfo("\t\tUSING CACHE");
                         // Use a previously cached object type
                         int typeIndex = ReadOneByte(stream, version);
                         itemType = typeCache[typeIndex] ?? throw new SerializerException($"No type at cache index #{typeIndex}", new InvalidDataException());
@@ -268,13 +284,15 @@ namespace wan24.StreamSerializerExtensions
                     else
                     {
                         // Read the object type
+                        Logging.WriteInfo("\t\tREADING TYPE");
                         itemType = ReadSerializableType(stream, version);
+                        Logging.WriteInfo($"\t\tRED TYPE {itemType}");
                         if (!elementType.IsAssignableFrom(itemType) || itemType.IsAbstract || itemType.IsInterface || itemType == typeof(object))
                             throw new SerializerException($"Invalid item type {itemType} for item #{index} ({elementType})", new InvalidCastException());
                         int typeIndex = typeCache.AsReadOnly().IndexOf(null!);
                         if (typeIndex != -1) typeCache[typeIndex] = itemType;
-                        (itemSerializer, itemSyncDeserializer, _) = itemType.GetItemDeserializerInfo(isAsync: false);
                     }
+                    (itemSerializer, itemSyncDeserializer, _) = itemType.GetItemDeserializerInfo(isAsync: false);
                 }
                 else
                 {
@@ -338,27 +356,33 @@ namespace wan24.StreamSerializerExtensions
                 int objIndex = await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
                 object? res = objectCache.Span[objIndex] ?? throw new SerializerException($"Invalid object cache index #{objIndex}", new InvalidDataException());
                 itemType = res.GetType();
-                objType = itemType.GetObjectSerializerInfo().ObjectType;
+                objType = res.GetObjectSerializerInfo().ObjectType;
                 (itemSerializer, itemSyncDeserializer, itemAsyncDeserializer) = itemType.GetItemDeserializerInfo(isAsync: false);
                 lastObjType = objType;
                 return (res, objType, lastObjType, itemType, itemSerializer, itemSyncDeserializer, itemAsyncDeserializer);
             }
             // Prepare the deserialization
-            lastObjType = objType.RequiresObjectWriting() ? objType : default;
             if (objType == ObjectTypes.LastItemType)
             {
                 // Use the last object type
-                if (index == 0) throw new SerializerException($"Invalid object type for item #{index}", new InvalidDataException());
+                if (index == 0) throw new SerializerException($"Invalid object type {objType} for item #{index}", new InvalidDataException());
                 requireType = false;
             }
             else
             {
                 // Ensure correct deserializer informations
+                lastObjType = objType.RequiresObjectWriting() ? objType : default;
                 requireType = objType.RequiresTypeName();
                 if (requireType)
                 {
                     // An object type (name) is required
-                    if (objType.IsCached())
+                    if (objType.IsBasicTypeInfo())
+                    {
+                        // Read a basic type information
+                        itemType = new SerializedTypeInfo((ObjectTypes)await stream.ReadOneByteAsync(version, cancellationToken).DynamicContext()).ToSerializableType();
+                        objType &= ~ObjectTypes.BasicTypeInfo;
+                    }
+                    else if (objType.IsCached())
                     {
                         // Use a previously cached object type
                         int typeIndex = await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
@@ -373,8 +397,8 @@ namespace wan24.StreamSerializerExtensions
                             throw new SerializerException($"Invalid item type {itemType} for item #{index} ({elementType})", new InvalidCastException());
                         int typeIndex = typeCache.AsReadOnly().IndexOf(null!);
                         if (typeIndex != -1) typeCache.Span[typeIndex] = itemType;
-                        (itemSerializer, itemSyncDeserializer, itemAsyncDeserializer) = itemType.GetItemDeserializerInfo(isAsync: true);
                     }
+                    (itemSerializer, itemSyncDeserializer, itemAsyncDeserializer) = itemType.GetItemDeserializerInfo(isAsync: true);
                 }
                 else
                 {

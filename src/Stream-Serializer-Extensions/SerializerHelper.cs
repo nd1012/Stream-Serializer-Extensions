@@ -131,7 +131,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>An array?</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsArray(this ObjectTypes type) => type.ContainsAllFlags(ObjectTypes.Array);
+        public static bool IsArray(this ObjectTypes type) => type.RemoveFlags() == ObjectTypes.Array;
 
         /// <summary>
         /// Is not ranked?
@@ -141,6 +141,24 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNotRanked(this ObjectTypes type) => type.ContainsAllFlags(ObjectTypes.NoRank);
+
+        /// <summary>
+        /// Is a cached serializable type?
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>Is cached serializable?</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsCachedSerializable(this ObjectTypes type) => type.ContainsAllFlags(ObjectTypes.CachedSerializable);
+
+        /// <summary>
+        /// Is a basic type info?
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>Is a basic type info?</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsBasicTypeInfo(this ObjectTypes type) => type.ContainsAllFlags(ObjectTypes.BasicTypeInfo);
 
         /// <summary>
         /// Is a number?
@@ -179,7 +197,6 @@ namespace wan24.StreamSerializerExtensions
             ObjectTypes.Dict => true,
             ObjectTypes.Object => true,
             ObjectTypes.Serializable => true,
-            ObjectTypes.ClrType => true,
             _ => false
         };
 
@@ -543,10 +560,7 @@ namespace wan24.StreamSerializerExtensions
                         objType |= ObjectTypes.Empty;
                         writeObject = false;
                     }
-                    else
-                    {
-                        writeType = true;
-                    }
+                    writeType = true;
                     break;
                 case ObjectTypes.List:
                     if (((IList)obj).Count == 0)
@@ -554,10 +568,7 @@ namespace wan24.StreamSerializerExtensions
                         objType |= ObjectTypes.Empty;
                         writeObject = false;
                     }
-                    else
-                    {
-                        writeType = true;
-                    }
+                    writeType = true;
                     break;
                 case ObjectTypes.Dict:
                     if (((IDictionary)obj).Count == 0)
@@ -565,10 +576,7 @@ namespace wan24.StreamSerializerExtensions
                         objType |= ObjectTypes.Empty;
                         writeObject = false;
                     }
-                    else
-                    {
-                        writeType = true;
-                    }
+                    writeType = true;
                     break;
                 case ObjectTypes.Object:
                 case ObjectTypes.Struct:
@@ -916,6 +924,11 @@ namespace wan24.StreamSerializerExtensions
             else if (thc == typeof(decimal).GetHashCode()) objType = ObjectTypes.Decimal;
             else if (thc == typeof(byte[]).GetHashCode()) objType = ObjectTypes.Bytes;
             else if (thc == typeof(string).GetHashCode()) objType = ObjectTypes.String;
+            else if (typeof(IStreamSerializer).IsAssignableFrom(type))
+            {
+                objType = ObjectTypes.Serializable;
+                if (StreamSerializer.TypeCacheEnabled) objType |= ObjectTypes.CachedSerializable;
+            }
             else if (thc == typeof(Stream).GetHashCode()) objType = ObjectTypes.Stream;
             else if (thc == typeof(Type).GetHashCode()) objType = ObjectTypes.ClrType;
             else if (type.IsArray)
