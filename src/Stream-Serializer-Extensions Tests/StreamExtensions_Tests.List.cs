@@ -70,7 +70,7 @@ namespace Stream_Serializer_Extensions_Tests
         private static void CompareList(IList a, IList b)
         {
             Assert.AreEqual(a.Count, b.Count);
-            for (int i = 0; i < a.Count; i++) Assert.AreEqual(a[i], b[i]);
+            for (int i = 0; i < a.Count; i++) CompareObjects(a[i], b[i]);
         }
     }
 }

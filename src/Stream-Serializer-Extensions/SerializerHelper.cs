@@ -7,6 +7,8 @@ using System.Runtime.CompilerServices;
 using wan24.Core;
 using wan24.ObjectValidation;
 
+//TODO Write/read enumerables
+
 namespace wan24.StreamSerializerExtensions
 {
     /// <summary>
@@ -105,6 +107,42 @@ namespace wan24.StreamSerializerExtensions
         public static bool IsUnsigned(this ObjectTypes type) => type.ContainsAllFlags(ObjectTypes.Unsigned);
 
         /// <summary>
+        /// Is cached?
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>Cached?</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsCached(this ObjectTypes type) => type.ContainsAllFlags(ObjectTypes.Cached);
+
+        /// <summary>
+        /// Is generic?
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>Generic?</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsGeneric(this ObjectTypes type) => type.ContainsAllFlags(ObjectTypes.Generic);
+
+        /// <summary>
+        /// Is an array?
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>An array?</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsArray(this ObjectTypes type) => type.ContainsAllFlags(ObjectTypes.Array);
+
+        /// <summary>
+        /// Is not ranked?
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>Not ranked?</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNotRanked(this ObjectTypes type) => type.ContainsAllFlags(ObjectTypes.NoRank);
+
+        /// <summary>
         /// Is a number?
         /// </summary>
         /// <param name="type">Type</param>
@@ -123,6 +161,43 @@ namespace wan24.StreamSerializerExtensions
             ObjectTypes.Double => true,
             ObjectTypes.Decimal => true,
             _ => false
+        };
+
+        /// <summary>
+        /// Determine if a type name is required
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>Is required?</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static bool RequiresTypeName(this ObjectTypes type) => type.RemoveFlags() switch
+        {
+            ObjectTypes.Array => true,
+            ObjectTypes.List => true,
+            ObjectTypes.Dict => true,
+            ObjectTypes.Object => true,
+            ObjectTypes.Serializable => true,
+            ObjectTypes.ClrType => true,
+            _ => false
+        };
+
+        /// <summary>
+        /// Does the type require to write the serialized object?
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>Is required?</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static bool RequiresObjectWriting(this ObjectTypes type) => type switch
+        {
+            ObjectTypes.Null => false,
+            ObjectTypes.Bool => false,
+            ObjectTypes.Cached => false,
+            _ => !type.ContainsAnyFlag(ObjectTypes.Bool, ObjectTypes.Empty)
         };
 
         /// <summary>
@@ -409,6 +484,7 @@ namespace wan24.StreamSerializerExtensions
                 string => ObjectTypes.String,
                 byte[] => ObjectTypes.Bytes,
                 Stream => ObjectTypes.Stream,
+                Type => ObjectTypes.ClrType,
                 IStreamSerializer => ObjectTypes.Serializable,
                 _ => ObjectTypes.Null
             };
@@ -499,6 +575,8 @@ namespace wan24.StreamSerializerExtensions
                 case ObjectTypes.Serializable:
                     writeType = true;
                     break;
+                case ObjectTypes.ClrType:
+                    break;
                 case ObjectTypes.Bytes:
                     if (((byte[])obj).Length == 0)
                     {
@@ -525,11 +603,12 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <typeparam name="T">Value type</typeparam>
         /// <param name="value">Value</param>
+        /// <param name="name">Argument value</param>
         /// <returns>Non-null value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T EnsureNotNull<T>(T? value)
-            => value ?? throw new SerializerException($"Argument {nameof(value)} is NULL", new ArgumentNullException(nameof(value)));
+        public static T EnsureNotNull<T>(T? value, string? name = null)
+            => value ?? throw new SerializerException($"Argument {name ?? nameof(value)} is NULL", new ArgumentNullException(name ?? nameof(value)));
 
         /// <summary>
         /// Ensure a valid length
@@ -671,6 +750,185 @@ namespace wan24.StreamSerializerExtensions
                 pis[0].ParameterType == typeof(Stream) &&
                 pis[1].ParameterType == typeof(int) &&
                 (!requireAttribute || ci.GetCustomAttributeCached<StreamSerializerAttribute>() is not null);
+        }
+
+        /// <summary>
+        /// Get item serialization informations from a type
+        /// </summary>
+        /// <param name="type">Item type</param>
+        /// <param name="isAsync">Is an asynchronous context?</param>
+        /// <returns>Serializer type, synchronous serializer and asynchronous serializer</returns>
+        public static (SerializerTypes Type, StreamSerializer.Serialize_Delegate? Serializer, StreamSerializer.AsyncSerialize_Delegate? AsyncSerializer) GetItemSerializerInfo(
+            this Type type,
+            bool isAsync
+            )
+        {
+            int thc = type.GetHashCode();
+            if (type.IsAbstract || type.IsInterface || thc == typeof(object).GetHashCode()) return (SerializerTypes.Any, null, null);
+            if (thc == typeof(bool).GetHashCode()) return (SerializerTypes.Bool, null, null);
+            if (type.IsNumeric()) return (SerializerTypes.Number, null, null);
+            if (type.IsEnum) return (SerializerTypes.Enum, null, null);
+            if (thc == typeof(string).GetHashCode()) return (SerializerTypes.String, null, null);
+            if (thc == typeof(byte[]).GetHashCode()) return (SerializerTypes.Bytes, null, null);
+            if (type.IsArray) return (SerializerTypes.Array, null, null);
+            if (typeof(IStreamSerializer).IsAssignableFrom(type)) return (SerializerTypes.List, null, null);
+            (StreamSerializer.Serialize_Delegate? syncSerializer, StreamSerializer.AsyncSerialize_Delegate? asyncSerializer) = FindSerializer(type);
+            if (syncSerializer != null || (isAsync && asyncSerializer != null)) return (SerializerTypes.Serializer, syncSerializer, asyncSerializer);
+            if (typeof(Stream).IsAssignableFrom(type)) return (SerializerTypes.Stream, null, null);
+            if (typeof(IDictionary).IsAssignableFrom(type)) return (SerializerTypes.Dictionary, null, null);
+            if (typeof(IList).IsAssignableFrom(type)) return (SerializerTypes.List, null, null);
+            if (type.IsValueType) return (SerializerTypes.Struct, null, null);
+            return (SerializerTypes.AnyObject, null, null);
+        }
+
+        /// <summary>
+        /// Get item deserialization informations from a type
+        /// </summary>
+        /// <param name="type">Item type</param>
+        /// <param name="isAsync">Is an asynchronous context?</param>
+        /// <returns>Serializer type, synchronous deserializer and asynchronous deserializer</returns>
+        public static (
+            SerializerTypes Type, 
+            StreamSerializer.Deserialize_Delegate? Deserializer, 
+            StreamSerializer.AsyncDeserialize_Delegate? AsyncDeserializer
+            ) GetItemDeserializerInfo(
+            this Type type,
+            bool isAsync
+            )
+        {
+            int thc = type.GetHashCode();
+            if (type.IsAbstract || type.IsInterface || thc == typeof(object).GetHashCode()) return (SerializerTypes.Any, null, null);
+            if (thc == typeof(bool).GetHashCode()) return (SerializerTypes.Bool, null, null);
+            if (type.IsNumeric()) return (SerializerTypes.Number, null, null);
+            if (type.IsEnum) return (SerializerTypes.Enum, null, null);
+            if (thc == typeof(string).GetHashCode()) return (SerializerTypes.String, null, null);
+            if (thc == typeof(byte[]).GetHashCode()) return (SerializerTypes.Bytes, null, null);
+            if (type.IsArray) return (SerializerTypes.Array, null, null);
+            if (typeof(IStreamSerializer).IsAssignableFrom(type)) return (SerializerTypes.List, null, null);
+            (StreamSerializer.Deserialize_Delegate? syncDeserializer, StreamSerializer.AsyncDeserialize_Delegate? asyncDeserializer) = FindDeserializer(type);
+            if (syncDeserializer != null || (isAsync && asyncDeserializer != null)) return (SerializerTypes.Serializer, syncDeserializer, asyncDeserializer);
+            if (typeof(Stream).IsAssignableFrom(type)) return (SerializerTypes.Stream, null, null);
+            if (typeof(IDictionary).IsAssignableFrom(type)) return (SerializerTypes.Dictionary, null, null);
+            if (typeof(IList).IsAssignableFrom(type)) return (SerializerTypes.List, null, null);
+            if (type.IsValueType) return (SerializerTypes.Struct, null, null);
+            return (SerializerTypes.AnyObject, null, null);
+        }
+
+        /// <summary>
+        /// Find type serializers
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>Synchronous and asynchronous serializers</returns>
+        public static (StreamSerializer.Serialize_Delegate? Serializer, StreamSerializer.AsyncSerialize_Delegate? AsyncSerializer) FindSerializer(this Type type)
+            => (StreamSerializer.FindSerializer(type), StreamSerializer.FindAsyncSerializer(type));
+
+        /// <summary>
+        /// Find type deserializers
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>Synchronous and asynchronous deserializers</returns>
+        public static (StreamSerializer.Deserialize_Delegate? Deserializer, StreamSerializer.AsyncDeserialize_Delegate? AsyncDeserializer) FindDeserializer(this Type type)
+            => (StreamSerializer.FindDeserializer(type), StreamSerializer.FindAsyncDeserializer(type));
+
+        /// <summary>
+        /// Ensure a correct object type, based on additional serializer options for a property
+        /// </summary>
+        /// <param name="objType">Object type</param>
+        /// <param name="pi">Property</param>
+        /// <returns>Object type</returns>
+        public static ObjectTypes EnsureCorrectObjectType(this ObjectTypes objType, PropertyInfoExt pi)
+            => pi.GetCustomAttributeCached<StreamSerializerAttribute>() is StreamSerializerAttribute attr 
+                ? EnsureCorrectObjectType(objType, attr) 
+                : objType;
+
+        /// <summary>
+        /// Ensure a correct object type, based on additional serializer options
+        /// </summary>
+        /// <param name="objType">Object type</param>
+        /// <param name="options">Options</param>
+        /// <returns>Object type</returns>
+        public static ObjectTypes EnsureCorrectObjectType(this ObjectTypes objType, ISerializerOptions options)
+        {
+            switch (objType)
+            {
+                case ObjectTypes.String:
+                    if(options.Serializer!=null)
+                        switch (options.Serializer.Value)
+                        {
+                            case SerializerTypes.String16:
+                                objType = ObjectTypes.String16;
+                                break;
+                            case SerializerTypes.String32:
+                                objType = ObjectTypes.String32;
+                                break;
+                        }
+                    break;
+            }
+            return objType;
+        }
+
+        /// <summary>
+        /// Ensure a correct object type, based on additional serializer options 
+        /// </summary>
+        /// <param name="objType">Object type</param>
+        /// <param name="attr">Attribute</param>
+        /// <returns>Object type</returns>
+        public static ObjectTypes EnsureCorrectObjectType(this ObjectTypes objType, StreamSerializerAttribute attr)
+        {
+            switch (objType)
+            {
+                case ObjectTypes.String:
+                    if (attr.Serializer != null)
+                        switch (attr.Serializer.Value)
+                        {
+                            case SerializerTypes.String16:
+                                objType = ObjectTypes.String16;
+                                break;
+                            case SerializerTypes.String32:
+                                objType = ObjectTypes.String32;
+                                break;
+                        }
+                    break;
+            }
+            return objType;
+        }
+
+        /// <summary>
+        /// Get the object type of a type
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>Object type</returns>
+        public static ObjectTypes GetObjectType(this Type type)
+        {
+            ObjectTypes objType;
+            int thc = type.GetHashCode();
+            if (thc == typeof(bool).GetHashCode()) objType = ObjectTypes.Bool;
+            else if (thc == typeof(sbyte).GetHashCode()) objType = ObjectTypes.Byte;
+            else if (thc == typeof(byte).GetHashCode()) objType = ObjectTypes.Byte | ObjectTypes.Unsigned;
+            else if (thc == typeof(short).GetHashCode()) objType = ObjectTypes.Short;
+            else if (thc == typeof(ushort).GetHashCode()) objType = ObjectTypes.Short | ObjectTypes.Unsigned;
+            else if (thc == typeof(int).GetHashCode()) objType = ObjectTypes.Int;
+            else if (thc == typeof(uint).GetHashCode()) objType = ObjectTypes.Int | ObjectTypes.Unsigned;
+            else if (thc == typeof(long).GetHashCode()) objType = ObjectTypes.Long;
+            else if (thc == typeof(ulong).GetHashCode()) objType = ObjectTypes.Long | ObjectTypes.Unsigned;
+            else if (thc == typeof(float).GetHashCode()) objType = ObjectTypes.Float;
+            else if (thc == typeof(double).GetHashCode()) objType = ObjectTypes.Double;
+            else if (thc == typeof(decimal).GetHashCode()) objType = ObjectTypes.Decimal;
+            else if (thc == typeof(byte[]).GetHashCode()) objType = ObjectTypes.Bytes;
+            else if (thc == typeof(string).GetHashCode()) objType = ObjectTypes.String;
+            else if (thc == typeof(Stream).GetHashCode()) objType = ObjectTypes.Stream;
+            else if (thc == typeof(Type).GetHashCode()) objType = ObjectTypes.ClrType;
+            else if (type.IsArray)
+            {
+                objType = ObjectTypes.Array;
+                if (type.GetArrayRank() == 1) objType |= ObjectTypes.NoRank;
+            }
+            else if (type.IsGenericType && typeof(Dictionary<,>).IsAssignableFrom(type.IsGenericTypeDefinition ? type : type.GetGenericTypeDefinition())) objType = ObjectTypes.Dict;
+            else if (type.IsGenericType && typeof(List<>).IsAssignableFrom(type.IsGenericTypeDefinition ? type : type.GetGenericTypeDefinition())) objType = ObjectTypes.List;
+            else if (type.IsValueType) objType = ObjectTypes.Struct;
+            else objType = ObjectTypes.Object;
+            if (type.IsGenericType) objType |= ObjectTypes.Generic;
+            return objType;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Buffers;
+using System.Reflection;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Buffers;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -202,6 +203,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Object</returns>
         public static T ReadAnyObject<T>(this Stream stream, int? version = null) where T : class, new()
         {
+            version ??= StreamSerializer.Version;
             // Handle serializable type
             Type type = typeof(T);
             if (typeof(IStreamSerializer).IsAssignableFrom(type)) return (T)ReadSerializedObject(stream, type, version);
@@ -216,23 +218,71 @@ namespace wan24.StreamSerializerExtensions
             bool useChecksum = !(attr?.SkipPropertyNameChecksum ?? false);
             PropertyInfoExt pi;
             T res = new();
-            for (int i = 0; i < count; i++)
+            Type? itemType = null;
+            ObjectTypes objType = default,
+                lastObjType = default;
+            SerializerTypes itemSerializer = default;
+            StreamSerializer.Deserialize_Delegate? itemSyncDeserializer = null;
+            Type[]? typeCache = null;
+            object[]? objectCache = null;
+            Span<Type> typeCacheSpan;
+            ReadOnlySpan<object> objectCacheSpan;
+            object? obj;
+            int objIndex;
+            try
             {
-                pi = pis[i];
-                // Validate the property name
-                if (
-                    useChecksum &&
-                    !(pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()?.SkipPropertyNameChecksum ?? false) &&
-                    ReadOneByte(stream, version) != pi.Property.Name.GetBytes().Aggregate((c, b) => (byte)(c ^ b))
-                    )
-                    throw new SerializerException($"{type}.{pi.Property.Name} property name checksum mismatch");
-                // Deserialize the property value
-                pi.Setter!(
-                    res,
-                    pi.Property.PropertyType.IsNullable()
-                        ? ReadAnyNullable(stream, version)
-                        : ReadAny(stream, version)
-                    );
+                typeCache = ArrayPool<Type>.Shared.RentClean(byte.MaxValue);
+                typeCacheSpan = typeCache.AsSpan(0, byte.MaxValue);
+                objectCache = ArrayPool<object>.Shared.RentClean(byte.MaxValue);
+                objectCacheSpan = objectCache.AsSpan(0, byte.MaxValue);
+                for (int i = 0; i < count; i++)
+                {
+                    pi = pis[i];
+                    // Validate the property name
+                    if (
+                        useChecksum &&
+                        !(pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()?.SkipPropertyNameChecksum ?? false) &&
+                        ReadOneByte(stream, version) != pi.Property.Name.GetBytes().Aggregate((c, b) => (byte)(c ^ b))
+                        )
+                        throw new SerializerException($"{type}.{pi.Property.Name} property name checksum mismatch");
+                    // Deserialize the property value
+                    obj = ReadAnyItemHeader(
+                        stream,
+                        version.Value,
+                        pi.PropertyType,
+                        i,
+                        typeCache,
+                        objectCache,
+                        ref objType,
+                        ref lastObjType,
+                        ref itemType,
+                        ref itemSerializer,
+                        ref itemSyncDeserializer
+                        );
+                    if (obj == null && objType == ObjectTypes.Null)
+                    {
+                        if (!pi.PropertyType.IsNullable())
+                            throw new SerializerException($"Deserialized NULL for non-NULL property {type}.{pi.Property.Name}", new InvalidDataException());
+                        pi.Setter!(res, null);
+                    }
+                    else if (obj == null)
+                    {
+                        pi.Setter!(res, itemSerializer == SerializerTypes.Serializer
+                            ? obj = ReadItem(stream, version.Value, nullable: false, itemSerializer, itemType, pool: null, options: null, itemSyncDeserializer)
+                            : obj = ReadAnyInt(stream, version.Value, objType, itemType, options: null));
+                        objIndex = objectCache.IndexOf(null);
+                        if (objIndex != -1) objectCache[objIndex] = obj!;
+                    }
+                    else
+                    {
+                        pi.Setter!(res, obj);
+                    }
+                }
+            }
+            finally
+            {
+                if (typeCache != null) ArrayPool<Type>.Shared.Return(typeCache);
+                if (objectCache != null) ArrayPool<object>.Shared.Return(objectCache);
             }
             // Validate the resulting object
             if (!res.TryValidateObject(out List<ValidationResult> results))
@@ -252,6 +302,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Object</returns>
         public static object ReadAnyObject(this Stream stream, Type type, int? version = null)
         {
+            version ??= StreamSerializer.Version;
             // Handle serializable type
             if (typeof(IStreamSerializer).IsAssignableFrom(type)) return ReadSerializedObject(stream, type, version);
             // Find the stream serializer attribute
@@ -265,23 +316,71 @@ namespace wan24.StreamSerializerExtensions
             bool useChecksum = !(attr?.SkipPropertyNameChecksum ?? false);
             PropertyInfoExt pi;
             object res = Activator.CreateInstance(type) ?? throw new SerializerException($"Failed to instance {type}");
-            for (int i = 0; i < count; i++)
+            Type? itemType = null;
+            ObjectTypes objType = default,
+                lastObjType = default;
+            SerializerTypes itemSerializer = default;
+            StreamSerializer.Deserialize_Delegate? itemSyncDeserializer = null;
+            Type[]? typeCache = null;
+            object[]? objectCache = null;
+            Span<Type> typeCacheSpan;
+            ReadOnlySpan<object> objectCacheSpan;
+            object? obj;
+            int objIndex;
+            try
             {
-                pi = pis[i];
-                // Validate the property name
-                if (
-                    useChecksum &&
-                    !(pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()?.SkipPropertyNameChecksum ?? false) &&
-                    ReadOneByte(stream, version) != pi.Property.Name.GetBytes().Aggregate((c, b) => (byte)(c ^ b))
-                    )
-                    throw new SerializerException($"{type}.{pi.Property.Name} property name checksum mismatch");
-                // Deserialize the property value
-                pi.Setter!(
-                    res,
-                    pi.Property.PropertyType.IsNullable()
-                        ? ReadAnyNullable(stream, version)
-                        : ReadAny(stream, version)
-                    );
+                typeCache = ArrayPool<Type>.Shared.RentClean(byte.MaxValue);
+                typeCacheSpan = typeCache.AsSpan(0, byte.MaxValue);
+                objectCache = ArrayPool<object>.Shared.RentClean(byte.MaxValue);
+                objectCacheSpan = objectCache.AsSpan(0, byte.MaxValue);
+                for (int i = 0; i < count; i++)
+                {
+                    pi = pis[i];
+                    // Validate the property name
+                    if (
+                        useChecksum &&
+                        !(pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()?.SkipPropertyNameChecksum ?? false) &&
+                        ReadOneByte(stream, version) != pi.Property.Name.GetBytes().Aggregate((c, b) => (byte)(c ^ b))
+                        )
+                        throw new SerializerException($"{type}.{pi.Property.Name} property name checksum mismatch");
+                    // Deserialize the property value
+                    obj = ReadAnyItemHeader(
+                        stream,
+                        version.Value,
+                        pi.PropertyType,
+                        i,
+                        typeCache,
+                        objectCache,
+                        ref objType,
+                        ref lastObjType,
+                        ref itemType,
+                        ref itemSerializer,
+                        ref itemSyncDeserializer
+                        );
+                    if (obj == null && objType == ObjectTypes.Null)
+                    {
+                        if (!pi.PropertyType.IsNullable())
+                            throw new SerializerException($"Deserialized NULL for non-NULL property {type}.{pi.Property.Name}", new InvalidDataException());
+                        pi.Setter!(res, null);
+                    }
+                    else if (obj == null)
+                    {
+                        pi.Setter!(res, itemSerializer == SerializerTypes.Serializer
+                            ? obj = ReadItem(stream, version.Value, nullable: false, itemSerializer, itemType, pool: null, options: null, itemSyncDeserializer)
+                            : obj = ReadAnyInt(stream, version.Value, objType, itemType, options: null));
+                        objIndex = objectCache.IndexOf(null);
+                        if (objIndex != -1) objectCache[objIndex] = obj!;
+                    }
+                    else
+                    {
+                        pi.Setter!(res, obj);
+                    }
+                }
+            }
+            finally
+            {
+                if (typeCache != null) ArrayPool<Type>.Shared.Return(typeCache);
+                if (objectCache != null) ArrayPool<object>.Shared.Return(objectCache);
             }
             // Validate the resulting object
             if (!res.TryValidateObject(out List<ValidationResult> results))
@@ -302,6 +401,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Object</returns>
         public static async Task<T> ReadAnyObjectAsync<T>(this Stream stream, int? version = null, CancellationToken cancellationToken = default) where T : class, new()
         {
+            version ??= StreamSerializer.Version;
             // Handle serializable type
             Type type = typeof(T);
             if (typeof(IStreamSerializer).IsAssignableFrom(type))
@@ -320,23 +420,85 @@ namespace wan24.StreamSerializerExtensions
             bool useChecksum = !(attr?.SkipPropertyNameChecksum ?? false);
             PropertyInfoExt pi;
             T res = new();
-            for (int i = 0; i < count; i++)
+            Type? itemType = null;
+            ObjectTypes objType = default,
+                lastObjType = default;
+            SerializerTypes itemSerializer = default;
+            StreamSerializer.Deserialize_Delegate? itemSyncDeserializer = null;
+            StreamSerializer.AsyncDeserialize_Delegate? itemAsyncDeserializer = null;
+            Type[]? typeCache = null;
+            object[]? objectCache = null;
+            Memory<Type> typeCacheMem;
+            ReadOnlyMemory<object> objectCacheMem;
+            object? obj;
+            int objIndex;
+            try
             {
-                pi = pis[i];
-                // Validate the property name
-                if (
-                    useChecksum &&
-                    !(pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()?.SkipPropertyNameChecksum ?? false) &&
-                    await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext() != pi.Property.Name.GetBytes().Aggregate((c, b) => (byte)(c ^ b))
-                    )
-                    throw new SerializerException($"{type}.{pi.Property.Name} property name checksum mismatch");
-                // Deserialize the property value
-                pi.Setter!(
-                    res,
-                    pi.Property.PropertyType.IsNullable()
-                        ? await ReadAnyNullableAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
-                        : await ReadAnyAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
-                        );
+                typeCache = ArrayPool<Type>.Shared.RentClean(byte.MaxValue);
+                typeCacheMem = typeCache.AsMemory(0, byte.MaxValue);
+                objectCache = ArrayPool<object>.Shared.RentClean(byte.MaxValue);
+                objectCacheMem = objectCache.AsMemory(0, byte.MaxValue);
+                for (int i = 0; i < count; i++)
+                {
+                    pi = pis[i];
+                    // Validate the property name
+                    if (
+                        useChecksum &&
+                        !(pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()?.SkipPropertyNameChecksum ?? false) &&
+                        await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext() != pi.Property.Name.GetBytes().Aggregate((c, b) => (byte)(c ^ b))
+                        )
+                        throw new SerializerException($"{type}.{pi.Property.Name} property name checksum mismatch");
+                    // Deserialize the property value
+                    (obj, objType, lastObjType,  itemType, itemSerializer, itemSyncDeserializer, itemAsyncDeserializer) =
+                        await ReadAnyItemHeaderAsync(
+                            stream,
+                            version.Value,
+                            pi.PropertyType,
+                            i,
+                            typeCacheMem,
+                            objectCacheMem,
+                            lastObjType,
+                            itemType,
+                            itemSerializer,
+                            itemSyncDeserializer,
+                            itemAsyncDeserializer,
+                            cancellationToken
+                            ).DynamicContext();
+                    if (obj == null && objType == ObjectTypes.Null)
+                    {
+                        if (!pi.PropertyType.IsNullable())
+                            throw new SerializerException($"Deserialized NULL for non-NULL property {type}.{pi.Property.Name}", new InvalidDataException());
+                        pi.Setter!(res, null);
+                    }
+                    else if (obj == null)
+                    {
+                        pi.Setter!(res, obj = itemSerializer == SerializerTypes.Serializer
+                            ? await ReadItemAsync(
+                                stream,
+                                version.Value,
+                                nullable: false,
+                                itemSerializer,
+                                itemType,
+                                pool: null,
+                                options: null,
+                                itemSyncDeserializer,
+                                itemAsyncDeserializer,
+                                cancellationToken
+                                ).DynamicContext()
+                            : await ReadAnyIntAsync(stream, version.Value, objType, itemType, options: null, cancellationToken).DynamicContext());
+                        objIndex = objectCache.IndexOf(null);
+                        if (objIndex != -1) objectCache[objIndex] = obj!;
+                    }
+                    else
+                    {
+                        pi.Setter!(res, obj);
+                    }
+                }
+            }
+            finally
+            {
+                if (typeCache != null) ArrayPool<Type>.Shared.Return(typeCache);
+                if (objectCache != null) ArrayPool<object>.Shared.Return(objectCache);
             }
             // Validate the resulting object
             if (!res.TryValidateObject(out List<ValidationResult> results))
@@ -357,6 +519,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Object</returns>
         public static async Task<object> ReadAnyObjectAsync(this Stream stream, Type type, int? version = null, CancellationToken cancellationToken = default)
         {
+            version ??= StreamSerializer.Version;
             // Handle serializable type
             if (typeof(IStreamSerializer).IsAssignableFrom(type))
                 return await ReadSerializedObjectAsync(stream, type, version, cancellationToken).DynamicContext();
@@ -374,23 +537,85 @@ namespace wan24.StreamSerializerExtensions
             bool useChecksum = !(attr?.SkipPropertyNameChecksum ?? false);
             PropertyInfoExt pi;
             object res = Activator.CreateInstance(type) ?? throw new SerializerException($"Failed to instance {type}");
-            for (int i = 0; i < count; i++)
+            Type? itemType = null;
+            ObjectTypes objType = default,
+                lastObjType = default;
+            SerializerTypes itemSerializer = default;
+            StreamSerializer.Deserialize_Delegate? itemSyncDeserializer = null;
+            StreamSerializer.AsyncDeserialize_Delegate? itemAsyncDeserializer = null;
+            Type[]? typeCache = null;
+            object[]? objectCache = null;
+            Memory<Type> typeCacheMem;
+            ReadOnlyMemory<object> objectCacheMem;
+            object? obj;
+            int objIndex;
+            try
             {
-                pi = pis[i];
-                // Validate the property name
-                if (
-                    useChecksum &&
-                    !(pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()?.SkipPropertyNameChecksum ?? false) &&
-                    await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext() != pi.Property.Name.GetBytes().Aggregate((c, b) => (byte)(c ^ b))
-                    )
-                    throw new SerializerException($"{type}.{pi.Property.Name} property name checksum mismatch");
-                // Deserialize the property value
-                pi.Setter!(
-                    res,
-                    pi.Property.PropertyType.IsNullable()
-                        ? await ReadAnyNullableAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
-                        : await ReadAnyAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
-                        );
+                typeCache = ArrayPool<Type>.Shared.RentClean(byte.MaxValue);
+                typeCacheMem = typeCache.AsMemory(0, byte.MaxValue);
+                objectCache = ArrayPool<object>.Shared.RentClean(byte.MaxValue);
+                objectCacheMem = objectCache.AsMemory(0, byte.MaxValue);
+                for (int i = 0; i < count; i++)
+                {
+                    pi = pis[i];
+                    // Validate the property name
+                    if (
+                        useChecksum &&
+                        !(pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()?.SkipPropertyNameChecksum ?? false) &&
+                        await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext() != pi.Property.Name.GetBytes().Aggregate((c, b) => (byte)(c ^ b))
+                        )
+                        throw new SerializerException($"{type}.{pi.Property.Name} property name checksum mismatch");
+                    // Deserialize the property value
+                    (obj, objType, lastObjType, itemType, itemSerializer, itemSyncDeserializer, itemAsyncDeserializer) =
+                        await ReadAnyItemHeaderAsync(
+                            stream,
+                            version.Value,
+                            pi.PropertyType,
+                            i,
+                            typeCacheMem,
+                            objectCacheMem,
+                            lastObjType,
+                            itemType,
+                            itemSerializer,
+                            itemSyncDeserializer,
+                            itemAsyncDeserializer,
+                            cancellationToken
+                            ).DynamicContext();
+                    if (obj == null && objType == ObjectTypes.Null)
+                    {
+                        if (!pi.PropertyType.IsNullable())
+                            throw new SerializerException($"Deserialized NULL for non-NULL property {type}.{pi.Property.Name}", new InvalidDataException());
+                        pi.Setter!(res, null);
+                    }
+                    else if (obj == null)
+                    {
+                        pi.Setter!(res, obj = itemSerializer == SerializerTypes.Serializer
+                            ? await ReadItemAsync(
+                                stream,
+                                version.Value,
+                                nullable: false,
+                                itemSerializer,
+                                itemType,
+                                pool: null,
+                                options: null,
+                                itemSyncDeserializer,
+                                itemAsyncDeserializer,
+                                cancellationToken
+                                ).DynamicContext()
+                            : await ReadAnyIntAsync(stream, version.Value, objType, itemType, options: null, cancellationToken).DynamicContext());
+                        objIndex = objectCache.IndexOf(null);
+                        if (objIndex != -1) objectCache[objIndex] = obj!;
+                    }
+                    else
+                    {
+                        pi.Setter!(res, obj);
+                    }
+                }
+            }
+            finally
+            {
+                if (typeCache != null) ArrayPool<Type>.Shared.Return(typeCache);
+                if (objectCache != null) ArrayPool<object>.Shared.Return(objectCache);
             }
             // Validate the resulting object
             if (!res.TryValidateObject(out List<ValidationResult> results))

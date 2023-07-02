@@ -73,7 +73,7 @@ namespace Stream_Serializer_Extensions_Tests
             foreach (object key in a.Keys)
             {
                 Assert.IsTrue(b.Contains(key));
-                Assert.AreEqual(a[key], b[key]);
+                CompareObjects(a[key], b[key]);
             }
         }
     }

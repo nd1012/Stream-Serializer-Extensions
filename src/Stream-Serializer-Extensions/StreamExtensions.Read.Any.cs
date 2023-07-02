@@ -19,7 +19,7 @@ namespace wan24.StreamSerializerExtensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
         public static object ReadAny(this Stream stream, int? version = null, ISerializerOptions? options = null)
-            => ReadAnyInt(stream, version, (ObjectTypes)ReadOneByte(stream, version), options);
+            => ReadAnyInt(stream, version, (ObjectTypes)ReadOneByte(stream, version), type:null, options);
 
         /// <summary>
         /// Read any object
@@ -27,25 +27,46 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <param name="objType">Object type</param>
+        /// <param name="type">CLR type</param>
         /// <param name="options">Options</param>
         /// <returns>Object</returns>
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        private static object ReadAnyInt(Stream stream, int? version, ObjectTypes objType, ISerializerOptions? options)
+        private static object ReadAnyInt(Stream stream, int? version, ObjectTypes objType, Type? type, ISerializerOptions? options)
             => SerializerException.Wrap(() =>
             {
                 if (objType == ObjectTypes.Null) throw new SerializerException("NULL object type is not supported by this method");
+                version ??= StreamSerializer.Version;
                 bool isEmpty = objType.HasFlag(ObjectTypes.Empty),
                     isUnsigned = objType.HasFlag(ObjectTypes.Unsigned),
-                    readType = true;
-                Type? type = null;
+                    readType = objType.RequiresTypeName();
                 switch (objType.RemoveFlags())
                 {
                     case ObjectTypes.Bool:
                         return !isEmpty;
                     case ObjectTypes.Byte:
+                        switch (version & byte.MaxValue)// Serializer version switch
+                        {
+                            case 1:
+                            case 2:
+                                type = isUnsigned ? typeof(byte) : typeof(sbyte);
+                                break;
+                            default:
+                                return isUnsigned ? ReadOneByte(stream, version) : ReadOneSByte(stream, version);
+                        }
+                        break;
                     case ObjectTypes.Short:
+                        switch (version & byte.MaxValue)// Serializer version switch
+                        {
+                            case 1:
+                            case 2:
+                                type = isUnsigned ? typeof(ushort) : typeof(short);
+                                break;
+                            default:
+                                return isUnsigned ? ReadUShort(stream, version) : ReadShort(stream, version);
+                        }
+                        break;
                     case ObjectTypes.Int:
                     case ObjectTypes.Long:
                     case ObjectTypes.Float:
@@ -53,8 +74,6 @@ namespace wan24.StreamSerializerExtensions
                     case ObjectTypes.Decimal:
                         type = objType.RemoveFlags() switch
                         {
-                            ObjectTypes.Byte => isUnsigned ? typeof(byte) : typeof(sbyte),
-                            ObjectTypes.Short => isUnsigned ? typeof(ushort) : typeof(short),
                             ObjectTypes.Int => isUnsigned ? typeof(uint) : typeof(int),
                             ObjectTypes.Long => isUnsigned ? typeof(ulong) : typeof(long),
                             ObjectTypes.Float => typeof(float),
@@ -72,6 +91,24 @@ namespace wan24.StreamSerializerExtensions
                                 minLen: options?.GetMinLen(0) ?? 0,
                                 maxLen: options?.GetMaxLen(int.MaxValue) ?? int.MaxValue
                                 );
+                    case ObjectTypes.String16:
+                        return isEmpty
+                            ? string.Empty
+                            : ReadString16(
+                                stream,
+                                version,
+                                minLen: options?.GetMinLen(0) ?? 0,
+                                maxLen: options?.GetMaxLen(int.MaxValue) ?? int.MaxValue
+                                );
+                    case ObjectTypes.String32:
+                        return isEmpty
+                            ? string.Empty
+                            : ReadString32(
+                                stream,
+                                version,
+                                minLen: options?.GetMinLen(0) ?? 0,
+                                maxLen: options?.GetMaxLen(int.MaxValue) ?? int.MaxValue
+                                );
                     case ObjectTypes.Bytes:
                         return isEmpty
                             ? Array.Empty<byte>()
@@ -81,9 +118,6 @@ namespace wan24.StreamSerializerExtensions
                                 minLen: options?.GetMinLen(0) ?? 0,
                                 maxLen: options?.GetMaxLen(int.MaxValue) ?? int.MaxValue
                                 ).Value;
-                    case ObjectTypes.Stream:
-                        readType = false;
-                        break;
                 }
                 if (readType && type == null) type = StreamSerializer.LoadType(ReadString(stream, version, minLen: 1, maxLen: short.MaxValue));
                 switch (objType.RemoveFlags())
@@ -155,6 +189,8 @@ namespace wan24.StreamSerializerExtensions
                             res.Dispose();
                             throw;
                         }
+                    case ObjectTypes.ClrType:
+                        return ReadType(stream, version);
                     default:
                         throw new InvalidProgramException();
                 }
@@ -173,7 +209,7 @@ namespace wan24.StreamSerializerExtensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
         public static async Task<object> ReadAnyAsync(this Stream stream, int? version = null, ISerializerOptions? options = null, CancellationToken cancellationToken = default)
-            => await ReadAnyIntAsync(stream, version, (ObjectTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext(), options, cancellationToken)
+            => await ReadAnyIntAsync(stream, version, (ObjectTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext(), type: null, options, cancellationToken)
                 .DynamicContext();
 
         /// <summary>
@@ -182,27 +218,51 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <param name="objType">Object type</param>
+        /// <param name="type">CLR type</param>
         /// <param name="options">Options</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Object</returns>
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        private static Task<object> ReadAnyIntAsync(Stream stream, int? version, ObjectTypes objType, ISerializerOptions? options, CancellationToken cancellationToken)
+        private static Task<object> ReadAnyIntAsync(Stream stream, int? version, ObjectTypes objType, Type? type, ISerializerOptions? options, CancellationToken cancellationToken)
             => SerializerException.WrapAsync(async () =>
             {
                 if (objType == ObjectTypes.Null) throw new SerializerException("NULL object type is not supported by this method");
                 bool isEmpty = objType.HasFlag(ObjectTypes.Empty),
                     isUnsigned = objType.HasFlag(ObjectTypes.Unsigned),
                     readType = true;
-                Type? type = null;
                 Task task;
                 switch (objType.RemoveFlags())
                 {
                     case ObjectTypes.Bool:
                         return !isEmpty;
                     case ObjectTypes.Byte:
+                        switch (version & byte.MaxValue)// Serializer version switch
+                        {
+                            case 1:
+                            case 2:
+                                type = isUnsigned ? typeof(byte) : typeof(sbyte);
+                                break;
+                            default:
+                                return isUnsigned
+                                    ? await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext()
+                                    : await ReadOneSByteAsync(stream, version, cancellationToken).DynamicContext();
+                        }
+                        break;
                     case ObjectTypes.Short:
+                        switch (version & byte.MaxValue)// Serializer version switch
+                        {
+                            case 1:
+                            case 2:
+                                type = isUnsigned ? typeof(ushort) : typeof(short);
+                                break;
+                            default:
+                                return isUnsigned
+                                    ? await ReadUShortAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
+                                    : await ReadShortAsync(stream, version, cancellationToken: cancellationToken).DynamicContext();
+                        }
+                        break;
                     case ObjectTypes.Int:
                     case ObjectTypes.Long:
                     case ObjectTypes.Float:
@@ -210,8 +270,6 @@ namespace wan24.StreamSerializerExtensions
                     case ObjectTypes.Decimal:
                         type = objType.RemoveFlags() switch
                         {
-                            ObjectTypes.Byte => isUnsigned ? typeof(byte) : typeof(sbyte),
-                            ObjectTypes.Short => isUnsigned ? typeof(ushort) : typeof(short),
                             ObjectTypes.Int => isUnsigned ? typeof(uint) : typeof(int),
                             ObjectTypes.Long => isUnsigned ? typeof(ulong) : typeof(long),
                             ObjectTypes.Float => typeof(float),
@@ -224,6 +282,26 @@ namespace wan24.StreamSerializerExtensions
                         return isEmpty
                             ? string.Empty
                             : await ReadStringAsync(
+                                stream,
+                                version,
+                                minLen: options?.GetMinLen(0) ?? 0,
+                                maxLen: options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
+                                cancellationToken: cancellationToken
+                                ).DynamicContext();
+                    case ObjectTypes.String16:
+                        return isEmpty
+                            ? string.Empty
+                            : await ReadString16Async(
+                                stream,
+                                version,
+                                minLen: options?.GetMinLen(0) ?? 0,
+                                maxLen: options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
+                                cancellationToken: cancellationToken
+                                ).DynamicContext();
+                    case ObjectTypes.String32:
+                        return isEmpty
+                            ? string.Empty
+                            : await ReadString32Async(
                                 stream,
                                 version,
                                 minLen: options?.GetMinLen(0) ?? 0,
@@ -267,7 +345,7 @@ namespace wan24.StreamSerializerExtensions
                             options?.GetMinLen(0) ?? 0,
                             options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
                             options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.Version, default),
-                            cancellationToken
+                            cancellationToken: cancellationToken
                             ).DynamicContext();
                     case ObjectTypes.List:
                         if (isEmpty) return Activator.CreateInstance(type!)!;
@@ -279,7 +357,7 @@ namespace wan24.StreamSerializerExtensions
                             options?.GetMinLen(0) ?? 0,
                             options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
                             options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.Version, default),
-                            cancellationToken
+                            cancellationToken: cancellationToken
                             ).DynamicContext();
                     case ObjectTypes.Dict:
                         if (isEmpty) return Activator.CreateInstance(type!)!;
@@ -292,7 +370,7 @@ namespace wan24.StreamSerializerExtensions
                             options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
                             options?.Attribute.GetKeySerializerOptions(property: null, stream, version ?? StreamSerializer.Version, cancellationToken),
                             options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.Version, cancellationToken),
-                            cancellationToken
+                            cancellationToken: cancellationToken
                             ).DynamicContext();
                     case ObjectTypes.Object:
                         return await ReadObjectAsync(stream, type!, version, options, cancellationToken).DynamicContext();
@@ -327,6 +405,8 @@ namespace wan24.StreamSerializerExtensions
                             res.Dispose();
                             throw;
                         }
+                    case ObjectTypes.ClrType:
+                        return await ReadTypeAsync(stream, version, cancellationToken).DynamicContext();
                     default:
                         throw new InvalidProgramException();
                 }
@@ -348,7 +428,7 @@ namespace wan24.StreamSerializerExtensions
         public static object? ReadAnyNullable(this Stream stream, int? version = null, ISerializerOptions? options = null)
         {
             ObjectTypes objType = (ObjectTypes)ReadOneByte(stream, version);
-            return objType == ObjectTypes.Null ? null : ReadAnyInt(stream, version, objType, options);
+            return objType == ObjectTypes.Null ? null : ReadAnyInt(stream, version, objType, type: null, options);
         }
 
         /// <summary>
@@ -371,7 +451,7 @@ namespace wan24.StreamSerializerExtensions
             )
         {
             ObjectTypes objType = (ObjectTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
-            return objType == ObjectTypes.Null ? null : await ReadAnyIntAsync(stream, version, objType, options, cancellationToken).DynamicContext();
+            return objType == ObjectTypes.Null ? null : await ReadAnyIntAsync(stream, version, objType, type: null, options, cancellationToken).DynamicContext();
         }
     }
 }

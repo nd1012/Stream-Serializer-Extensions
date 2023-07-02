@@ -107,7 +107,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <returns>Stream</returns>
-        public static Stream WriteString16Nullable<T>(this Stream stream, string? value)
+        public static Stream WriteString16Nullable(this Stream stream, string? value)
             => WriteNullableString(stream, value, lenShift: 1, (buffer) => value!.GetBytes16(buffer));
 
         /// <summary>

@@ -162,6 +162,11 @@ namespace wan24.StreamSerializerExtensions
         public string? ValueSerializerOptionsFactoryMethod { get; set; }
 
         /// <summary>
+        /// Serializer type
+        /// </summary>
+        public SerializerTypes? Serializer { get; set; }
+
+        /// <summary>
         /// Get a stream from the stream factory for deserializing an embedded stream
         /// </summary>
         /// <param name="obj">Deserializing object</param>

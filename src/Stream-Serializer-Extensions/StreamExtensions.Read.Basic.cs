@@ -55,8 +55,8 @@ namespace wan24.StreamSerializerExtensions
                         return type switch
                         {
                             ObjectTypes.Null => null,
-                            ObjectTypes.Bool => true,
-                            ObjectTypes.Empty => false,
+                            ObjectTypes.True => true,
+                            ObjectTypes.False => false,
                             _ => throw new SerializerException($"Invalid boolean {type}", new InvalidDataException())
                         };
                     }
@@ -92,8 +92,8 @@ namespace wan24.StreamSerializerExtensions
                         return type switch
                         {
                             ObjectTypes.Null => null,
-                            ObjectTypes.Bool => true,
-                            ObjectTypes.Empty => false,
+                            ObjectTypes.True => true,
+                            ObjectTypes.False => false,
                             _ => throw new SerializerException($"Invalid boolean {type}", new InvalidDataException())
                         };
                     }

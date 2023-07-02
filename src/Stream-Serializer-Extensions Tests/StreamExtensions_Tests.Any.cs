@@ -59,7 +59,8 @@ namespace Stream_Serializer_Extensions_Tests
                     Assert.IsTrue(b is TestObject,a.GetType().ToString());
                     TestObject tob=(b as TestObject)!;
                     Assert.AreEqual(toa.Value, tob.Value,a.GetType().ToString());
-                })
+                }),
+                (typeof(Type), (a,b)=>Assert.AreEqual(a,b,a.GetType().ToString()))
                 };
                 object b;
                 for (int i = 0; i < data.Length; i++)
@@ -141,7 +142,8 @@ namespace Stream_Serializer_Extensions_Tests
                     Assert.IsTrue(b is TestObject,a.GetType().ToString());
                     TestObject tob=(b as TestObject)!;
                     Assert.AreEqual(toa.Value, tob.Value,a.GetType().ToString());
-                })
+                }),
+                (typeof(Type), (a,b)=>Assert.AreEqual(a,b,a.GetType().ToString()))
                 };
                 object b;
                 for (int i = 0; i < data.Length; i++)

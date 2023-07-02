@@ -61,72 +61,74 @@ namespace wan24.StreamSerializerExtensions
             SyncSerializer = new(
                 new KeyValuePair<Type, Serialize_Delegate>[]
                 {
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(bool),(s, v) => s.Write((bool)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(sbyte),(s, v) => s.Write((sbyte)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(byte),(s, v) => s.Write((byte)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(short),(s, v) => s.Write((int)(short)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(ushort),(s, v) => s.Write((ushort)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(int),(s, v) => s.Write((int)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(uint),(s, v) => s.Write((uint)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(long),(s, v) => s.Write((long)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(ulong),(s, v) => s.Write((ulong)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(float),(s, v) => s.Write((float)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(double),(s, v) => s.Write((double)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(decimal),(s, v) => s.Write((decimal)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(byte[]),(s, v) => s.WriteBytes((byte[])SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(string),(s, v) => s.WriteString((string)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(Array),(s, v) => s.WriteArray((Array)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(IList),(s, v) => s.WriteList((IList)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(IDictionary),(s, v) => s.WriteDict((IDictionary)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(Enum),(s, v) => s.WriteEnum((Enum)SerializerHelper.EnsureNotNull(v))),
-                    new KeyValuePair<Type, Serialize_Delegate>(typeof(Stream),(s, v) => s.WriteStream((Stream)SerializerHelper.EnsureNotNull(v)))
+                    new(typeof(bool),(s, v) => s.Write((bool)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(sbyte),(s, v) => s.Write((sbyte)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(byte),(s, v) => s.Write((byte)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(short),(s, v) => s.Write((int)(short)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(ushort),(s, v) => s.Write((ushort)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(int),(s, v) => s.Write((int)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(uint),(s, v) => s.Write((uint)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(long),(s, v) => s.Write((long)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(ulong),(s, v) => s.Write((ulong)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(float),(s, v) => s.Write((float)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(double),(s, v) => s.Write((double)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(decimal),(s, v) => s.Write((decimal)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(byte[]),(s, v) => s.WriteBytes((byte[])SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(string),(s, v) => s.WriteString((string)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(Array),(s, v) => s.WriteArray((Array)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(IList),(s, v) => s.WriteList((IList)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(IDictionary),(s, v) => s.WriteDict((IDictionary)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(Enum),(s, v) => s.WriteEnum((Enum)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(Stream),(s, v) => s.WriteStream((Stream)SerializerHelper.EnsureNotNull(v))),
+                    new(typeof(Type),(s, v) => s.Write((Type)SerializerHelper.EnsureNotNull(v)))
                 }
             );
             AsyncSerializer = new(
                 new KeyValuePair<Type, AsyncSerialize_Delegate>[]
                 {
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(bool),(s, v, ct) => s.WriteAsync((bool)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(sbyte),(s, v, ct) => s.WriteAsync((sbyte)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(byte),(s, v, ct) => s.WriteAsync((byte)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(short),(s, v, ct) => s.WriteAsync((short)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(ushort),(s, v, ct) => s.WriteAsync((ushort)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(int),(s, v, ct) => s.WriteAsync((int)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(uint),(s, v, ct) => s.WriteAsync((uint)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(long),(s, v, ct) => s.WriteAsync((long)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(ulong),(s, v, ct) => s.WriteAsync((ulong)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(float),(s, v, ct) => s.WriteAsync((float)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(double),(s, v, ct) => s.WriteAsync((double)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(decimal),(s, v, ct) => s.WriteAsync((decimal)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(byte[]),(s, v, ct) => s.WriteBytesAsync((byte[])SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(string),(s, v, ct) => s.WriteStringAsync((string)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(Array),(s, v, ct) => s.WriteArrayAsync((Array)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(IList),(s, v, ct) => s.WriteListAsync((IList)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(IDictionary),(s, v, ct) => s.WriteDictAsync((IDictionary)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(Enum),(s, v, ct) => s.WriteEnumAsync((Enum)SerializerHelper.EnsureNotNull(v), ct)),
-                    new KeyValuePair<Type, AsyncSerialize_Delegate>(typeof(Stream),(s, v, ct) => s.WriteStreamAsync((Stream)SerializerHelper.EnsureNotNull(v), cancellationToken: ct))
+                    new(typeof(bool),(s, v, ct) => s.WriteAsync((bool)SerializerHelper.EnsureNotNull(v), ct)),
+                    new(typeof(sbyte),(s, v, ct) => s.WriteAsync((sbyte)SerializerHelper.EnsureNotNull(v), ct)),
+                    new(typeof(byte),(s, v, ct) => s.WriteAsync((byte)SerializerHelper.EnsureNotNull(v), ct)),
+                    new(typeof(short),(s, v, ct) => s.WriteAsync((short)SerializerHelper.EnsureNotNull(v), ct)),
+                    new(typeof(ushort),(s, v, ct) => s.WriteAsync((ushort)SerializerHelper.EnsureNotNull(v), ct)),
+                    new(typeof(int),(s, v, ct) => s.WriteAsync((int)SerializerHelper.EnsureNotNull(v), ct)),
+                    new(typeof(uint),(s, v, ct) => s.WriteAsync((uint)SerializerHelper.EnsureNotNull(v), ct)),
+                    new(typeof(long),(s, v, ct) => s.WriteAsync((long)SerializerHelper.EnsureNotNull(v), ct)),
+                    new(typeof(ulong),(s, v, ct) => s.WriteAsync((ulong)SerializerHelper.EnsureNotNull(v), ct)),
+                    new(typeof(float),(s, v, ct) => s.WriteAsync((float)SerializerHelper.EnsureNotNull(v), ct)),
+                    new(typeof(double),(s, v, ct) => s.WriteAsync((double)SerializerHelper.EnsureNotNull(v), ct)),
+                    new(typeof(decimal),(s, v, ct) => s.WriteAsync((decimal)SerializerHelper.EnsureNotNull(v), ct)),
+                    new(typeof(byte[]),(s, v, ct) => s.WriteBytesAsync((byte[])SerializerHelper.EnsureNotNull(v), ct)),
+                    new(typeof(string),(s, v, ct) => s.WriteStringAsync((string)SerializerHelper.EnsureNotNull(v), ct)),
+                    new(typeof(Array),(s, v, ct) => s.WriteArrayAsync((Array)SerializerHelper.EnsureNotNull(v), cancellationToken: ct)),
+                    new(typeof(IList),(s, v, ct) => s.WriteListAsync((IList)SerializerHelper.EnsureNotNull(v), cancellationToken: ct)),
+                    new(typeof(IDictionary),(s, v, ct) => s.WriteDictAsync((IDictionary)SerializerHelper.EnsureNotNull(v), cancellationToken: ct)),
+                    new(typeof(Enum),(s, v, ct) => s.WriteEnumAsync((Enum)SerializerHelper.EnsureNotNull(v), ct)),
+                    new(typeof(Stream),(s, v, ct) => s.WriteStreamAsync((Stream)SerializerHelper.EnsureNotNull(v), cancellationToken: ct)),
+                    new(typeof(Type),(s, v, ct) => s.WriteAsync((Type)SerializerHelper.EnsureNotNull(v), cancellationToken: ct))
                 }
             );
             SyncDeserializer = new(new KeyValuePair<Type, Deserialize_Delegate>[]
             {
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(bool),(s,t,v,o) => s.ReadBool(v)),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(sbyte),(s,t,v,o) => s.ReadOneSByte(v)),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(byte),(s,t,v,o) => s.ReadOneByte(v)),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(short),(s,t,v,o) => s.ReadShort(v)),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(ushort),(s,t,v,o) => s.ReadUShort(v)),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(int),(s,t,v,o) => s.ReadInt(v)),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(uint),(s,t,v,o) => s.ReadUInt(v)),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(long),(s,t,v,o) => s.ReadLong(v)),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(ulong),(s,t,v,o) => s.ReadULong(v)),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(float),(s,t,v,o) => s.ReadFloat(v)),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(double),(s,t,v,o) => s.ReadDouble(v)),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(decimal),(s,t,v,o) => s.ReadDecimal(v)),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(byte[]),(s,t,v,o) =>
+                    new(typeof(bool),(s,t,v,o) => s.ReadBool(v)),
+                    new(typeof(sbyte),(s,t,v,o) => s.ReadOneSByte(v)),
+                    new(typeof(byte),(s,t,v,o) => s.ReadOneByte(v)),
+                    new(typeof(short),(s,t,v,o) => s.ReadShort(v)),
+                    new(typeof(ushort),(s,t,v,o) => s.ReadUShort(v)),
+                    new(typeof(int),(s,t,v,o) => s.ReadInt(v)),
+                    new(typeof(uint),(s,t,v,o) => s.ReadUInt(v)),
+                    new(typeof(long),(s,t,v,o) => s.ReadLong(v)),
+                    new(typeof(ulong),(s,t,v,o) => s.ReadULong(v)),
+                    new(typeof(float),(s,t,v,o) => s.ReadFloat(v)),
+                    new(typeof(double),(s,t,v,o) => s.ReadDouble(v)),
+                    new(typeof(decimal),(s,t,v,o) => s.ReadDecimal(v)),
+                    new(typeof(byte[]),(s,t,v,o) =>
                         s.ReadBytes(v, minLen: o?.GetMinLen(0)??0, maxLen: o?.GetMaxLen(int.MaxValue)??int.MaxValue)
                         ),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(string),(s,t,v,o) =>
+                    new(typeof(string),(s,t,v,o) =>
                         s.ReadString(v, minLen: o?.GetMinLen(0)??0, maxLen: o?.GetMaxLen(int.MaxValue)??int.MaxValue)
                         ),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(Array),(s,t,v,o) =>
+                    new(typeof(Array),(s,t,v,o) =>
                         s.ReadArray(
                             t,
                             v,
@@ -136,7 +138,7 @@ namespace wan24.StreamSerializerExtensions
                             o?.Attribute.GetValueSerializerOptions(property: null, s, v)
                             )
                     ),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(IList),(s,t,v,o) =>
+                    new(typeof(IList),(s,t,v,o) =>
                         s.ReadList(
                             t,
                             v,
@@ -146,7 +148,7 @@ namespace wan24.StreamSerializerExtensions
                             o?.Attribute.GetValueSerializerOptions(property: null, s, v)
                             )
                     ),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(IDictionary),(s,t,v,o) =>
+                    new(typeof(IDictionary),(s,t,v,o) =>
                         s.ReadDict(
                             t,
                             v,
@@ -157,8 +159,8 @@ namespace wan24.StreamSerializerExtensions
                             o?.Attribute.GetValueSerializerOptions(property: null, s, v)
                             )
                     ),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(Enum),(s,t,v,o) => s.ReadEnum(t,v)),
-                    new KeyValuePair<Type, Deserialize_Delegate>(typeof(Stream),(s,t,v,o) =>
+                    new(typeof(Enum),(s,t,v,o) => s.ReadEnum(t,v)),
+                    new(typeof(Stream),(s,t,v,o) =>
                     {
                         Stream res = o?.Attribute.GetStream(obj:null,property:null,s,v)?? new FileStream(
                             Path.GetTempFileName(),
@@ -177,29 +179,30 @@ namespace wan24.StreamSerializerExtensions
                             res.Dispose();
                             throw;
                         }
-                    })
+                    }),
+                    new(typeof(Type),(s,t,v,o) => s.ReadType(v))
             });
             AsyncDeserializer = new(new KeyValuePair<Type, AsyncDeserialize_Delegate>[]
             {
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(bool),(s,t,v,o,ct) => s.ReadBoolAsync(v, cancellationToken: ct)),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(sbyte),(s,t,v,o,ct) => s.ReadOneSByteAsync(v, ct)),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(byte),(s,t,v,o,ct) => s.ReadOneByteAsync(v, ct)),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(short),(s,t,v,o,ct) => s.ReadShortAsync(v, cancellationToken: ct)),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(ushort),(s,t,v,o,ct) => s.ReadUShortAsync(v, cancellationToken: ct)),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(int),(s,t,v,o,ct) => s.ReadIntAsync(v, cancellationToken: ct)),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(uint),(s,t,v,o,ct) => s.ReadUIntAsync(v, cancellationToken: ct)),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(long),(s,t,v,o,ct) => s.ReadLongAsync(v, cancellationToken: ct)),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(ulong),(s,t,v,o,ct) => s.ReadULongAsync(v, cancellationToken: ct)),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(float),(s,t,v,o,ct) => s.ReadFloatAsync(v, cancellationToken: ct)),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(double),(s,t,v,o,ct) => s.ReadDoubleAsync(v, cancellationToken: ct)),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(decimal),(s,t,v,o,ct) => s.ReadDecimalAsync(v, cancellationToken: ct)),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(byte[]),(s,t,v,o,ct) => 
+                    new(typeof(bool),(s,t,v,o,ct) => s.ReadBoolAsync(v, cancellationToken: ct)),
+                    new(typeof(sbyte),(s,t,v,o,ct) => s.ReadOneSByteAsync(v, ct)),
+                    new(typeof(byte),(s,t,v,o,ct) => s.ReadOneByteAsync(v, ct)),
+                    new(typeof(short),(s,t,v,o,ct) => s.ReadShortAsync(v, cancellationToken: ct)),
+                    new(typeof(ushort),(s,t,v,o,ct) => s.ReadUShortAsync(v, cancellationToken: ct)),
+                    new(typeof(int),(s,t,v,o,ct) => s.ReadIntAsync(v, cancellationToken: ct)),
+                    new(typeof(uint),(s,t,v,o,ct) => s.ReadUIntAsync(v, cancellationToken: ct)),
+                    new(typeof(long),(s,t,v,o,ct) => s.ReadLongAsync(v, cancellationToken: ct)),
+                    new(typeof(ulong),(s,t,v,o,ct) => s.ReadULongAsync(v, cancellationToken: ct)),
+                    new(typeof(float),(s,t,v,o,ct) => s.ReadFloatAsync(v, cancellationToken: ct)),
+                    new(typeof(double),(s,t,v,o,ct) => s.ReadDoubleAsync(v, cancellationToken: ct)),
+                    new(typeof(decimal),(s,t,v,o,ct) => s.ReadDecimalAsync(v, cancellationToken: ct)),
+                    new(typeof(byte[]),(s,t,v,o,ct) => 
                         s.ReadBytesAsync(v, minLen: o?.GetMinLen(0)??0, maxLen: o?.GetMaxLen(int.MaxValue)??int.MaxValue, cancellationToken: ct)
                         ),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(string),(s,t,v,o,ct) => 
+                    new(typeof(string),(s,t,v,o,ct) => 
                         s.ReadStringAsync(v, minLen: o?.GetMinLen(0)??0, maxLen: o?.GetMaxLen(int.MaxValue)??int.MaxValue, cancellationToken: ct)
                         ),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(Array),(s,t,v,o,ct) =>
+                    new(typeof(Array),(s,t,v,o,ct) =>
                         s.ReadArrayAsync(
                             t,
                             v,
@@ -207,10 +210,10 @@ namespace wan24.StreamSerializerExtensions
                             o?.GetMinLen(0)??0,
                             o?.GetMaxLen(int.MaxValue)??int.MaxValue,
                             o?.Attribute.GetValueSerializerOptions(property: null, s, v, ct),
-                            ct
+                            cancellationToken: ct
                             )
                     ),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(IList),(s,t,v,o,ct) =>
+                    new(typeof(IList),(s,t,v,o,ct) =>
                         s.ReadListAsync(
                             t,
                             v,
@@ -218,10 +221,10 @@ namespace wan24.StreamSerializerExtensions
                             o?.GetMinLen(0)??0,
                             o?.GetMaxLen(int.MaxValue)??int.MaxValue,
                             o?.Attribute.GetValueSerializerOptions(property: null, s, v, ct),
-                            ct
+                            cancellationToken: ct
                             )
                     ),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(IDictionary),(s,t,v,o,ct) =>
+                    new(typeof(IDictionary),(s,t,v,o,ct) =>
                         s.ReadDictAsync(
                             t,
                             v,
@@ -230,11 +233,11 @@ namespace wan24.StreamSerializerExtensions
                             o?.GetMaxLen(int.MaxValue)??int.MaxValue,
                             o?.Attribute.GetKeySerializerOptions(property: null, s, v, ct),
                             o?.Attribute.GetValueSerializerOptions(property: null, s, v, ct),
-                            ct
+                            cancellationToken: ct
                             )
                         ),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(Enum),(s,t,v,o,ct) => s.ReadEnumAsync(t,v,cancellationToken: ct)),
-                    new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(Stream),(s,t,v,o,ct) =>
+                    new(typeof(Enum),(s,t,v,o,ct) => s.ReadEnumAsync(t,v,cancellationToken: ct)),
+                    new(typeof(Stream),(s,t,v,o,ct) =>
                     {
                         Stream res = o?.Attribute.GetStream(obj:null,property:null,s,v,ct)?? new FileStream(
                             Path.GetTempFileName(),
@@ -253,7 +256,8 @@ namespace wan24.StreamSerializerExtensions
                             res.Dispose();//TODO Should be DisposeAsync
                             throw;
                         }
-                    })
+                    }),
+                    new(typeof(Type),(s,t,v,o,ct) => s.ReadTypeAsync(v, cancellationToken: ct))
             });
             AllowedTypes = new(new Type[]
             {
@@ -272,7 +276,8 @@ namespace wan24.StreamSerializerExtensions
                 typeof(string),
                 typeof(IDictionary),
                 typeof(IList),
-                typeof(Stream)
+                typeof(Stream),
+                typeof(Type)
             });
         }
 
@@ -404,7 +409,6 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Is allowed?</returns>
         public static bool IsTypeAllowed(Type type)
         {
-            if (type == typeof(List<bool>)) Debugger.Break();
             // Deny abstract types
             if (type.IsAbstract || type.IsInterface) return false;
             // Allow all enumeration types

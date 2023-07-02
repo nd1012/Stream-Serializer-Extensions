@@ -17,10 +17,9 @@ The built in serializer supports binary serialization of
 - structures
 - possibly any other objects with a parameterless public constructor
 - streams
+- CLR type informations
 
 and exports an asynchronous fluent API for writing operations, too.
-
-**NOTE**: Arrays, lists and dictionaries with nullable values aren't supported.
 
 It's possible to override the build in serializers, and to add custom type 
 serializers, too.
@@ -144,6 +143,26 @@ only:
 **TIP**: A structure may implement the `IStreamSerializer` inferface and be 
 written using the `WriteSerializedStruct*` methods. For reading you can use 
 the `ReadSerializedStruct*` methods.
+
+## CLR type information serialization
+
+CLR type informations support
+
+- normal types (also abstract and interface types)
+- generic types (or type definitions)
+- array types (with array rank)
+
+Internal the serializer uses a `SerializedTypeInfo` instance.
+
+```cs
+stream.Write(typeof(Dictionary<string, int>));
+stream.Position = 0;
+Type type = stream.ReadType();
+Assert.AreEqual(typeof(Dictionary<string, int>), type);
+```
+
+Use the `ReadSerializableType*` methods to ensure a serializer supported CLR 
+type.
 
 ## Custom serializer
 

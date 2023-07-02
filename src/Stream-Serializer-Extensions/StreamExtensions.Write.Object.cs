@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Buffers;
+using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -120,18 +121,54 @@ namespace wan24.StreamSerializerExtensions
             bool useChecksum = !(attr?.SkipPropertyNameChecksum ?? false);
             WriteNumberNullable(stream, attr?.Version);
             WriteNumber(stream, pis.Length);
-            foreach (PropertyInfoExt pi in pis)
+            ObjectTypes objType = default;
+            Type? lastItemType = null;
+            object? item;
+            SerializerTypes itemSerializer = default;
+            StreamSerializer.Serialize_Delegate? itemSyncSerializer = null;
+            bool writeObject = false,
+                isComplete;
+            int[] cache = ArrayPool<int>.Shared.RentClean(byte.MaxValue << 1);
+            try
             {
-                if (useChecksum && !(pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()?.SkipPropertyNameChecksum ?? false))
-                    Write(stream, pi.Property.Name.GetBytes().Aggregate((c, b) => (byte)(c ^ b)));
-                if (pi.Property.PropertyType.IsNullable())
+                Span<int> typeCache = cache.AsSpan(0, byte.MaxValue),
+                    objectCache = cache.AsSpan(byte.MaxValue, byte.MaxValue);
+                foreach (PropertyInfoExt pi in pis)
                 {
-                    WriteAnyNullable(stream, pi.Getter!(obj)!);
+                    if (useChecksum && !(pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()?.SkipPropertyNameChecksum ?? false))
+                        Write(stream, pi.Property.Name.GetBytes().Aggregate((c, b) => (byte)(c ^ b)));
+                    item = pi.Getter!(obj);
+                    if (item == null)
+                    {
+                        Write(stream, (byte)ObjectTypes.Null);
+                        continue;
+                    }
+                    isComplete = WriteAnyItemHeader(
+                        stream,
+                        item!,
+                        pi.Property.PropertyType,
+                        typeCache,
+                        objectCache,
+                        ref lastItemType,
+                        ref itemSerializer,
+                        ref itemSyncSerializer,
+                        ref objType,
+                        ref writeObject
+                        );
+                    if (!isComplete && writeObject)
+                        if (itemSerializer == SerializerTypes.Serializer)
+                        {
+                            WriteItem(stream, item!, nullable: false, itemSerializer, itemSyncSerializer);
+                        }
+                        else
+                        {
+                            WriteAny(stream, item!, objType, writeObject);
+                        }
                 }
-                else
-                {
-                    WriteAny(stream, pi.Getter!(obj)!);
-                }
+            }
+            finally
+            {
+                ArrayPool<int>.Shared.Return(cache);
             }
             return stream;
         }
@@ -152,18 +189,57 @@ namespace wan24.StreamSerializerExtensions
             bool useChecksum = !(attr?.SkipPropertyNameChecksum ?? false);
             await WriteNumberNullableAsync(stream, attr?.Version, cancellationToken).DynamicContext();
             await WriteNumberAsync(stream, pis.Length, cancellationToken).DynamicContext();
-            foreach (PropertyInfoExt pi in pis)
+            ObjectTypes objType = default;
+            Type? lastItemType = null;
+            object? item;
+            SerializerTypes itemSerializer = default;
+            StreamSerializer.Serialize_Delegate? itemSyncSerializer = null;
+            StreamSerializer.AsyncSerialize_Delegate? itemAsyncSerializer = null;
+            bool writeObject = false,
+                isComplete;
+            int[] cache = ArrayPool<int>.Shared.RentClean(byte.MaxValue << 1);
+            try
             {
-                if (useChecksum && !(pi.Property.GetCustomAttribute<StreamSerializerAttribute>()?.SkipPropertyNameChecksum ?? false))
-                    await WriteAsync(stream, pi.Property.Name.GetBytes().Aggregate((c, b) => (byte)(c ^ b)), cancellationToken).DynamicContext();
-                if (pi.Property.PropertyType.IsNullable())
+                Memory<int> typeCache = cache.AsMemory(0, byte.MaxValue),
+                    objectCache = cache.AsMemory(byte.MaxValue, byte.MaxValue);
+                foreach (PropertyInfoExt pi in pis)
                 {
-                    await WriteAnyNullableAsync(stream, pi.Getter!(obj)!, cancellationToken).DynamicContext();
+                    if (useChecksum && !(pi.Property.GetCustomAttribute<StreamSerializerAttribute>()?.SkipPropertyNameChecksum ?? false))
+                        await WriteAsync(stream, pi.Property.Name.GetBytes().Aggregate((c, b) => (byte)(c ^ b)), cancellationToken).DynamicContext();
+                    item = pi.Getter!(obj);
+                    if (item == null)
+                    {
+                        await WriteAsync(stream, (byte)ObjectTypes.Null, cancellationToken).DynamicContext();
+                        continue;
+                    }
+                    (isComplete, lastItemType, itemSerializer, itemSyncSerializer, itemAsyncSerializer, objType, writeObject) = await WriteAnyItemHeaderAsync(
+                        stream,
+                        item!,
+                        pi.Property.PropertyType,
+                        typeCache,
+                        objectCache,
+                        lastItemType,
+                        itemSerializer,
+                        itemSyncSerializer,
+                        itemAsyncSerializer,
+                        objType,
+                        writeObject,
+                        cancellationToken
+                        ).DynamicContext();
+                    if (!isComplete && writeObject)
+                        if (itemSerializer == SerializerTypes.Serializer)
+                        {
+                            await WriteItemAsync(stream, item!, nullable: false, itemSerializer, itemSyncSerializer, itemAsyncSerializer, cancellationToken).DynamicContext();
+                        }
+                        else
+                        {
+                            await WriteAnyAsync(stream, item!, objType, writeObject, cancellationToken).DynamicContext();
+                        }
                 }
-                else
-                {
-                    await WriteAnyAsync(stream, pi.Getter!(obj)!, cancellationToken).DynamicContext();
-                }
+            }
+            finally
+            {
+                ArrayPool<int>.Shared.Return(cache);
             }
             return stream;
         }
