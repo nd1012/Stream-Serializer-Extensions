@@ -29,6 +29,18 @@ namespace wan24.StreamSerializerExtensions
         public StreamSerializerAttribute Attribute { get; }
 
         /// <inheritdoc/>
+        public SerializerTypes? Serializer { get; set; }
+
+        /// <inheritdoc/>
+        public bool IsNullable { get; set; }
+
+        /// <inheritdoc/>
+        public ISerializerOptions? KeyOptions { get; set; }
+
+        /// <inheritdoc/>
+        public ISerializerOptions? ValueOptions { get; set; }
+
+        /// <inheritdoc/>
         public virtual int GetMinLen(int defaultValue)
         {
             int? res = (int?)Attribute.MinLen;

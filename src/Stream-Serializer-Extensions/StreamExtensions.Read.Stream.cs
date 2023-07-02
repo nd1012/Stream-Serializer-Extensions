@@ -274,7 +274,7 @@ namespace wan24.StreamSerializerExtensions
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task<Stream?> ReadStreamNullableAsync<T>(
+        public static Task<Stream?> ReadStreamNullableAsync(
             this Stream stream,
             Stream target,
             int? version = null,

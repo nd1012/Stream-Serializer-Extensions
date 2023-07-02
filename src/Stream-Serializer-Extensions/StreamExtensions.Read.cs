@@ -21,6 +21,14 @@ namespace wan24.StreamSerializerExtensions
         /// Read struct method
         /// </summary>
         public static readonly MethodInfo ReadStructAsyncMethod;
+        /// <summary>
+        /// Read nullable struct method
+        /// </summary>
+        public static readonly MethodInfo ReadStructNullableMethod;
+        /// <summary>
+        /// Read nullable struct method
+        /// </summary>
+        public static readonly MethodInfo ReadStructNullableAsyncMethod;
 
         /// <summary>
         /// Require the <see cref="StreamSerializerAttribute"/> attribute when using <see cref="ReadAnyObject{T}(Stream, int?)"/> etc.?

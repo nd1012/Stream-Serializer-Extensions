@@ -23,6 +23,10 @@ namespace wan24.StreamSerializerExtensions
                 ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadStruct)}");
             ReadStructAsyncMethod = type.GetMethodCached(nameof(ReadStructAsync), BindingFlags.Static | BindingFlags.Public)
                 ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadStructAsync)}");
+            ReadStructNullableMethod = type.GetMethodCached(nameof(ReadStructNullable), BindingFlags.Static | BindingFlags.Public)
+                ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadStructNullable)}");
+            ReadStructNullableAsyncMethod = type.GetMethodCached(nameof(ReadStructNullableAsync), BindingFlags.Static | BindingFlags.Public)
+                ?? throw new TypeLoadException($"Failed to reflect {nameof(ReadStructNullableAsync)}");
         }
 
         /// <summary>

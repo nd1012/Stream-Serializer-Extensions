@@ -15,3 +15,6 @@ namespace wan24.StreamSerializerExtensions
         public DefaultSerializerOptions(PropertyInfoExt? property, StreamSerializerAttribute? attr = null) : base(property, attr) { }
     }
 }
+
+//TODO Use EnsureConnectType
+//TODO Nullable parameter for array/list/dictionary reading

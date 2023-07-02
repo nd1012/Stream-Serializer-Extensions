@@ -135,6 +135,38 @@ namespace wan24.StreamSerializerExtensions
                 : default(T?);
 #pragma warning restore IDE0034 // default expression can be simplified
 
+
+        /// <summary>
+        /// Read
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="type">Type</param>
+        /// <param name="version">Serializer version</param>
+        /// <returns>Object</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static object? ReadSerializedObjectNullable(this Stream stream, Type type, int? version = null)
+            => ReadBool(stream, version) ? ReadSerializedObject(stream, type, version) : null;
+
+        /// <summary>
+        /// Read
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="type">Type</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Object</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<object?> ReadSerializedObjectNullableAsync(this Stream stream, Type type, int? version = null, CancellationToken cancellationToken = default)
+            => await ReadBoolAsync(stream, version, cancellationToken: cancellationToken).DynamicContext()
+                ? await ReadSerializedObjectAsync(stream, type, version, cancellationToken).DynamicContext()
+                : null;
+
         /// <summary>
         /// Read
         /// </summary>

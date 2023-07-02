@@ -15,7 +15,7 @@ namespace wan24.StreamSerializerExtensions
         {
             Property = property;
             IsNullable = property.Property.IsNullable();
-            Attribute = property.Property.GetCustomAttributeCached<StreamSerializerAttribute>() 
+            Attribute = property.Property.GetCustomAttributeCached<StreamSerializerAttribute>()
                 ?? throw new ArgumentException($"Missing {typeof(StreamSerializerAttribute)}", nameof(property));
         }
 
@@ -72,7 +72,7 @@ namespace wan24.StreamSerializerExtensions
                 else
                 {
                     stream.WriteObject(
-                        Property.Getter!(obj) 
+                        Property.Getter!(obj)
                         ?? throw new SerializerException($"{Property.Property.DeclaringType}.{Property.Property.Name} value is NULL", new InvalidDataException())
                         );
                 }
@@ -91,7 +91,8 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="obj">Object</param>
         /// <param name="stream">Stream</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        public async Task SerializeAsync<T>(IAutoStreamSerializerConfig config, T obj, Stream stream, CancellationToken cancellationToken) where T : IAutoStreamSerializer
+        public async Task SerializeAsync<T>(IAutoStreamSerializerConfig config, T obj, Stream stream, CancellationToken cancellationToken)
+            where T : IAutoStreamSerializer
         {
             if (AsyncSerializer == null)
             {
@@ -102,7 +103,8 @@ namespace wan24.StreamSerializerExtensions
                 else
                 {
                     await stream.WriteObjectAsync(
-                        Property.Getter!(obj) ?? throw new SerializerException($"{Property.Property.DeclaringType}.{Property.Property.Name} value is NULL", new InvalidDataException()),
+                        Property.Getter!(obj) 
+                            ?? throw new SerializerException($"{Property.Property.DeclaringType}.{Property.Property.Name} value is NULL", new InvalidDataException()),
                         cancellationToken
                         ).DynamicContext();
                 }
@@ -169,7 +171,13 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="obj">Object</param>
         /// <param name="value">Value to serialize</param>
         /// <param name="stream">Stream</param>
-        public delegate void Serializer_Delegate(IAutoStreamSerializerConfig config, AutoStreamSerializerInfo info, IAutoStreamSerializer obj, object? value, Stream stream);
+        public delegate void Serializer_Delegate(
+            IAutoStreamSerializerConfig config,
+            AutoStreamSerializerInfo info,
+            IAutoStreamSerializer obj,
+            object? value,
+            Stream stream
+            );
 
         /// <summary>
         /// Delegate for a serializer

@@ -16,6 +16,22 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         StreamSerializerAttribute Attribute { get; }
         /// <summary>
+        /// Serializer type
+        /// </summary>
+        SerializerTypes? Serializer { get; set; }
+        /// <summary>
+        /// Is the value nullable?
+        /// </summary>
+        bool IsNullable { get; set; }
+        /// <summary>
+        /// Key serializer options
+        /// </summary>
+        ISerializerOptions? KeyOptions { get; set; }
+        /// <summary>
+        /// Value serializer options
+        /// </summary>
+        ISerializerOptions? ValueOptions { get; set; }
+        /// <summary>
         /// Get the minimum length
         /// </summary>
         /// <param name="defaultValue">Default value</param>

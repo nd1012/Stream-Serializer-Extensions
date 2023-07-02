@@ -74,11 +74,11 @@ namespace wan24.StreamSerializerExtensions
             }
             else if (value.Value)
             {
-                type = ObjectTypes.Bool;
+                type = ObjectTypes.True;
             }
             else
             {
-                type = ObjectTypes.Empty;
+                type = ObjectTypes.False;
             }
             return Write(stream, (byte)type);
         }
@@ -103,11 +103,11 @@ namespace wan24.StreamSerializerExtensions
             }
             else if (value.Value)
             {
-                type = ObjectTypes.Bool;
+                type = ObjectTypes.True;
             }
             else
             {
-                type = ObjectTypes.Empty;
+                type = ObjectTypes.False;
             }
             return WriteAsync(stream, (byte)type, cancellationToken);
         }

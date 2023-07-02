@@ -4,13 +4,15 @@ using wan24.StreamSerializerExtensions;
 namespace Stream_Serializer_Extensions_Tests
 {
     // Testing StreamSerializerBase
-    internal class TestObject2 : StreamSerializerBase
+    internal class TestObject2 : StreamSerializerBase, ITestObject
     {
         public TestObject2() : base(1) { }
 
         public TestObject2(Stream stream, int version) : base(stream, version, 1) { }
 
         public bool Value { get; set; }
+
+        public virtual bool CompareWith(ITestObject other) => other is TestObject2 obj && Value == obj.Value;
 
         protected override void Serialize(Stream stream) => stream.Write(Value);
 
