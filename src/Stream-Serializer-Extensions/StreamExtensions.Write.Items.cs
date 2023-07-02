@@ -214,14 +214,16 @@ namespace wan24.StreamSerializerExtensions
         {
             // Use the object cache
             var info = ((object)item).GetObjectSerializerInfo();
+            Logging.WriteInfo($"\tWRITE ITEM {info.Type} {info.ObjectType} {info.WriteType} {info.WriteObject}");
             if (info.WriteObject)
             {
-                int ohc = item.GetHashCode(),
+                Logging.WriteInfo("\t\tUSING CACHE");
+                int ohc = item.GetHashCode()^info.Type.GetHashCode(),
                 objIndex = objectCache.IndexOf(ohc);
                 if (objIndex != -1)
                 {
-                    objType = ObjectTypes.Cached;
-                    Write(stream, (byte)objType);
+                    Logging.WriteInfo($"\t\tUSING CACHED OBJECT {objIndex}");
+                    Write(stream, (byte)ObjectTypes.Cached);
                     Write(stream, (byte)objIndex);
                     objType = info.ObjectType;
                     writeObject = info.WriteObject;
@@ -232,41 +234,60 @@ namespace wan24.StreamSerializerExtensions
                 else
                 {
                     objIndex = objectCache.IndexOf(0);
+                    Logging.WriteInfo($"\t\tCACHE {info.Type} {item} TO {objIndex}");
                     if (objIndex != -1) objectCache[objIndex] = ohc;
                 }
             }
             // Write the type information
             if (itemType == lastItemType)
             {
+                Logging.WriteInfo($"\t\tUSE LAST ITEM TYPE {lastItemType}");
                 // Use the last object type
                 Write(stream, (byte)ObjectTypes.LastItemType);
             }
             else
             {
+                Logging.WriteInfo("\t\tWRITE DETAILS");
                 // Write object type details
                 objType = info.ObjectType;
                 writeObject = info.WriteObject;
                 (itemSerializer, itemSyncSerializer, _) = itemType.GetItemSerializerInfo(isAsync: false);
                 if (info.WriteType)
                 {
+                    Logging.WriteInfo("\t\tWRITE TYPE INFO");
+                    //TODO Use the type cache only, if the type information can't be written in a single byte
+                    //TODO For array/list/dictionary write the key/value type(s) only - when reading, use them to construct the target type
                     // Write type detail informations
-                    int thc = itemType.GetHashCode(),
-                        typeIndex = typeCache.IndexOf(thc);
-                    if (typeIndex != -1)
+                    SerializedTypeInfo ti = itemType;
+                    if (ti.IsBasicType)
                     {
-                        // Use the cached type
-                        objType |= ObjectTypes.Cached;
-                        Write(stream, (byte)objType);
-                        Write(stream, (byte)typeIndex);
+                        // Don't use the type cache
+                        Logging.WriteInfo($"WRITE BASIC TYPE INFO TO THE CACHE");
+                        Write(stream, (byte)(objType | ObjectTypes.BasicTypeInfo));
+                        Write(stream, (byte)ti.ObjectType);
                     }
                     else
                     {
-                        // Update the cache
-                        typeIndex = typeCache.IndexOf(0);
-                        if (typeIndex != -1) typeCache[typeIndex] = thc;
-                        // Write the type informations
-                        Write(stream, (byte)objType);
-                        Write(stream, itemType);
+                        int thc = itemType.GetHashCode(),
+                            typeIndex = typeCache.IndexOf(thc);
+                        if (typeIndex != -1)
+                        {
+                            Logging.WriteInfo($"\t\tUSE CACHED TYPE {typeIndex}");
+                            // Use the cached type
+                            objType |= ObjectTypes.Cached;
+                            Write(stream, (byte)objType);
+                            Write(stream, (byte)typeIndex);
+                        }
+                        else
+                        {
+                            // Update the cache
+                            typeIndex = typeCache.IndexOf(0);
+                            Logging.WriteInfo($"WRITE TO CACHE {typeIndex}");
+                            if (typeIndex != -1) typeCache[typeIndex] = thc;
+                            // Write the type informations
+                            Write(stream, (byte)objType);
+                            Write(stream, itemType);
+                        }
                     }
                 }
                 else
@@ -322,12 +343,11 @@ namespace wan24.StreamSerializerExtensions
             var info = ((object)item).GetObjectSerializerInfo();
             if (info.WriteObject)
             {
-                int ohc = item.GetHashCode(),
+                int ohc = item.GetHashCode() ^ info.Type.GetHashCode(),
                     objIndex = objectCache.IndexOf(ohc);
                 if (objIndex != -1)
                 {
-                    objType = ObjectTypes.Cached;
-                    await WriteAsync(stream, (byte)objType, cancellationToken).DynamicContext();
+                    await WriteAsync(stream, (byte)ObjectTypes.Cached, cancellationToken).DynamicContext();
                     await WriteAsync(stream, (byte)objIndex, cancellationToken).DynamicContext();
                     objType = info.ObjectType;
                     writeObject = info.WriteObject;
@@ -356,23 +376,34 @@ namespace wan24.StreamSerializerExtensions
                 if (info.WriteType)
                 {
                     // Write type detail informations
-                    int thc = itemType.GetHashCode(),
-                        typeIndex = typeCache.Span.IndexOf(thc);
-                    if (typeIndex != -1)
+                    SerializedTypeInfo ti = itemType;
+                    if (ti.IsBasicType)
                     {
-                        // Use the cached type
-                        objType |= ObjectTypes.Cached;
-                        await WriteAsync(stream, (byte)objType, cancellationToken).DynamicContext();
-                        await WriteAsync(stream, (byte)typeIndex, cancellationToken).DynamicContext();
+                        // Don't use the type cache
+                        Logging.WriteInfo($"WRITE BASIC TYPE INFO TO THE CACHE");
+                        await WriteAsync(stream, (byte)(objType | ObjectTypes.BasicTypeInfo), cancellationToken).DynamicContext();
+                        await WriteAsync(stream, (byte)ti.ObjectType, cancellationToken).DynamicContext();
                     }
                     else
                     {
-                        // Update the cache
-                        typeIndex = typeCache.Span.IndexOf(0);
-                        if (typeIndex != -1) typeCache.Span[typeIndex] = thc;
-                        // Write the type informations
-                        await WriteAsync(stream, (byte)objType, cancellationToken).DynamicContext();
-                        await WriteAsync(stream, itemType, cancellationToken).DynamicContext();
+                        int thc = itemType.GetHashCode(),
+                        typeIndex = typeCache.Span.IndexOf(thc);
+                        if (typeIndex != -1)
+                        {
+                            // Use the cached type
+                            objType |= ObjectTypes.Cached;
+                            await WriteAsync(stream, (byte)objType, cancellationToken).DynamicContext();
+                            await WriteAsync(stream, (byte)typeIndex, cancellationToken).DynamicContext();
+                        }
+                        else
+                        {
+                            // Update the cache
+                            typeIndex = typeCache.Span.IndexOf(0);
+                            if (typeIndex != -1) typeCache.Span[typeIndex] = thc;
+                            // Write the type informations
+                            await WriteAsync(stream, (byte)objType, cancellationToken).DynamicContext();
+                            await WriteAsync(stream, itemType, cancellationToken).DynamicContext();
+                        }
                     }
                 }
                 else

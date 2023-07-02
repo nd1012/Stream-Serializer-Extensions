@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Concurrent;
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using wan24.Core;
 using wan24.ObjectValidation;
@@ -8,17 +10,13 @@ namespace wan24.StreamSerializerExtensions
     /// <summary>
     /// Serialized type informations
     /// </summary>
-    public sealed class SerializedTypeInfo : ValidatableObjectBase, IStreamSerializerVersion
+    public sealed partial class SerializedTypeInfo : ValidatableObjectBase
     {
         /// <summary>
-        /// Object version
+        /// Cache
         /// </summary>
-        public const int VERSION = 1;
+        private static readonly ConcurrentDictionary<int, SerializedTypeInfo> Cache = new();
 
-        /// <summary>
-        /// Recursion level (used to avoid a forced endless recursion using a manipulated byte sequence)
-        /// </summary>
-        private int Recursion = 0;
         /// <summary>
         /// CLR type
         /// </summary>
@@ -27,14 +25,6 @@ namespace wan24.StreamSerializerExtensions
         /// As string
         /// </summary>
         private string? AsString = null;
-        /// <summary>
-        /// Serialized object version
-        /// </summary>
-        private int? SerializedObjectVersion = null;
-        /// <summary>
-        /// Serializer version
-        /// </summary>
-        private int? SerializerVersion = null;
 
         /// <summary>
         /// Constructor
@@ -45,50 +35,62 @@ namespace wan24.StreamSerializerExtensions
         /// Constructor
         /// </summary>
         /// <param name="type">Type</param>
-        public SerializedTypeInfo(Type type) : base()
-        {
-            ClrType = type;
-            ObjectType = type.GetObjectType();
-            switch (ObjectType.RemoveFlags())
-            {
-                case ObjectTypes.Stream:
-                case ObjectTypes.Struct:
-                case ObjectTypes.Object:
-                    Name = $"{type.Namespace}.{type.Name}";
-                    break;
-            }
-            if (type.IsGenericType)
-            {
-                if (Recursion >= 32) throw new InvalidOperationException("Type information branches too deep and won't be deserializable");
-                IsGenericTypeDefinition = type.IsGenericTypeDefinition;
-                if (IsGenericTypeDefinition)
-                {
-                    GenericParameterCount = type.GetGenericArguments().Length;
-                }
-                else
-                {
-                    GenericParameters = type.GetGenericArgumentsCached()
-                        .Select(t => new SerializedTypeInfo(t) { Recursion = Recursion + 1 })
-                        .ToArray();
-                }
-            }
-            else if (type.IsArray)
-            {
-                if (Recursion >= 32) throw new InvalidOperationException("Type information branches too deep and won't be deserializable");
-                ElementType = new(type.GetElementType()!) { Recursion = Recursion + 1 };
-                ArrayRank = type.GetArrayRank();
-            }
-        }
+        public SerializedTypeInfo(Type type) : base() => SetTypeInfo(type);
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="type"></param>
+        public SerializedTypeInfo(ObjectTypes type) : base() => ObjectType = type;
 
         /// <summary>
         /// Object type
         /// </summary>
+        [AllowedValues(
+            ObjectTypes.Bool,
+            ObjectTypes.Byte,
+            ObjectTypes.Byte | ObjectTypes.Unsigned,
+            ObjectTypes.Short,
+            ObjectTypes.Short | ObjectTypes.Unsigned,
+            ObjectTypes.Int,
+            ObjectTypes.Int | ObjectTypes.Unsigned,
+            ObjectTypes.Long,
+            ObjectTypes.Long | ObjectTypes.Unsigned,
+            ObjectTypes.Float,
+            ObjectTypes.Double,
+            ObjectTypes.Decimal,
+            ObjectTypes.Bytes,
+            ObjectTypes.String,
+            ObjectTypes.List | ObjectTypes.Generic,
+            ObjectTypes.Dict | ObjectTypes.Generic,
+            ObjectTypes.Object,
+            ObjectTypes.Object | ObjectTypes.Generic,
+            ObjectTypes.Struct,
+            ObjectTypes.Struct | ObjectTypes.Generic,
+            ObjectTypes.Serializable,
+            ObjectTypes.Serializable | ObjectTypes.Generic,
+            ObjectTypes.Stream,
+            ObjectTypes.Array,
+            ObjectTypes.Array | ObjectTypes.NoRank,
+            ObjectTypes.ClrType
+            )]
         public ObjectTypes ObjectType { get; private set; }
 
         /// <summary>
         /// Name
         /// </summary>
         [StringLength(short.MaxValue, MinimumLength = 1)]
+        [RequiredIf(
+            nameof(ObjectType),
+            ObjectTypes.Object,
+            ObjectTypes.Object | ObjectTypes.Generic,
+            ObjectTypes.Struct,
+            ObjectTypes.Struct | ObjectTypes.Generic,
+            ObjectTypes.Stream,
+            ObjectTypes.Stream | ObjectTypes.Generic,
+            ObjectTypes.Serializable,
+            ObjectTypes.Serializable | ObjectTypes.Generic
+            )]
         public string? Name { get; private set; }
 
         /// <summary>
@@ -100,220 +102,95 @@ namespace wan24.StreamSerializerExtensions
         /// Generic parameters
         /// </summary>
         [CountLimit(sbyte.MaxValue)]
-        public SerializedTypeInfo[] GenericParameters { get; private set; } = Array.Empty<SerializedTypeInfo>();
+        [RequiredIf(
+            nameof(ObjectType),
+            ObjectTypes.Object | ObjectTypes.Generic,
+            ObjectTypes.Struct | ObjectTypes.Generic,
+            ObjectTypes.Stream | ObjectTypes.Generic,
+            ObjectTypes.Serializable | ObjectTypes.Generic,
+            ObjectTypes.List | ObjectTypes.Generic,
+            ObjectTypes.Dict | ObjectTypes.Generic
+            )]
+        public ReadOnlyCollection<SerializedTypeInfo> GenericParameters { get; private set; } = new List<SerializedTypeInfo>().AsReadOnly();
 
         /// <summary>
         /// Generic parameter count of a generic type definition
         /// </summary>
         [Range(0, sbyte.MaxValue)]
+        [RequiredIf(nameof(IsGenericTypeDefinition), true)]
         public int GenericParameterCount { get; private set; }
 
         /// <summary>
         /// Array element type
         /// </summary>
+        [RequiredIf(nameof(ObjectType), ObjectTypes.Array, ObjectTypes.Array | ObjectTypes.NoRank)]
         public SerializedTypeInfo? ElementType { get; private set; }
 
         /// <summary>
         /// Array rank
         /// </summary>
         [Range(0, byte.MaxValue)]
+        [RequiredIf(nameof(ElementType))]
         public int ArrayRank { get; private set; }
+
+        /// <summary>
+        /// Determine if the CLR type is known
+        /// </summary>
+        [NoValidation]
+        public bool IsKnown
+        {
+            get
+            {
+                try
+                {
+                    if (ClrType != null) return true;
+                    if ((ClrType = TypeHelper.Instance.GetType(ToString())) == null) return false;
+                    Cache.TryAdd(ClrType!.GetHashCode(), this);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
 
         /// <summary>
         /// Determine if the type is serializable
         /// </summary>
-        public bool IsSerializable => StreamSerializer.IsTypeAllowed(ToClrType());
+        [NoValidation]
+        public bool IsSerializable => IsKnown && StreamSerializer.IsTypeAllowed(ToClrType());
 
-        /// <inheritdoc/>
-        int? IStreamSerializerVersion.ObjectVersion => VERSION;
-
-        /// <inheritdoc/>
-        int? IStreamSerializerVersion.SerializedObjectVersion => SerializedObjectVersion;
-
-        /// <inheritdoc/>
-        int? IStreamSerializerVersion.SerializerVersion => SerializerVersion;
+        /// <summary>
+        /// Determine if the type information if for a basic type (will serialize to only one byte)
+        /// </summary>
+        [NoValidation]
+        public bool IsBasicType => Name == null && ElementType == null && GenericParameters.Count == 0 && !IsGenericTypeDefinition;
 
         /// <summary>
         /// Get as CLR type
         /// </summary>
         /// <returns>CLR type</returns>
-        public Type ToClrType() => ClrType ??= TypeHelper.Instance.GetType(ToString()) ?? throw new TypeLoadException($"{ToString()} is not available");
+        public Type ToClrType()
+        {
+            ClrType ??= TypeHelper.Instance.GetType(ToString()) ?? throw new TypeLoadException($"{ToString()} is not available");
+            Cache.TryAdd(ClrType.GetHashCode(), this);
+            return ClrType;
+        }
 
         /// <summary>
         /// Get as serializabe type (ensures, that the type can be (de)serialized)
         /// </summary>
         /// <returns>Serializable type</returns>
-        public Type ToSerializableType() => ClrType == null
-            ? ClrType = StreamSerializer.LoadType(ToString())
-            : StreamSerializer.IsTypeAllowed(ClrType)
-                ? ClrType
-                : throw new SerializerException($"Failed to load type \"{ToString()}\"");
-
-        /// <inheritdoc/>
-        public void Serialize(Stream stream)
+        public Type ToSerializableType()
         {
-            stream.WriteNumberNullable(VERSION)
-                .Write((byte)ObjectType);
-            if (Name != null) stream.WriteString(Name);
-            if (ObjectType.IsGeneric())
-            {
-                int len = IsGenericTypeDefinition ? GenericParameterCount : GenericParameters.Length;
-                stream.Write((sbyte)(IsGenericTypeDefinition ? -len : len));
-                if (!IsGenericTypeDefinition) for (int i = 0; i < len; stream.WriteSerialized(GenericParameters[i]), i++) ;
-            }
-            else if (ObjectType.IsArray())
-            {
-                stream.WriteSerialized(ElementType!);
-                if (!ObjectType.IsNotRanked()) stream.Write((byte)(ArrayRank - 1));
-            }
-        }
-
-        /// <inheritdoc/>
-        public async Task SerializeAsync(Stream stream, CancellationToken cancellationToken)
-        {
-            await stream.WriteNumberNullableAsync(VERSION, cancellationToken).DynamicContext();
-            await stream.WriteAsync((byte)ObjectType, cancellationToken).DynamicContext();
-            if (Name != null) await stream.WriteStringAsync(Name, cancellationToken).DynamicContext();
-            if (ObjectType.IsGeneric())
-            {
-                int len = IsGenericTypeDefinition ? GenericParameterCount : GenericParameters.Length;
-                await stream.WriteAsync((sbyte)(IsGenericTypeDefinition ? -len : len), cancellationToken).DynamicContext();
-                if (!IsGenericTypeDefinition)
-                    for (int i = 0; i < len; i++)
-                        await stream.WriteSerializedAsync(GenericParameters[i], cancellationToken).DynamicContext();
-            }
-            else if (ObjectType.IsArray())
-            {
-                await stream.WriteSerializedAsync(ElementType!, cancellationToken).DynamicContext();
-                if (!ObjectType.IsNotRanked()) await stream.WriteAsync((byte)(ArrayRank - 1), cancellationToken).DynamicContext();
-            }
-        }
-
-        /// <inheritdoc/>
-        public void Deserialize(Stream stream, int version)
-        {
-            SerializerVersion = version;
-            if (ObjectType == ObjectTypes.Null)
-            {
-                SerializedObjectVersion = stream.ReadNumberNullable<int>(version) ?? throw new SerializerException($"Invalid object version", new InvalidDataException());
-                if (SerializedObjectVersion > VERSION)
-                    throw new SerializerException($"Unsupported object version {SerializedObjectVersion} (max. supported version is {VERSION})", new InvalidDataException());
-                ObjectType = (ObjectTypes)stream.ReadOneByte(version);
-            }
-            switch (ObjectType.RemoveFlags())
-            {
-                case ObjectTypes.Stream:
-                case ObjectTypes.Struct:
-                case ObjectTypes.Object:
-                    Name = stream.ReadString(version, minLen: 1, maxLen: short.MaxValue);
-                    break;
-            }
-            if (ObjectType.IsGeneric())
-            {
-                if (Recursion >= 32) throw new SerializerException($"Avoided endless recursion (possibly manipulated byte sequence)", new StackOverflowException());
-                int len = stream.ReadOneSByte(version);
-                IsGenericTypeDefinition = len < 0;
-                if (len < 0) len = -len;
-                SerializerHelper.EnsureValidLength(len, 1);
-                if (IsGenericTypeDefinition)
-                {
-                    GenericParameterCount = len;
-                }
-                else
-                {
-                    GenericParameters = new SerializedTypeInfo[len];
-                    for (int i = 0; i < len; i++)
-                    {
-                        GenericParameters[i] = new()
-                        {
-                            Recursion = Recursion + 1
-                        };
-                        GenericParameters[i].Deserialize(stream, version);
-                    }
-                }
-            }
-            else if (ObjectType.IsArray())
-            {
-                if (Recursion >= 32) throw new SerializerException($"Avoided endless recursion (possibly manipulated byte sequence)", new StackOverflowException());
-                ElementType = new()
-                {
-                    Recursion = Recursion + 1
-                };
-                ElementType.Deserialize(stream, version);
-                if (!ObjectType.IsNotRanked())
-                {
-                    ArrayRank = stream.ReadOneByte() + 1;
-                    if (ArrayRank == 0) throw new SerializerException("No array rank", new InvalidDataException());
-                }
-                else
-                {
-                    ArrayRank = 1;
-                }
-            }
-        }
-
-        /// <inheritdoc/>
-        public async Task DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken)
-        {
-            SerializerVersion = version;
-            if (ObjectType == ObjectTypes.Null)
-            {
-                SerializedObjectVersion = await stream.ReadNumberNullableAsync<int>(version, cancellationToken: cancellationToken).DynamicContext()
-                    ?? throw new SerializerException($"Invalid object version", new InvalidDataException());
-                if (SerializedObjectVersion > VERSION)
-                    throw new SerializerException($"Unsupported object version {SerializedObjectVersion} (max. supported version is {VERSION})", new InvalidDataException());
-                ObjectType = (ObjectTypes)await stream.ReadOneByteAsync(version, cancellationToken).DynamicContext();
-            }
-            switch (ObjectType.RemoveFlags())
-            {
-                case ObjectTypes.Stream:
-                case ObjectTypes.Struct:
-                case ObjectTypes.Object:
-                    Name = await stream.ReadStringAsync(version, minLen: 1, maxLen: short.MaxValue, cancellationToken: cancellationToken).DynamicContext();
-                    break;
-            }
-            if (ObjectType.IsGeneric())
-            {
-                if (Recursion >= 32) throw new SerializerException($"Avoided endless recursion (possibly manipulated byte sequence)", new StackOverflowException());
-                int len = await stream.ReadOneSByteAsync(version, cancellationToken).DynamicContext();
-                IsGenericTypeDefinition = len < 0;
-                if (len < 0) len = -len;
-                SerializerHelper.EnsureValidLength(len, 1);
-                if (IsGenericTypeDefinition)
-                {
-                    GenericParameterCount = len;
-                }
-                else
-                {
-                    GenericParameters = new SerializedTypeInfo[len];
-                    for (int i = 0; i < len; i++)
-                    {
-                        GenericParameters[i] = new()
-                        {
-                            Recursion = Recursion + 1
-                        };
-                        await GenericParameters[i].DeserializeAsync(stream, version, cancellationToken).DynamicContext();
-                    }
-                }
-            }
-            else if (ObjectType.IsArray())
-            {
-                if (Recursion >= 32) throw new SerializerException($"Avoided endless recursion (possibly manipulated byte sequence)", new StackOverflowException());
-                ElementType = new()
-                {
-                    Recursion = Recursion + 1
-                };
-                await ElementType.DeserializeAsync(stream, version, cancellationToken).DynamicContext();
-                if (!ObjectType.IsNotRanked())
-                {
-                    ArrayRank = await stream.ReadOneByteAsync(version, cancellationToken).DynamicContext() + 1;
-                    if (ArrayRank == 0) throw new SerializerException("No array rank", new InvalidDataException());
-                }
-                else
-                {
-                    ArrayRank = 1;
-                }
-            }
+            Type res = ClrType == null
+                ? ClrType = StreamSerializer.LoadType(ToString())
+                : StreamSerializer.IsTypeAllowed(ClrType)
+                    ? ClrType
+                    : throw new SerializerException($"Failed to load type \"{ToString()}\"");
+            Cache.TryAdd(res.GetHashCode(), this);
+            return res;
         }
 
         /// <inheritdoc/>
@@ -333,7 +210,9 @@ namespace wan24.StreamSerializerExtensions
                     case ObjectTypes.Decimal: return typeof(decimal).ToString();
                     case ObjectTypes.Bytes: return typeof(byte[]).ToString();
                     case ObjectTypes.String: return typeof(string).ToString();
-                    case ObjectTypes.Array: return $"{ElementType ?? throw new InvalidDataException("Missing array element type")}[{(ArrayRank <= 1 ? string.Empty : new string(Enumerable.Repeat(',', ArrayRank - 1).ToArray()))}]";
+                    case ObjectTypes.Array:
+                        if (ElementType == null) throw new InvalidDataException("Missing array element type");
+                        return $"{ElementType}[{(ArrayRank <= 1 ? string.Empty : new string(Enumerable.Repeat(',', ArrayRank - 1).ToArray()))}]";
                     case ObjectTypes.Dict:
                         return IsGenericTypeDefinition
                             ? $"{typeof(Dictionary<,>).Namespace}.{typeof(Dictionary<,>).Name}"
@@ -342,11 +221,12 @@ namespace wan24.StreamSerializerExtensions
                         return IsGenericTypeDefinition
                             ? $"{typeof(List<>).Namespace}.{typeof(List<>).Name}"
                             : typeof(List<>).MakeGenericType(GenericParameters.Select(i => i.ToClrType()).ToArray()).ToString();
+                    case ObjectTypes.ClrType: return typeof(Type).ToString();
                 }
                 if (Name == null) throw new InvalidDataException($"Missing type name for {ObjectType}");
                 if (!ObjectType.IsGeneric()) return Name;
-                if (IsGenericTypeDefinition) return $"{Name}`{GenericParameters.Length}";
-                StringBuilder sb = new($"{Name}`{GenericParameters.Length}[");
+                if (IsGenericTypeDefinition) return $"{Name}`{GenericParameters.Count}";
+                StringBuilder sb = new($"{Name}`{GenericParameters.Count}[");
                 foreach (SerializedTypeInfo i in GenericParameters)
                 {
                     sb.Append(i.ToString());
@@ -360,72 +240,71 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <summary>
+        /// Set the instance properties from a type
+        /// </summary>
+        /// <param name="type">Type</param>
+        private void SetTypeInfo(Type type)
+        {
+            ArgumentValidationHelper.EnsureValidArgument(nameof(type), type);
+            ClrType = type;
+            ObjectType = type.GetObjectType() & ~ObjectTypes.CachedSerializable;
+            switch (ObjectType.RemoveFlags())
+            {
+                case ObjectTypes.Serializable:
+                case ObjectTypes.Stream:
+                case ObjectTypes.Struct:
+                case ObjectTypes.Object:
+                    Name = $"{type.Namespace}.{type.Name}";
+                    break;
+            }
+            if (type.IsGenericType)
+            {
+                if (Recursion >= 32) throw new InvalidOperationException("Type information branches too deep and won't be deserializable");
+                IsGenericTypeDefinition = type.IsGenericTypeDefinition;
+                if (IsGenericTypeDefinition)
+                {
+                    GenericParameterCount = type.GetGenericArguments().Length;
+                }
+                else
+                {
+                    GenericParameters = type.GetGenericArgumentsCached()
+                        .Select(t => new SerializedTypeInfo(t) { Recursion = Recursion + 1 })
+                        .ToList()
+                        .AsReadOnly();
+                }
+            }
+            else if (type.IsArray)
+            {
+                if (Recursion >= 32) throw new InvalidOperationException("Type information branches too deep and won't be deserializable");
+                ElementType = new(type.GetElementType()!) { Recursion = Recursion + 1 };
+                ArrayRank = type.GetArrayRank();
+            }
+            Cache.TryAdd(type.GetHashCode(), this);
+        }
+
+        /// <summary>
         /// Cast as <see cref="Type"/>
         /// </summary>
-        /// <param name="info">Info</param>
+        /// <param name="info"><see cref="SerializedTypeInfo"/></param>
         public static implicit operator Type(SerializedTypeInfo info) => info.ToClrType();
 
         /// <summary>
         /// Cast as serializable flag
         /// </summary>
-        /// <param name="info">Info</param>
+        /// <param name="info"><see cref="SerializedTypeInfo"/></param>
         public static implicit operator bool(SerializedTypeInfo info) => info.IsSerializable;
 
         /// <summary>
-        /// Cast as serialized data
+        /// Cast from <see cref="Type"/>
         /// </summary>
-        /// <param name="info">Info</param>
-        public static implicit operator byte[](SerializedTypeInfo info) => info.ToBytes();
+        /// <param name="type"><see cref="Type"/></param>
+        public static implicit operator SerializedTypeInfo(Type type) => From(type);
 
         /// <summary>
-        /// Cast from serialized data
+        /// Get an instance
         /// </summary>
-        /// <param name="data">Data</param>
-        public static implicit operator SerializedTypeInfo(byte[] data) => data.ToObject<SerializedTypeInfo>();
-
-        /// <summary>
-        /// Deserialize with a pre-red object version (and type)
-        /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="objVersion">Object version</param>
-        /// <param name="objType">Object type</param>
+        /// <param name="type"></param>
         /// <returns>Instance</returns>
-        public static SerializedTypeInfo From(Stream stream, int version, int objVersion, ObjectTypes objType = ObjectTypes.Null)
-        {
-            SerializedTypeInfo res = new()
-            {
-                SerializedObjectVersion = objVersion,
-                ObjectType = objType == ObjectTypes.Null ? (ObjectTypes)stream.ReadOneByte(version) : objType
-            };
-            res.Deserialize(stream, version);
-            return res;
-        }
-
-        /// <summary>
-        /// Deserialize with a pre-red object version (and type)
-        /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="objVersion">Object version</param>
-        /// <param name="objType">Object type</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>Instance</returns>
-        public static async Task<SerializedTypeInfo> FromAsync(
-            Stream stream,
-            int version,
-            int objVersion,
-            ObjectTypes objType = ObjectTypes.Null,
-            CancellationToken cancellationToken = default
-            )
-        {
-            SerializedTypeInfo res = new()
-            {
-                SerializedObjectVersion = objVersion,
-                ObjectType = objType == ObjectTypes.Null ? (ObjectTypes)await stream.ReadOneByteAsync(version, cancellationToken).DynamicContext() : objType
-            };
-            await res.DeserializeAsync(stream, version, cancellationToken).DynamicContext();
-            return res;
-        }
+        public static SerializedTypeInfo From(Type type) => Cache.TryGetValue(type.GetHashCode(), out SerializedTypeInfo? res) ? res : new(type);
     }
 }

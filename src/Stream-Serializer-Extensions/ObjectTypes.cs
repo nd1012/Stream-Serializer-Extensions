@@ -109,6 +109,14 @@
         /// No array rank
         /// </summary>
         NoRank = 64,
+        /// <summary>
+        /// Cached serializeable <see cref="IStreamSerializer"/> assignable <see cref="Type"/>
+        /// </summary>
+        CachedSerializable = 64,
+        /// <summary>
+        /// Is a basic <see cref="SerializedTypeInfo"/> (serialized to only one byte using <see cref="ObjectTypes"/>)
+        /// </summary>
+        BasicTypeInfo = 64,
 #pragma warning restore CA1069 // Double value
         /// <summary>
         /// Empty (or zero or boolean <see langword="false"/>; or enumeration termination or last item type, if this flag is being used alone)

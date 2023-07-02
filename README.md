@@ -505,6 +505,29 @@ These enumerators are implemented at present:
 | Numeric types | `StreamNumber(Async)Enumerator` | `ReadNumber(Async)` | `EnumerateNumber(Async)` |
 | `string` | `StreamString(Async)Enumerator` | `ReadString(Async)` | `EnumerateString(Async)` |
 
+## Type cache
+
+By calling `StreamSerializer.EnableTypeCache()`, you can use a type cache, 
+which enables the serializer to write type information about types with 
+implement the `IStreamSerializer` interface using only 4 bytes. For this all 
+matching types will be stored in the `wan24.Core.TypeCache`.
+
+**CAUTION**: Calling this method will ensure that the `wan24-Core` 
+bootstrapper did run! A call during bootstrapping will cause an exception.
+
+Please ensure that the type cache has been enabled first, whenever you want to 
+write or read any byte sequence. A byte sequence which was created using the 
+type cache can't be deserialized, if the type cache isn't enabled! Anyway, the 
+opposite isn't a problem.
+
+**CAUTION**: Because the type cache uses the types hash code, you shouldn't 
+use this feature, if you want to cold store a sequence, or if if the 
+deserializing peer may know a different version if the type.
+
+When using the type cache, every `IStreamSerializer` type information can be 
+written using only about 7 bytes. Without the type cache, the information will 
+contain much more bytes, depending on the type properties.
+
 ## Security
 
 The base serializer supports basic types and lists. Especially when 

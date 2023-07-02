@@ -16,5 +16,4 @@ namespace wan24.StreamSerializerExtensions
     }
 }
 
-//TODO Use EnsureConnectType
-//TODO Nullable parameter for array/list/dictionary reading
+//TODO Use EnsureCorrectType

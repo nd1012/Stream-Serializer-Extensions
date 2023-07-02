@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime;
+using System.Runtime.CompilerServices;
 using wan24.Core;
-using System.Diagnostics;
+
+//TODO Test type cache
+//TODO Remove ArrayPool<byte> arguments from reading methods
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -292,6 +294,11 @@ namespace wan24.StreamSerializerExtensions
         public static ArrayPool<byte> BufferPool { get; set; } = ArrayPool<byte>.Shared;
 
         /// <summary>
+        /// Is the type cache enabled?
+        /// </summary>
+        public static bool TypeCacheEnabled { get; private set; }
+
+        /// <summary>
         /// Find a serializer
         /// </summary>
         /// <param name="type">Type</param>
@@ -463,6 +470,29 @@ namespace wan24.StreamSerializerExtensions
             }
             return type.ConstructAuto(out usedConstructor, usePrivate: true, stream, version, options)
                 ?? throw new SerializerException($"Failed to instance {type}", new InvalidProgramException());
+        }
+
+        /// <summary>
+        /// Enable the type cache (CAUTION: Calling this method will ensure that the <c>wan24-Core</c> bootstrapper did run! A call during bootstrapping will cause an exception)
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Can't be called during bootstrapping</exception>
+        public static void EnableTypeCache()
+        {
+            if (TypeCacheEnabled) return;
+            TypeCacheEnabled = true;
+            if (!Bootstrap.DidBoot)
+            {
+                if (Bootstrap.IsBooting) throw new InvalidOperationException("Can't be called during bootstrapping");
+                Bootstrap.Async().Wait();
+            }
+            Type streamSerializer = typeof(IStreamSerializer);
+            foreach (Type type in from ass in TypeHelper.Instance.Assemblies
+                                  from t in ass.GetTypes()
+                                  where !t.IsInterface &&
+                                     !t.IsAbstract &&
+                                     streamSerializer.IsAssignableFrom(t)
+                                  select t)
+                TypeCache.Types[type.GetHashCode()] = type;
         }
 
         /// <summary>

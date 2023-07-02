@@ -20,13 +20,15 @@ namespace Stream_Serializer_Extensions_Tests
                 typeof(Dictionary<,>),
                 typeof(IDisposable),
                 typeof(Stream),
-                typeof(StreamExtensions_Tests)
+                typeof(StreamExtensions_Tests),
+                typeof(Type)
             })
             {
-                Logging.WriteInfo($"Type {type} ({new SerializedTypeInfo(type)})");
+                Logging.WriteInfo($"Type {type} ({SerializedTypeInfo.From(type)})");
                 ms.SetLength(0);
                 ms.Position = 0;
                 ms.Write(type);
+                Logging.WriteInfo($"\tSerialized to {ms.Length} bytes");
                 ms.Position = 0;
                 Assert.AreEqual(type, ms.ReadType());
             }
@@ -40,6 +42,7 @@ namespace Stream_Serializer_Extensions_Tests
                 ms.SetLength(0);
                 ms.Position = 0;
                 ms.WriteNullable(type);
+                Logging.WriteInfo($"\tSerialized to {ms.Length} bytes");
                 ms.Position = 0;
                 Assert.AreEqual(type, ms.ReadTypeNullable());
             }
@@ -60,13 +63,15 @@ namespace Stream_Serializer_Extensions_Tests
                 typeof(Dictionary<,>),
                 typeof(IDisposable),
                 typeof(Stream),
-                typeof(StreamExtensions_Tests)
+                typeof(StreamExtensions_Tests),
+                typeof(Type)
             })
             {
-                Logging.WriteInfo($"Type {type} ({new SerializedTypeInfo(type)})");
+                Logging.WriteInfo($"Type {type} ({SerializedTypeInfo.From(type)})");
                 ms.SetLength(0);
                 ms.Position = 0;
                 await ms.WriteAsync(type);
+                Logging.WriteInfo($"\tSerialized to {ms.Length} bytes");
                 ms.Position = 0;
                 Assert.AreEqual(type, await ms.ReadTypeAsync());
             }
@@ -80,6 +85,7 @@ namespace Stream_Serializer_Extensions_Tests
                 ms.SetLength(0);
                 ms.Position = 0;
                 await ms.WriteNullableAsync(type);
+                Logging.WriteInfo($"\tSerialized to {ms.Length} bytes");
                 ms.Position = 0;
                 Assert.AreEqual(type, await ms.ReadTypeNullableAsync());
             }
