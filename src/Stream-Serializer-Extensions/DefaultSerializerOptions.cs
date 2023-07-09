@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -12,6 +12,8 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="property">Target property</param>
         /// <param name="attr">Stream serializer attribute (required, if <c>property</c> is <see langword="null"/>)</param>
-        public DefaultSerializerOptions(PropertyInfo? property, StreamSerializerAttribute? attr = null) : base(property, attr) { }
+        public DefaultSerializerOptions(PropertyInfoExt? property, StreamSerializerAttribute? attr = null) : base(property, attr) { }
     }
 }
+
+//TODO Use EnsureCorrectType

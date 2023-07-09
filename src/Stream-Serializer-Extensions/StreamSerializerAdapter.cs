@@ -11,31 +11,30 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Read the serialized object version
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="serializerVersion">Serializer version</param>
-        /// <param name="objectVersion">Object version</param>
+        /// <param name="context">Context</param>
+        /// <param name="version">Object version</param>
         /// <returns>Serialized object version</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static int ReadSerializedObjectVersion(Stream stream, int serializerVersion, int objectVersion)
+        public static int ReadSerializedObjectVersion(IDeserializationContext context, int version)
         {
-            int res = stream.ReadNumber<int>(serializerVersion);
-            if (res > objectVersion) throw new SerializerException($"Unsupported object version {res} (max. supported version is {objectVersion})");
+            int res = context.Stream.ReadNumber<int>(context);
+            if (res > version)
+                throw new SerializerException($"Unsupported object version {res} (max. supported version is {version})", new InvalidDataException());
             return res;
         }
 
         /// <summary>
         /// Read the serialized object version
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="serializerVersion">Serializer version</param>
-        /// <param name="objectVersion">Object version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
+        /// <param name="version">Object version</param>
         /// <returns>Serialized object version</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<int> ReadSerializedObjectVersionAsync(Stream stream, int serializerVersion, int objectVersion, CancellationToken cancellationToken = default)
+        public static async Task<int> ReadSerializedObjectVersionAsync(IDeserializationContext context, int version)
         {
-            int res = await stream.ReadNumberAsync<int>(serializerVersion, cancellationToken: cancellationToken).DynamicContext();
-            if (res > objectVersion) throw new SerializerException($"Unsupported object version {res} (max. supported version is {objectVersion})");
+            int res = await context.Stream.ReadNumberAsync<int>(context).DynamicContext();
+            if (res > version)
+                throw new SerializerException($"Unsupported object version {res} (max. supported version is {version})", new InvalidDataException());
             return res;
         }
     }

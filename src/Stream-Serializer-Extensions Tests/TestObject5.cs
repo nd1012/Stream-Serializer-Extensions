@@ -28,6 +28,31 @@ namespace Stream_Serializer_Extensions_Tests
         [StreamSerializer(0)]
         public bool AValue { get; set; }
 
+        public virtual bool CompareWith(ITestObject other)
+        {
+            if(other is TestObject5<T> obj && ZValue == obj.ZValue && BValue == obj.BValue && AValue == obj.AValue)
+            {
+                if (Stream != null)
+                {
+                    Assert.IsNotNull(obj.Stream);
+                    Assert.AreEqual(Stream.Length, obj.Stream.Length);
+                    Stream.Position = 0;
+                    byte[] temp1 = new byte[Stream.Length],
+                        temp2 = new byte[temp1.Length];
+                    Assert.AreEqual(temp1.Length, Stream.Read(temp1));
+                    obj.Stream.Position = 0;
+                    Assert.AreEqual(temp2.Length, obj.Stream.Read(temp2));
+                    Assert.IsTrue(temp1.SequenceEqual(temp2));
+                }
+                else
+                {
+                    Assert.IsNull(obj.Stream);
+                }
+                return true;
+            }
+            return false;
+        }
+
         protected override void Dispose(bool disposing) => Stream?.Dispose();
     }
 }

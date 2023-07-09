@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Buffers;
+using System.Reflection;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -26,7 +27,7 @@ namespace wan24.StreamSerializerExtensions
                 throw new InvalidProgramException($"{typeof(StreamSerializerAttribute)}.{nameof(StreamSerializerAttribute.Mode)} ({Attribute.Mode}) of {typeof(T)} not supported");
             // Collect property informations
             Infos = new(from pi in StreamSerializerAttribute.GetWriteProperties(Type, version: 0)
-                        select new KeyValuePair<string, AutoStreamSerializerInfo>(pi.Name, new AutoStreamSerializerInfo(pi)));
+                        select new KeyValuePair<string, AutoStreamSerializerInfo>(pi.Property.Name, new AutoStreamSerializerInfo(pi)));
             // Initialize the default values
             if (Attribute.UseDefaultValues)
             {
@@ -55,25 +56,26 @@ namespace wan24.StreamSerializerExtensions
         /// Serialize
         /// </summary>
         /// <param name="obj">Object</param>
-        /// <param name="stream">Stream</param>
-        public void Serialize(T obj, Stream stream)
+        /// <param name="context">Context</param>
+        public void Serialize(T obj, ISerializationContext context)
         {
-            (PropertyInfo[] properties, List<string>? usedDefaultValue, byte[]? defaultValueBits, int? defaultValueBitsLength) = PrepareSerialization(obj);
+            using ContextRecursion cr = new(context);
+            (PropertyInfoExt[] properties, List<string>? usedDefaultValue, byte[]? defaultValueBits, int? defaultValueBitsLength) = PrepareSerialization(obj);
             if (defaultValueBits != null)
                 try
                 {
-                    stream.Write(defaultValueBits.AsSpan()[..defaultValueBitsLength!.Value]);
+                    context.Stream.Write(defaultValueBits.AsSpan()[..defaultValueBitsLength!.Value]);
                 }
                 finally
                 {
                     StreamSerializer.BufferPool.Return(defaultValueBits);
                 }
-            foreach (PropertyInfo pi in properties)
+            foreach (PropertyInfoExt pi in properties)
             {
-                if (usedDefaultValue?.Contains(pi.Name) ?? false) continue;
-                if (!Infos.TryGetValue(pi.Name, out AutoStreamSerializerInfo? info))
-                    throw new SerializerException($"Missing auto stream serializer information for {obj.GetType()}.{pi.Name}", new InvalidProgramException());
-                info.Serialize(this, obj, stream);
+                if (usedDefaultValue?.Contains(pi.Property.Name) ?? false) continue;
+                if (!Infos.TryGetValue(pi.Property.Name, out AutoStreamSerializerInfo? info))
+                    throw new SerializerException($"Missing auto stream serializer information for {obj.GetType()}.{pi.Property.Name}", new InvalidProgramException());
+                info.Serialize(this, obj, context);
             }
         }
 
@@ -81,26 +83,26 @@ namespace wan24.StreamSerializerExtensions
         /// Serialize
         /// </summary>
         /// <param name="obj">Object</param>
-        /// <param name="stream">Stream</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        public async Task SerializeAsync(T obj, Stream stream, CancellationToken cancellationToken)
+        /// <param name="context">Context</param>
+        public async Task SerializeAsync(T obj, ISerializationContext context)
         {
-            (PropertyInfo[] properties, List<string>? usedDefaultValue, byte[]? defaultValueBits, int? defaultValueBitsLength) = PrepareSerialization(obj);
+            using ContextRecursion cr = new(context);
+            (PropertyInfoExt[] properties, List<string>? usedDefaultValue, byte[]? defaultValueBits, int? defaultValueBitsLength) = PrepareSerialization(obj);
             if (defaultValueBits != null)
                 try
                 {
-                    await stream.WriteAsync(defaultValueBits.AsMemory()[..defaultValueBitsLength!.Value], cancellationToken).DynamicContext();
+                    await context.Stream.WriteAsync(defaultValueBits.AsMemory()[..defaultValueBitsLength!.Value], context.Cancellation).DynamicContext();
                 }
                 finally
                 {
                     StreamSerializer.BufferPool.Return(defaultValueBits);
                 }
-            foreach (PropertyInfo pi in properties)
+            foreach (PropertyInfoExt pi in properties)
             {
-                if (usedDefaultValue?.Contains(pi.Name) ?? false) continue;
-                if (!Infos.TryGetValue(pi.Name, out AutoStreamSerializerInfo? info))
-                    throw new SerializerException($"Missing auto stream serializer information for {obj.GetType()}.{pi.Name}", new InvalidProgramException());
-                await info.SerializeAsync(this, obj, stream, cancellationToken).DynamicContext();
+                if (usedDefaultValue?.Contains(pi.Property.Name) ?? false) continue;
+                if (!Infos.TryGetValue(pi.Property.Name, out AutoStreamSerializerInfo? info))
+                    throw new SerializerException($"Missing auto stream serializer information for {obj.GetType()}.{pi.Property.Name}", new InvalidProgramException());
+                await info.SerializeAsync(this, obj, context).DynamicContext();
             }
         }
 
@@ -108,44 +110,52 @@ namespace wan24.StreamSerializerExtensions
         /// Deserialize
         /// </summary>
         /// <param name="obj">Object</param>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        public void Deserialize(T obj, Stream stream, int version)
+        /// <param name="context">Context</param>
+        public void Deserialize(T obj, IDeserializationContext context)
         {
-            PropertyInfo[] properties = StreamSerializerAttribute.GetReadProperties(obj.GetType(), version).ToArray();
+            using ContextRecursion cr = new(context);
+            PropertyInfoExt[] properties = StreamSerializerAttribute.GetReadProperties(obj.GetType(), context.Version).ToArray();
             List<string>? usedDefaultValue = null;
             if (DefaultValues != null)
             {
-                PropertyInfo[] props = properties.Where(p => DefaultValues.ContainsKey(p.Name) && Infos[p.Name].Attribute.GetUseDefaultValue(Attribute.Version!.Value)).ToArray();
-                usedDefaultValue = PrepareDeserialization(obj, props, StreamExtensions.ReadSerializedData(stream, (int)Math.Ceiling((decimal)props.Length / 8), StreamSerializer.BufferPool));
-            }
-            foreach (PropertyInfo pi in properties)
-            {
-                if (usedDefaultValue?.Contains(pi.Name) ?? false) continue;
-                if (!Infos.TryGetValue(pi.Name, out AutoStreamSerializerInfo? info))
-                    throw new SerializerException($"Missing auto stream serializer information for {obj.GetType()}.{pi.Name}", new InvalidProgramException());
-                info.Deserialize(this, obj, stream, version);
-            }
-        }
-
-        /// <summary>
-        /// Deserialize
-        /// </summary>
-        /// <param name="obj">Object</param>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        public async Task DeserializeAsync(T obj, Stream stream, int version, CancellationToken cancellationToken)
-        {
-            PropertyInfo[] properties = StreamSerializerAttribute.GetReadProperties(obj.GetType(), version).ToArray();
-            List<string>? usedDefaultValue = null;
-            if (DefaultValues != null)
-            {
-                PropertyInfo[] props = properties.Where(p => DefaultValues.ContainsKey(p.Name) && Infos[p.Name].Attribute.GetUseDefaultValue(Attribute.Version!.Value)).ToArray();
+                PropertyInfoExt[] props = properties
+                    .Where(p => DefaultValues.ContainsKey(p.Property.Name) && Infos[p.Property.Name].Attribute.GetUseDefaultValue(Attribute.Version!.Value))
+                    .ToArray();
                 usedDefaultValue = PrepareDeserialization(
                     obj,
                     props,
-                    await StreamExtensions.ReadSerializedDataAsync(stream, (int)Math.Ceiling((decimal)props.Length / 8), StreamSerializer.BufferPool, cancellationToken).DynamicContext()
+                    StreamExtensions.ReadSerializedData(context.Stream, (int)Math.Ceiling((decimal)props.Length / 8), context)
+                    );
+            }
+            foreach (PropertyInfoExt pi in properties)
+            {
+                if (usedDefaultValue?.Contains(pi.Property.Name) ?? false) continue;
+                if (!Infos.TryGetValue(pi.Property.Name, out AutoStreamSerializerInfo? info))
+                    throw new SerializerException($"Missing auto stream serializer information for {obj.GetType()}.{pi.Property.Name}", new InvalidProgramException());
+                info.Deserialize(this, obj, context);
+            }
+        }
+
+        /// <summary>
+        /// Deserialize
+        /// </summary>
+        /// <param name="obj">Object</param>
+        /// <param name="context">Context</param>
+        public async Task DeserializeAsync(T obj, IDeserializationContext context)
+        {
+            using ContextRecursion cr = new(context);
+            PropertyInfoExt[] properties = StreamSerializerAttribute.GetReadProperties(obj.GetType(), context.Version).ToArray();
+            List<string>? usedDefaultValue = null;
+            if (DefaultValues != null)
+            {
+                PropertyInfoExt[] props = properties
+                    .Where(p => DefaultValues.ContainsKey(p.Property.Name) && Infos[p.Property.Name].Attribute.GetUseDefaultValue(Attribute.Version!.Value))
+                    .ToArray();
+                usedDefaultValue = PrepareDeserialization(
+                    obj,
+                    props,
+                    await StreamExtensions.ReadSerializedDataAsync(context.Stream, (int)Math.Ceiling((decimal)props.Length / 8), context)
+                        .DynamicContext()
                     );
             }
             foreach (PropertyInfo pi in properties)
@@ -153,7 +163,7 @@ namespace wan24.StreamSerializerExtensions
                 if (usedDefaultValue?.Contains(pi.Name) ?? false) continue;
                 if (!Infos.TryGetValue(pi.Name, out AutoStreamSerializerInfo? info))
                     throw new SerializerException($"Missing auto stream serializer information for {obj.GetType()}.{pi.Name}", new InvalidProgramException());
-                await info.DeserializeAsync(this, obj, stream, version, cancellationToken).DynamicContext();
+                await info.DeserializeAsync(this, obj, context).DynamicContext();
             }
         }
 
@@ -163,42 +173,41 @@ namespace wan24.StreamSerializerExtensions
         public void InitDefaultValues()
         {
             if (DefaultValues == null) return;
-            object instance = Type.ConstructAuto(usePrivate: true) ?? throw new SerializerException($"Can't instance {Type} for getting the default values", new InvalidProgramException());
+            object instance = Type.ConstructAuto(usePrivate: true)
+                ?? throw new SerializerException($"Can't instance {Type} for getting the default values", new InvalidProgramException());
             foreach (AutoStreamSerializerInfo info in Infos.Values)
-            {
-                if (!info.Attribute.UseDefaultValues) continue;
-                DefaultValues[info.Property.Name] = info.Property.GetValue(instance);
-            }
+                if (info.Attribute.UseDefaultValues)
+                    DefaultValues[info.Property.Property.Name] = info.Property.Getter!(instance);
         }
 
         /// <summary>
         /// Prepare the serialization
         /// </summary>
         /// <param name="obj">Serialized object</param>
-        /// <returns>Properties, used default value property names, default value bits (needs to be returned to the <see cref="StreamSerializer.BufferPool"/>) and their length in bytes</returns>
-        private (PropertyInfo[] Properties, List<string>? UsedDefaultValue, byte[]? DefaultValueBits, int? DefaultBitsLength) PrepareSerialization(T obj)
+        /// <returns>Properties, used default value property names, default value bits (needs to be returned to the <see cref="StreamSerializer.BufferPool"/>) and their length 
+        /// in bytes</returns>
+        private (PropertyInfoExt[] Properties, List<string>? UsedDefaultValue, byte[]? DefaultValueBits, int? DefaultBitsLength) PrepareSerialization(T obj)
         {
-            PropertyInfo[] properties = StreamSerializerAttribute.GetWriteProperties(obj.GetType()).ToArray();
+            PropertyInfoExt[] properties = StreamSerializerAttribute.GetWriteProperties(obj.GetType()).ToArray();
             List<string>? usedDefaultValue = null;
             byte[]? defaultValueBits = null;
             int? defaultValueBitsLength = 0;
             if (DefaultValues == null) return (properties, usedDefaultValue, defaultValueBits, defaultValueBitsLength);
             usedDefaultValue = new();
-            int byteOffset = 0,
-                bitOffset = 0;
             bool usedDefault;
-            PropertyInfo[] props = properties.Where(p => DefaultValues.ContainsKey(p.Name) && Infos[p.Name].Attribute.GetUseDefaultValue(Attribute.Version!.Value)).ToArray();
+            PropertyInfoExt[] props = properties
+                .Where(p => DefaultValues.ContainsKey(p.Property.Name) && Infos[p.Property.Name].Attribute.GetUseDefaultValue(Attribute.Version!.Value))
+                .ToArray();
             defaultValueBitsLength = (int)Math.Ceiling((decimal)props.Length / 8);
             defaultValueBits = StreamSerializer.BufferPool.RentClean(defaultValueBitsLength.Value);
             try
             {
-                foreach (PropertyInfo pi in props)
+                Bitmap bits = new(defaultValueBits, bitCount: 0);
+                foreach (PropertyInfoExt pi in props)
                 {
-                    if (usedDefault = ObjectHelper.AreEqual(pi.GetValue(obj), DefaultValues[pi.Name])) defaultValueBits[byteOffset] |= 1.ShiftLeft(bitOffset).ToByte();
-                    if (usedDefault || (!pi.IsNullable() && pi.PropertyType == typeof(bool))) usedDefaultValue.Add(pi.Name);
-                    if (++bitOffset != 8) continue;
-                    byteOffset++;
-                    bitOffset = 0;
+                    bits.AddBits(usedDefault = ObjectHelper.AreEqual(pi.Getter!(obj), DefaultValues[pi.Property.Name]));
+                    if (usedDefault || (!pi.Property.IsNullable() && pi.Property.PropertyType == typeof(bool)))
+                        usedDefaultValue.Add(pi.Property.Name);
                 }
             }
             catch
@@ -216,35 +225,33 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="properties">Properties</param>
         /// <param name="defaultValueBits">Default value bits (needs to be returned to the <see cref="StreamSerializer.BufferPool"/>)</param>
         /// <returns>Properties, used default value property names and default value bits</returns>
-        private List<string>? PrepareDeserialization(T obj, PropertyInfo[] properties, byte[]? defaultValueBits)
+        private List<string>? PrepareDeserialization(T obj, PropertyInfoExt[] properties, byte[]? defaultValueBits)
         {
             List<string>? usedDefaultValue = null;
             if (DefaultValues == null) return usedDefaultValue;
-            if (defaultValueBits == null) throw new ArgumentNullException(nameof(defaultValueBits));
+            ArgumentValidationHelper.EnsureValidArgument(nameof(defaultValueBits), defaultValueBits);
             usedDefaultValue = new();
             try
             {
-                int byteOffset = 0,
-                    bitOffset = 0;
-                foreach (PropertyInfo pi in properties)
+                Bitmap bits = new(defaultValueBits!);
+                PropertyInfoExt pi;
+                for (int i = 0, len = properties.Length; i < len; i++)
                 {
-                    if (defaultValueBits[byteOffset].HasFlags(1.ShiftLeft(bitOffset).ToByte()))
+                    pi = properties[i];
+                    if (bits[i])
                     {
-                        usedDefaultValue.Add(pi.Name);
+                        usedDefaultValue.Add(pi.Property.Name);
                     }
-                    else if (!pi.IsNullable() && pi.PropertyType == typeof(bool))
+                    else if (!pi.Property.IsNullable() && pi.Property.PropertyType == typeof(bool))
                     {
-                        usedDefaultValue.Add(pi.Name);
-                        pi.SetValue(obj, !(bool)pi.GetValue(obj)!);
+                        usedDefaultValue.Add(pi.Property.Name);
+                        pi.Setter!(obj, !(bool)pi.Getter!(obj)!);
                     }
-                    if (++bitOffset != 8) continue;
-                    byteOffset++;
-                    bitOffset = 0;
                 }
             }
             finally
             {
-                StreamSerializer.BufferPool.Return(defaultValueBits);
+                StreamSerializer.BufferPool.Return(defaultValueBits!);
             }
             return usedDefaultValue;
         }
