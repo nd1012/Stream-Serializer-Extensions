@@ -14,18 +14,19 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Struct</param>
+        /// <param name="context">Context</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Stream WriteStruct(this Stream stream, object value, bool forceLittleEndian = true)
+        public static Stream WriteStruct(this Stream stream, object value, ISerializationContext context, bool forceLittleEndian = true)
             => SerializerException.Wrap(() =>
             {
                 Type structType = value.GetType();
                 ArgumentValidationHelper.EnsureValidArgument(nameof(value), structType.IsValueType, () => "Not a structure");
-                using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
+                using RentedArrayStruct<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
                 GCHandle gch = GCHandle.Alloc(buffer.Array, GCHandleType.Pinned);
                 try
                 {
@@ -37,7 +38,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 if (forceLittleEndian && !BitConverter.IsLittleEndian && structType.GetCustomAttributeCached<StreamSerializerAttribute>() is StreamSerializerAttribute attr)
                     ConvertStructureEndianess(structType, buffer.Memory, attr);
-                return WriteBytes(stream, buffer.Span);
+                return WriteBytes(stream, buffer.Span, context);
             });
 
         /// <summary>
@@ -46,18 +47,19 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Structure type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Struct</param>
+        /// <param name="context">Context</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Stream WriteStruct<T>(this Stream stream, T value, bool forceLittleEndian = true) where T : struct
+        public static Stream WriteStruct<T>(this Stream stream, T value, ISerializationContext context, bool forceLittleEndian = true) where T : struct
             => SerializerException.Wrap(() =>
             {
                 Type structType = typeof(T);
                 ArgumentValidationHelper.EnsureValidArgument(nameof(value), structType.IsValueType, () => "Not a structure");
-                using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
+                using RentedArrayStruct<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
                 GCHandle gch = GCHandle.Alloc(buffer.Array, GCHandleType.Pinned);
                 try
                 {
@@ -69,7 +71,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 if (forceLittleEndian && !BitConverter.IsLittleEndian && structType.GetCustomAttributeCached<StreamSerializerAttribute>() is StreamSerializerAttribute attr)
                     ConvertStructureEndianess(structType, buffer.Memory, attr);
-                return WriteBytes(stream, buffer.Span);
+                return WriteBytes(stream, buffer.Span, context);
             });
 
         /// <summary>
@@ -77,14 +79,15 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Struct</param>
+        /// <param name="context">Context</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Stream WriteStructNullable(this Stream stream, object? value, bool forceLittleEndian = true)
-            => WriteIfNotNull(stream, value, () => WriteStruct(stream, value!, forceLittleEndian));
+        public static Stream WriteStructNullable(this Stream stream, object? value, ISerializationContext context, bool forceLittleEndian = true)
+            => WriteIfNotNull(stream, value, () => WriteStruct(stream, value!, context, forceLittleEndian), context);
 
         /// <summary>
         /// Write a struct
@@ -92,33 +95,34 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Structure type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Struct</param>
+        /// <param name="context">Context</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Stream WriteStructNullable<T>(this Stream stream, T? value, bool forceLittleEndian = true) where T : struct
-            => WriteIfNotNull(stream, value, () => WriteStruct(stream, value!.Value, forceLittleEndian));
+        public static Stream WriteStructNullable<T>(this Stream stream, T? value, ISerializationContext context, bool forceLittleEndian = true) where T : struct
+            => WriteIfNotNull(stream, value, () => WriteStruct(stream, value!.Value, context, forceLittleEndian), context);
 
         /// <summary>
         /// Write a struct
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Struct</param>
+        /// <param name="context">Context</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task<Stream> WriteStructAsync(this Stream stream, object value, bool forceLittleEndian = true, CancellationToken cancellationToken = default)
+        public static Task<Stream> WriteStructAsync(this Stream stream, object value, ISerializationContext context, bool forceLittleEndian = true)
             => SerializerException.WrapAsync(() =>
             {
                 Type structType = value.GetType();
                 ArgumentValidationHelper.EnsureValidArgument(nameof(value), structType.IsValueType, () => "Not a structure");
-                using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
+                using RentedArrayStruct<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
                 GCHandle gch = GCHandle.Alloc(buffer.Array, GCHandleType.Pinned);
                 try
                 {
@@ -130,7 +134,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 if (forceLittleEndian && !BitConverter.IsLittleEndian && structType.GetCustomAttributeCached<StreamSerializerAttribute>() is StreamSerializerAttribute attr)
                     ConvertStructureEndianess(structType, buffer.Memory, attr);
-                return WriteBytesAsync(stream, buffer.Memory, cancellationToken);
+                return WriteBytesAsync(stream, buffer.Memory, context);
             });
 
         /// <summary>
@@ -138,13 +142,13 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Struct</param>
+        /// <param name="context">Context</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteStructAsync(this Task<Stream> stream, object value, bool forceLittleEndian = true, CancellationToken cancellationToken = default)
-            => AsyncHelper.FluentAsync(stream, value, forceLittleEndian, cancellationToken, WriteStructAsync);
+        public static Task<Stream> WriteStructAsync(this Task<Stream> stream, object value, ISerializationContext context, bool forceLittleEndian = true)
+            => AsyncHelper.FluentAsync(stream, value, context, forceLittleEndian, WriteStructAsync);
 
         /// <summary>
         /// Write a struct
@@ -152,19 +156,19 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Structure type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Struct</param>
+        /// <param name="context">Context</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task<Stream> WriteStructAsync<T>(this Stream stream, T value, bool forceLittleEndian = true, CancellationToken cancellationToken = default) where T : struct
+        public static Task<Stream> WriteStructAsync<T>(this Stream stream, T value, ISerializationContext context, bool forceLittleEndian = true) where T : struct
             => SerializerException.WrapAsync(() =>
             {
                 Type structType = typeof(T);
                 ArgumentValidationHelper.EnsureValidArgument(nameof(value), structType.IsValueType, () => "Not a structure");
-                using RentedArray<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
+                using RentedArrayStruct<byte> buffer = new(Marshal.SizeOf(value), StreamSerializer.BufferPool, clean: false);
                 GCHandle gch = GCHandle.Alloc(buffer.Array, GCHandleType.Pinned);
                 try
                 {
@@ -176,7 +180,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 if (forceLittleEndian && !BitConverter.IsLittleEndian && structType.GetCustomAttributeCached<StreamSerializerAttribute>() is StreamSerializerAttribute attr)
                     ConvertStructureEndianess(structType, buffer.Memory, attr);
-                return WriteBytesAsync(stream, buffer.Memory, cancellationToken);
+                return WriteBytesAsync(stream, buffer.Memory, context);
             });
 
         /// <summary>
@@ -185,22 +189,22 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Structure type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Struct</param>
+        /// <param name="context">Context</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteStructAsync<T>(this Task<Stream> stream, T value, bool forceLittleEndian = true, CancellationToken cancellationToken = default)
+        public static Task<Stream> WriteStructAsync<T>(this Task<Stream> stream, T value, ISerializationContext context, bool forceLittleEndian = true)
             where T : struct
-            => AsyncHelper.FluentAsync(stream, value, forceLittleEndian, cancellationToken, WriteStructAsync);
+            => AsyncHelper.FluentAsync(stream, value, context, forceLittleEndian, WriteStructAsync);
 
         /// <summary>
         /// Write a struct
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Struct</param>
+        /// <param name="context">Context</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
@@ -209,28 +213,28 @@ namespace wan24.StreamSerializerExtensions
         public static Task<Stream> WriteStructNullableAsync(
             this Stream stream,
             object? value,
-            bool forceLittleEndian = true,
-            CancellationToken cancellationToken = default
+            ISerializationContext context,
+            bool forceLittleEndian = true
             )
-            => WriteIfNotNullAsync(stream, value, () => WriteStructAsync(stream, value!, forceLittleEndian, cancellationToken), cancellationToken);
+            => WriteIfNotNullAsync(stream, value, () => WriteStructAsync(stream, value!, context, forceLittleEndian), context);
 
         /// <summary>
         /// Write a struct
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Struct</param>
+        /// <param name="context">Context</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteStructNullableAsync(
             this Task<Stream> stream,
             object? value,
-            bool forceLittleEndian = true,
-            CancellationToken cancellationToken = default
+            ISerializationContext context,
+            bool forceLittleEndian = true
             )
-            => AsyncHelper.FluentAsync(stream, value, forceLittleEndian, cancellationToken, WriteStructNullableAsync);
+            => AsyncHelper.FluentAsync(stream, value, context, forceLittleEndian, WriteStructNullableAsync);
 
         /// <summary>
         /// Write a struct
@@ -238,8 +242,8 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Structure type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Struct</param>
+        /// <param name="context">Context</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
@@ -248,11 +252,11 @@ namespace wan24.StreamSerializerExtensions
         public static Task<Stream> WriteStructNullableAsync<T>(
             this Stream stream,
             T? value,
-            bool forceLittleEndian = true,
-            CancellationToken cancellationToken = default
+            ISerializationContext context,
+            bool forceLittleEndian = true
             )
             where T : struct
-            => WriteIfNotNullAsync(stream, value, () => WriteStructAsync(stream, value!.Value, forceLittleEndian, cancellationToken), cancellationToken);
+            => WriteIfNotNullAsync(stream, value, () => WriteStructAsync(stream, value!.Value, context, forceLittleEndian), context);
 
         /// <summary>
         /// Write a struct
@@ -260,19 +264,19 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Structure type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Struct</param>
+        /// <param name="context">Context</param>
         /// <param name="forceLittleEndian">Force little endian encoding?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteStructNullableAsync<T>(
             this Task<Stream> stream,
             T? value,
-            bool forceLittleEndian = true,
-            CancellationToken cancellationToken = default
+            ISerializationContext context,
+            bool forceLittleEndian = true
             )
             where T : struct
-            => AsyncHelper.FluentAsync(stream, value, forceLittleEndian, cancellationToken, WriteStructNullableAsync);
+            => AsyncHelper.FluentAsync(stream, value, context, forceLittleEndian, WriteStructNullableAsync);
 
         /// <summary>
         /// Convert the endianess of structure fields

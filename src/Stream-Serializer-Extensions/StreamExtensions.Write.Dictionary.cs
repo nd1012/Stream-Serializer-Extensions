@@ -15,17 +15,17 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Stream WriteDict(this Stream stream, IDictionary value, bool valuesNullable = false)
+        public static Stream WriteDict(this Stream stream, IDictionary value, ISerializationContext context)
         {
-            WriteNumber(stream, value.Count);
+            WriteNumber(stream, value.Count, context);
             if (value.Count == 0) return stream;
-            WriteDictInt(stream, value, valuesNullable);
+            WriteDictInt(stream, value, context);
             return stream;
         }
 
@@ -34,18 +34,17 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task<Stream> WriteDictAsync(this Stream stream, IDictionary value, bool valuesNullable = false, CancellationToken cancellationToken = default)
+        public static async Task<Stream> WriteDictAsync(this Stream stream, IDictionary value, ISerializationContext context)
         {
-            await WriteNumberAsync(stream, value.Count, cancellationToken).DynamicContext();
+            await WriteNumberAsync(stream, value.Count, context).DynamicContext();
             if (value.Count == 0) return stream;
-            await WriteDictIntAsync(stream, value, valuesNullable, cancellationToken).DynamicContext();
+            await WriteDictIntAsync(stream, value, context).DynamicContext();
             return stream;
         }
 
@@ -54,30 +53,29 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteDictAsync(this Task<Stream> stream, IDictionary value, bool valuesNullable = false, CancellationToken cancellationToken = default)
-            => AsyncHelper.FluentAsync(stream, value, valuesNullable, cancellationToken, WriteDictAsync);
+        public static Task<Stream> WriteDictAsync(this Task<Stream> stream, IDictionary value, ISerializationContext context)
+            => AsyncHelper.FluentAsync(stream, value, context, WriteDictAsync);
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Stream WriteDictNullable(this Stream stream, IDictionary? value, bool valuesNullable = false)
-            => WriteNullableCount(stream, value?.Count, () =>
+        public static Stream WriteDictNullable(this Stream stream, IDictionary? value, ISerializationContext context)
+            => WriteNullableCount(context, value?.Count, () =>
             {
                 if (value!.Count == 0) return;
-                WriteDictInt(stream, value, valuesNullable);
+                WriteDictInt(stream, value, context);
             });
 
         /// <summary>
@@ -85,177 +83,95 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task<Stream> WriteDictNullableAsync(this Stream stream, IDictionary? value, bool valuesNullable = false, CancellationToken cancellationToken = default)
-            => WriteNullableCountAsync(stream, value?.Count, async () =>
+        public static Task<Stream> WriteDictNullableAsync(this Stream stream, IDictionary? value, ISerializationContext context)
+            => WriteNullableCountAsync(context, value?.Count, async () =>
             {
                 if (value!.Count == 0) return;
-                await WriteDictIntAsync(stream, value, valuesNullable, cancellationToken).DynamicContext();
-            }, cancellationToken);
+                await WriteDictIntAsync(stream, value, context).DynamicContext();
+            });
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteDictNullableAsync(this Task<Stream> stream, IDictionary? value, bool valuesNullable = false, CancellationToken cancellationToken = default)
-            => AsyncHelper.FluentAsync(stream, value, valuesNullable, cancellationToken, WriteDictNullableAsync);
+        public static Task<Stream> WriteDictNullableAsync(this Task<Stream> stream, IDictionary? value, ISerializationContext context)
+            => AsyncHelper.FluentAsync(stream, value, context, WriteDictNullableAsync);
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void WriteDictInt(Stream stream, IDictionary value, bool valuesNullable)
+        private static void WriteDictInt(Stream stream, IDictionary value, ISerializationContext context)
         {
+            using ContextRecursion cr = new(context);
             Type valueType = value.GetType(),
                 keyType = valueType.GenericTypeArguments[0],
-                itemType = valueType.GenericTypeArguments[1],
-                keyItemType,
-                valueItemType;
-            (SerializerTypes keySerializer, StreamSerializer.Serialize_Delegate? keySyncSerializer, _) = keyType.GetItemSerializerInfo(isAsync: false);
-            (SerializerTypes itemSerializer, StreamSerializer.Serialize_Delegate? itemSyncSerializer, _) = itemType.GetItemSerializerInfo(isAsync: false);
-            ObjectTypes keyObjType = default,
-                valueObjType = default;
-            Type? lastKeyItemType = null,
-                lastValueItemType = null;
+                itemType = valueType.GenericTypeArguments[1];
+            using ItemSerializerContext keyContext = new(context, objectCache: false);
+            using ItemSerializerContext valueContext = new(context);
+            (keyContext.ItemSerializer, keyContext.ItemSyncSerializer, _) = keyType.GetItemSerializerInfo(ObjectTypes.Null, isAsync: false);
+            (valueContext.ItemSerializer, valueContext.ItemSyncSerializer, _) = itemType.GetItemSerializerInfo(ObjectTypes.Null, isAsync: false);
             object key;
             object? item;
-            SerializerTypes keyItemSerializer = default,
-                valueItemSerializer = default;
-            StreamSerializer.Serialize_Delegate? keyItemSyncSerializer = null,
-                valueItemSyncSerializer = null;
-            bool writeKey = false,
-                writeValue = false,
-                isComplete;
             object[] keys = value.Keys.Cast<object>().ToArray();
-            int[] cache;
-            if (keySerializer == SerializerTypes.Any && itemSerializer == SerializerTypes.Any)
+            for (int i = 0, len = value.Count; i < len; i++)
             {
-                cache = ArrayPool<int>.Shared.RentClean(byte.MaxValue * 3);
-            }
-            else if (keySerializer == SerializerTypes.Any)
-            {
-                cache = ArrayPool<int>.Shared.RentClean(byte.MaxValue);
-            }
-            else if (itemSerializer == SerializerTypes.Any)
-            {
-                cache = ArrayPool<int>.Shared.RentClean(byte.MaxValue << 1);
-            }
-            else
-            {
-                cache = Array.Empty<int>();
-            }
-            try
-            {
-                Span<int> keyTypeCache,
-                    keyObjectCache,
-                    typeCache,
-                    objectCache;
-                if (keySerializer == SerializerTypes.Any)
+                if (keyContext.ItemSerializer == SerializerTypes.Any)
                 {
-                    keyTypeCache = cache.AsSpan(0, byte.MaxValue);
-                    keyObjectCache = cache.AsSpan(0, 0);
-                }
-                else
-                {
-                    keyTypeCache = keyObjectCache = cache.AsSpan(0, 0);
-                }
-                if (itemSerializer == SerializerTypes.Any)
-                {
-                    typeCache = cache.AsSpan(keySerializer == SerializerTypes.Any ? byte.MaxValue : 0, byte.MaxValue);
-                    objectCache = cache.AsSpan(keySerializer == SerializerTypes.Any ? byte.MaxValue << 1 : byte.MaxValue, byte.MaxValue);
-                }
-                else
-                {
-                    typeCache = objectCache = cache.AsSpan(0, 0);
-                }
-                for (int i = 0, len = value.Count; i < len; i++)
-                {
-                    if (keySerializer == SerializerTypes.Any)
-                    {
-                        key = keys[i];
-                        keyItemType = key.GetType();
-                        isComplete = WriteAnyItemHeader(
-                            stream,
-                            key,
-                            keyItemType,
-                            keyTypeCache,
-                            keyObjectCache,
-                            ref lastKeyItemType,
-                            ref keyItemSerializer,
-                            ref keyItemSyncSerializer,
-                            ref keyObjType,
-                            ref writeKey
-                            );
-                        if (!isComplete && writeKey)
-                            if (keyItemSerializer == SerializerTypes.Serializer)
-                            {
-                                WriteItem(stream, key, nullable: false, keyItemSerializer, keyItemSyncSerializer);
-                            }
-                            else
-                            {
-                                WriteAny(stream, key, keyObjType, writeKey);
-                            }
-                    }
-                    else
-                    {
-                        WriteItem(stream, keys[i], nullable: false, keySerializer, keySyncSerializer);
-                    }
-                    if (keySerializer == SerializerTypes.Any)
-                    {
-                        item = value[keys[i]];
-                        if (item == null)
+                    key = keys[i];
+                    if (WriteAnyItemHeader(keyContext, key, key.GetType())) continue;
+                    if (keyContext.WriteObject)
+                        if (keyContext.ItemSerializer == SerializerTypes.Serializer)
                         {
-                            Write(stream, (byte)ObjectTypes.Null);
-                            continue;
+                            WriteItem(keyContext, key);
                         }
-                        valueItemType = value.GetType();
-                        isComplete = WriteAnyItemHeader(
-                            stream,
-                            item,
-                            valueItemType,
-                            typeCache,
-                            objectCache,
-                            ref lastValueItemType,
-                            ref valueItemSerializer,
-                            ref valueItemSyncSerializer,
-                            ref valueObjType,
-                            ref writeValue
-                            );
-                        if (!isComplete && writeValue)
-                            if (valueItemSerializer == SerializerTypes.Serializer)
-                            {
-                                WriteItem(stream, item, nullable: false, valueItemSerializer, valueItemSyncSerializer);
-                            }
-                            else
-                            {
-                                WriteAny(stream, item, valueObjType, writeValue);
-                            }
-                    }
-                    else
-                    {
-                        WriteItem(stream, value[keys[i]]!, valuesNullable, itemSerializer, itemSyncSerializer);
-                    }
+                        else
+                        {
+                            WriteAny(context.Stream, key, keyContext.ObjectType, keyContext.WriteObject, context);
+                        }
                 }
-            }
-            finally
-            {
-                ArrayPool<int>.Shared.Return(cache);
+                else
+                {
+                    WriteItem(keyContext, keys[i]);
+                }
+                if (valueContext.ItemSerializer == SerializerTypes.Any)
+                {
+                    item = value[keys[i]];
+                    if (item == null)
+                    {
+                        Write(stream, (byte)ObjectTypes.Null, context);
+                        continue;
+                    }
+                    if (WriteAnyItemHeader(valueContext, item, item.GetType())) continue;
+                    if (valueContext.WriteObject)
+                        if (valueContext.ItemSerializer == SerializerTypes.Serializer)
+                        {
+                            WriteItem(valueContext, item);
+                        }
+                        else
+                        {
+                            WriteAny(context.Stream, item, valueContext.ObjectType, valueContext.WriteObject, context);
+                        }
+                }
+                else
+                {
+                    WriteItem(valueContext, value[keys[i]]!);
+                }
             }
         }
 
@@ -264,158 +180,67 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static async Task WriteDictIntAsync(Stream stream, IDictionary value, bool valuesNullable, CancellationToken cancellationToken)
+        private static async Task WriteDictIntAsync(Stream stream, IDictionary value, ISerializationContext context)
         {
+            using ContextRecursion cr = new(context);
             Type valueType = value.GetType(),
                 keyType = valueType.GenericTypeArguments[0],
-                itemType = valueType.GenericTypeArguments[1],
-                keyItemType,
-                valueItemType;
-            (SerializerTypes keySerializer, StreamSerializer.Serialize_Delegate? keySyncSerializer, StreamSerializer.AsyncSerialize_Delegate? keyAsyncSerializer) =
-                keyType.GetItemSerializerInfo(isAsync: true);
-            (SerializerTypes itemSerializer, StreamSerializer.Serialize_Delegate? itemSyncSerializer, StreamSerializer.AsyncSerialize_Delegate? itemAsyncSerializer) =
-                itemType.GetItemSerializerInfo(isAsync: true);
-            ObjectTypes keyObjType = default,
-                valueObjType = default;
-            Type? lastKeyItemType = null,
-                lastValueItemType = null;
+                itemType = valueType.GenericTypeArguments[1];
+            using ItemSerializerContext keyContext = new(context, objectCache: false);
+            using ItemSerializerContext valueContext = new(context);
+            (keyContext.ItemSerializer, keyContext.ItemSyncSerializer, keyContext.ItemAsyncSerializer) = 
+                keyType.GetItemSerializerInfo(ObjectTypes.Null, isAsync: true);
+            (valueContext.ItemSerializer, valueContext.ItemSyncSerializer, valueContext.ItemAsyncSerializer) = 
+                itemType.GetItemSerializerInfo(ObjectTypes.Null, isAsync: true);
             object key;
             object? item;
-            SerializerTypes keyItemSerializer = default,
-                valueItemSerializer = default;
-            StreamSerializer.Serialize_Delegate? keyItemSyncSerializer = null,
-                valueItemSyncSerializer = null;
-            StreamSerializer.AsyncSerialize_Delegate? keyItemAsyncSerializer = null,
-                valueItemAsyncSerializer = null;
-            bool writeKey = false,
-                writeValue = false,
-                isComplete;
             object[] keys = value.Keys.Cast<object>().ToArray();
-            int[] cache;
-            if (keySerializer == SerializerTypes.Any && itemSerializer == SerializerTypes.Any)
+            for (int i = 0, len = value.Count; i < len; i++)
             {
-                cache = ArrayPool<int>.Shared.RentClean(byte.MaxValue * 3);
-            }
-            else if (keySerializer == SerializerTypes.Any)
-            {
-                cache = ArrayPool<int>.Shared.RentClean(byte.MaxValue);
-            }
-            else if (itemSerializer == SerializerTypes.Any)
-            {
-                cache = ArrayPool<int>.Shared.RentClean(byte.MaxValue << 1);
-            }
-            else
-            {
-                cache = Array.Empty<int>();
-            }
-            try
-            {
-                Memory<int> keyTypeCache,
-                    keyObjectCache,
-                    typeCache,
-                    objectCache;
-                if (keySerializer == SerializerTypes.Any)
+                if (keyContext.ItemSerializer == SerializerTypes.Any)
                 {
-                    keyTypeCache = cache.AsMemory(0, byte.MaxValue);
-                    keyObjectCache = cache.AsMemory(0, 0);
-                }
-                else
-                {
-                    keyTypeCache = keyObjectCache = cache.AsMemory(0, 0);
-                }
-                if (itemSerializer == SerializerTypes.Any)
-                {
-                    typeCache = cache.AsMemory(keySerializer == SerializerTypes.Any ? byte.MaxValue : 0, byte.MaxValue);
-                    objectCache = cache.AsMemory(keySerializer == SerializerTypes.Any ? byte.MaxValue << 1 : byte.MaxValue, byte.MaxValue);
-                }
-                else
-                {
-                    typeCache = objectCache = cache.AsMemory(0, 0);
-                }
-                for (int i = 0, len = value.Count; i < len; i++)
-                {
-                    if (keySerializer == SerializerTypes.Any)
-                    {
-                        key = keys[i];
-                        keyItemType = key.GetType();
-                        (isComplete, lastKeyItemType, keyItemSerializer, keyItemSyncSerializer, keyItemAsyncSerializer, keyObjType, writeKey) =
-                            await WriteAnyItemHeaderAsync(
-                                stream,
-                                key,
-                                keyItemType,
-                                keyTypeCache,
-                                keyObjectCache,
-                                lastKeyItemType,
-                                keyItemSerializer,
-                                keyItemSyncSerializer,
-                                keyItemAsyncSerializer,
-                                keyObjType,
-                                writeKey,
-                                cancellationToken
-                                ).DynamicContext();
-                        if (!isComplete && writeKey)
-                            if (keyItemSerializer == SerializerTypes.Serializer)
-                            {
-                                await WriteItemAsync(stream, key, nullable: false, keyItemSerializer, keyItemSyncSerializer, keyItemAsyncSerializer, cancellationToken)
-                                    .DynamicContext();
-                            }
-                            else
-                            {
-                                await WriteAnyAsync(stream, key, keyObjType, writeKey, cancellationToken).DynamicContext();
-                            }
-                    }
-                    else
-                    {
-                        await WriteItemAsync(stream, keys[i], nullable: false, keySerializer, keySyncSerializer, keyAsyncSerializer, cancellationToken).DynamicContext();
-                    }
-                    if (keySerializer == SerializerTypes.Any)
-                    {
-                        item = value[keys[i]];
-                        if (item == null)
+                    key = keys[i];
+                    if (await WriteAnyItemHeaderAsync(keyContext, key, key.GetType()).DynamicContext()) continue;
+                    if (keyContext.WriteObject)
+                        if (keyContext.ItemSerializer == SerializerTypes.Serializer)
                         {
-                            await WriteAsync(stream, (byte)ObjectTypes.Null, cancellationToken).DynamicContext();
-                            continue;
+                            await WriteItemAsync(keyContext, key).DynamicContext();
                         }
-                        valueItemType = value.GetType();
-                        (isComplete, lastKeyItemType, keyItemSerializer, keyItemSyncSerializer, keyItemAsyncSerializer, keyObjType, writeKey) =
-                            await WriteAnyItemHeaderAsync(
-                                stream,
-                                item,
-                                valueItemType,
-                                typeCache,
-                                objectCache,
-                                lastValueItemType,
-                                valueItemSerializer,
-                                valueItemSyncSerializer,
-                                valueItemAsyncSerializer,
-                                valueObjType,
-                                writeValue,
-                                cancellationToken
-                                ).DynamicContext();
-                        if (!isComplete && writeValue)
-                            if (valueItemSerializer == SerializerTypes.Serializer)
-                            {
-                                await WriteItemAsync(stream, item, nullable: false, valueItemSerializer, valueItemSyncSerializer, valueItemAsyncSerializer, cancellationToken)
-                                    .DynamicContext();
-                            }
-                            else
-                            {
-                                await WriteAnyAsync(stream, item, valueObjType, writeValue, cancellationToken).DynamicContext();
-                            }
-                    }
-                    else
-                    {
-                        await WriteItemAsync(stream, value[keys[i]]!, valuesNullable, itemSerializer, itemSyncSerializer, itemAsyncSerializer, cancellationToken).DynamicContext();
-                    }
+                        else
+                        {
+                            await WriteAnyAsync(context.Stream, key, keyContext.ObjectType, keyContext.WriteObject, context).DynamicContext();
+                        }
                 }
-            }
-            finally
-            {
-                ArrayPool<int>.Shared.Return(cache);
+                else
+                {
+                    await WriteItemAsync(keyContext, keys[i]).DynamicContext();
+                }
+                if (valueContext.ItemSerializer == SerializerTypes.Any)
+                {
+                    item = value[keys[i]];
+                    if (item == null)
+                    {
+                        await WriteAsync(stream, (byte)ObjectTypes.Null, context).DynamicContext();
+                        continue;
+                    }
+                    if (await WriteAnyItemHeaderAsync(valueContext, item, item.GetType()).DynamicContext()) continue;
+                    if (valueContext.WriteObject)
+                        if (valueContext.ItemSerializer == SerializerTypes.Serializer)
+                        {
+                            await WriteItemAsync(valueContext, item).DynamicContext();
+                        }
+                        else
+                        {
+                            await WriteAnyAsync(context.Stream, item, valueContext.ObjectType, valueContext.WriteObject, context).DynamicContext();
+                        }
+                }
+                else
+                {
+                    await WriteItemAsync(valueContext, value[keys[i]]!).DynamicContext();
+                }
             }
         }
     }

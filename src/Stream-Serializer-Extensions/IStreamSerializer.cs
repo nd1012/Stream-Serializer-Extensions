@@ -8,26 +8,22 @@
         /// <summary>
         /// Serialize
         /// </summary>
-        /// <param name="stream">Stream</param>
-        void Serialize(Stream stream);
+        /// <param name="context">Context</param>
+        void Serialize(ISerializationContext context);
         /// <summary>
         /// Serialize
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        Task SerializeAsync(Stream stream, CancellationToken cancellationToken);
+        /// <param name="context">Context</param>
+        Task SerializeAsync(ISerializationContext context);
         /// <summary>
         /// Deserialize
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        void Deserialize(Stream stream, int version);
+        /// <param name="context">Context</param>
+        void Deserialize(IDeserializationContext context);
         /// <summary>
         /// Deserialize
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        Task DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken);
+        /// <param name="context">Context</param>
+        Task DeserializeAsync(IDeserializationContext context);
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Buffers;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using wan24.Core;
@@ -31,7 +30,7 @@ namespace wan24.StreamSerializerExtensions
         public static readonly MethodInfo ReadStructNullableAsyncMethod;
 
         /// <summary>
-        /// Require the <see cref="StreamSerializerAttribute"/> attribute when using <see cref="ReadAnyObject{T}(Stream, int?)"/> etc.?
+        /// Require the <see cref="StreamSerializerAttribute"/> attribute when using <see cref="ReadAnyObject(Stream, Type, IDeserializationContext)"/> etc.?
         /// </summary>
         public static bool AnyObjectAttributeRequired { get; set; } = true;
 
@@ -39,14 +38,15 @@ namespace wan24.StreamSerializerExtensions
         /// Read the serializer version
         /// </summary>
         /// <param name="stream">Steam</param>
+        /// <param name="context">Context</param>
         /// <returns>Serializer version</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static int ReadSerializerVersion(this Stream stream)
+        public static int ReadSerializerVersion(this Stream stream, IDeserializationContext context)
         {
-            int res = ReadNumber<int>(stream, version: 1);
+            int res = ReadNumber<int>(stream, context);
             if (res < 1 || (res & byte.MaxValue) > StreamSerializer.VERSION)
                 throw new SerializerException($"Invalid or unsupported stream serializer version #{res}", new InvalidDataException());
             return res;
@@ -55,16 +55,16 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Read the serializer version
         /// </summary>
-        /// <param name="stream">Steam</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="stream">Stream</param>
+        /// <param name="context">Context</param>
         /// <returns>Serializer version</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task<int> ReadSerializerVersionAsync(this Stream stream, CancellationToken cancellationToken = default)
+        public static async Task<int> ReadSerializerVersionAsync(this Stream stream, IDeserializationContext context)
         {
-            int res = await ReadNumberAsync<int>(stream, version: 1, cancellationToken: cancellationToken).DynamicContext();
+            int res = await ReadNumberAsync<int>(stream, context).DynamicContext();
             if (res < 1 || (res & byte.MaxValue) > StreamSerializer.VERSION)
                 throw new SerializerException($"Invalid or unsupported stream serializer version #{res}", new InvalidDataException());
             return res;
@@ -75,17 +75,15 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="len">Length in bytes</param>
-        /// <param name="pool">Array pool</param>
-        /// <returns>Serialized data (a pool array which needs to be returned to the pool (<see cref="StreamSerializer.BufferPool"/> will be used per default) after use and might 
-        /// be larger than the given length!)</returns>
+        /// <param name="context">Context</param>
+        /// <returns>Serialized data (a pool array which needs to be returned to the context buffer pool after use and might be larger than the given length!)</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static byte[] ReadSerializedData(this Stream stream, int len, ArrayPool<byte>? pool = null)
+        public static byte[] ReadSerializedData(this Stream stream, int len, IDeserializationContext context)
         {
-            pool ??= StreamSerializer.BufferPool;
-            byte[] res = pool.Rent(len);
+            byte[] res = context.BufferPool.Rent(len);
             try
             {
                 return SerializerException.Wrap(() =>
@@ -97,7 +95,7 @@ namespace wan24.StreamSerializerExtensions
             }
             catch
             {
-                pool.Return(res, clearArray: false);
+                context.BufferPool.Return(res, clearArray: false);
                 throw;
             }
         }
@@ -107,30 +105,27 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="len">Length in bytes</param>
-        /// <param name="pool">Array pool</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>Serialized data (a pool array which needs to be returned to the pool (<see cref="StreamSerializer.BufferPool"/> will be used per default) after use and might 
-        /// be larger than the given length!)</returns>
+        /// <param name="context">Context</param>
+        /// <returns>Serialized data (a pool array which needs to be returned to the context buffer pool after use and might be larger than the given length!)</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task<byte[]> ReadSerializedDataAsync(this Stream stream, int len, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default)
+        public static async Task<byte[]> ReadSerializedDataAsync(this Stream stream, int len, IDeserializationContext context)
         {
-            pool ??= StreamSerializer.BufferPool;
-            byte[] res = pool.Rent(len);
+            byte[] res = context.BufferPool.Rent(len);
             try
             {
                 return await SerializerException.WrapAsync(async () =>
                 {
-                    int red = await stream.ReadAsync(res.AsMemory(0, len), cancellationToken).DynamicContext();
+                    int red = await stream.ReadAsync(res.AsMemory(0, len), context.Cancellation).DynamicContext();
                     if (red != len) throw new IOException($"Failed to read serialized data ({len} bytes expected, {red} bytes red)");
                     return res;
                 }).DynamicContext();
             }
             catch
             {
-                pool.Return(res, clearArray: false);
+                context.BufferPool.Return(res, clearArray: false);
                 throw;
             }
         }

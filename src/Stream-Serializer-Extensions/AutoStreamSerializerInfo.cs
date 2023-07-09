@@ -60,26 +60,27 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="config">Configuration</param>
         /// <param name="obj">Object</param>
-        /// <param name="stream">Stream</param>
-        public void Serialize<T>(IAutoStreamSerializerConfig config, T obj, Stream stream) where T : IAutoStreamSerializer
+        /// <param name="context">Context</param>
+        public void Serialize<T>(IAutoStreamSerializerConfig config, T obj, ISerializationContext context) where T : IAutoStreamSerializer
         {
             if (Serializer == null)
             {
                 if (IsNullable)
                 {
-                    stream.WriteObjectNullable(Property.Getter!(obj));
+                    context.Stream.WriteObjectNullable(Property.Getter!(obj), context);
                 }
                 else
                 {
-                    stream.WriteObject(
+                    context.Stream.WriteObject(
                         Property.Getter!(obj)
-                        ?? throw new SerializerException($"{Property.Property.DeclaringType}.{Property.Property.Name} value is NULL", new InvalidDataException())
+                            ?? throw new SerializerException($"{Property.Property.DeclaringType}.{Property.Property.Name} value is NULL", new InvalidDataException()),
+                        context
                         );
                 }
             }
             else
             {
-                Serializer(config, this, obj, Property.Getter!(obj), stream);
+                Serializer(config, this, obj, Property.Getter!(obj), context);
             }
         }
 
@@ -89,29 +90,27 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="config">Configuration</param>
         /// <param name="obj">Object</param>
-        /// <param name="stream">Stream</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        public async Task SerializeAsync<T>(IAutoStreamSerializerConfig config, T obj, Stream stream, CancellationToken cancellationToken)
-            where T : IAutoStreamSerializer
+        /// <param name="context">Context</param>
+        public async Task SerializeAsync<T>(IAutoStreamSerializerConfig config, T obj, ISerializationContext context) where T : IAutoStreamSerializer
         {
             if (AsyncSerializer == null)
             {
                 if (IsNullable)
                 {
-                    await stream.WriteObjectNullableAsync(Property.Getter!(obj), cancellationToken).DynamicContext();
+                    await context.Stream.WriteObjectNullableAsync(Property.Getter!(obj), context).DynamicContext();
                 }
                 else
                 {
-                    await stream.WriteObjectAsync(
-                        Property.Getter!(obj) 
+                    await context.Stream.WriteObjectAsync(
+                        Property.Getter!(obj)
                             ?? throw new SerializerException($"{Property.Property.DeclaringType}.{Property.Property.Name} value is NULL", new InvalidDataException()),
-                        cancellationToken
+                        context
                         ).DynamicContext();
                 }
             }
             else
             {
-                await AsyncSerializer(config, this, obj, Property.Getter!(obj), stream, cancellationToken).DynamicContext();
+                await AsyncSerializer(config, this, obj, Property.Getter!(obj), context).DynamicContext();
             }
         }
 
@@ -121,20 +120,27 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="config">Configuration</param>
         /// <param name="obj">Object</param>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        public void Deserialize<T>(IAutoStreamSerializerConfig config, T obj, Stream stream, int version) where T : IAutoStreamSerializer
+        /// <param name="context">Context</param>
+        public void Deserialize<T>(IAutoStreamSerializerConfig config, T obj, IDeserializationContext context) where T : IAutoStreamSerializer
         {
             if (Deserializer == null)
             {
-                ISerializerOptions? options = Property.GetSerializerOptions(stream, version, default);
-                Property.Setter!(obj, IsNullable
-                    ? stream.ReadObjectNullable(Property.Property.PropertyType, version, options)
-                    : stream.ReadObject(Property.Property.PropertyType, version, options));
+                ISerializerOptions? options = Property.GetSerializerOptions(context);
+                context.WithOptions(options);
+                try
+                {
+                    Property.Setter!(obj, IsNullable
+                        ? context.Stream.ReadObjectNullable(Property.Property.PropertyType, context)
+                        : context.Stream.ReadObject(Property.Property.PropertyType, context));
+                }
+                finally
+                {
+                    context.WithoutOptions();
+                }
             }
             else
             {
-                Property.Setter!(obj, Deserializer(config, this, obj, stream, version));
+                Property.Setter!(obj, Deserializer(config, this, obj, context));
             }
         }
 
@@ -144,22 +150,28 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="config">Configuration</param>
         /// <param name="obj">Object</param>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        public async Task DeserializeAsync<T>(IAutoStreamSerializerConfig config, T obj, Stream stream, int version, CancellationToken cancellationToken)
+        /// <param name="context">Context</param>
+        public async Task DeserializeAsync<T>(IAutoStreamSerializerConfig config, T obj, IDeserializationContext context)
             where T : IAutoStreamSerializer
         {
             if (AsyncDeserializer == null)
             {
-                ISerializerOptions? options = Property.GetSerializerOptions(stream, version, cancellationToken);
-                Property.Setter!(obj, IsNullable
-                    ? await stream.ReadObjectNullableAsync(Property.Property.PropertyType, version, options, cancellationToken).DynamicContext()
-                    : await stream.ReadObjectAsync(Property.Property.PropertyType, version, options, cancellationToken).DynamicContext());
+                ISerializerOptions? options = Property.GetSerializerOptions(context);
+                context.WithOptions(options);
+                try
+                {
+                    Property.Setter!(obj, IsNullable
+                        ? await context.Stream.ReadObjectNullableAsync(Property.Property.PropertyType, context).DynamicContext()
+                        : await context.Stream.ReadObjectAsync(Property.Property.PropertyType, context).DynamicContext());
+                }
+                finally
+                {
+                    context.WithoutOptions();
+                }
             }
             else
             {
-                Property.Setter!(obj, await AsyncDeserializer(config, this, obj, stream, version, cancellationToken).DynamicContext());
+                Property.Setter!(obj, await AsyncDeserializer(config, this, obj, context).DynamicContext());
             }
         }
 
@@ -169,14 +181,14 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="config">Configuration</param>
         /// <param name="info">Info</param>
         /// <param name="obj">Object</param>
-        /// <param name="value">Value to serialize</param>
-        /// <param name="stream">Stream</param>
+        /// <param name="value">Value</param>
+        /// <param name="context">Context</param>
         public delegate void Serializer_Delegate(
             IAutoStreamSerializerConfig config,
             AutoStreamSerializerInfo info,
             IAutoStreamSerializer obj,
             object? value,
-            Stream stream
+            ISerializationContext context
             );
 
         /// <summary>
@@ -185,16 +197,14 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="config">Configuration</param>
         /// <param name="info">Info</param>
         /// <param name="obj">Object</param>
-        /// <param name="value">Value to serialize</param>
-        /// <param name="stream">Stream</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="value">Value</param>
+        /// <param name="context">Context</param>
         public delegate Task AsyncSerializer_Delegate(
             IAutoStreamSerializerConfig config,
             AutoStreamSerializerInfo info,
             IAutoStreamSerializer obj,
             object? value,
-            Stream stream,
-            CancellationToken cancellationToken
+            ISerializationContext context
             );
 
         /// <summary>
@@ -203,10 +213,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="config">Configuration</param>
         /// <param name="info">Info</param>
         /// <param name="obj">Object</param>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
+        /// <param name="context">Context</param>
         /// <returns>Deserialized value</returns>
-        public delegate object? Deserializer_Delegate(IAutoStreamSerializerConfig config, AutoStreamSerializerInfo info, IAutoStreamSerializer obj, Stream stream, int version);
+        public delegate object? Deserializer_Delegate(IAutoStreamSerializerConfig config, AutoStreamSerializerInfo info, IAutoStreamSerializer obj, IDeserializationContext context);
 
         /// <summary>
         /// Delegate for a deserializer
@@ -214,17 +223,13 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="config">Configuration</param>
         /// <param name="info">Info</param>
         /// <param name="obj">Object</param>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Deserialized value</returns>
         public delegate Task<object?> AsyncDeserializer_Delegate(
             IAutoStreamSerializerConfig config,
             AutoStreamSerializerInfo info,
             IAutoStreamSerializer obj,
-            Stream stream,
-            int version,
-            CancellationToken cancellationToken
+            IDeserializationContext context
             );
     }
 }

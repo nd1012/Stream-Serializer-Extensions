@@ -45,7 +45,7 @@
         /// <summary>
         /// <see langword="null"/> (for nullable writing/reading)
         /// </summary>
-        Null = 31,
+        IsNull = 31,
         /// <summary>
         /// Min. value
         /// </summary>
@@ -58,10 +58,10 @@
         /// Unsigned?
         /// </summary>
         Unsigned = 128,
+#pragma warning disable CA1069 // Double constant value
         /// <summary>
         /// Is zero?
         /// </summary>
-#pragma warning disable CA1069 // Double constant value
         Zero = 128,
 #pragma warning restore CA1069 // Double constant value
         /// <summary>

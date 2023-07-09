@@ -15,8 +15,8 @@ The built in serializer supports binary serialization of
 - dictionaries
 - byte arrays
 - structures
-- possibly any other objects with a parameterless public constructor
-- streams
+- possibly any other types
+- streams (embedded)
 - CLR type informations
 
 and exports an asynchronous fluent API for writing operations, too.
@@ -29,38 +29,92 @@ binary serializable with backward compatibility, easily.
 
 The serializer is designed to produce only a minimum of absolutely required 
 overhead, which sometimes can result in even less data, too (compared to 
-usually used serialization methods).
+usually used serialization methods). The produced binary sequences are
+
+- processor architecture independent
+- platform independent
+- runtime independent
+- language independent
+- type and type version safe
+- compatible with newer serializer versions
+- as small as possible (trade off between complexity <-> performance <-> size)
+- using aggressive caching
+
+In theory it'd by possible to deserialize a binary sequence using a language 
+such as JavaScript or C++. However, at present there's only a .NET 
+implementation of the (de)serializer available.
+
+**NOTE**: The deserialized type must be present at the processing computer. 
+The deserializer won't create anonymous types. Only for deserializing CLR type 
+informations there's a type implemented which can be used to browse the 
+seqenced CLR type informations before trying to get a `Type` instance, finally.
+
+Most people think of object serialization, but this library can be used to 
+deserialize any binary sequence, and also a text format (which is an encoded 
+binary sequence at a higher level) may be parsed as well. And since a stream 
+is a quiet abstract type, the output/input must not be a file all the time. 
+Using some creativity just everything can be serialized or deserialized and 
+target any stream consuming interface.
 
 The API is fully synchronous and asynchronous - you choose depending on the 
 used stream type.
+
+**TIP**: Because often very tiny sequences will be written/red, you may want 
+to use a buffering stream to gain more performance! Streams will be accessed 
+non-seeking and sequential only.
 
 Cold storage of serialized sequences can be challenging. Using the build in 
 sequencer versioning you can ensure that a sequence can be deserialized at any 
 time after a component was updated.
 
+## How to get it
+
+This library is available as 
+[NuGet package "Stream-Serializer-Extensions"](https://www.nuget.org/packages/Stream-Serializer-Extensions/). 
+
+There's also another 
+[NuGet package "Stream-Serializer-Extensions-Full"](https://www.nuget.org/packages/Stream-Serializer-Extensions-Full/), 
+which contains advanced serialization tools.
+
 ## Methods
 
-The `Write` and `WriteAsync` methods will be extended with supported types, 
-while serializing some types is being done with specialized methods:
-
-| Type | Serialization method | Deserialization method |
+| Type | Serialization | Deserialization |
 | --- | --- | --- |
-| `string` | `WriteString*` | `ReadString*` |
-| `Enum` | `WriteEnum*` | `ReadEnum*` |
-| `Array` | `Write*Array*` | `Read*Array*` |
-| `List<T>` | `WriteList*` | `ReadList*` |
-| `Dictionary<tKey, tValue>` | `WriteDict*` | `ReadDict*` |
-| `IStreamSerializer` | `WriteSerialized*` | `ReadSerialized*` |
-| `byte[]` | `WriteBytes*` | `ReadBytes*` |
-| `Stream` | `WriteStream*` | `ReadStream*` |
-| Structure | `WriteStruct*` | `ReadStruct*` |
-| (any other) | `WriteAnyObject*` | `ReadAnyObject*` |
+| `bool` | `Write` | `ReadBool` |
+| `sbyte` | `Write` | `ReadOneSByte` |
+| `byte` | `Write` | `ReadOneByte` |
+| `short` | `Write` | `ReadShort` |
+| `ushort` | `Write` | `ReadUShort` |
+| `int` | `Write` | `ReadInt` |
+| `uint` | `Write` | `ReadUInt` |
+| `long` | `Write` | `ReadLong` |
+| `ulong` | `Write` | `ReadULong` |
+| `float` | `Write` | `ReadFloat` |
+| `double` | `Write` | `ReadDouble` |
+| `decimal` | `Write` | `ReadDecimal` |
+| (U)Int 8-64, `float`, `double`, `decimal` | `WriteNumber` | `ReadNumber` |
+| `Enum` | `WriteEnum` | `ReadEnum` |
+| `byte[]` | `WriteBytes` | `ReadBytes` |
+| `string` (UTF-8) | `WriteString` | `ReadString` |
+| `string` (UTF-16) | `WriteString16` | `ReadString16` |
+| `string` (UTF-32) | `WriteString32` | `ReadString32` |
+| `IStreamSerializer` (class) | `WriteSerialized` | `ReadSerialized` |
+| `IStreamSerializer` (structure) | `WriteSerializedStruct` | `ReadSerializedStruct` |
+| Structures | `WriteStruct` | `ReadStruct` |
+| `Array` (variable length) | `WriteArray` | `ReadArray` |
+| `Array` (fixed length) | `WriteFixedArray` | `ReadFixedArray` |
+| `IList` | `WriteList` | `ReadList` |
+| `IDictionary` | `WriteDict` | `ReadDict` |
+| `Stream` | `WriteStream` | `ReadStream` |
+| `Type` | `WriteType` | `ReadType` |
+
+**NOTE**: In general you should use the opposite method for reading a binary 
+sequence that you've used for writing it! For all methods there is an `*Async` 
+version also. Use the `*Nullable*` methods for writing/reading nullable 
+values. Some may have to add an extra byte for `null` detection.
 
 Using the `WriteObject*` and `ReadObject*` methods you can let the library 
 decide which method to use for the given object type.
-
-Using the `WriteAny*` and `ReadAny*` methods, you can write and read an object 
-with a dynamic type.
 
 Using the `WriteAnyObject*` and `ReadAnyObject*` methods you can also 
 (de)serialize objects which have a constructor without parameters. The 
@@ -69,18 +123,15 @@ setter. If in the future the object changes, it's not possible to deserialize
 an older binary sequence, unless you work with the `StreamSerializerAttribute` 
 and set an object version to the type and its properties.
 
-**NOTE**: Please use the `*Nullable*` methods for working with nullables. 
-They'll add an extra byte for `null` value detection.
-
-**NOTE**: In general you should use the opposite method for reading a binary 
-sequence that you've used for writing it!
+Using the `WriteAny*` and `ReadAny*` methods, you can write and read an object 
+with a dynamic type.
 
 Most methods are designed specially for one type, while other methods work 
 more generic. This is when to choose which method:
 
 | Method | Condition |
 | --- | --- |
-| `*Serialized*` | The fixed type is a stream serializer base object |
+| `*Serialized*` | The fixed type implements `IStreamSerializer` |
 | `*Object*` | The fixed type has a specialized serializer |
 | `*Struct*` | The fixed type is a marshalable structure |
 | `*AnyObject*` | The type uses attributes (or no serializer contract information at all) and doesn't have a specialized serializer |
@@ -104,7 +155,7 @@ data. Seekable streams will just be copied, having their length as header,
 while non-seekable streams will be embedded chunked.
 
 When deserializing an embedded stream using generic read-methods (like 
-`ReadObject` or `ReadAny`), a temporary `FileStream` will be created, which 
+`ReadObject` or `ReadAny`), a temporary `TempStream` will be created, which 
 will delete the temporary file when disposing. You can define a stream factory 
 using `StreamSerializerAttribute.StreamFactoryType` and 
 `StreamSerializerAttribute.StreamFactoryMethod`. Or you create a custom 
@@ -508,8 +559,8 @@ These enumerators are implemented at present:
 ## Type cache
 
 By calling `StreamSerializer.EnableTypeCache()`, you can use a type cache, 
-which enables the serializer to write type information about types with 
-implement the `IStreamSerializer` interface using only 4 bytes. For this all 
+which enables the serializer to write type information about types which 
+implement the `IStreamSerializer` interface using only 6 bytes. For this all 
 matching types will be stored in the `wan24.Core.TypeCache`.
 
 **CAUTION**: Calling this method will ensure that the `wan24-Core` 
@@ -522,11 +573,19 @@ opposite isn't a problem.
 
 **CAUTION**: Because the type cache uses the types hash code, you shouldn't 
 use this feature, if you want to cold store a sequence, or if if the 
-deserializing peer may know a different version if the type.
+deserializing peer may know a different version if the type: If the type 
+changes, its hash code may change!
 
-When using the type cache, every `IStreamSerializer` type information can be 
-written using only about 7 bytes. Without the type cache, the information will 
-contain much more bytes, depending on the type properties.
+## Stream-Serializer-Extensions-Full
+
+This library is an add-on which contains advanced serialization tools:
+
+- `SerializerStream` which manages a `SerializerContext` and/or 
+`DeserializerContext` and has its own extension methods without the context 
+argument
+- `Write/ReadAll` extensions for writing/reading a type sequence
+- `ReadUntil` extension for reading until any byte sequence (requires a 
+seekable stream!)
 
 ## Security
 
@@ -552,7 +611,7 @@ could harm your computer!
 The job of the serializer is to write and read objects to/from a binary 
 sequence. There's no compression, encryption or hashing built in. If you want 
 to compress/protect a created binary sequence, you can apply compression, 
-encryption and hashing on the result as you want.
+encryption and hashing on the result as you need.
 
 Object validation will be applied to deserialized objects to ensure their 
-validity.
+validity (using `ObjectValidation`).

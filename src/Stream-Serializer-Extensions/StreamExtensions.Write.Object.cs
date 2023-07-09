@@ -1,5 +1,4 @@
 ﻿using System.Buffers;
-using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,20 +14,21 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object to write</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Stream WriteObject(this Stream stream, object obj)
+        public static Stream WriteObject(this Stream stream, object obj, ISerializationContext context)
         {
             SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(obj), obj));
             if (obj is IStreamSerializer streamSerializer)
-                return WriteSerialized(stream, streamSerializer);
-            else if (StreamSerializer.FindSerializer(obj.GetType()) is not StreamSerializer.Serialize_Delegate serializer)
-                return WriteAnyObject(stream, obj);
+                return WriteSerialized(stream, streamSerializer, context);
+            else if (StreamSerializer.FindSerializer(obj.GetType()) is not StreamSerializer.Serializer_Delegate serializer)
+                return WriteAnyObject(stream, obj, context);
             else
-                SerializerException.Wrap(() => serializer(stream, obj));
+                SerializerException.Wrap(() => serializer(context, obj));
             return stream;
         }
 
@@ -37,21 +37,21 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object to write</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task<Stream> WriteObjectAsync(this Stream stream, object obj, CancellationToken cancellationToken = default)
+        public static async Task<Stream> WriteObjectAsync(this Stream stream, object obj, ISerializationContext context)
         {
             SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(obj), obj));
             if (obj is IStreamSerializer streamSerializer)
-                await WriteSerializedAsync(stream, streamSerializer, cancellationToken).DynamicContext();
-            else if (StreamSerializer.FindAsyncSerializer(obj.GetType()) is not StreamSerializer.AsyncSerialize_Delegate serializer)
-                await WriteAnyObjectAsync(stream, obj, cancellationToken).DynamicContext();
+                await WriteSerializedAsync(stream, streamSerializer, context).DynamicContext();
+            else if (StreamSerializer.FindAsyncSerializer(obj.GetType()) is not StreamSerializer.AsyncSerializer_Delegate serializer)
+                await WriteAnyObjectAsync(stream, obj, context).DynamicContext();
             else
-                await SerializerException.WrapAsync(async () => await serializer(stream, obj, cancellationToken).DynamicContext()).DynamicContext();
+                await SerializerException.WrapAsync(async () => await serializer(context, obj).DynamicContext()).DynamicContext();
             return stream;
         }
 
@@ -60,115 +60,91 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object to write</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteObjectAsync(this Task<Stream> stream, object obj, CancellationToken cancellationToken = default)
-            => AsyncHelper.FluentAsync(stream, obj, cancellationToken, WriteObjectAsync);
+        public static Task<Stream> WriteObjectAsync(this Task<Stream> stream, object obj, ISerializationContext context)
+            => AsyncHelper.FluentAsync(stream, obj, context, WriteObjectAsync);
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object to write</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Stream WriteObjectNullable(this Stream stream, object? obj)
-            => WriteIfNotNull(stream, obj, () => WriteObject(stream, obj!));
+        public static Stream WriteObjectNullable(this Stream stream, object? obj, ISerializationContext context)
+            => WriteIfNotNull(stream, obj, () => WriteObject(stream, obj!, context), context);
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object to write</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task<Stream> WriteObjectNullableAsync(this Stream stream, object? obj, CancellationToken cancellationToken = default)
-            => WriteIfNotNullAsync(stream, obj, () => WriteObjectAsync(stream, obj!, cancellationToken), cancellationToken);
+        public static Task<Stream> WriteObjectNullableAsync(this Stream stream, object? obj, ISerializationContext context)
+            => WriteIfNotNullAsync(stream, obj, () => WriteObjectAsync(stream, obj!, context), context);
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object to write</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteObjectNullableAsync(this Task<Stream> stream, object? obj, CancellationToken cancellationToken = default)
-            => AsyncHelper.FluentAsync(stream, obj, cancellationToken, WriteObjectNullableAsync);
+        public static Task<Stream> WriteObjectNullableAsync(this Task<Stream> stream, object? obj, ISerializationContext context)
+            => AsyncHelper.FluentAsync(stream, obj, context, WriteObjectNullableAsync);
 
         /// <summary>
         /// Write any object
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
-        public static Stream WriteAnyObject(this Stream stream, object obj)
+        public static Stream WriteAnyObject(this Stream stream, object obj, ISerializationContext context)
         {
-            if (obj is IStreamSerializer serializable) return WriteSerialized(stream, serializable);
+            if (obj is IStreamSerializer serializable) return WriteSerialized(stream, serializable, context);
+            using ContextRecursion cr = new(context);
             Type type = obj.GetType();
             PropertyInfoExt[] pis = StreamSerializerAttribute.GetWriteProperties(type).ToArray();
             StreamSerializerAttribute? attr = type.GetCustomAttributeCached<StreamSerializerAttribute>();
             bool useChecksum = !(attr?.SkipPropertyNameChecksum ?? false);
-            WriteNumberNullable(stream, attr?.Version);
-            WriteNumber(stream, pis.Length);
-            ObjectTypes objType = default;
-            Type? lastItemType = null;
+            WriteNumberNullable(stream, attr?.Version, context);
+            WriteNumber(stream, pis.Length, context);
+            using ItemSerializerContext itemContext = new(context);
             object? item;
-            SerializerTypes itemSerializer = default;
-            StreamSerializer.Serialize_Delegate? itemSyncSerializer = null;
-            bool writeObject = false,
-                isComplete;
-            int[] cache = ArrayPool<int>.Shared.RentClean(byte.MaxValue << 1);
-            try
+            foreach (PropertyInfoExt pi in pis)
             {
-                Span<int> typeCache = cache.AsSpan(0, byte.MaxValue),
-                    objectCache = cache.AsSpan(byte.MaxValue, byte.MaxValue);
-                foreach (PropertyInfoExt pi in pis)
+                if (useChecksum && !(pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()?.SkipPropertyNameChecksum ?? false))
+                    Write(stream, pi.Property.Name.GetBytes().Aggregate((c, b) => (byte)(c ^ b)), context);
+                item = pi.Getter!(obj);
+                if (item == null)
                 {
-                    if (useChecksum && !(pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()?.SkipPropertyNameChecksum ?? false))
-                        Write(stream, pi.Property.Name.GetBytes().Aggregate((c, b) => (byte)(c ^ b)));
-                    item = pi.Getter!(obj);
-                    if (item == null)
-                    {
-                        Write(stream, (byte)ObjectTypes.Null);
-                        continue;
-                    }
-                    isComplete = WriteAnyItemHeader(
-                        stream,
-                        item!,
-                        pi.Property.PropertyType,
-                        typeCache,
-                        objectCache,
-                        ref lastItemType,
-                        ref itemSerializer,
-                        ref itemSyncSerializer,
-                        ref objType,
-                        ref writeObject
-                        );
-                    if (!isComplete && writeObject)
-                        if (itemSerializer == SerializerTypes.Serializer)
-                        {
-                            WriteItem(stream, item!, nullable: false, itemSerializer, itemSyncSerializer);
-                        }
-                        else
-                        {
-                            WriteAny(stream, item!, objType, writeObject);
-                        }
+                    Write(stream, (byte)ObjectTypes.Null, context);
+                    continue;
                 }
-            }
-            finally
-            {
-                ArrayPool<int>.Shared.Return(cache);
+                if (WriteAnyItemHeader(itemContext, item!, pi.Property.PropertyType) || !itemContext.WriteObject) continue;
+                if (itemContext.ItemSerializer == SerializerTypes.Serializer)
+                {
+                    WriteItem(itemContext, item!);
+                }
+                else
+                {
+                    WriteAny(context.Stream, item!, itemContext.ObjectType, itemContext.WriteObject, context);
+                }
             }
             return stream;
         }
@@ -178,68 +154,39 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
-        public static async Task<Stream> WriteAnyObjectAsync(this Stream stream, object obj, CancellationToken cancellationToken = default)
+        public static async Task<Stream> WriteAnyObjectAsync(this Stream stream, object obj, ISerializationContext context)
         {
-            if (obj is IStreamSerializer serializable) return await WriteSerializedAsync(stream, serializable, cancellationToken).DynamicContext();
+            if (obj is IStreamSerializer serializable) return await WriteSerializedAsync(stream, serializable, context).DynamicContext();
+            using ContextRecursion cr = new(context);
             Type type = obj.GetType();
             PropertyInfoExt[] pis = StreamSerializerAttribute.GetWriteProperties(type).ToArray();
             StreamSerializerAttribute? attr = type.GetCustomAttributeCached<StreamSerializerAttribute>();
             bool useChecksum = !(attr?.SkipPropertyNameChecksum ?? false);
-            await WriteNumberNullableAsync(stream, attr?.Version, cancellationToken).DynamicContext();
-            await WriteNumberAsync(stream, pis.Length, cancellationToken).DynamicContext();
-            ObjectTypes objType = default;
-            Type? lastItemType = null;
+            await WriteNumberNullableAsync(stream, attr?.Version, context).DynamicContext();
+            await WriteNumberAsync(stream, pis.Length, context).DynamicContext();
+            using ItemSerializerContext itemContext = new(context);
             object? item;
-            SerializerTypes itemSerializer = default;
-            StreamSerializer.Serialize_Delegate? itemSyncSerializer = null;
-            StreamSerializer.AsyncSerialize_Delegate? itemAsyncSerializer = null;
-            bool writeObject = false,
-                isComplete;
-            int[] cache = ArrayPool<int>.Shared.RentClean(byte.MaxValue << 1);
-            try
+            foreach (PropertyInfoExt pi in pis)
             {
-                Memory<int> typeCache = cache.AsMemory(0, byte.MaxValue),
-                    objectCache = cache.AsMemory(byte.MaxValue, byte.MaxValue);
-                foreach (PropertyInfoExt pi in pis)
+                if (useChecksum && !(pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()?.SkipPropertyNameChecksum ?? false))
+                    await WriteAsync(stream, pi.Property.Name.GetBytes().Aggregate((c, b) => (byte)(c ^ b)), context).DynamicContext();
+                item = pi.Getter!(obj);
+                if (item == null)
                 {
-                    if (useChecksum && !(pi.Property.GetCustomAttribute<StreamSerializerAttribute>()?.SkipPropertyNameChecksum ?? false))
-                        await WriteAsync(stream, pi.Property.Name.GetBytes().Aggregate((c, b) => (byte)(c ^ b)), cancellationToken).DynamicContext();
-                    item = pi.Getter!(obj);
-                    if (item == null)
-                    {
-                        await WriteAsync(stream, (byte)ObjectTypes.Null, cancellationToken).DynamicContext();
-                        continue;
-                    }
-                    (isComplete, lastItemType, itemSerializer, itemSyncSerializer, itemAsyncSerializer, objType, writeObject) = await WriteAnyItemHeaderAsync(
-                        stream,
-                        item!,
-                        pi.Property.PropertyType,
-                        typeCache,
-                        objectCache,
-                        lastItemType,
-                        itemSerializer,
-                        itemSyncSerializer,
-                        itemAsyncSerializer,
-                        objType,
-                        writeObject,
-                        cancellationToken
-                        ).DynamicContext();
-                    if (!isComplete && writeObject)
-                        if (itemSerializer == SerializerTypes.Serializer)
-                        {
-                            await WriteItemAsync(stream, item!, nullable: false, itemSerializer, itemSyncSerializer, itemAsyncSerializer, cancellationToken).DynamicContext();
-                        }
-                        else
-                        {
-                            await WriteAnyAsync(stream, item!, objType, writeObject, cancellationToken).DynamicContext();
-                        }
+                    await WriteAsync(stream, (byte)ObjectTypes.Null, context).DynamicContext();
+                    continue;
                 }
-            }
-            finally
-            {
-                ArrayPool<int>.Shared.Return(cache);
+                if (await WriteAnyItemHeaderAsync(itemContext, item!, pi.Property.PropertyType).DynamicContext() || !itemContext.WriteObject) continue;
+                if (itemContext.ItemSerializer == SerializerTypes.Serializer)
+                {
+                    await WriteItemAsync(itemContext, item!).DynamicContext();
+                }
+                else
+                {
+                    await WriteAnyAsync(context.Stream, item!, itemContext.ObjectType, itemContext.WriteObject, context).DynamicContext();
+                }
             }
             return stream;
         }
@@ -249,50 +196,51 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteAnyObjectAsync(this Task<Stream> stream, object obj, CancellationToken cancellationToken = default)
-            => AsyncHelper.FluentAsync(stream, obj, cancellationToken, WriteAnyObjectAsync);
+        public static Task<Stream> WriteAnyObjectAsync(this Task<Stream> stream, object obj, ISerializationContext context)
+            => AsyncHelper.FluentAsync(stream, obj, context, WriteAnyObjectAsync);
 
         /// <summary>
         /// Write any object
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Stream WriteAnyObjectNullable(this Stream stream, object? obj)
-            => WriteIfNotNull(stream, obj, () => WriteAnyObject(stream, obj!));
+        public static Stream WriteAnyObjectNullable(this Stream stream, object? obj, ISerializationContext context)
+            => WriteIfNotNull(stream, obj, () => WriteAnyObject(stream, obj!, context), context);
 
         /// <summary>
         /// Write any object
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task<Stream> WriteAnyObjectNullableAsync(this Stream stream, object? obj, CancellationToken cancellationToken = default)
-            => WriteIfNotNullAsync(stream, obj, () => WriteObjectAsync(stream, obj!, cancellationToken), cancellationToken);
+        public static Task<Stream> WriteAnyObjectNullableAsync(this Stream stream, object? obj, ISerializationContext context)
+            => WriteIfNotNullAsync(stream, obj, () => WriteObjectAsync(stream, obj!, context), context);
 
         /// <summary>
         /// Write any object
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteAnyObjectNullableAsync(this Task<Stream> stream, object? obj, CancellationToken cancellationToken = default)
-            => AsyncHelper.FluentAsync(stream, obj, cancellationToken, WriteAnyObjectNullableAsync);
+        public static Task<Stream> WriteAnyObjectNullableAsync(this Task<Stream> stream, object? obj, ISerializationContext context)
+            => AsyncHelper.FluentAsync(stream, obj, context, WriteAnyObjectNullableAsync);
     }
 }

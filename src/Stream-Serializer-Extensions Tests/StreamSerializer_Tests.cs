@@ -56,7 +56,6 @@ namespace Stream_Serializer_Extensions_Tests
             {
                 StreamSerializer.AllowedTypes.TryTake(out _);
             }
-            Assert.IsFalse(StreamSerializer.IsTypeAllowed(typeof(TestObject)));
             Assert.IsTrue(StreamSerializer.IsTypeAllowed(typeof(TestObject2)));
             Assert.IsTrue(StreamSerializer.IsTypeAllowed(typeof(TestObject2[])));
             Assert.IsFalse(StreamSerializer.IsTypeAllowed(typeof(Array)));

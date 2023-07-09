@@ -80,7 +80,7 @@
   <h6><strong>Assembly</strong>: StreamSerializerExtensions.dll</h6>
   <h5 id="wan24_StreamSerializerExtensions_AutoStreamSerializerInfo_AsyncDeserializer_Delegate_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public delegate Task&lt;object&gt; AsyncDeserializer_Delegate(IAutoStreamSerializerConfig config, AutoStreamSerializerInfo info, IAutoStreamSerializer obj, Stream stream, int version, CancellationToken cancellationToken);</code></pre>
+    <pre><code class="lang-csharp hljs">public delegate Task&lt;object&gt; AsyncDeserializer_Delegate(IAutoStreamSerializerConfig config, AutoStreamSerializerInfo info, IAutoStreamSerializer obj, IDeserializationContext context);</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -111,21 +111,9 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><span class="parametername">stream</span></td>
-        <td><p>Stream</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">version</span></td>
-        <td><p>Serializer version</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>Cancellation token</p>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.IDeserializationContext.html">IDeserializationContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Context</p>
 </td>
       </tr>
     </tbody>
@@ -148,6 +136,9 @@
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ValidateDeserializedObject__1___0_">SerializerHelper.ValidateDeserializedObject&lt;T&gt;(T)</a>
+  </div>
+  <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetNumberType__1___0_System_Boolean_">SerializerHelper.GetNumberType&lt;T&gt;(T, Boolean)</a>
   </div>
   <div>
@@ -155,9 +146,6 @@
   </div>
   <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetObjectSerializerInfo_System_Object_">SerializerHelper.GetObjectSerializerInfo(Object)</a>
-  </div>
-  <div>
-      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ValidateDeserializedObject__1___0_">SerializerHelper.ValidateDeserializedObject&lt;T&gt;(T)</a>
   </div>
 </article>
           </div>
@@ -170,7 +158,7 @@
                     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerInfo_AsyncDeserializer_Delegate.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerInfo.AsyncDeserializer_Delegate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/AutoStreamSerializerInfo.cs/#L213" class="contribution-link">View Source</a>
+                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/AutoStreamSerializerInfo.cs/#L228" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

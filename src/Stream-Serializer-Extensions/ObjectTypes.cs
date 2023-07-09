@@ -11,7 +11,7 @@
         /// </summary>
         Null = 0,
         /// <summary>
-        /// Boolean (boolean <see langword="true"/>)
+        /// Boolean
         /// </summary>
         Bool = 1,
 #pragma warning disable CA1069 // Double value
@@ -97,7 +97,7 @@
         /// </summary>
         ClrType = 20,
         /// <summary>
-        /// Using the object type from the cache, or the object from the object cache (if this flag is being used alone)
+        /// Using the object type from the type cache, or the object from the object cache (if this flag is being used alone)
         /// </summary>
         Cached = 32,
         /// <summary>
@@ -119,10 +119,14 @@
         BasicTypeInfo = 64,
 #pragma warning restore CA1069 // Double value
         /// <summary>
-        /// Empty (or zero or boolean <see langword="false"/>; or enumeration termination or last item type, if this flag is being used alone)
+        /// Empty (array, list, etc.)
         /// </summary>
         Empty = 128,
 #pragma warning disable CA1069 // Double value
+        /// <summary>
+        /// Zero numeric value
+        /// </summary>
+        Zero = 128,
         /// <summary>
         /// <see langword="false"/>
         /// </summary>

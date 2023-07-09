@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectValidation", "..\..\O
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wan24-Core", "..\..\wan24-Core\src\Wan24-Core\Wan24-Core.csproj", "{7D2B294F-AF0D-48AB-834B-9AF91529BC64}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stream-Serializer-Extensions-Full", "Stream-Serializer-Extensions-Full\Stream-Serializer-Extensions-Full.csproj", "{ACC8457C-5867-43EB-8DBB-BC091DFF44C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,12 @@ Global
 		{7D2B294F-AF0D-48AB-834B-9AF91529BC64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7D2B294F-AF0D-48AB-834B-9AF91529BC64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D2B294F-AF0D-48AB-834B-9AF91529BC64}.Trunk|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACC8457C-5867-43EB-8DBB-BC091DFF44C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACC8457C-5867-43EB-8DBB-BC091DFF44C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACC8457C-5867-43EB-8DBB-BC091DFF44C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACC8457C-5867-43EB-8DBB-BC091DFF44C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACC8457C-5867-43EB-8DBB-BC091DFF44C6}.Trunk|Any CPU.ActiveCfg = Trunk|Any CPU
+		{ACC8457C-5867-43EB-8DBB-BC091DFF44C6}.Trunk|Any CPU.Build.0 = Trunk|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

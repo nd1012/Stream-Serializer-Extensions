@@ -9,15 +9,13 @@
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        public StreamSerializerAsyncEnumerator(Stream stream, int? version = null, CancellationToken cancellationToken = default) : base(stream, version, cancellationToken) { }
+        /// <param name="context">Context</param>
+        public StreamSerializerAsyncEnumerator(IDeserializationContext context) : base(context) { }
 
         /// <summary>
         /// Read object method
         /// </summary>
         /// <returns>Object</returns>
-        protected override Task<T> ReadObjectAsync() => Stream.ReadSerializedAsync<T>(SerializerVersion, Cancellation);
+        protected override Task<T> ReadObjectAsync() => Context.Stream.ReadSerializedAsync<T>(Context);
     }
 }

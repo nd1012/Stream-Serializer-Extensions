@@ -12,11 +12,7 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         /// <summary>
         /// Stream
         /// </summary>
-        protected readonly Stream Stream;
-        /// <summary>
-        /// Serializer version
-        /// </summary>
-        protected readonly int SerializerVersion;
+        protected readonly IDeserializationContext Context;
         /// <summary>
         /// Stream start position
         /// </summary>
@@ -29,13 +25,11 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        protected StreamEnumeratorBase(Stream stream, int? version = null) : base()
+        /// <param name="context">Context</param>
+        protected StreamEnumeratorBase(IDeserializationContext context) : base()
         {
-            SerializerVersion = version ?? StreamSerializer.Version;
-            StartPosition = stream.CanSeek ? stream.Position : 0;
-            Stream = stream;
+            Context = context;
+            StartPosition = context.Stream.CanSeek ? context.Stream.Position : 0;
         }
 
         /// <inheritdoc/>
@@ -48,19 +42,19 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         public virtual bool MoveNext()
         {
             EnsureUndisposed();
-            if (Stream.CanSeek && Stream.Position == Stream.Length) return false;
+            if (Context.Stream.CanSeek && Context.Stream.Position == Context.Stream.Length) return false;
             try
             {
                 _Current = ReadObject();
             }
             catch (IOException)
             {
-                if (!Stream.CanSeek) return false;
+                if (!Context.Stream.CanSeek) return false;
                 throw;
             }
             catch (SerializerException ex)
             {
-                if (!Stream.CanSeek && ex.InnerException is IOException) return false;
+                if (!Context.Stream.CanSeek && ex.InnerException is IOException) return false;
                 throw;
             }
             return true;
@@ -70,8 +64,8 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         public virtual void Reset()
         {
             EnsureUndisposed();
-            if (!Stream.CanSeek) throw new NotSupportedException();
-            Stream.Position = StartPosition;
+            if (!Context.Stream.CanSeek) throw new NotSupportedException();
+            Context.Stream.Position = StartPosition;
             _Current = default;
         }
 
@@ -88,14 +82,13 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         /// Enumerate
         /// </summary>
         /// <typeparam name="tEnumerator">Final enumerator type</typeparam>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
+        /// <param name="context">Context</param>
         /// <returns>Enumerable</returns>
-        public static IEnumerable<T> Enumerate<tEnumerator>(Stream stream, int? version = null) where tEnumerator : StreamEnumeratorBase<T>
+        public static IEnumerable<T> Enumerate<tEnumerator>(IDeserializationContext context) where tEnumerator : StreamEnumeratorBase<T>
         {
             Type type = typeof(tEnumerator);
             ArgumentValidationHelper.EnsureValidArgument(nameof(tEnumerator), !type.IsAbstract, () => "Non-abstract type required");
-            using StreamEnumeratorBase<T> enumerator = Activator.CreateInstance(type, stream, version) as StreamEnumeratorBase<T>
+            using StreamEnumeratorBase<T> enumerator = Activator.CreateInstance(type, context) as StreamEnumeratorBase<T>
                 ?? throw new InvalidProgramException($"Failed to instance {type}");
             while (enumerator.MoveNext()) yield return enumerator.Current;
         }

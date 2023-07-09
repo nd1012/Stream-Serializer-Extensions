@@ -19,7 +19,9 @@ namespace wan24.StreamSerializerExtensions
             Property = property;
             Attribute = attr ??
                 property?.Property.GetCustomAttributeCached<StreamSerializerAttribute>() ??
-                throw (property == null ? new ArgumentNullException(nameof(attr)) : new ArgumentException($"{typeof(StreamSerializerAttribute)} attribute required", nameof(property)));
+                throw (property == null 
+                    ? new ArgumentNullException(nameof(attr)) 
+                    : new ArgumentException($"{typeof(StreamSerializerAttribute)} attribute required", nameof(property)));
         }
 
         /// <inheritdoc/>

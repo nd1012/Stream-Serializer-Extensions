@@ -14,26 +14,19 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <typeparam name="T">Struct type</typeparam>
         /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="buffer">Buffer</param>
-        /// <param name="pool">Buffer pool</param>
+        /// <param name="context">Contxt</param>
         /// <returns>Struct</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static T ReadStruct<T>(
-            this Stream stream,
-            int? version = null,
-            byte[]? buffer = null,
-            ArrayPool<byte>? pool = null
-            )
+        public static T ReadStruct<T>(this Stream stream, IDeserializationContext context)
             where T : struct
             => SerializerException.Wrap(() =>
             {
                 int len = Marshal.SizeOf(typeof(T));
-                pool ??= StreamSerializer.BufferPool;
-                byte[] data = stream.ReadBytes(version, buffer, pool, len, len).Value;
+                byte[] data = context.BufferPool.Rent(len);
+                stream.ReadBytes(context, len, len);
                 try
                 {
                     GCHandle gch = GCHandle.Alloc(data, GCHandleType.Pinned);
@@ -48,7 +41,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 finally
                 {
-                    if (buffer == null) pool.Return(data);
+                    context.BufferPool.Return(data);
                 }
             });
 
@@ -57,28 +50,18 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <typeparam name="T">Struct type</typeparam>
         /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="buffer">Buffer</param>
-        /// <param name="pool">Buffer pool</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Struct</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task<T> ReadStructAsync<T>(
-            this Stream stream,
-            int? version = null,
-            byte[]? buffer = null,
-            ArrayPool<byte>? pool = null,
-            CancellationToken cancellationToken = default
-            )
-            where T : struct
+        public static Task<T> ReadStructAsync<T>(this Stream stream, IDeserializationContext context) where T : struct
             => SerializerException.WrapAsync(async () =>
             {
                 int len = Marshal.SizeOf(typeof(T));
-                pool ??= StreamSerializer.BufferPool;
-                byte[] data = (await stream.ReadBytesAsync(version, buffer, pool, len, len, cancellationToken).DynamicContext()).Value;
+                byte[] data = context.BufferPool.Rent(len);
+                await stream.ReadBytesAsync(context, len, len).DynamicContext();
                 try
                 {
                     GCHandle gch = GCHandle.Alloc(data, GCHandleType.Pinned);
@@ -93,7 +76,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 finally
                 {
-                    if (buffer == null) pool.Return(data);
+                    context.BufferPool.Return(data);
                 }
             });
 
@@ -102,47 +85,27 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <typeparam name="T">Struct type</typeparam>
         /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="buffer">Buffer</param>
-        /// <param name="pool">Buffer pool</param>
+        /// <param name="context">Context</param>
         /// <returns>Struct</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static T? ReadStructNullable<T>(
-            this Stream stream,
-            int? version = null,
-            byte[]? buffer = null,
-            ArrayPool<byte>? pool = null
-            )
-            where T : struct
-            => ReadBool(stream, version, pool) ? ReadStruct<T>(stream, version, buffer, pool) : null;
+        public static T? ReadStructNullable<T>(this Stream stream, IDeserializationContext context) where T : struct
+            => ReadBool(stream, context) ? ReadStruct<T>(stream, context) : null;
 
         /// <summary>
         /// Read a struct
         /// </summary>
         /// <typeparam name="T">Struct type</typeparam>
         /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="buffer">Buffer</param>
-        /// <param name="pool">Buffer pool</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Struct</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task<T?> ReadStructNullableAsync<T>(
-            this Stream stream,
-            int? version = null,
-            byte[]? buffer = null,
-            ArrayPool<byte>? pool = null,
-            CancellationToken cancellationToken = default
-            )
-            where T : struct
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadStructAsync<T>(stream, version, buffer, pool, cancellationToken).DynamicContext()
-                : null;
+        public static async Task<T?> ReadStructNullableAsync<T>(this Stream stream, IDeserializationContext context) where T : struct
+            => await ReadBoolAsync(stream, context).DynamicContext() ? await ReadStructAsync<T>(stream, context).DynamicContext() : null;
     }
 }

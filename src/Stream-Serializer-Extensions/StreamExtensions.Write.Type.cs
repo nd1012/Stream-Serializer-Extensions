@@ -12,66 +12,72 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="type">Type</param>
-        /// <returns>Stream</returns>
-        public static Stream Write(this Stream stream, Type type) => WriteSerialized(stream, SerializedTypeInfo.From(type));
-
-        /// <summary>
-        /// Write
-        /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="type">Type</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>Stream</returns>
-        public static Task<Stream> WriteAsync(this Stream stream, Type type, CancellationToken cancellationToken = default)
-            => WriteSerializedAsync(stream, SerializedTypeInfo.From(type), cancellationToken);
-
-        /// <summary>
-        /// Write
-        /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="type">Type</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteAsync(this Task<Stream> stream, Type type, CancellationToken cancellationToken = default)
-            => AsyncHelper.FluentAsync(stream, type, cancellationToken, WriteAsync);
+        public static Stream Write(this Stream stream, Type type, ISerializationContext context) => WriteSerialized(stream, SerializedTypeInfo.From(type), context);
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="type">Type</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Stream WriteNullable(this Stream stream, Type? type)
-            => type == null ? WriteNumberNullable(stream, (int?)null) : Write(stream, type);
+        public static Task<Stream> WriteAsync(this Stream stream, Type type, ISerializationContext context)
+            => WriteSerializedAsync(stream, SerializedTypeInfo.From(type), context);
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="type">Type</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteNullableAsync(this Stream stream, Type? type, CancellationToken cancellationToken = default)
+        public static Task<Stream> WriteAsync(this Task<Stream> stream, Type type, ISerializationContext context)
+            => AsyncHelper.FluentAsync(stream, type, context, WriteAsync);
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="type">Type</param>
+        /// <param name="context">Context</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Stream WriteNullable(this Stream stream, Type? type, ISerializationContext context)
+            => type == null ? Write(stream, (byte)0, context) : Write(stream, type, context);
+
+        /// <summary>
+        /// Write
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="type">Type</param>
+        /// <param name="context">Context</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<Stream> WriteNullableAsync(this Stream stream, Type? type, ISerializationContext context)
             => type == null
-                ? WriteNumberNullableAsync(stream, (int?)null, cancellationToken)
-                : WriteAsync(stream, type, cancellationToken);
+                ? WriteAsync(stream, (byte)0, context)
+                : WriteAsync(stream, type, context);
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="type">Type</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteNullableAsync(this Task<Stream> stream, Type? type, CancellationToken cancellationToken = default)
-            => AsyncHelper.FluentAsync(stream, type, cancellationToken, WriteNullableAsync);
+        public static Task<Stream> WriteNullableAsync(this Task<Stream> stream, Type? type, ISerializationContext context)
+            => AsyncHelper.FluentAsync(stream, type, context, WriteNullableAsync);
     }
 }

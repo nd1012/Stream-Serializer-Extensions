@@ -10,369 +10,298 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Write an item using a specified serializer
         /// </summary>
-        /// <param name="stream">Stream</param>
+        /// <param name="context">Context</param>
         /// <param name="item">Item</param>
-        /// <param name="nullable">Nullable?</param>
-        /// <param name="serializer">Serializer type</param>
-        /// <param name="syncSerializer">Synchronous serializer</param>
         /// <returns>Stream</returns>
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Stream WriteItem(
-            Stream stream,
-            dynamic item,
-            bool nullable,
-            SerializerTypes serializer,
-            StreamSerializer.Serialize_Delegate? syncSerializer = null
-            )
+        public static Stream WriteItem(ItemSerializerContext context, dynamic item)
         {
-            if (!nullable)
+            ISerializationContext sc = context.Context;
+            if (!context.Nullable)
             {
-                switch (serializer)
+                switch (context.ItemSerializer)
                 {
-                    case SerializerTypes.StreamSerializer: return WriteSerialized(stream, (IStreamSerializer)item);
+                    case SerializerTypes.StreamSerializer: return WriteSerialized(sc.Stream, (IStreamSerializer)item, sc);
                     case SerializerTypes.Serializer:
                         {
-                            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(syncSerializer), syncSerializer));
+                            SerializerException.Wrap(() =>
+                                ArgumentValidationHelper.EnsureValidArgument(nameof(context), context.ItemSyncSerializer, () => "Missing synchronous serializer")
+                                );
                             object obj = item;
-                            SerializerException.Wrap(() => syncSerializer!(stream, obj));
-                            return stream;
+                            SerializerException.Wrap(() => context.ItemSyncSerializer!(sc, obj));
+                            return sc.Stream;
                         }
-                    case SerializerTypes.Any: return WriteAny(stream, item);
-                    case SerializerTypes.AnyObject: return WriteAnyObject(stream, item);
-                    case SerializerTypes.Bool: return Write(stream, (bool)item);
-                    case SerializerTypes.Number: return WriteNumber(stream, item);
-                    case SerializerTypes.Enum: return WriteEnum(stream, (Enum)item);
-                    case SerializerTypes.String: return WriteString(stream, (string)item);
-                    case SerializerTypes.String16: return WriteString16(stream, (string)item);
-                    case SerializerTypes.String32: return WriteString32(stream, (string)item);
-                    case SerializerTypes.Bytes: return WriteBytes(stream, (byte[])item);
-                    case SerializerTypes.Array: return WriteArray(stream, (Array)item);
-                    case SerializerTypes.List: return WriteList(stream, (IList)item);
-                    case SerializerTypes.Dictionary: return WriteDict(stream, (IDictionary)item);
-                    case SerializerTypes.Struct: return WriteStruct(stream, item);
-                    case SerializerTypes.Stream: return WriteStream(stream, (Stream)item);
-                    default: throw SerializerException.From(new ArgumentException($"Unknown serializer type {serializer}", nameof(serializer)));
+                    case SerializerTypes.Any: return WriteAny(sc.Stream, item, sc);
+                    case SerializerTypes.AnyObject: return WriteAnyObject(sc.Stream, item, sc);
+                    case SerializerTypes.Bool: return Write(sc.Stream, (bool)item, sc);
+                    case SerializerTypes.Number: return WriteNumber(sc.Stream, item, sc);
+                    case SerializerTypes.Enum: return WriteEnum(sc.Stream, (Enum)item, sc);
+                    case SerializerTypes.String: return WriteString(sc.Stream, (string)item, sc);
+                    case SerializerTypes.String16: return WriteString16(sc.Stream, (string)item, sc);
+                    case SerializerTypes.String32: return WriteString32(sc.Stream, (string)item, sc);
+                    case SerializerTypes.Bytes: return WriteBytes(sc.Stream, (byte[])item, sc);
+                    case SerializerTypes.Array: return WriteArray(sc.Stream, (Array)item, sc);
+                    case SerializerTypes.List: return WriteList(sc.Stream, (IList)item, sc);
+                    case SerializerTypes.Dictionary: return WriteDict(sc.Stream, (IDictionary)item, sc);
+                    case SerializerTypes.Struct: return WriteStruct(sc.Stream, item, sc);
+                    case SerializerTypes.Stream: return WriteStream(sc.Stream, (Stream)item, sc);
+                    case SerializerTypes.Type: return Write(sc.Stream, (Type)item, sc);
+                    default: throw SerializerException.From(new ArgumentException($"Unknown serializer type {context.ItemSerializer}", nameof(context)));
                 }
             }
-            switch (serializer)
+            switch (context.ItemSerializer)
             {
-                case SerializerTypes.StreamSerializer: return WriteSerializedNullable(stream, (IStreamSerializer?)item);
+                case SerializerTypes.StreamSerializer: return WriteSerializedNullable(sc.Stream, (IStreamSerializer?)item, sc);
                 case SerializerTypes.Serializer:
                     {
-                        SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(syncSerializer), syncSerializer));
+                        SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(context), context.ItemSyncSerializer, () => "Missing synchronous serializer"));
                         object? obj = item;
-                        return WriteIfNotNull(stream, obj, () => syncSerializer!(stream, obj));
+                        return WriteIfNotNull(sc.Stream, obj, () => context.ItemSyncSerializer!(sc, obj), sc);
                     }
-                case SerializerTypes.Any: return WriteAnyNullable(stream, item);
-                case SerializerTypes.AnyObject: return WriteAnyObjectNullable(stream, item);
-                case SerializerTypes.Bool: return WriteNullable(stream, (bool?)item);
-                case SerializerTypes.Number: return WriteNumberNullable(stream, item);
-                case SerializerTypes.Enum: return WriteEnumNullable(stream, (Enum?)item);
-                case SerializerTypes.String: return WriteStringNullable(stream, (string?)item);
-                case SerializerTypes.String16: return WriteString16Nullable(stream, (string?)item);
-                case SerializerTypes.String32: return WriteString32Nullable(stream, (string?)item);
-                case SerializerTypes.Bytes: return WriteBytesNullable(stream, (byte[]?)item);
-                case SerializerTypes.Array: return WriteArrayNullable(stream, (Array?)item);
-                case SerializerTypes.List: return WriteListNullable(stream, (IList?)item);
-                case SerializerTypes.Dictionary: return WriteDictNullable(stream, (IDictionary?)item);
-                case SerializerTypes.Struct: return WriteStructNullable(stream, item);
-                case SerializerTypes.Stream: return WriteStreamNullable(stream, (Stream?)item);
-                default: throw SerializerException.From(new ArgumentException($"Unknown serializer type {serializer}", nameof(serializer)));
+                case SerializerTypes.Any: return WriteAnyNullable(sc.Stream, item, sc);
+                case SerializerTypes.AnyObject: return WriteAnyObjectNullable(sc.Stream, item, sc);
+                case SerializerTypes.Bool: return WriteNullable(sc.Stream, (bool?)item, sc);
+                case SerializerTypes.Number: return WriteNumberNullable(sc.Stream, item, sc);
+                case SerializerTypes.Enum: return WriteEnumNullable(sc.Stream, (Enum?)item, sc);
+                case SerializerTypes.String: return WriteStringNullable(sc.Stream, (string?)item, sc);
+                case SerializerTypes.String16: return WriteString16Nullable(sc.Stream, (string?)item, sc);
+                case SerializerTypes.String32: return WriteString32Nullable(sc.Stream, (string?)item, sc);
+                case SerializerTypes.Bytes: return WriteBytesNullable(sc.Stream, (byte[]?)item, sc);
+                case SerializerTypes.Array: return WriteArrayNullable(sc.Stream, (Array?)item, sc);
+                case SerializerTypes.List: return WriteListNullable(sc.Stream, (IList?)item, sc);
+                case SerializerTypes.Dictionary: return WriteDictNullable(sc.Stream, (IDictionary?)item, sc);
+                case SerializerTypes.Struct: return WriteStructNullable(sc.Stream, item, sc);
+                case SerializerTypes.Stream: return WriteStreamNullable(sc.Stream, (Stream?)item, sc);
+                case SerializerTypes.Type: return WriteNullable(sc.Stream, (Type)item, sc);
+                default: throw SerializerException.From(new ArgumentException($"Unknown serializer type {context.ItemSerializer}", nameof(context)));
             }
         }
 
         /// <summary>
         /// Write an item using a specified serializer
         /// </summary>
-        /// <param name="stream">Stream</param>
+        /// <param name="context">Context</param>
         /// <param name="item">Item</param>
-        /// <param name="nullable">Nullable?</param>
-        /// <param name="serializer">Serializer type</param>
-        /// <param name="syncSerializer">Synchronous serializer</param>
-        /// <param name="asyncSerializer">Asynchronous serializer</param>
-        /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task<Stream> WriteItemAsync(
-            Stream stream,
-            dynamic item,
-            bool nullable,
-            SerializerTypes serializer,
-            StreamSerializer.Serialize_Delegate? syncSerializer = null,
-            StreamSerializer.AsyncSerialize_Delegate? asyncSerializer = null,
-            CancellationToken cancellationToken = default
-            )
+        public static async Task<Stream> WriteItemAsync(ItemSerializerContext context, dynamic item)
         {
-            if (!nullable)
+            ISerializationContext sc = context.Context;
+            if (!context.Nullable)
             {
-                switch (serializer)
+                switch (context.ItemSerializer)
                 {
-                    case SerializerTypes.StreamSerializer: return await WriteSerializedAsync(stream, (IStreamSerializer)item, cancellationToken).DynamicContext();
+                    case SerializerTypes.StreamSerializer: return await WriteSerializedAsync(sc.Stream, (IStreamSerializer)item, sc).DynamicContext();
                     case SerializerTypes.Serializer:
                         {
                             object obj = item;
-                            if (asyncSerializer == null)
+                            if (context.ItemAsyncSerializer == null)
                             {
                                 await Task.Yield();
-                                SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(syncSerializer), syncSerializer));
-                                SerializerException.Wrap(() => syncSerializer!(stream, obj));
+                                SerializerException.Wrap(() =>
+                                    ArgumentValidationHelper.EnsureValidArgument(nameof(context), context.ItemSyncSerializer, () => "Missing synchronous erializer")
+                                    );
+                                SerializerException.Wrap(() => context.ItemSyncSerializer!(sc, obj));
                             }
                             else
                             {
-                                SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(asyncSerializer), asyncSerializer));
-                                await SerializerException.WrapAsync(() => asyncSerializer(stream, obj, cancellationToken)).DynamicContext();
+                                await SerializerException.WrapAsync(() => context.ItemAsyncSerializer(sc, obj)).DynamicContext();
                             }
-                            return stream;
+                            return sc.Stream;
                         }
-                    case SerializerTypes.Any: return await WriteAnyAsync(stream, (object)item, cancellationToken).DynamicContext();
-                    case SerializerTypes.AnyObject: return await WriteAnyObjectAsync(stream, (object)item, cancellationToken).DynamicContext();
-                    case SerializerTypes.Bool: return await WriteAsync(stream, (bool)item, cancellationToken).DynamicContext();
-                    case SerializerTypes.Number: return await WriteNumberAsync(stream, (object)item, cancellationToken).DynamicContext();
-                    case SerializerTypes.Enum: return await WriteEnumAsync(stream, (Enum)item, cancellationToken).DynamicContext();
-                    case SerializerTypes.String: return await WriteStringAsync(stream, (string)item, cancellationToken).DynamicContext();
-                    case SerializerTypes.String16: return await WriteString16Async(stream, (string)item, cancellationToken).DynamicContext();
-                    case SerializerTypes.String32: return await WriteString32Async(stream, (string)item, cancellationToken).DynamicContext();
-                    case SerializerTypes.Bytes: return await WriteBytesAsync(stream, (byte[])item, cancellationToken).DynamicContext();
-                    case SerializerTypes.Array: return await WriteArrayAsync(stream, (Array)item, cancellationToken: cancellationToken).DynamicContext();
-                    case SerializerTypes.List: return await WriteListAsync(stream, (IList)item, cancellationToken: cancellationToken).DynamicContext();
-                    case SerializerTypes.Dictionary: return await WriteDictAsync(stream, (IDictionary)item, cancellationToken: cancellationToken).DynamicContext();
-                    case SerializerTypes.Struct: return await WriteStructAsync(stream, (object)item, cancellationToken: cancellationToken).DynamicContext();
-                    case SerializerTypes.Stream: return await WriteStreamAsync(stream, (Stream)item, cancellationToken: cancellationToken).DynamicContext();
-                    default: throw SerializerException.From(new ArgumentException($"Unknown serializer type {serializer}", nameof(serializer)));
+                    case SerializerTypes.Any: return await WriteAnyAsync(sc.Stream, (object)item, sc).DynamicContext();
+                    case SerializerTypes.AnyObject: return await WriteAnyObjectAsync(sc.Stream, (object)item, sc).DynamicContext();
+                    case SerializerTypes.Bool: return await WriteAsync(sc.Stream, (bool)item, sc).DynamicContext();
+                    case SerializerTypes.Number: return await WriteNumberAsync(sc.Stream, (object)item, sc).DynamicContext();
+                    case SerializerTypes.Enum: return await WriteEnumAsync(sc.Stream, (Enum)item, sc).DynamicContext();
+                    case SerializerTypes.String: return await WriteStringAsync(sc.Stream, (string)item, sc).DynamicContext();
+                    case SerializerTypes.String16: return await WriteString16Async(sc.Stream, (string)item, sc).DynamicContext();
+                    case SerializerTypes.String32: return await WriteString32Async(sc.Stream, (string)item, sc).DynamicContext();
+                    case SerializerTypes.Bytes: return await WriteBytesAsync(sc.Stream, (byte[])item, sc).DynamicContext();
+                    case SerializerTypes.Array: return await WriteArrayAsync(sc.Stream, (Array)item, sc).DynamicContext();
+                    case SerializerTypes.List: return await WriteListAsync(sc.Stream, (IList)item, sc).DynamicContext();
+                    case SerializerTypes.Dictionary: return await WriteDictAsync(sc.Stream, (IDictionary)item, sc).DynamicContext();
+                    case SerializerTypes.Struct: return await WriteStructAsync(sc.Stream, (object)item, sc).DynamicContext();
+                    case SerializerTypes.Stream: return await WriteStreamAsync(sc.Stream, (Stream)item, sc).DynamicContext();
+                    case SerializerTypes.Type: return await WriteAsync(sc.Stream, (Type)item, sc).DynamicContext();
+                    default: throw SerializerException.From(new ArgumentException($"Unknown serializer type {context.ItemSerializer}", nameof(context)));
                 }
             }
-            switch (serializer)
+            switch (context.ItemSerializer)
             {
-                case SerializerTypes.StreamSerializer: return await WriteSerializedNullableAsync(stream, (IStreamSerializer?)item, cancellationToken).DynamicContext();
+                case SerializerTypes.StreamSerializer: return await WriteSerializedNullableAsync(sc.Stream, (IStreamSerializer?)item, sc).DynamicContext();
                 case SerializerTypes.Serializer:
                     {
                         object? obj = item!;
-                        if (asyncSerializer == null)
+                        if (context.ItemAsyncSerializer == null)
                         {
-                            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(syncSerializer), syncSerializer));
+                            SerializerException.Wrap(() =>
+                                ArgumentValidationHelper.EnsureValidArgument(nameof(context), context.ItemSyncSerializer, () => "Missing synchronous serializer")
+                                );
                             Task action()
                             {
-                                syncSerializer!(stream, obj);
+                                context.ItemSyncSerializer!(sc, obj);
                                 return Task.CompletedTask;
                             }
-                            return await WriteIfNotNullAsync(stream, obj, action, cancellationToken).DynamicContext();
+                            return await WriteIfNotNullAsync(sc.Stream, obj, action, sc).DynamicContext();
                         }
                         else
                         {
-                            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(asyncSerializer), asyncSerializer));
-                            return await WriteIfNotNullAsync(stream, obj, () => asyncSerializer!(stream, obj, cancellationToken), cancellationToken).DynamicContext();
+                            return await WriteIfNotNullAsync(sc.Stream, obj, () => context.ItemAsyncSerializer!(sc, obj), sc).DynamicContext();
                         }
                     }
-                case SerializerTypes.Any: return await WriteAnyNullableAsync(stream, (object?)item, cancellationToken).DynamicContext();
-                case SerializerTypes.AnyObject: return await WriteAnyObjectNullableAsync(stream, (object?)item, cancellationToken).DynamicContext();
-                case SerializerTypes.Bool: return await WriteNullableAsync(stream, (bool?)item, cancellationToken).DynamicContext();
-                case SerializerTypes.Number: return await WriteNumberNullableAsync(stream, (object?)item, cancellationToken).DynamicContext();
-                case SerializerTypes.Enum: return await WriteEnumNullableAsync(stream, (Enum?)item, cancellationToken).DynamicContext();
-                case SerializerTypes.String: return await WriteStringNullableAsync(stream, (string?)item, cancellationToken).DynamicContext();
-                case SerializerTypes.String16: return await WriteString16NullableAsync(stream, (string?)item, cancellationToken).DynamicContext();
-                case SerializerTypes.String32: return await WriteString32NullableAsync(stream, (string?)item, cancellationToken).DynamicContext();
-                case SerializerTypes.Bytes: return await WriteBytesNullableAsync(stream, (byte[]?)item, cancellationToken).DynamicContext();
-                case SerializerTypes.Array: return await WriteArrayNullableAsync(stream, (Array?)item, cancellationToken: cancellationToken).DynamicContext();
-                case SerializerTypes.List: return await WriteListNullableAsync(stream, (IList?)item, cancellationToken: cancellationToken).DynamicContext();
-                case SerializerTypes.Dictionary: return await WriteDictNullableAsync(stream, (IDictionary?)item, cancellationToken: cancellationToken).DynamicContext();
-                case SerializerTypes.Struct: return await WriteStructNullableAsync(stream, (object?)item, cancellationToken: cancellationToken).DynamicContext();
-                case SerializerTypes.Stream: return await WriteStreamNullableAsync(stream, (Stream?)item, cancellationToken: cancellationToken).DynamicContext();
-                default: throw SerializerException.From(new ArgumentException($"Unknown serializer type {serializer}", nameof(serializer)));
+                case SerializerTypes.Any: return await WriteAnyNullableAsync(sc.Stream, (object?)item, sc).DynamicContext();
+                case SerializerTypes.AnyObject: return await WriteAnyObjectNullableAsync(sc.Stream, (object?)item, sc).DynamicContext();
+                case SerializerTypes.Bool: return await WriteNullableAsync(sc.Stream, (bool?)item, sc).DynamicContext();
+                case SerializerTypes.Number: return await WriteNumberNullableAsync(sc.Stream, (object?)item, sc).DynamicContext();
+                case SerializerTypes.Enum: return await WriteEnumNullableAsync(sc.Stream, (Enum?)item, sc).DynamicContext();
+                case SerializerTypes.String: return await WriteStringNullableAsync(sc.Stream, (string?)item, sc).DynamicContext();
+                case SerializerTypes.String16: return await WriteString16NullableAsync(sc.Stream, (string?)item, sc).DynamicContext();
+                case SerializerTypes.String32: return await WriteString32NullableAsync(sc.Stream, (string?)item, sc).DynamicContext();
+                case SerializerTypes.Bytes: return await WriteBytesNullableAsync(sc.Stream, (byte[]?)item, sc).DynamicContext();
+                case SerializerTypes.Array: return await WriteArrayNullableAsync(sc.Stream, (Array?)item, sc).DynamicContext();
+                case SerializerTypes.List: return await WriteListNullableAsync(sc.Stream, (IList?)item, sc).DynamicContext();
+                case SerializerTypes.Dictionary: return await WriteDictNullableAsync(sc.Stream, (IDictionary?)item, sc).DynamicContext();
+                case SerializerTypes.Struct: return await WriteStructNullableAsync(sc.Stream, (object?)item, sc).DynamicContext();
+                case SerializerTypes.Stream: return await WriteStreamNullableAsync(sc.Stream, (Stream?)item, sc).DynamicContext();
+                case SerializerTypes.Type: return await WriteNullableAsync(sc.Stream, (Type)item, sc).DynamicContext();
+                default: throw SerializerException.From(new ArgumentException($"Unknown serializer type {context.ItemSerializer}", nameof(context)));
             }
         }
 
         /// <summary>
         /// Write an item header, if the used item type isn't specified
         /// </summary>
-        /// <param name="stream">Stream</param>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="context">Context</param>
         /// <param name="item">Item</param>
         /// <param name="itemType">Item type</param>
-        /// <param name="typeCache">Type cache</param>
-        /// <param name="objectCache">Object cache</param>
-        /// <param name="lastItemType">Last item type</param>
-        /// <param name="itemSerializer">Item serializer type</param>
-        /// <param name="itemSyncSerializer">Item synchronous serializer</param>
-        /// <param name="objType">Object type</param>
-        /// <param name="writeObject">Write the object?</param>
         /// <returns>All information written?</returns>
-        public static bool WriteAnyItemHeader(
-            Stream stream,
-            dynamic item,
-            Type itemType,
-            Span<int> typeCache,
-            Span<int> objectCache,
-            ref Type? lastItemType,
-            ref SerializerTypes itemSerializer,
-            ref StreamSerializer.Serialize_Delegate? itemSyncSerializer,
-            ref ObjectTypes objType,
-            ref bool writeObject
-            )
+        public static bool WriteAnyItemHeader<T>(ItemSerializerContext context, T item, Type itemType)
         {
+            ISerializationContext sc = context.Context;
             // Use the object cache
-            var info = ((object)item).GetObjectSerializerInfo();
-            Logging.WriteInfo($"\tWRITE ITEM {info.Type} {info.ObjectType} {info.WriteType} {info.WriteObject}");
+            var info = item!.GetObjectSerializerInfo();
             if (info.WriteObject)
             {
-                Logging.WriteInfo("\t\tUSING CACHE");
-                int ohc = item.GetHashCode()^info.Type.GetHashCode(),
-                objIndex = objectCache.IndexOf(ohc);
-                if (objIndex != -1)
+                int idx = context.GetObjectCacheIndex(item);
+                if (idx != -1)
                 {
-                    Logging.WriteInfo($"\t\tUSING CACHED OBJECT {objIndex}");
-                    Write(stream, (byte)ObjectTypes.Cached);
-                    Write(stream, (byte)objIndex);
-                    objType = info.ObjectType;
-                    writeObject = info.WriteObject;
-                    (itemSerializer, itemSyncSerializer, _) = itemType.GetItemSerializerInfo(isAsync: false);
-                    lastItemType = writeObject ? itemType : null;
+                    Write(sc.Stream, (byte)ObjectTypes.Cached, sc);
+                    Write(sc.Stream, (byte)idx, sc);
+                    context.ObjectType = info.ObjectType;
+                    context.WriteObject = info.WriteObject;
+                    (context.ItemSerializer, context.ItemSyncSerializer, _) = itemType.GetItemSerializerInfo(info.ObjectType, isAsync: false);
+                    context.LastItemType = context.WriteObject ? itemType : null;
                     return true;
                 }
                 else
                 {
-                    objIndex = objectCache.IndexOf(0);
-                    Logging.WriteInfo($"\t\tCACHE {info.Type} {item} TO {objIndex}");
-                    if (objIndex != -1) objectCache[objIndex] = ohc;
+                    context.AddObject(item);
                 }
             }
             // Write the type information
-            if (itemType == lastItemType)
+            if (itemType == context.LastItemType)
             {
-                Logging.WriteInfo($"\t\tUSE LAST ITEM TYPE {lastItemType}");
                 // Use the last object type
-                Write(stream, (byte)ObjectTypes.LastItemType);
+                Write(sc.Stream, (byte)ObjectTypes.LastItemType, sc);
             }
             else
             {
-                Logging.WriteInfo("\t\tWRITE DETAILS");
                 // Write object type details
-                objType = info.ObjectType;
-                writeObject = info.WriteObject;
-                (itemSerializer, itemSyncSerializer, _) = itemType.GetItemSerializerInfo(isAsync: false);
+                context.ObjectType = info.ObjectType;
+                context.WriteObject = info.WriteObject;
+                (context.ItemSerializer, context.ItemSyncSerializer, _) = itemType.GetItemSerializerInfo(info.ObjectType, isAsync: false);
                 if (info.WriteType)
                 {
-                    Logging.WriteInfo("\t\tWRITE TYPE INFO");
-                    //TODO Use the type cache only, if the type information can't be written in a single byte
                     //TODO For array/list/dictionary write the key/value type(s) only - when reading, use them to construct the target type
                     // Write type detail informations
                     SerializedTypeInfo ti = itemType;
                     if (ti.IsBasicType)
                     {
                         // Don't use the type cache
-                        Logging.WriteInfo($"WRITE BASIC TYPE INFO TO THE CACHE");
-                        Write(stream, (byte)(objType | ObjectTypes.BasicTypeInfo));
-                        Write(stream, (byte)ti.ObjectType);
+                        Write(sc.Stream, (byte)(context.ObjectType | ObjectTypes.BasicTypeInfo), sc);
+                        Write(sc.Stream, (byte)ti.ObjectType, sc);
                     }
                     else
                     {
-                        int thc = itemType.GetHashCode(),
-                            typeIndex = typeCache.IndexOf(thc);
-                        if (typeIndex != -1)
+                        int idx = context.GetTypeCacheIndex(itemType);
+                        if (idx != -1)
                         {
-                            Logging.WriteInfo($"\t\tUSE CACHED TYPE {typeIndex}");
                             // Use the cached type
-                            objType |= ObjectTypes.Cached;
-                            Write(stream, (byte)objType);
-                            Write(stream, (byte)typeIndex);
+                            context.ObjectType |= ObjectTypes.Cached;
+                            Write(sc.Stream, (byte)context.ObjectType, sc);
+                            Write(sc.Stream, (byte)idx, sc);
                         }
                         else
                         {
                             // Update the cache
-                            typeIndex = typeCache.IndexOf(0);
-                            Logging.WriteInfo($"WRITE TO CACHE {typeIndex}");
-                            if (typeIndex != -1) typeCache[typeIndex] = thc;
+                            context.AddType(itemType);
                             // Write the type informations
-                            Write(stream, (byte)objType);
-                            Write(stream, itemType);
+                            Write(sc.Stream, (byte)context.ObjectType, sc);
+                            Write(sc.Stream, itemType, sc);
                         }
                     }
                 }
                 else
                 {
                     // Write the type informations
-                    Write(stream, (byte)objType);
-                    itemSerializer = SerializerTypes.Any;
+                    Write(sc.Stream, (byte)context.ObjectType, sc);
+                    context.ItemSerializer = SerializerTypes.Any;
                 }
-                lastItemType = writeObject ? itemType : null;
+                context.LastItemType = context.WriteObject ? itemType : null;
             }
-            return !writeObject;
+            return !context.WriteObject;
         }
 
         /// <summary>
         /// Write an item header, if the used item type isn't specified
         /// </summary>
-        /// <param name="stream">Stream</param>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="context">Context</param>
         /// <param name="item">Item</param>
         /// <param name="itemType">Item type</param>
-        /// <param name="typeCache">Type cache</param>
-        /// <param name="objectCache">Object cache</param>
-        /// <param name="lastItemType">Last item type</param>
-        /// <param name="itemSerializer">Item serializer type</param>
-        /// <param name="itemSyncSerializer">Item synchronous serializer</param>
-        /// <param name="itemAsyncSerializer">Item asynchronous serializer</param>
-        /// <param name="objType">Object type</param>
-        /// <param name="writeObject">Write the object?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        public static async Task<(
-            bool Complete,
-            Type? LastItemType,
-            SerializerTypes ItemSerializer,
-            StreamSerializer.Serialize_Delegate? ItemSyncSerializer,
-            StreamSerializer.AsyncSerialize_Delegate? ItemAsyncSerializer,
-            ObjectTypes ObjType,
-            bool WriteObject
-            )> WriteAnyItemHeaderAsync(
-            Stream stream,
-            dynamic item,
-            Type itemType,
-            Memory<int> typeCache,
-            Memory<int> objectCache,
-            Type? lastItemType,
-            SerializerTypes itemSerializer,
-            StreamSerializer.Serialize_Delegate? itemSyncSerializer,
-            StreamSerializer.AsyncSerialize_Delegate? itemAsyncSerializer,
-            ObjectTypes objType,
-            bool writeObject,
-            CancellationToken cancellationToken
-            )
+        public static async Task<bool> WriteAnyItemHeaderAsync<T>(ItemSerializerContext context, T item, Type itemType)
         {
+            ISerializationContext sc = context.Context;
             // Use the object cache
-            var info = ((object)item).GetObjectSerializerInfo();
+            var info = item!.GetObjectSerializerInfo();
             if (info.WriteObject)
             {
-                int ohc = item.GetHashCode() ^ info.Type.GetHashCode(),
-                    objIndex = objectCache.IndexOf(ohc);
-                if (objIndex != -1)
+                int idx = context.GetObjectCacheIndex(item);
+                if (idx != -1)
                 {
-                    await WriteAsync(stream, (byte)ObjectTypes.Cached, cancellationToken).DynamicContext();
-                    await WriteAsync(stream, (byte)objIndex, cancellationToken).DynamicContext();
-                    objType = info.ObjectType;
-                    writeObject = info.WriteObject;
-                    (itemSerializer, itemSyncSerializer, itemAsyncSerializer) = itemType.GetItemSerializerInfo(isAsync: true);
-                    lastItemType = writeObject ? itemType : null;
-                    return (Complete: true, lastItemType, itemSerializer, itemSyncSerializer, itemAsyncSerializer, objType, writeObject);
+                    await WriteAsync(sc.Stream, (byte)ObjectTypes.Cached, sc).DynamicContext();
+                    await WriteAsync(sc.Stream, (byte)idx, sc).DynamicContext();
+                    context.ObjectType = info.ObjectType;
+                    context.WriteObject = info.WriteObject;
+                    (context.ItemSerializer, context.ItemSyncSerializer, context.ItemAsyncSerializer) =
+                        itemType.GetItemSerializerInfo(context.ObjectType, isAsync: true);
+                    context.LastItemType = context.WriteObject ? itemType : null;
+                    return true;
                 }
                 else
                 {
-                    objIndex = objectCache.Span.IndexOf(0);
-                    if (objIndex != -1) objectCache.Span[objIndex] = ohc;
+                    context.AddObject(item);
                 }
             }
             // Write the type information
-            if (itemType == lastItemType)
+            if (itemType == context.LastItemType)
             {
                 // Use the last object type
-                await WriteAsync(stream, (byte)ObjectTypes.LastItemType, cancellationToken).DynamicContext();
+                await WriteAsync(sc.Stream, (byte)ObjectTypes.LastItemType, sc).DynamicContext();
             }
             else
             {
                 // Write object type details
-                objType = info.ObjectType;
-                writeObject = info.WriteObject;
-                (itemSerializer, itemSyncSerializer, itemAsyncSerializer) = itemType.GetItemSerializerInfo(isAsync: true);
+                context.ObjectType = info.ObjectType;
+                context.WriteObject = info.WriteObject;
+                (context.ItemSerializer, context.ItemSyncSerializer, context.ItemAsyncSerializer) =
+                    itemType.GetItemSerializerInfo(context.ObjectType, isAsync: true);
                 if (info.WriteType)
                 {
                     // Write type detail informations
@@ -380,41 +309,38 @@ namespace wan24.StreamSerializerExtensions
                     if (ti.IsBasicType)
                     {
                         // Don't use the type cache
-                        Logging.WriteInfo($"WRITE BASIC TYPE INFO TO THE CACHE");
-                        await WriteAsync(stream, (byte)(objType | ObjectTypes.BasicTypeInfo), cancellationToken).DynamicContext();
-                        await WriteAsync(stream, (byte)ti.ObjectType, cancellationToken).DynamicContext();
+                        await WriteAsync(sc.Stream, (byte)(context.ObjectType | ObjectTypes.BasicTypeInfo), sc).DynamicContext();
+                        await WriteAsync(sc.Stream, (byte)ti.ObjectType, sc).DynamicContext();
                     }
                     else
                     {
-                        int thc = itemType.GetHashCode(),
-                        typeIndex = typeCache.Span.IndexOf(thc);
-                        if (typeIndex != -1)
+                        int idx = context.GetTypeCacheIndex(itemType);
+                        if (idx != -1)
                         {
                             // Use the cached type
-                            objType |= ObjectTypes.Cached;
-                            await WriteAsync(stream, (byte)objType, cancellationToken).DynamicContext();
-                            await WriteAsync(stream, (byte)typeIndex, cancellationToken).DynamicContext();
+                            context.ObjectType |= ObjectTypes.Cached;
+                            await WriteAsync(sc.Stream, (byte)context.ObjectType, sc).DynamicContext();
+                            await WriteAsync(sc.Stream, (byte)idx, sc).DynamicContext();
                         }
                         else
                         {
                             // Update the cache
-                            typeIndex = typeCache.Span.IndexOf(0);
-                            if (typeIndex != -1) typeCache.Span[typeIndex] = thc;
+                            context.AddType(itemType);
                             // Write the type informations
-                            await WriteAsync(stream, (byte)objType, cancellationToken).DynamicContext();
-                            await WriteAsync(stream, itemType, cancellationToken).DynamicContext();
+                            await WriteAsync(sc.Stream, (byte)context.ObjectType, sc).DynamicContext();
+                            await WriteAsync(sc.Stream, itemType, sc).DynamicContext();
                         }
                     }
                 }
                 else
                 {
                     // Write the type informations
-                    await WriteAsync(stream, (byte)objType, cancellationToken).DynamicContext();
-                    itemSerializer = SerializerTypes.Any;
+                    await WriteAsync(sc.Stream, (byte)context.ObjectType, sc).DynamicContext();
+                    context.ItemSerializer = SerializerTypes.Any;
                 }
-                lastItemType = writeObject ? itemType : null;
+                context.LastItemType = context.WriteObject ? itemType : null;
             }
-            return (Complete: !writeObject, lastItemType, itemSerializer, itemSyncSerializer, itemAsyncSerializer, objType, writeObject);
+            return !context.WriteObject;
         }
     }
 }

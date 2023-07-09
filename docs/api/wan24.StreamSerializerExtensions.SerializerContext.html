@@ -1,0 +1,1187 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class SerializerContext
+   | Stream-Serializer-Extensions </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class SerializerContext
+   | Stream-Serializer-Extensions ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="wan24.StreamSerializerExtensions.SerializerContext">
+  
+  
+  <h1 id="wan24_StreamSerializerExtensions_SerializerContext" data-uid="wan24.StreamSerializerExtensions.SerializerContext" class="text-break">Class SerializerContext
+  </h1>
+  <div class="markdown level0 summary"><p>Stream serializer writing context</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html">SerializerContextBase</a></div>
+    <div class="level2"><span class="xref">SerializerContext</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="wan24.StreamSerializerExtensions.ISerializationContext.html">ISerializationContext</a></div>
+    <div><a class="xref" href="wan24.StreamSerializerExtensions.ISerializerContext.html">ISerializerContext</a></div>
+    <div><span class="xref">IDisposableObject</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase__CacheSize">SerializerContextBase._CacheSize</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase__RecursionLevel">SerializerContextBase._RecursionLevel</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_DefaultCacheSize">SerializerContextBase.DefaultCacheSize</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_MaxRecursion">SerializerContextBase.MaxRecursion</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_Stream">SerializerContextBase.Stream</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_Version">SerializerContextBase.Version</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_SerializerVersion">SerializerContextBase.SerializerVersion</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_CustomVersion">SerializerContextBase.CustomVersion</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_RecursionLevel">SerializerContextBase.RecursionLevel</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_Cancellation">SerializerContextBase.Cancellation</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_RealCacheSize">SerializerContextBase.RealCacheSize</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_CacheIndexSize">SerializerContextBase.CacheIndexSize</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_IsCacheEnabled">SerializerContextBase.IsCacheEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_CacheOffset">SerializerContextBase.CacheOffset</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_LastObjectType">SerializerContextBase.LastObjectType</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_LastNumberType">SerializerContextBase.LastNumberType</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_BufferPool">SerializerContextBase.BufferPool</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_Nullable">SerializerContextBase.Nullable</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_EnableCache">SerializerContextBase.EnableCache()</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_DisableCache">SerializerContextBase.DisableCache()</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_DisposeStream">SerializerContextBase.DisposeStream()</a>
+    </div>
+    <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_DisposeStreamAsync">SerializerContextBase.DisposeStreamAsync()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="wan24.StreamSerializerExtensions.html">wan24.StreamSerializerExtensions</a></h6>
+  <h6><strong>Assembly</strong>: StreamSerializerExtensions.dll</h6>
+  <h5 id="wan24_StreamSerializerExtensions_SerializerContext_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class SerializerContext : SerializerContextBase, ISerializationContext, ISerializerContext</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext__ctor_Stream_System_Nullable_System_Int32__CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext.%23ctor(Stream%2CSystem.Nullable%7BSystem.Int32%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L21">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerContext__ctor_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.#ctor*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerContext__ctor_Stream_System_Nullable_System_Int32__CancellationToken_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.#ctor(Stream,System.Nullable{System.Int32},CancellationToken)">SerializerContext(Stream, Nullable&lt;Int32&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Constructor</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SerializerContext(Stream stream, int? cacheSize = null, CancellationToken cancellationToken = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream (won't be disposed)</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">cacheSize</span></td>
+        <td><p>Cache size</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Cancellation token</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext__Cache.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext._Cache%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L13">View Source</a>
+  </span>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerContext__Cache" data-uid="wan24.StreamSerializerExtensions.SerializerContext._Cache">_Cache</h4>
+  <div class="markdown level1 summary"><p>Cache</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int[] _Cache</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext_Cache.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext.Cache%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L31">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerContext_Cache_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.Cache*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerContext_Cache" data-uid="wan24.StreamSerializerExtensions.SerializerContext.Cache">Cache</h4>
+  <div class="markdown level1 summary"><p>Cache</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Memory&lt;int&gt; Cache { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Memory</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext_CacheSize.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext.CacheSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L41">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerContext_CacheSize_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.CacheSize*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerContext_CacheSize" data-uid="wan24.StreamSerializerExtensions.SerializerContext.CacheSize">CacheSize</h4>
+  <div class="markdown level1 summary"><p>Cache size (zero to (temporary?) disable caching)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int CacheSize { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html#wan24_StreamSerializerExtensions_SerializerContextBase_CacheSize">SerializerContextBase.CacheSize</a></div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L653">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerContext_Dispose_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.Dispose*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerContext_Dispose_System_Boolean_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposing)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">disposing</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext_TryWriteCached__1___0_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext.TryWriteCached%60%601(%60%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L75">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerContext_TryWriteCached_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.TryWriteCached*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerContext_TryWriteCached__1___0_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.TryWriteCached``1(``0)">TryWriteCached&lt;T&gt;(T)</h4>
+  <div class="markdown level1 summary"><p>Try to write the object cached</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryWriteCached&lt;T&gt;(T obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>Object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Cached?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext_TryWriteCached__1___0_System_Nullable_wan24_StreamSerializerExtensions_ObjectTypes__System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext.TryWriteCached%60%601(%60%600%2CSystem.Nullable%7Bwan24.StreamSerializerExtensions.ObjectTypes%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L125">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerContext_TryWriteCached_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.TryWriteCached*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerContext_TryWriteCached__1___0_System_Nullable_wan24_StreamSerializerExtensions_ObjectTypes__System_Boolean_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.TryWriteCached``1(``0,System.Nullable{wan24.StreamSerializerExtensions.ObjectTypes},System.Boolean)">TryWriteCached&lt;T&gt;(T, Nullable&lt;ObjectTypes&gt;, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Try to write the object cached</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryWriteCached&lt;T&gt;(T obj, ObjectTypes? objType, bool writeType = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>Object</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a>&gt;</td>
+        <td><span class="parametername">objType</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">writeType</span></td>
+        <td><p>Write the type flags?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Cached?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext_TryWriteCached__1_System_Nullable___0__System_Nullable_wan24_StreamSerializerExtensions_NumberTypes__System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext.TryWriteCached%60%601(System.Nullable%7B%60%600%7D%2CSystem.Nullable%7Bwan24.StreamSerializerExtensions.NumberTypes%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L433">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerContext_TryWriteCached_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.TryWriteCached*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerContext_TryWriteCached__1_System_Nullable___0__System_Nullable_wan24_StreamSerializerExtensions_NumberTypes__System_Boolean_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.TryWriteCached``1(System.Nullable{``0},System.Nullable{wan24.StreamSerializerExtensions.NumberTypes},System.Boolean)">TryWriteCached&lt;T&gt;(Nullable&lt;T&gt;, Nullable&lt;NumberTypes&gt;, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Try to write the number cached</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryWriteCached&lt;T&gt;(T? num, NumberTypes? numberType, bool writeType = false)
+    where T : struct, IConvertible</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;T&gt;</td>
+        <td><span class="parametername">num</span></td>
+        <td><p>Number</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="wan24.StreamSerializerExtensions.NumberTypes.html">NumberTypes</a>&gt;</td>
+        <td><span class="parametername">numberType</span></td>
+        <td><p>Number type</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">writeType</span></td>
+        <td><p>Write the type flags?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Cached?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Number type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext_TryWriteCachedAsync__1___0_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext.TryWriteCachedAsync%60%601(%60%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L100">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerContext_TryWriteCachedAsync_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.TryWriteCachedAsync*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerContext_TryWriteCachedAsync__1___0_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.TryWriteCachedAsync``1(``0)">TryWriteCachedAsync&lt;T&gt;(T)</h4>
+  <div class="markdown level1 summary"><p>Try to write the object cached</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task&lt;bool&gt; TryWriteCachedAsync&lt;T&gt;(T obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>Object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td><p>Cached?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext_TryWriteCachedAsync__1___0_System_Nullable_wan24_StreamSerializerExtensions_ObjectTypes__System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext.TryWriteCachedAsync%60%601(%60%600%2CSystem.Nullable%7Bwan24.StreamSerializerExtensions.ObjectTypes%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L204">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerContext_TryWriteCachedAsync_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.TryWriteCachedAsync*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerContext_TryWriteCachedAsync__1___0_System_Nullable_wan24_StreamSerializerExtensions_ObjectTypes__System_Boolean_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.TryWriteCachedAsync``1(``0,System.Nullable{wan24.StreamSerializerExtensions.ObjectTypes},System.Boolean)">TryWriteCachedAsync&lt;T&gt;(T, Nullable&lt;ObjectTypes&gt;, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Try to write the object cached</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task&lt;bool&gt; TryWriteCachedAsync&lt;T&gt;(T obj, ObjectTypes? objType, bool writeType = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>Object</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a>&gt;</td>
+        <td><span class="parametername">objType</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">writeType</span></td>
+        <td><p>Write the type flags?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td><p>Cached?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext_TryWriteCachedAsync__1_System_Nullable___0__System_Nullable_wan24_StreamSerializerExtensions_NumberTypes__System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext.TryWriteCachedAsync%60%601(System.Nullable%7B%60%600%7D%2CSystem.Nullable%7Bwan24.StreamSerializerExtensions.NumberTypes%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L513">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerContext_TryWriteCachedAsync_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.TryWriteCachedAsync*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerContext_TryWriteCachedAsync__1_System_Nullable___0__System_Nullable_wan24_StreamSerializerExtensions_NumberTypes__System_Boolean_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.TryWriteCachedAsync``1(System.Nullable{``0},System.Nullable{wan24.StreamSerializerExtensions.NumberTypes},System.Boolean)">TryWriteCachedAsync&lt;T&gt;(Nullable&lt;T&gt;, Nullable&lt;NumberTypes&gt;, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Try to write the number cached</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task&lt;bool&gt; TryWriteCachedAsync&lt;T&gt;(T? num, NumberTypes? numberType, bool writeType = false)
+    where T : struct, IConvertible</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;T&gt;</td>
+        <td><span class="parametername">num</span></td>
+        <td><p>Number</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="wan24.StreamSerializerExtensions.NumberTypes.html">NumberTypes</a>&gt;</td>
+        <td><span class="parametername">numberType</span></td>
+        <td><p>Number type</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">writeType</span></td>
+        <td><p>Write the type flags?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td><p>Cached?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Number type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext_TryWriteCachedCountable__1___0_System_Nullable_System_Int64__System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext.TryWriteCachedCountable%60%601(%60%600%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L283">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerContext_TryWriteCachedCountable_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.TryWriteCachedCountable*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerContext_TryWriteCachedCountable__1___0_System_Nullable_System_Int64__System_Boolean_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.TryWriteCachedCountable``1(``0,System.Nullable{System.Int64},System.Boolean)">TryWriteCachedCountable&lt;T&gt;(T, Nullable&lt;Int64&gt;, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Try to write a countable object cached</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryWriteCachedCountable&lt;T&gt;(T obj, long? len, bool writeType = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>Object</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int64</span>&gt;</td>
+        <td><span class="parametername">len</span></td>
+        <td><p>Length</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">writeType</span></td>
+        <td><p>Write the type flags?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Cached?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext_TryWriteCachedCountableAsync__1___0_System_Nullable_System_Int64__System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext.TryWriteCachedCountableAsync%60%601(%60%600%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L358">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerContext_TryWriteCachedCountableAsync_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.TryWriteCachedCountableAsync*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerContext_TryWriteCachedCountableAsync__1___0_System_Nullable_System_Int64__System_Boolean_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.TryWriteCachedCountableAsync``1(``0,System.Nullable{System.Int64},System.Boolean)">TryWriteCachedCountableAsync&lt;T&gt;(T, Nullable&lt;Int64&gt;, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Try to write a countable object cached</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task&lt;bool&gt; TryWriteCachedCountableAsync&lt;T&gt;(T obj, long? len, bool writeType = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>Object</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int64</span>&gt;</td>
+        <td><span class="parametername">len</span></td>
+        <td><p>Length</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">writeType</span></td>
+        <td><p>Write the type flags?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td><p>Cached?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext_WriteCached_System_Int32_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext.WriteCached(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L597">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerContext_WriteCached_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.WriteCached*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerContext_WriteCached_System_Int32_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.WriteCached(System.Int32)">WriteCached(Int32)</h4>
+  <div class="markdown level1 summary"><p>Write cached (will write to the stream!)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool WriteCached(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>Cache index</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext_WriteCachedAsync_System_Int32_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext.WriteCachedAsync(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L619">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerContext_WriteCachedAsync_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.WriteCachedAsync*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerContext_WriteCachedAsync_System_Int32_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.WriteCachedAsync(System.Int32)">WriteCachedAsync(Int32)</h4>
+  <div class="markdown level1 summary"><p>Write cached (will write to the stream!)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected async Task&lt;bool&gt; WriteCachedAsync(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>Cache index</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td><p><span class="xref">true</span></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext_WriteNotCached_System_Int32_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext.WriteNotCached(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L641">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerContext_WriteNotCached_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.WriteNotCached*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerContext_WriteNotCached_System_Int32_" data-uid="wan24.StreamSerializerExtensions.SerializerContext.WriteNotCached(System.Int32)">WriteNotCached(Int32)</h4>
+  <div class="markdown level1 summary"><p>Write not cached (but may store the objects hash code in the cache; will NOT write to the stream)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool WriteNotCached(int hashCode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">hashCode</span></td>
+        <td><p>Type and object hash code</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">false</span></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.ISerializationContext.html">ISerializationContext</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.ISerializerContext.html">ISerializerContext</a>
+  </div>
+  <div>
+      <span class="xref">IDisposableObject</span>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ValidateDeserializedObject__1___0_">SerializerHelper.ValidateDeserializedObject&lt;T&gt;(T)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetNumberType__1___0_System_Boolean_">SerializerHelper.GetNumberType&lt;T&gt;(T, Boolean)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetNumberAndType__1___0_">SerializerHelper.GetNumberAndType&lt;T&gt;(T)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetObjectSerializerInfo_System_Object_">SerializerHelper.GetObjectSerializerInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableCount_wan24_StreamSerializerExtensions_ISerializationContext_System_Nullable_System_Int64__">StreamExtensions.WriteNullableCount(ISerializationContext, Nullable&lt;Int64&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableCountAsync_wan24_StreamSerializerExtensions_ISerializationContext_System_Nullable_System_Int64__">StreamExtensions.WriteNullableCountAsync(ISerializationContext, Nullable&lt;Int64&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableCount_wan24_StreamSerializerExtensions_ISerializationContext_System_Nullable_System_Int64__wan24_StreamSerializerExtensions_StreamExtensions_NullableWriter_Delegate_">StreamExtensions.WriteNullableCount(ISerializationContext, Nullable&lt;Int64&gt;, StreamExtensions.NullableWriter_Delegate)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteNullableCountAsync_wan24_StreamSerializerExtensions_ISerializationContext_System_Nullable_System_Int64__wan24_StreamSerializerExtensions_StreamExtensions_AsyncNullableWriter_Delegate_">StreamExtensions.WriteNullableCountAsync(ISerializationContext, Nullable&lt;Int64&gt;, StreamExtensions.AsyncNullableWriter_Delegate)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedData_wan24_StreamSerializerExtensions_ISerializationContext_System_Byte___System_Int32_">StreamExtensions.WriteSerializedData(ISerializationContext, Byte[], Int32)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedData_wan24_StreamSerializerExtensions_ISerializationContext_Memory_System_Byte__">StreamExtensions.WriteSerializedData(ISerializationContext, Memory&lt;Byte&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedDataAsync_wan24_StreamSerializerExtensions_ISerializationContext_System_Byte___System_Int32_">StreamExtensions.WriteSerializedDataAsync(ISerializationContext, Byte[], Int32)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.StreamExtensions.html#wan24_StreamSerializerExtensions_StreamExtensions_WriteSerializedDataAsync_wan24_StreamSerializerExtensions_ISerializationContext_Memory_System_Byte__">StreamExtensions.WriteSerializedDataAsync(ISerializationContext, Memory&lt;Byte&gt;)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerContext.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerContext.cs/#L8" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            (c) 2023 Andreas Zimmermann, wan24.de
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -98,8 +98,18 @@
 </td>
       </tr>
       <tr>
+        <td id="wan24_StreamSerializerExtensions_ObjectTypes_BasicTypeInfo">BasicTypeInfo</td>
+        <td><p>Is a basic <a class="xref" href="wan24.StreamSerializerExtensions.SerializedTypeInfo.html">SerializedTypeInfo</a> (serialized to only one byte using <a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a>)</p>
+</td>
+      </tr>
+      <tr>
         <td id="wan24_StreamSerializerExtensions_ObjectTypes_Bool">Bool</td>
-        <td><p>Boolean (boolean <span class="xref">true</span>)</p>
+        <td><p>Boolean</p>
+</td>
+      </tr>
+      <tr>
+        <td id="wan24_StreamSerializerExtensions_ObjectTypes_Break">Break</td>
+        <td><p>Enumeration termination</p>
 </td>
       </tr>
       <tr>
@@ -110,6 +120,21 @@
       <tr>
         <td id="wan24_StreamSerializerExtensions_ObjectTypes_Bytes">Bytes</td>
         <td><p>Bytes</p>
+</td>
+      </tr>
+      <tr>
+        <td id="wan24_StreamSerializerExtensions_ObjectTypes_Cached">Cached</td>
+        <td><p>Using the object type from the type cache, or the object from the object cache (if this flag is being used alone)</p>
+</td>
+      </tr>
+      <tr>
+        <td id="wan24_StreamSerializerExtensions_ObjectTypes_CachedSerializable">CachedSerializable</td>
+        <td><p>Cached serializeable <a class="xref" href="wan24.StreamSerializerExtensions.IStreamSerializer.html">IStreamSerializer</a> assignable <see cref="!:Type"></see></p>
+</td>
+      </tr>
+      <tr>
+        <td id="wan24_StreamSerializerExtensions_ObjectTypes_ClrType">ClrType</td>
+        <td><p><see cref="!:Type"></see></p>
 </td>
       </tr>
       <tr>
@@ -129,7 +154,12 @@
       </tr>
       <tr>
         <td id="wan24_StreamSerializerExtensions_ObjectTypes_Empty">Empty</td>
-        <td><p>Empty (or zero or boolean <span class="xref">false</span>)</p>
+        <td><p>Empty (array, list, etc.)</p>
+</td>
+      </tr>
+      <tr>
+        <td id="wan24_StreamSerializerExtensions_ObjectTypes_False">False</td>
+        <td><p><span class="xref">false</span></p>
 </td>
       </tr>
       <tr>
@@ -143,8 +173,18 @@
 </td>
       </tr>
       <tr>
+        <td id="wan24_StreamSerializerExtensions_ObjectTypes_Generic">Generic</td>
+        <td><p>Generic type</p>
+</td>
+      </tr>
+      <tr>
         <td id="wan24_StreamSerializerExtensions_ObjectTypes_Int">Int</td>
         <td><p>Int32</p>
+</td>
+      </tr>
+      <tr>
+        <td id="wan24_StreamSerializerExtensions_ObjectTypes_LastItemType">LastItemType</td>
+        <td><p>Use the last item type</p>
 </td>
       </tr>
       <tr>
@@ -155,6 +195,11 @@
       <tr>
         <td id="wan24_StreamSerializerExtensions_ObjectTypes_Long">Long</td>
         <td><p>Int64</p>
+</td>
+      </tr>
+      <tr>
+        <td id="wan24_StreamSerializerExtensions_ObjectTypes_NoRank">NoRank</td>
+        <td><p>No array rank</p>
 </td>
       </tr>
       <tr>
@@ -188,8 +233,23 @@
 </td>
       </tr>
       <tr>
+        <td id="wan24_StreamSerializerExtensions_ObjectTypes_String16">String16</td>
+        <td><p>String UTF-16</p>
+</td>
+      </tr>
+      <tr>
+        <td id="wan24_StreamSerializerExtensions_ObjectTypes_String32">String32</td>
+        <td><p>String UTF-32</p>
+</td>
+      </tr>
+      <tr>
         <td id="wan24_StreamSerializerExtensions_ObjectTypes_Struct">Struct</td>
         <td><p>Struct</p>
+</td>
+      </tr>
+      <tr>
+        <td id="wan24_StreamSerializerExtensions_ObjectTypes_True">True</td>
+        <td><p><span class="xref">true</span></p>
 </td>
       </tr>
       <tr>
@@ -197,20 +257,16 @@
         <td><p>Unsigned number</p>
 </td>
       </tr>
+      <tr>
+        <td id="wan24_StreamSerializerExtensions_ObjectTypes_Zero">Zero</td>
+        <td><p>Zero numeric value</p>
+</td>
+      </tr>
     </tbody>
   </thead></thead></table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_RemoveFlags_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.RemoveFlags()</a>
-  </div>
-  <div>
-      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_IsEmpty_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.IsEmpty()</a>
-  </div>
-  <div>
-      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_IsUnsigned_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.IsUnsigned()</a>
-  </div>
-  <div>
-      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_IsNumber_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.IsNumber()</a>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ValidateDeserializedObject__1___0_">SerializerHelper.ValidateDeserializedObject&lt;ObjectTypes&gt;()</a>
   </div>
   <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetNumberType__1___0_System_Boolean_">SerializerHelper.GetNumberType&lt;ObjectTypes&gt;(Boolean)</a>
@@ -219,10 +275,58 @@
       <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetNumberAndType__1___0_">SerializerHelper.GetNumberAndType&lt;ObjectTypes&gt;()</a>
   </div>
   <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_RemoveFlags_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.RemoveFlags()</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_IsEmpty_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.IsEmpty()</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_IsZero_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.IsZero()</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_IsUnsigned_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.IsUnsigned()</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_IsCached_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.IsCached()</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_IsGeneric_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.IsGeneric()</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_IsBreak_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.IsBreak()</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_IsArray_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.IsArray()</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_IsNotRanked_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.IsNotRanked()</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_IsCachedSerializable_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.IsCachedSerializable()</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_IsBasicTypeInfo_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.IsBasicTypeInfo()</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_IsNumber_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.IsNumber()</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_RequiresType_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.RequiresType()</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_RequiresObjectWriting_wan24_StreamSerializerExtensions_ObjectTypes_">SerializerHelper.RequiresObjectWriting()</a>
+  </div>
+  <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetObjectSerializerInfo_System_Object_">SerializerHelper.GetObjectSerializerInfo()</a>
   </div>
   <div>
-      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ValidateDeserializedObject__1___0_">SerializerHelper.ValidateDeserializedObject&lt;ObjectTypes&gt;()</a>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_EnsureCorrectObjectType_wan24_StreamSerializerExtensions_ObjectTypes_PropertyInfoExt_">SerializerHelper.EnsureCorrectObjectType(PropertyInfoExt)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_EnsureCorrectObjectType_wan24_StreamSerializerExtensions_ObjectTypes_wan24_StreamSerializerExtensions_ISerializerOptions_">SerializerHelper.EnsureCorrectObjectType(ISerializerOptions)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_EnsureCorrectObjectType_wan24_StreamSerializerExtensions_ObjectTypes_wan24_StreamSerializerExtensions_StreamSerializerAttribute_">SerializerHelper.EnsureCorrectObjectType(StreamSerializerAttribute)</a>
   </div>
 </article>
           </div>

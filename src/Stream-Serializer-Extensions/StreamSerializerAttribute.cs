@@ -102,6 +102,11 @@ namespace wan24.StreamSerializerExtensions
         public long? MaxLen { get; set; }
 
         /// <summary>
+        /// Use the cache? (this is being applied on the type only)
+        /// </summary>
+        public bool UseCache { get; set; } = true;
+
+        /// <summary>
         /// Stream factory
         /// </summary>
         public StreamFactory_Delegate? StreamFactory { get; set; }
@@ -171,11 +176,9 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="obj">Deserializing object</param>
         /// <param name="property">Target property</param>
-        /// <param name="stream">Source stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream to use for deserializing an embedded stream</returns>
-        public virtual Stream? GetStream(object? obj, PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken = default)
+        public virtual Stream? GetStream(object? obj, PropertyInfo? property, IDeserializationContext context)
         {
             if (obj == null) ArgumentValidationHelper.EnsureValidArgument(nameof(obj), property == null);
             if (property == null) ArgumentValidationHelper.EnsureValidArgument(nameof(property), obj == null);
@@ -207,18 +210,16 @@ namespace wan24.StreamSerializerExtensions
                             );
                 StreamFactory = mi.CreateDelegate<StreamFactory_Delegate>();
             }
-            return StreamFactory(obj, property, this, stream, version, cancellationToken);
+            return StreamFactory(obj, property, this, context);
         }
 
         /// <summary>
         /// Get serializer options from the serializer options factory, or the default
         /// </summary>
         /// <param name="property">Target property</param>
-        /// <param name="stream">Source stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Serializer options</returns>
-        public virtual ISerializerOptions GetSerializerOptions(PropertyInfoExt? property, Stream stream, int version, CancellationToken cancellationToken = default)
+        public virtual ISerializerOptions GetSerializerOptions(PropertyInfoExt? property, ISerializerContext context)
         {
             try
             {
@@ -247,12 +248,12 @@ namespace wan24.StreamSerializerExtensions
                                 : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defined serializer options factory {SerializerOptionsFactoryType}.{SerializerOptionsFactoryMethod} not found",
                             new InvalidProgramException()
                             );
-                return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, stream, version, cancellationToken })!;
+                return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, context })!;
             }
             finally
             {
-                KeySerializerOptions ??= GetKeySerializerOptions(property, stream, version, cancellationToken);
-                ValueSerializerOptions ??= GetValueSerializerOptions(property, stream, version, cancellationToken);
+                KeySerializerOptions ??= GetKeySerializerOptions(property, context);
+                ValueSerializerOptions ??= GetValueSerializerOptions(property, context);
             }
         }
 
@@ -260,11 +261,9 @@ namespace wan24.StreamSerializerExtensions
         /// Get key serializer options from the serializer options factory, or the default
         /// </summary>
         /// <param name="property">Target property</param>
-        /// <param name="stream">Source stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Serializer options</returns>
-        public virtual ISerializerOptions GetKeySerializerOptions(PropertyInfoExt? property, Stream stream, int version, CancellationToken cancellationToken = default)
+        public virtual ISerializerOptions GetKeySerializerOptions(PropertyInfoExt? property, ISerializerContext context)
         {
             if (KeySerializerOptions != null) return KeySerializerOptions;
             if (KeySerializerOptionsFactoryType == null) return KeySerializerOptions ??= CreateSerializerOptions(KeyOptionsType, property);
@@ -291,18 +290,16 @@ namespace wan24.StreamSerializerExtensions
                             : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defined serializer options factory {KeySerializerOptionsFactoryType}.{KeySerializerOptionsFactoryMethod} not found",
                         new InvalidProgramException()
                         );
-            return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, stream, version, cancellationToken })!;
+            return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, context })!;
         }
 
         /// <summary>
         /// Get value serializer options from the serializer options factory, or the default
         /// </summary>
         /// <param name="property">Target property</param>
-        /// <param name="stream">Source stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Serializer options</returns>
-        public virtual ISerializerOptions GetValueSerializerOptions(PropertyInfoExt? property, Stream stream, int version, CancellationToken cancellationToken = default)
+        public virtual ISerializerOptions GetValueSerializerOptions(PropertyInfoExt? property, ISerializerContext context)
         {
             if (ValueSerializerOptions != null) return ValueSerializerOptions;
             if (ValueSerializerOptionsFactoryType == null) return ValueSerializerOptions ??= CreateSerializerOptions(ValueOptionsType, property);
@@ -329,7 +326,7 @@ namespace wan24.StreamSerializerExtensions
                             : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defined serializer options factory {ValueSerializerOptionsFactoryType}.{ValueSerializerOptionsFactoryMethod} not found",
                         new InvalidProgramException()
                         );
-            return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, stream, version, cancellationToken })!;
+            return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, context })!;
         }
 
         /// <summary>
@@ -364,9 +361,9 @@ namespace wan24.StreamSerializerExtensions
         {
             ArgumentValidationHelper.EnsureValidArgument(nameof(type), type.IsValueType, () => "Structure type required");
             return NumericStructureFields ??= new(from fi in type.GetFieldsCached(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                                           where !fi.IsStatic &&
-                                              fi.GetCustomAttributeCached<StreamSerializerAttribute>() is not null
-                                           select fi);
+                                                  where !fi.IsStatic &&
+                                                     fi.GetCustomAttributeCached<StreamSerializerAttribute>() is not null
+                                                  select fi);
         }
 
         /// <summary>
@@ -385,18 +382,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="obj">Deserializing object</param>
         /// <param name="property">Target property</param>
         /// <param name="attr">Stream serializer attribute</param>
-        /// <param name="stream">Source stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream to use for deserializing an embedded stream</returns>
-        public delegate Stream StreamFactory_Delegate(
-            object? obj,
-            PropertyInfo? property,
-            StreamSerializerAttribute attr,
-            Stream stream,
-            int version,
-            CancellationToken cancellationToken = default
-            );
+        public delegate Stream StreamFactory_Delegate(object? obj, PropertyInfo? property, StreamSerializerAttribute attr, IDeserializationContext context);
 
         /// <summary>
         /// Delegate for a serializer options factory
@@ -404,18 +392,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="obj">Deserializing object</param>
         /// <param name="property">Target property</param>
         /// <param name="attr">Stream serializer attribute</param>
-        /// <param name="stream">Source stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Serializer options</returns>
-        public delegate ISerializerOptions SerializerOptionsFactory_Delegate(
-            object? obj,
-            PropertyInfo? property,
-            StreamSerializerAttribute attr,
-            Stream stream,
-            int version,
-            CancellationToken cancellationToken = default
-            );
+        public delegate ISerializerOptions SerializerOptionsFactory_Delegate(object? obj, PropertyInfo? property, StreamSerializerAttribute attr, ISerializerContext context);
 
         /// <summary>
         /// Delegate for a stream factory
@@ -423,19 +402,10 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="obj">Deserializing object</param>
         /// <param name="property">Target property</param>
         /// <param name="attr">Stream serializer attribute</param>
-        /// <param name="stream">Source stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream to use for deserializing an embedded stream</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
-        public static Stream MemoryStreamFactory(
-            object? obj,
-            PropertyInfo? property,
-            StreamSerializerAttribute attr,
-            Stream stream,
-            int version,
-            CancellationToken cancellationToken = default
-            )
+        public static Stream MemoryStreamFactory(object? obj, PropertyInfo? property, StreamSerializerAttribute attr, IDeserializationContext context)
 #pragma warning restore IDE0060 // Remove unused parameter
             => new MemoryStream();
 
@@ -447,6 +417,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Properties</returns>
         public static IEnumerable<PropertyInfoExt> GetWriteProperties(Type type, int? version = null)
         {
+            //TODO Use a cache
             StreamSerializerAttribute? attr = type.GetCustomAttributeCached<StreamSerializerAttribute>();
             StreamSerializerModes mode = attr?.Mode ?? StreamSerializerModes.OptOut;
             version ??= attr?.Version ?? 0;
@@ -480,6 +451,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Properties</returns>
         public static IEnumerable<PropertyInfoExt> GetReadProperties(Type type, int? version)
         {
+            //TODO Use a cache
             StreamSerializerAttribute? attr = type.GetCustomAttributeCached<StreamSerializerAttribute>();
             StreamSerializerModes mode = attr?.Mode ?? StreamSerializerModes.OptOut;
             version = attr?.Version ?? 0;

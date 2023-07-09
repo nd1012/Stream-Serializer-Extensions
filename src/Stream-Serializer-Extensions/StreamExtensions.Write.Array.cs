@@ -12,17 +12,17 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are values nullable?</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Stream WriteArray(this Stream stream, Array value, bool valuesNullable = false)
+        public static Stream WriteArray(this Stream stream, Array value, ISerializationContext context)
             => SerializerException.Wrap(() =>
             {
-                WriteNumber(stream, value.Length);
-                return value.Length == 0 ? stream : WriteFixedArray(stream, value, valuesNullable);
+                WriteNumber(stream, value.Length, context);
+                return value.Length == 0 ? stream : WriteFixedArray(stream, value, context);
             });
 
         /// <summary>
@@ -30,18 +30,17 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are values nullable?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task<Stream> WriteArrayAsync(this Stream stream, Array value, bool valuesNullable = false, CancellationToken cancellationToken = default)
+        public static Task<Stream> WriteArrayAsync(this Stream stream, Array value, ISerializationContext context)
             => SerializerException.WrapAsync(async () =>
             {
-                await WriteNumberAsync(stream, value.Length, cancellationToken).DynamicContext();
-                return value.Length == 0 ? stream : await WriteFixedArrayAsync(stream, value, valuesNullable, cancellationToken).DynamicContext();
+                await WriteNumberAsync(stream, value.Length, context).DynamicContext();
+                return value.Length == 0 ? stream : await WriteFixedArrayAsync(stream, value, context).DynamicContext();
             });
 
         /// <summary>
@@ -49,54 +48,51 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are values nullable?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteArrayAsync(this Task<Stream> stream, Array value, bool valuesNullable = false, CancellationToken cancellationToken = default)
-            => AsyncHelper.FluentAsync(stream, value, valuesNullable, cancellationToken, WriteArrayAsync);
+        public static Task<Stream> WriteArrayAsync(this Task<Stream> stream, Array value, ISerializationContext context)
+            => AsyncHelper.FluentAsync(stream, value, context, WriteArrayAsync);
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are values nullable?</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Stream WriteArrayNullable(this Stream stream, Array? value, bool valuesNullable = false)
-            => WriteNullableCount(stream, value?.Length, () => WriteFixedArray(stream, value!, valuesNullable));
+        public static Stream WriteArrayNullable(this Stream stream, Array? value, ISerializationContext context)
+            => WriteNullableCount(context, value?.Length, () => WriteFixedArray(stream, value!, context));
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are values nullable?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task<Stream> WriteArrayNullableAsync(this Stream stream, Array? value, bool valuesNullable = false, CancellationToken cancellationToken = default)
-            => WriteNullableCountAsync(stream, value?.Length, () => WriteFixedArrayAsync(stream, value!, valuesNullable, cancellationToken), cancellationToken);
+        public static Task<Stream> WriteArrayNullableAsync(this Stream stream, Array? value, ISerializationContext context)
+            => WriteNullableCountAsync(context, value?.Length, () => WriteFixedArrayAsync(stream, value!, context));
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are values nullable?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteArrayNullableAsync(this Task<Stream> stream, Array? value, bool valuesNullable = false, CancellationToken cancellationToken = default)
-            => AsyncHelper.FluentAsync(stream, value, valuesNullable, cancellationToken, WriteArrayNullableAsync);
+        public static Task<Stream> WriteArrayNullableAsync(this Task<Stream> stream, Array? value, ISerializationContext context)
+            => AsyncHelper.FluentAsync(stream, value, context, WriteArrayNullableAsync);
     }
 }
