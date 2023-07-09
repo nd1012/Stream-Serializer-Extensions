@@ -68,6 +68,10 @@
         /// <summary>
         /// Stream
         /// </summary>
-        Stream
+        Stream,
+        /// <summary>
+        /// CLR type
+        /// </summary>
+        Type
     }
 }

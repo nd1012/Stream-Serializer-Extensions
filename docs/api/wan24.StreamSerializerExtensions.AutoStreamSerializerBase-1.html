@@ -79,14 +79,11 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">wan24.ObjectValidation.ValidatableObjectBase</span></div>
-    <div class="level2"><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html">StreamSerializerBase</a></div>
-    <div class="level3"><span class="xref">AutoStreamSerializerBase&lt;T&gt;</span></div>
+    <div class="level1"><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html">StreamSerializerBase</a></div>
+    <div class="level2"><span class="xref">AutoStreamSerializerBase&lt;T&gt;</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><span class="xref">wan24.ObjectValidation.IObjectValidatable</span></div>
-    <div><span class="xref">System.ComponentModel.DataAnnotations.IValidatableObject</span></div>
     <div><a class="xref" href="wan24.StreamSerializerExtensions.IAutoStreamSerializer.html">IAutoStreamSerializer</a></div>
     <div><a class="xref" href="wan24.StreamSerializerExtensions.IStreamSerializerVersion.html">IStreamSerializerVersion</a></div>
     <div><a class="xref" href="wan24.StreamSerializerExtensions.IStreamSerializer.html">IStreamSerializer</a></div>
@@ -106,53 +103,23 @@
       <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializerVersion_SerializerVersion">StreamSerializerBase.IStreamSerializerVersion.SerializerVersion</a>
     </div>
     <div>
-      <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_Serialize_Stream_">StreamSerializerBase.IStreamSerializer.Serialize(Stream)</a>
+      <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_Serialize_wan24_StreamSerializerExtensions_ISerializationContext_">StreamSerializerBase.IStreamSerializer.Serialize(ISerializationContext)</a>
     </div>
     <div>
-      <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_SerializeAsync_Stream_CancellationToken_">StreamSerializerBase.IStreamSerializer.SerializeAsync(Stream, CancellationToken)</a>
+      <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_SerializeAsync_wan24_StreamSerializerExtensions_ISerializationContext_">StreamSerializerBase.IStreamSerializer.SerializeAsync(ISerializationContext)</a>
     </div>
     <div>
-      <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_Deserialize_Stream_System_Int32_">StreamSerializerBase.IStreamSerializer.Deserialize(Stream, Int32)</a>
+      <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_Deserialize_wan24_StreamSerializerExtensions_IDeserializationContext_">StreamSerializerBase.IStreamSerializer.Deserialize(IDeserializationContext)</a>
     </div>
     <div>
-      <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_DeserializeAsync_Stream_System_Int32_CancellationToken_">StreamSerializerBase.IStreamSerializer.DeserializeAsync(Stream, Int32, CancellationToken)</a>
-    </div>
-    <div>
-      <span class="xref">wan24.ObjectValidation.ValidatableObjectBase.Validate(System.ComponentModel.DataAnnotations.ValidationContext)</span>
-    </div>
-    <div>
-      <span class="xref">wan24.ObjectValidation.ValidatableObjectBase.System.ComponentModel.DataAnnotations.IValidatableObject.Validate(System.ComponentModel.DataAnnotations.ValidationContext)</span>
-    </div>
-    <div>
-      <span class="xref">wan24.ObjectValidation.ValidatableObjectBase.ObjectValidatable(wan24.ObjectValidation.IObjectValidatable)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
+      <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_DeserializeAsync_wan24_StreamSerializerExtensions_IDeserializationContext_">StreamSerializerBase.IStreamSerializer.DeserializeAsync(IDeserializationContext)</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="wan24.StreamSerializerExtensions.html">wan24.StreamSerializerExtensions</a></h6>
   <h6><strong>Assembly</strong>: StreamSerializerExtensions.dll</h6>
   <h5 id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class AutoStreamSerializerBase&lt;T&gt; : StreamSerializerBase, IObjectValidatable, IValidatableObject, IAutoStreamSerializer, IStreamSerializerVersion, IStreamSerializer where T : AutoStreamSerializerBase&lt;T&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class AutoStreamSerializerBase&lt;T&gt; : StreamSerializerBase, IAutoStreamSerializer, IStreamSerializerVersion, IStreamSerializer where T : AutoStreamSerializerBase&lt;T&gt;</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -174,10 +141,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1__ctor.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerBase%601.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1__ctor.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerBase%601.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/AutoStreamSerializerBase.cs/#L27">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/AutoStreamSerializerBase.cs/#L28">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1__ctor_" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.#ctor*"></a>
   <h4 id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1__ctor" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.#ctor">AutoStreamSerializerBase()</h4>
@@ -192,10 +159,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_AutoStreamSerializerConfig.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerBase%601.AutoStreamSerializerConfig%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_AutoStreamSerializerConfig.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerBase%601.AutoStreamSerializerConfig%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/AutoStreamSerializerBase.cs/#L32">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/AutoStreamSerializerBase.cs/#L33">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_AutoStreamSerializerConfig_" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.AutoStreamSerializerConfig*"></a>
   <h4 id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_AutoStreamSerializerConfig" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.AutoStreamSerializerConfig">AutoStreamSerializerConfig</h4>
@@ -225,19 +192,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_Deserialize_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerBase%601.Deserialize(Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_Deserialize_wan24_StreamSerializerExtensions_IDeserializationContext_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerBase%601.Deserialize(wan24.StreamSerializerExtensions.IDeserializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/AutoStreamSerializerBase.cs/#L45">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/AutoStreamSerializerBase.cs/#L45">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_Deserialize_" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.Deserialize*"></a>
-  <h4 id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_Deserialize_Stream_System_Int32_" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.Deserialize(Stream,System.Int32)">Deserialize(Stream, Int32)</h4>
+  <h4 id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_Deserialize_wan24_StreamSerializerExtensions_IDeserializationContext_" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.Deserialize(wan24.StreamSerializerExtensions.IDeserializationContext)">Deserialize(IDeserializationContext)</h4>
   <div class="markdown level1 summary"><p>Deserialize</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override void Deserialize(Stream stream, int version)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override void Deserialize(IDeserializationContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -250,36 +217,30 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><span class="parametername">stream</span></td>
-        <td><p>Stream</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">version</span></td>
-        <td><p>Serializer version</p>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.IDeserializationContext.html">IDeserializationContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Context</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_Deserialize_Stream_System_Int32_">StreamSerializerBase.Deserialize(Stream, Int32)</a></div>
+  <div><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_Deserialize_wan24_StreamSerializerExtensions_IDeserializationContext_">StreamSerializerBase.Deserialize(IDeserializationContext)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_DeserializeAsync_Stream_System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerBase%601.DeserializeAsync(Stream%2CSystem.Int32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_DeserializeAsync_wan24_StreamSerializerExtensions_IDeserializationContext_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerBase%601.DeserializeAsync(wan24.StreamSerializerExtensions.IDeserializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/AutoStreamSerializerBase.cs/#L48">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/AutoStreamSerializerBase.cs/#L48">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_DeserializeAsync_" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.DeserializeAsync*"></a>
-  <h4 id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_DeserializeAsync_Stream_System_Int32_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.DeserializeAsync(Stream,System.Int32,CancellationToken)">DeserializeAsync(Stream, Int32, CancellationToken)</h4>
+  <h4 id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_DeserializeAsync_wan24_StreamSerializerExtensions_IDeserializationContext_" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.DeserializeAsync(wan24.StreamSerializerExtensions.IDeserializationContext)">DeserializeAsync(IDeserializationContext)</h4>
   <div class="markdown level1 summary"><p>Deserialize</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override Task DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override Task DeserializeAsync(IDeserializationContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -292,21 +253,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><span class="parametername">stream</span></td>
-        <td><p>Stream</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">version</span></td>
-        <td><p>Serializer version</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>Cancellation token</p>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.IDeserializationContext.html">IDeserializationContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Context</p>
 </td>
       </tr>
     </tbody>
@@ -327,22 +276,22 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_DeserializeAsync_Stream_System_Int32_CancellationToken_">StreamSerializerBase.DeserializeAsync(Stream, Int32, CancellationToken)</a></div>
+  <div><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_DeserializeAsync_wan24_StreamSerializerExtensions_IDeserializationContext_">StreamSerializerBase.DeserializeAsync(IDeserializationContext)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_Serialize_Stream_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerBase%601.Serialize(Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_Serialize_wan24_StreamSerializerExtensions_ISerializationContext_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerBase%601.Serialize(wan24.StreamSerializerExtensions.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/AutoStreamSerializerBase.cs/#L38">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/AutoStreamSerializerBase.cs/#L39">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_Serialize_" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.Serialize*"></a>
-  <h4 id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_Serialize_Stream_" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.Serialize(Stream)">Serialize(Stream)</h4>
+  <h4 id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_Serialize_wan24_StreamSerializerExtensions_ISerializationContext_" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.Serialize(wan24.StreamSerializerExtensions.ISerializationContext)">Serialize(ISerializationContext)</h4>
   <div class="markdown level1 summary"><p>Serialize</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override void Serialize(Stream stream)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override void Serialize(ISerializationContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -355,30 +304,30 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><span class="parametername">stream</span></td>
-        <td><p>Stream</p>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ISerializationContext.html">ISerializationContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Context</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_Serialize_Stream_">StreamSerializerBase.Serialize(Stream)</a></div>
+  <div><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_Serialize_wan24_StreamSerializerExtensions_ISerializationContext_">StreamSerializerBase.Serialize(ISerializationContext)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_SerializeAsync_Stream_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerBase%601.SerializeAsync(Stream%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_SerializeAsync_wan24_StreamSerializerExtensions_ISerializationContext_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerBase%601.SerializeAsync(wan24.StreamSerializerExtensions.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/AutoStreamSerializerBase.cs/#L41">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/AutoStreamSerializerBase.cs/#L42">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_SerializeAsync_" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.SerializeAsync*"></a>
-  <h4 id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_SerializeAsync_Stream_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.SerializeAsync(Stream,CancellationToken)">SerializeAsync(Stream, CancellationToken)</h4>
+  <h4 id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_SerializeAsync_wan24_StreamSerializerExtensions_ISerializationContext_" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.SerializeAsync(wan24.StreamSerializerExtensions.ISerializationContext)">SerializeAsync(ISerializationContext)</h4>
   <div class="markdown level1 summary"><p>Serialize</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override Task SerializeAsync(Stream stream, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override Task SerializeAsync(ISerializationContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -391,15 +340,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><span class="parametername">stream</span></td>
-        <td><p>Stream</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>Cancellation token</p>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ISerializationContext.html">ISerializationContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Context</p>
 </td>
       </tr>
     </tbody>
@@ -420,15 +363,15 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_SerializeAsync_Stream_CancellationToken_">StreamSerializerBase.SerializeAsync(Stream, CancellationToken)</a></div>
+  <div><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_SerializeAsync_wan24_StreamSerializerExtensions_ISerializationContext_">StreamSerializerBase.SerializeAsync(ISerializationContext)</a></div>
   <h3 id="eii">Explicit Interface Implementations
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_wan24_StreamSerializerExtensions_IAutoStreamSerializer_AutoStreamSerializerConfig.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerBase%601.wan24%23StreamSerializerExtensions%23IAutoStreamSerializer%23AutoStreamSerializerConfig%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_wan24_StreamSerializerExtensions_IAutoStreamSerializer_AutoStreamSerializerConfig.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerBase%601.wan24%23StreamSerializerExtensions%23IAutoStreamSerializer%23AutoStreamSerializerConfig%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/AutoStreamSerializerBase.cs/#L35">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/AutoStreamSerializerBase.cs/#L36">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_wan24_StreamSerializerExtensions_IAutoStreamSerializer_AutoStreamSerializerConfig_" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.wan24#StreamSerializerExtensions#IAutoStreamSerializer#AutoStreamSerializerConfig*"></a>
   <h4 id="wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1_wan24_StreamSerializerExtensions_IAutoStreamSerializer_AutoStreamSerializerConfig" data-uid="wan24.StreamSerializerExtensions.AutoStreamSerializerBase`1.wan24#StreamSerializerExtensions#IAutoStreamSerializer#AutoStreamSerializerConfig">IAutoStreamSerializer.AutoStreamSerializerConfig</h4>
@@ -456,12 +399,6 @@
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">wan24.ObjectValidation.IObjectValidatable</span>
-  </div>
-  <div>
-      <span class="xref">System.ComponentModel.DataAnnotations.IValidatableObject</span>
-  </div>
-  <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.IAutoStreamSerializer.html">IAutoStreamSerializer</a>
   </div>
   <div>
@@ -472,6 +409,12 @@
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ValidateDeserializedObject__1___0_">SerializerHelper.ValidateDeserializedObject&lt;T&gt;(T)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ToBytes_wan24_StreamSerializerExtensions_IStreamSerializer_System_Boolean_">SerializerHelper.ToBytes(IStreamSerializer, Boolean)</a>
+  </div>
+  <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetNumberType__1___0_System_Boolean_">SerializerHelper.GetNumberType&lt;T&gt;(T, Boolean)</a>
   </div>
   <div>
@@ -479,12 +422,6 @@
   </div>
   <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetObjectSerializerInfo_System_Object_">SerializerHelper.GetObjectSerializerInfo(Object)</a>
-  </div>
-  <div>
-      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ValidateDeserializedObject__1___0_">SerializerHelper.ValidateDeserializedObject&lt;T&gt;(T)</a>
-  </div>
-  <div>
-      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ToBytes_wan24_StreamSerializerExtensions_IStreamSerializer_System_Boolean_">SerializerHelper.ToBytes(IStreamSerializer, Boolean)</a>
   </div>
 </article>
           </div>
@@ -494,10 +431,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerBase%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_AutoStreamSerializerBase_1.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.AutoStreamSerializerBase%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/AutoStreamSerializerBase.cs/#L9" class="contribution-link">View Source</a>
+                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/AutoStreamSerializerBase.cs/#L9" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

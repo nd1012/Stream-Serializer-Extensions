@@ -76,101 +76,216 @@ binary stream sequence.</p>
 <li>dictionaries</li>
 <li>byte arrays</li>
 <li>structures</li>
-<li>possibly any other objects with a parameterless public constructor</li>
-<li>streams</li>
+<li>possibly any other types</li>
+<li>streams (embedded)</li>
+<li>CLR type informations</li>
 </ul>
 <p>and exports an asynchronous fluent API for writing operations, too.</p>
-<p><strong>NOTE</strong>: Arrays, lists and dictionaries with nullable values aren't supported.</p>
 <p>It's possible to override the build in serializers, and to add custom type
 serializers, too.</p>
 <p>Using an attribute for your types and their properties you can make them
 binary serializable with backward compatibility, easily.</p>
 <p>The serializer is designed to produce only a minimum of absolutely required
 overhead, which sometimes can result in even less data, too (compared to
-usually used serialization methods).</p>
+usually used serialization methods). The produced binary sequences are</p>
+<ul>
+<li>processor architecture independent</li>
+<li>platform independent</li>
+<li>runtime independent</li>
+<li>language independent</li>
+<li>type and type version safe</li>
+<li>compatible with newer serializer versions</li>
+<li>as small as possible (trade off between complexity &lt;-&gt; performance &lt;-&gt; size)</li>
+<li>using aggressive caching</li>
+</ul>
+<p>In theory it'd by possible to deserialize a binary sequence using a language
+such as JavaScript or C++. However, at present there's only a .NET
+implementation of the (de)serializer available.</p>
+<p><strong>NOTE</strong>: The deserialized type must be present at the processing computer.
+The deserializer won't create anonymous types. Only for deserializing CLR type
+informations there's a type implemented which can be used to browse the
+seqenced CLR type informations before trying to get a <code>Type</code> instance, finally.</p>
+<p>Most people think of object serialization, but this library can be used to
+deserialize any binary sequence, and also a text format (which is an encoded
+binary sequence at a higher level) may be parsed as well. And since a stream
+is a quiet abstract type, the output/input must not be a file all the time.
+Using some creativity just everything can be serialized or deserialized and
+target any stream consuming interface.</p>
 <p>The API is fully synchronous and asynchronous - you choose depending on the
 used stream type.</p>
+<p><strong>TIP</strong>: Because often very tiny sequences will be written/red, you may want
+to use a buffering stream to gain more performance! Streams will be accessed
+non-seeking and sequential only.</p>
 <p>Cold storage of serialized sequences can be challenging. Using the build in
 sequencer versioning you can ensure that a sequence can be deserialized at any
 time after a component was updated.</p>
+<h2 id="how-to-get-it">How to get it</h2>
+<p>This library is available as
+<a href="https://www.nuget.org/packages/Stream-Serializer-Extensions/">NuGet package &quot;Stream-Serializer-Extensions&quot;</a>.</p>
+<p>There's also another
+<a href="https://www.nuget.org/packages/Stream-Serializer-Extensions-Full/">NuGet package &quot;Stream-Serializer-Extensions-Full&quot;</a>,
+which contains advanced serialization tools.</p>
 <h2 id="methods">Methods</h2>
-<p>The <code>Write</code> and <code>WriteAsync</code> methods will be extended with supported types,
-while serializing some types is being done with specialized methods:</p>
 <table>
 <thead>
 <tr>
 <th>Type</th>
-<th>Serialization method</th>
-<th>Deserialization method</th>
+<th>Serialization</th>
+<th>Deserialization</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>string</code></td>
-<td><code>WriteString*</code></td>
-<td><code>ReadString*</code></td>
+<td><code>bool</code></td>
+<td><code>Write</code></td>
+<td><code>ReadBool</code></td>
+</tr>
+<tr>
+<td><code>sbyte</code></td>
+<td><code>Write</code></td>
+<td><code>ReadOneSByte</code></td>
+</tr>
+<tr>
+<td><code>byte</code></td>
+<td><code>Write</code></td>
+<td><code>ReadOneByte</code></td>
+</tr>
+<tr>
+<td><code>short</code></td>
+<td><code>Write</code></td>
+<td><code>ReadShort</code></td>
+</tr>
+<tr>
+<td><code>ushort</code></td>
+<td><code>Write</code></td>
+<td><code>ReadUShort</code></td>
+</tr>
+<tr>
+<td><code>int</code></td>
+<td><code>Write</code></td>
+<td><code>ReadInt</code></td>
+</tr>
+<tr>
+<td><code>uint</code></td>
+<td><code>Write</code></td>
+<td><code>ReadUInt</code></td>
+</tr>
+<tr>
+<td><code>long</code></td>
+<td><code>Write</code></td>
+<td><code>ReadLong</code></td>
+</tr>
+<tr>
+<td><code>ulong</code></td>
+<td><code>Write</code></td>
+<td><code>ReadULong</code></td>
+</tr>
+<tr>
+<td><code>float</code></td>
+<td><code>Write</code></td>
+<td><code>ReadFloat</code></td>
+</tr>
+<tr>
+<td><code>double</code></td>
+<td><code>Write</code></td>
+<td><code>ReadDouble</code></td>
+</tr>
+<tr>
+<td><code>decimal</code></td>
+<td><code>Write</code></td>
+<td><code>ReadDecimal</code></td>
+</tr>
+<tr>
+<td>(U)Int 8-64, <code>float</code>, <code>double</code>, <code>decimal</code></td>
+<td><code>WriteNumber</code></td>
+<td><code>ReadNumber</code></td>
 </tr>
 <tr>
 <td><code>Enum</code></td>
-<td><code>WriteEnum*</code></td>
-<td><code>ReadEnum*</code></td>
-</tr>
-<tr>
-<td><code>Array</code></td>
-<td><code>Write*Array*</code></td>
-<td><code>Read*Array*</code></td>
-</tr>
-<tr>
-<td><code>List&lt;T&gt;</code></td>
-<td><code>WriteList*</code></td>
-<td><code>ReadList*</code></td>
-</tr>
-<tr>
-<td><code>Dictionary&lt;tKey, tValue&gt;</code></td>
-<td><code>WriteDict*</code></td>
-<td><code>ReadDict*</code></td>
-</tr>
-<tr>
-<td><code>IStreamSerializer</code></td>
-<td><code>WriteSerialized*</code></td>
-<td><code>ReadSerialized*</code></td>
+<td><code>WriteEnum</code></td>
+<td><code>ReadEnum</code></td>
 </tr>
 <tr>
 <td><code>byte[]</code></td>
-<td><code>WriteBytes*</code></td>
-<td><code>ReadBytes*</code></td>
+<td><code>WriteBytes</code></td>
+<td><code>ReadBytes</code></td>
+</tr>
+<tr>
+<td><code>string</code> (UTF-8)</td>
+<td><code>WriteString</code></td>
+<td><code>ReadString</code></td>
+</tr>
+<tr>
+<td><code>string</code> (UTF-16)</td>
+<td><code>WriteString16</code></td>
+<td><code>ReadString16</code></td>
+</tr>
+<tr>
+<td><code>string</code> (UTF-32)</td>
+<td><code>WriteString32</code></td>
+<td><code>ReadString32</code></td>
+</tr>
+<tr>
+<td><code>IStreamSerializer</code> (class)</td>
+<td><code>WriteSerialized</code></td>
+<td><code>ReadSerialized</code></td>
+</tr>
+<tr>
+<td><code>IStreamSerializer</code> (structure)</td>
+<td><code>WriteSerializedStruct</code></td>
+<td><code>ReadSerializedStruct</code></td>
+</tr>
+<tr>
+<td>Structures</td>
+<td><code>WriteStruct</code></td>
+<td><code>ReadStruct</code></td>
+</tr>
+<tr>
+<td><code>Array</code> (variable length)</td>
+<td><code>WriteArray</code></td>
+<td><code>ReadArray</code></td>
+</tr>
+<tr>
+<td><code>Array</code> (fixed length)</td>
+<td><code>WriteFixedArray</code></td>
+<td><code>ReadFixedArray</code></td>
+</tr>
+<tr>
+<td><code>IList</code></td>
+<td><code>WriteList</code></td>
+<td><code>ReadList</code></td>
+</tr>
+<tr>
+<td><code>IDictionary</code></td>
+<td><code>WriteDict</code></td>
+<td><code>ReadDict</code></td>
 </tr>
 <tr>
 <td><code>Stream</code></td>
-<td><code>WriteStream*</code></td>
-<td><code>ReadStream*</code></td>
+<td><code>WriteStream</code></td>
+<td><code>ReadStream</code></td>
 </tr>
 <tr>
-<td>Structure</td>
-<td><code>WriteStruct*</code></td>
-<td><code>ReadStruct*</code></td>
-</tr>
-<tr>
-<td>(any other)</td>
-<td><code>WriteAnyObject*</code></td>
-<td><code>ReadAnyObject*</code></td>
+<td><code>Type</code></td>
+<td><code>WriteType</code></td>
+<td><code>ReadType</code></td>
 </tr>
 </tbody>
 </table>
+<p><strong>NOTE</strong>: In general you should use the opposite method for reading a binary
+sequence that you've used for writing it! For all methods there is an <code>*Async</code>
+version also. Use the <code>*Nullable*</code> methods for writing/reading nullable
+values. Some may have to add an extra byte for <code>null</code> detection.</p>
 <p>Using the <code>WriteObject*</code> and <code>ReadObject*</code> methods you can let the library
 decide which method to use for the given object type.</p>
-<p>Using the <code>WriteAny*</code> and <code>ReadAny*</code> methods, you can write and read an object
-with a dynamic type.</p>
 <p>Using the <code>WriteAnyObject*</code> and <code>ReadAnyObject*</code> methods you can also
 (de)serialize objects which have a constructor without parameters. The
 serializer will process public properties which have a public getter and
 setter. If in the future the object changes, it's not possible to deserialize
 an older binary sequence, unless you work with the <code>StreamSerializerAttribute</code>
 and set an object version to the type and its properties.</p>
-<p><strong>NOTE</strong>: Please use the <code>*Nullable*</code> methods for working with nullables.
-They'll add an extra byte for <code>null</code> value detection.</p>
-<p><strong>NOTE</strong>: In general you should use the opposite method for reading a binary
-sequence that you've used for writing it!</p>
+<p>Using the <code>WriteAny*</code> and <code>ReadAny*</code> methods, you can write and read an object
+with a dynamic type.</p>
 <p>Most methods are designed specially for one type, while other methods work
 more generic. This is when to choose which method:</p>
 <table>
@@ -183,7 +298,7 @@ more generic. This is when to choose which method:</p>
 <tbody>
 <tr>
 <td><code>*Serialized*</code></td>
-<td>The fixed type is a stream serializer base object</td>
+<td>The fixed type implements <code>IStreamSerializer</code></td>
 </tr>
 <tr>
 <td><code>*Object*</code></td>
@@ -216,7 +331,7 @@ a single byte when serializing a <code>decimal</code>, if the value was zero, fo
 data. Seekable streams will just be copied, having their length as header,
 while non-seekable streams will be embedded chunked.</p>
 <p>When deserializing an embedded stream using generic read-methods (like
-<code>ReadObject</code> or <code>ReadAny</code>), a temporary <code>FileStream</code> will be created, which
+<code>ReadObject</code> or <code>ReadAny</code>), a temporary <code>TempStream</code> will be created, which
 will delete the temporary file when disposing. You can define a stream factory
 using <code>StreamSerializerAttribute.StreamFactoryType</code> and
 <code>StreamSerializerAttribute.StreamFactoryMethod</code>. Or you create a custom
@@ -251,6 +366,21 @@ only:</p>
 <p><strong>TIP</strong>: A structure may implement the <code>IStreamSerializer</code> inferface and be
 written using the <code>WriteSerializedStruct*</code> methods. For reading you can use
 the <code>ReadSerializedStruct*</code> methods.</p>
+<h2 id="clr-type-information-serialization">CLR type information serialization</h2>
+<p>CLR type informations support</p>
+<ul>
+<li>normal types (also abstract and interface types)</li>
+<li>generic types (or type definitions)</li>
+<li>array types (with array rank)</li>
+</ul>
+<p>Internal the serializer uses a <code>SerializedTypeInfo</code> instance.</p>
+<pre><code class="lang-cs">stream.Write(typeof(Dictionary&lt;string, int&gt;));
+stream.Position = 0;
+Type type = stream.ReadType();
+Assert.AreEqual(typeof(Dictionary&lt;string, int&gt;), type);
+</code></pre>
+<p>Use the <code>ReadSerializableType*</code> methods to ensure a serializer supported CLR
+type.</p>
 <h2 id="custom-serializer">Custom serializer</h2>
 <h3 id="using-the-streamserializerattribute-attribute">Using the <code>StreamSerializerAttribute</code> attribute</h3>
 <p>The type needs to have a constructor without parameters. Properties with a
@@ -559,6 +689,31 @@ method:</p>
 </tr>
 </tbody>
 </table>
+<h2 id="type-cache">Type cache</h2>
+<p>By calling <code>StreamSerializer.EnableTypeCache()</code>, you can use a type cache,
+which enables the serializer to write type information about types which
+implement the <code>IStreamSerializer</code> interface using only 6 bytes. For this all
+matching types will be stored in the <code>wan24.Core.TypeCache</code>.</p>
+<p><strong>CAUTION</strong>: Calling this method will ensure that the <code>wan24-Core</code>
+bootstrapper did run! A call during bootstrapping will cause an exception.</p>
+<p>Please ensure that the type cache has been enabled first, whenever you want to
+write or read any byte sequence. A byte sequence which was created using the
+type cache can't be deserialized, if the type cache isn't enabled! Anyway, the
+opposite isn't a problem.</p>
+<p><strong>CAUTION</strong>: Because the type cache uses the types hash code, you shouldn't
+use this feature, if you want to cold store a sequence, or if if the
+deserializing peer may know a different version if the type: If the type
+changes, its hash code may change!</p>
+<h2 id="stream-serializer-extensions-full">Stream-Serializer-Extensions-Full</h2>
+<p>This library is an add-on which contains advanced serialization tools:</p>
+<ul>
+<li><code>SerializerStream</code> which manages a <code>SerializerContext</code> and/or
+<code>DeserializerContext</code> and has its own extension methods without the context
+argument</li>
+<li><code>Write/ReadAll</code> extensions for writing/reading a type sequence</li>
+<li><code>ReadUntil</code> extension for reading until any byte sequence (requires a
+seekable stream!)</li>
+</ul>
 <h2 id="security">Security</h2>
 <p>The base serializer supports basic types and lists. Especially when
 deserializing lists, you should define a minimum and a maximum length.</p>
@@ -577,9 +732,9 @@ could harm your computer!</p>
 <p>The job of the serializer is to write and read objects to/from a binary
 sequence. There's no compression, encryption or hashing built in. If you want
 to compress/protect a created binary sequence, you can apply compression,
-encryption and hashing on the result as you want.</p>
+encryption and hashing on the result as you need.</p>
 <p>Object validation will be applied to deserialized objects to ensure their
-validity.</p>
+validity (using <code>ObjectValidation</code>).</p>
 </article>
           </div>
           

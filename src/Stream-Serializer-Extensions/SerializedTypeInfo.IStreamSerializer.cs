@@ -33,83 +33,85 @@ namespace wan24.StreamSerializerExtensions
         int? IStreamSerializerVersion.SerializerVersion => SerializerVersion;
 
         /// <inheritdoc/>
-        public void Serialize(Stream stream)
+        public void Serialize(ISerializationContext context)
         {
-            stream.WriteNumberNullable(VERSION)
-                .Write((byte)(ObjectType.ContainsAllFlags(ObjectTypes.Serializable) && StreamSerializer.TypeCacheEnabled ? ObjectType | ObjectTypes.Cached : ObjectType));
+            context.Stream.Write((byte)VERSION, context)
+                .Write((byte)(ObjectType.ContainsAllFlags(ObjectTypes.Serializable) && StreamSerializer.TypeCacheEnabled ? ObjectType | ObjectTypes.Cached : ObjectType), context);
             if (ObjectType.ContainsAllFlags(ObjectTypes.Serializable) && StreamSerializer.TypeCacheEnabled)
             {
-                stream.Write(ToClrType().GetHashCode());
+                context.Stream.Write(ToClrType().GetHashCode(), context);
                 return;
             }
             else if (Name != null)
             {
-                stream.WriteString(Name);
+                context.Stream.WriteString(Name, context);
             }
             if (ObjectType.IsGeneric())
             {
                 int len = IsGenericTypeDefinition ? GenericParameterCount : GenericParameters.Count;
-                stream.Write((sbyte)(IsGenericTypeDefinition ? -len : len));
-                if (!IsGenericTypeDefinition) for (int i = 0; i < len; stream.WriteSerialized(GenericParameters[i]), i++) ;
+                context.Stream.Write((sbyte)(IsGenericTypeDefinition ? -len : len), context);
+                if (!IsGenericTypeDefinition) for (int i = 0; i < len; context.Stream.WriteSerialized(GenericParameters[i], context), i++) ;
             }
             else if (ObjectType.IsArray())
             {
-                stream.WriteSerialized(ElementType!);
-                if (!ObjectType.IsNotRanked()) stream.Write((byte)(ArrayRank - 1));
+                context.Stream.WriteSerialized(ElementType!, context);
+                if (!ObjectType.IsNotRanked()) context.Stream.Write((byte)(ArrayRank - 1), context);
             }
         }
 
         /// <inheritdoc/>
-        public async Task SerializeAsync(Stream stream, CancellationToken cancellationToken)
+        public async Task SerializeAsync(ISerializationContext context)
         {
-            await stream.WriteNumberNullableAsync(VERSION, cancellationToken).DynamicContext();
-            await stream.WriteAsync(
+            await context.Stream.WriteAsync((byte)VERSION, context).DynamicContext();
+            await context.Stream.WriteAsync(
                 (byte)(ObjectType.ContainsAllFlags(ObjectTypes.Serializable) && StreamSerializer.TypeCacheEnabled ? ObjectType | ObjectTypes.Cached : ObjectType),
-                cancellationToken
+                context
                 )
                 .DynamicContext();
             if (ObjectType.ContainsAllFlags(ObjectTypes.Serializable) && StreamSerializer.TypeCacheEnabled)
             {
-                await stream.WriteAsync(ToClrType().GetHashCode(), cancellationToken).DynamicContext();
+                await context.Stream.WriteAsync(ToClrType().GetHashCode(), context).DynamicContext();
                 return;
             }
             else if (Name != null)
             {
-                await stream.WriteStringAsync(Name, cancellationToken).DynamicContext();
+                await context.Stream.WriteStringAsync(Name, context).DynamicContext();
             }
             if (ObjectType.IsGeneric())
             {
                 int len = IsGenericTypeDefinition ? GenericParameterCount : GenericParameters.Count;
-                await stream.WriteAsync((sbyte)(IsGenericTypeDefinition ? -len : len), cancellationToken).DynamicContext();
+                await context.Stream.WriteAsync((sbyte)(IsGenericTypeDefinition ? -len : len), context).DynamicContext();
                 if (!IsGenericTypeDefinition)
                     for (int i = 0; i < len; i++)
-                        await stream.WriteSerializedAsync(GenericParameters[i], cancellationToken).DynamicContext();
+                        await context.Stream.WriteSerializedAsync(GenericParameters[i], context).DynamicContext();
             }
             else if (ObjectType.IsArray())
             {
-                await stream.WriteSerializedAsync(ElementType!, cancellationToken).DynamicContext();
-                if (!ObjectType.IsNotRanked()) await stream.WriteAsync((byte)(ArrayRank - 1), cancellationToken).DynamicContext();
+                await context.Stream.WriteSerializedAsync(ElementType!, context).DynamicContext();
+                if (!ObjectType.IsNotRanked()) await context.Stream.WriteAsync((byte)(ArrayRank - 1), context).DynamicContext();
             }
         }
 
         /// <inheritdoc/>
-        public void Deserialize(Stream stream, int version)
+        public void Deserialize(IDeserializationContext context)
         {
+            if (context.SerializerVersion < 3) throw new SerializerException($"CLR type reading isn't available in version {context.SerializerVersion}", new InvalidDataException());
             if (SerializerVersion != null || ClrType != null) throw new SerializerException("Not a fresh instance", new InvalidOperationException());
-            SerializerVersion = version;
+            SerializerVersion = context.Version;
             if (ObjectType == ObjectTypes.Null)
             {
-                SerializedObjectVersion = stream.ReadNumberNullable<int>(version) ?? throw new SerializerException($"Invalid object version", new InvalidDataException());
+                SerializedObjectVersion = context.Stream.ReadOneByte(context);
+                if (SerializedObjectVersion == 0) throw new SerializerException($"Trying to deserialize NULL type information", new InvalidDataException());
                 if (SerializedObjectVersion > VERSION)
                     throw new SerializerException($"Unsupported object version {SerializedObjectVersion} (max. supported version is {VERSION})", new InvalidDataException());
-                ObjectType = (ObjectTypes)stream.ReadOneByte(version);
+                ObjectType = (ObjectTypes)context.Stream.ReadOneByte(context);
             }
             switch (ObjectType.RemoveFlags())
             {
                 case ObjectTypes.Serializable:
                     if (StreamSerializer.TypeCacheEnabled && ObjectType.ContainsAllFlags(ObjectTypes.Cached))
                     {
-                        int thc = stream.ReadInt(version);
+                        int thc = context.Stream.ReadInt(context);
                         if (!TypeCache.Types.TryGetValue(thc, out Type? type)) throw new SerializerException($"Unknown type #{thc}", new InvalidDataException());
                         if (!typeof(IStreamSerializer).IsAssignableFrom(type))
                             throw new SerializerException($"Invalid type {type} (possibly manipulated byte sequence)", new InvalidDataException());
@@ -123,19 +125,20 @@ namespace wan24.StreamSerializerExtensions
                                 $"The type cache needs to be enabled in order to be able to deserialize this type information",
                                 new InvalidOperationException()
                                 );
-                        Name = stream.ReadString(version, minLen: 1, maxLen: short.MaxValue);
+                        Name = context.Stream.ReadString(context, minLen: 1, maxLen: short.MaxValue);
                     }
                     break;
                 case ObjectTypes.Stream:
                 case ObjectTypes.Struct:
                 case ObjectTypes.Object:
-                    Name = stream.ReadString(version, minLen: 1, maxLen: short.MaxValue);
+                    Name = context.Stream.ReadString(context, minLen: 1, maxLen: short.MaxValue);
                     break;
             }
             if (ObjectType.IsGeneric())
             {
-                if (Recursion >= 32) throw new SerializerException($"Avoided endless recursion (possibly manipulated byte sequence)", new StackOverflowException());
-                int len = stream.ReadOneSByte(version);
+                if (Recursion >= SerializerContextBase.MaxRecursion)
+                    throw new SerializerException($"Avoided possible endless recursion (possibly manipulated byte sequence)", new StackOverflowException());
+                int len = context.Stream.ReadOneSByte(context);
                 IsGenericTypeDefinition = len < 0;
                 if (len < 0) len = -len;
                 SerializerHelper.EnsureValidLength(len, 1);
@@ -153,7 +156,7 @@ namespace wan24.StreamSerializerExtensions
                         {
                             Recursion = Recursion + 1
                         };
-                        info.Deserialize(stream, version);
+                        info.Deserialize(context);
                         list.Add(info);
                     }
                     GenericParameters = list.AsReadOnly();
@@ -161,15 +164,16 @@ namespace wan24.StreamSerializerExtensions
             }
             else if (ObjectType.IsArray())
             {
-                if (Recursion >= 32) throw new SerializerException($"Avoided endless recursion (possibly manipulated byte sequence)", new StackOverflowException());
+                if (Recursion >= SerializerContextBase.MaxRecursion)
+                    throw new SerializerException($"Avoided possible endless recursion (possibly manipulated byte sequence)", new StackOverflowException());
                 ElementType = new()
                 {
                     Recursion = Recursion + 1
                 };
-                ElementType.Deserialize(stream, version);
+                ElementType.Deserialize(context);
                 if (!ObjectType.IsNotRanked())
                 {
-                    ArrayRank = stream.ReadOneByte() + 1;
+                    ArrayRank = context.Stream.ReadOneByte(context) + 1;
                     if (ArrayRank == 0) throw new SerializerException("No array rank", new InvalidDataException());
                 }
                 else
@@ -180,24 +184,25 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <inheritdoc/>
-        public async Task DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken)
+        public async Task DeserializeAsync(IDeserializationContext context)
         {
+            if (context.SerializerVersion < 3) throw new SerializerException($"CLR type reading isn't available in version {context.SerializerVersion}", new InvalidDataException());
             if (SerializerVersion != null || ClrType != null) throw new SerializerException("Not a fresh instance", new InvalidOperationException());
-            SerializerVersion = version;
+            SerializerVersion = context.Version;
             if (ObjectType == ObjectTypes.Null)
             {
-                SerializedObjectVersion = await stream.ReadNumberNullableAsync<int>(version, cancellationToken: cancellationToken).DynamicContext()
-                    ?? throw new SerializerException($"Invalid object version", new InvalidDataException());
+                SerializedObjectVersion = await context.Stream.ReadOneByteAsync(context).DynamicContext();
+                if (SerializedObjectVersion == 0) throw new SerializerException($"Trying to deserialize NULL type information", new InvalidDataException());
                 if (SerializedObjectVersion > VERSION)
                     throw new SerializerException($"Unsupported object version {SerializedObjectVersion} (max. supported version is {VERSION})", new InvalidDataException());
-                ObjectType = (ObjectTypes)await stream.ReadOneByteAsync(version, cancellationToken).DynamicContext();
+                ObjectType = (ObjectTypes)await context.Stream.ReadOneByteAsync(context).DynamicContext();
             }
             switch (ObjectType.RemoveFlags())
             {
                 case ObjectTypes.Serializable:
                     if (StreamSerializer.TypeCacheEnabled && ObjectType.ContainsAllFlags(ObjectTypes.Cached))
                     {
-                        int thc = await stream.ReadIntAsync(version, cancellationToken: cancellationToken).DynamicContext();
+                        int thc = await context.Stream.ReadIntAsync(context).DynamicContext();
                         if (!TypeCache.Types.TryGetValue(thc, out Type? type)) throw new SerializerException($"Unknown type #{thc}", new InvalidDataException());
                         if (!typeof(IStreamSerializer).IsAssignableFrom(type))
                             throw new SerializerException($"Invalid type {type} (possibly manipulated byte sequence)", new InvalidDataException());
@@ -211,19 +216,20 @@ namespace wan24.StreamSerializerExtensions
                                 $"The type cache needs to be enabled in order to be able to deserialize this type information",
                                 new InvalidOperationException()
                                 );
-                        Name = await stream.ReadStringAsync(version, minLen: 1, maxLen: short.MaxValue, cancellationToken: cancellationToken).DynamicContext();
+                        Name = await context.Stream.ReadStringAsync(context, minLen: 1, maxLen: short.MaxValue).DynamicContext();
                     }
                     break;
                 case ObjectTypes.Stream:
                 case ObjectTypes.Struct:
                 case ObjectTypes.Object:
-                    Name = await stream.ReadStringAsync(version, minLen: 1, maxLen: short.MaxValue, cancellationToken: cancellationToken).DynamicContext();
+                    Name = await context.Stream.ReadStringAsync(context, minLen: 1, maxLen: short.MaxValue).DynamicContext();
                     break;
             }
             if (ObjectType.IsGeneric())
             {
-                if (Recursion >= 32) throw new SerializerException($"Avoided endless recursion (possibly manipulated byte sequence)", new StackOverflowException());
-                int len = await stream.ReadOneSByteAsync(version, cancellationToken).DynamicContext();
+                if (Recursion >= SerializerContextBase.MaxRecursion)
+                    throw new SerializerException($"Avoided possible endless recursion (possibly manipulated byte sequence)", new StackOverflowException());
+                int len = await context.Stream.ReadOneSByteAsync(context).DynamicContext();
                 IsGenericTypeDefinition = len < 0;
                 if (len < 0) len = -len;
                 SerializerHelper.EnsureValidLength(len, 1);
@@ -241,7 +247,7 @@ namespace wan24.StreamSerializerExtensions
                         {
                             Recursion = Recursion + 1
                         };
-                        await info.DeserializeAsync(stream, version, cancellationToken).DynamicContext();
+                        await info.DeserializeAsync(context).DynamicContext();
                         list.Add(info);
                     }
                     GenericParameters = list.AsReadOnly();
@@ -249,15 +255,16 @@ namespace wan24.StreamSerializerExtensions
             }
             else if (ObjectType.IsArray())
             {
-                if (Recursion >= 32) throw new SerializerException($"Avoided endless recursion (possibly manipulated byte sequence)", new StackOverflowException());
+                if (Recursion >= SerializerContextBase.MaxRecursion)
+                    throw new SerializerException($"Avoided possible endless recursion (possibly manipulated byte sequence)", new StackOverflowException());
                 ElementType = new()
                 {
                     Recursion = Recursion + 1
                 };
-                await ElementType.DeserializeAsync(stream, version, cancellationToken).DynamicContext();
+                await ElementType.DeserializeAsync(context).DynamicContext();
                 if (!ObjectType.IsNotRanked())
                 {
-                    ArrayRank = await stream.ReadOneByteAsync(version, cancellationToken).DynamicContext() + 1;
+                    ArrayRank = await context.Stream.ReadOneByteAsync(context).DynamicContext() + 1;
                     if (ArrayRank == 0) throw new SerializerException("No array rank", new InvalidDataException());
                 }
                 else
@@ -282,45 +289,36 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Deserialize with a pre-red object version (and type)
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
+        /// <param name="context">Context</param>
         /// <param name="objVersion">Object version</param>
         /// <param name="objType">Object type</param>
         /// <returns>Instance</returns>
-        public static SerializedTypeInfo From(Stream stream, int version, int objVersion, ObjectTypes objType = ObjectTypes.Null)
+        public static SerializedTypeInfo From(IDeserializationContext context, int objVersion, ObjectTypes objType = ObjectTypes.Null)
         {
             SerializedTypeInfo res = new()
             {
                 SerializedObjectVersion = objVersion,
-                ObjectType = objType == ObjectTypes.Null ? (ObjectTypes)stream.ReadOneByte(version) : objType
+                ObjectType = objType == ObjectTypes.Null ? (ObjectTypes)context.Stream.ReadOneByte(context) : objType
             };
-            res.Deserialize(stream, version);
+            res.Deserialize(context);
             return res;
         }
 
         /// <summary>
         /// Deserialize with a pre-red object version (and type)
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
+        /// <param name="context">Context</param>
         /// <param name="objVersion">Object version</param>
         /// <param name="objType">Object type</param>
-        /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Instance</returns>
-        public static async Task<SerializedTypeInfo> FromAsync(
-            Stream stream,
-            int version,
-            int objVersion,
-            ObjectTypes objType = ObjectTypes.Null,
-            CancellationToken cancellationToken = default
-            )
+        public static async Task<SerializedTypeInfo> FromAsync(IDeserializationContext context, int objVersion, ObjectTypes objType = ObjectTypes.Null)
         {
             SerializedTypeInfo res = new()
             {
                 SerializedObjectVersion = objVersion,
-                ObjectType = objType == ObjectTypes.Null ? (ObjectTypes)await stream.ReadOneByteAsync(version, cancellationToken).DynamicContext() : objType
+                ObjectType = objType == ObjectTypes.Null ? (ObjectTypes)await context.Stream.ReadOneByteAsync(context).DynamicContext() : objType
             };
-            await res.DeserializeAsync(stream, version, cancellationToken).DynamicContext();
+            await res.DeserializeAsync(context).DynamicContext();
             return res;
         }
     }

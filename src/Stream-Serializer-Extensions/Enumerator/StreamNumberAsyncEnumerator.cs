@@ -1,6 +1,4 @@
-﻿using System.Buffers;
-
-namespace wan24.StreamSerializerExtensions.Enumerator
+﻿namespace wan24.StreamSerializerExtensions.Enumerator
 {
     /// <summary>
     /// Stream number enumerator
@@ -9,31 +7,12 @@ namespace wan24.StreamSerializerExtensions.Enumerator
     public class StreamNumberAsyncEnumerator<T> : StreamAsyncEnumeratorBase<T> where T : struct, IConvertible
     {
         /// <summary>
-        /// Array pool
-        /// </summary>
-        protected readonly ArrayPool<byte> Pool;
-
-        /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        public StreamNumberAsyncEnumerator(Stream stream, int? version = null, CancellationToken cancellationToken = default) : base(stream, version, cancellationToken)
-            => Pool = StreamSerializer.BufferPool;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="pool">Array pool</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        public StreamNumberAsyncEnumerator(Stream stream, int? version = null, ArrayPool<byte>? pool = null, CancellationToken cancellationToken = default) 
-            : base(stream, version, cancellationToken)
-            => Pool = pool ?? StreamSerializer.BufferPool;
+        /// <param name="context">Context</param>
+        public StreamNumberAsyncEnumerator(IDeserializationContext context) : base(context) { }
 
         /// <inheritdoc/>
-        protected override Task<T> ReadObjectAsync() => Stream.ReadNumberAsync<T>(SerializerVersion, Pool, Cancellation);
+        protected override Task<T> ReadObjectAsync() => Context.Stream.ReadNumberAsync<T>(Context);
     }
 }

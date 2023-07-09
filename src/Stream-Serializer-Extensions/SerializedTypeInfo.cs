@@ -40,7 +40,7 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="type">Object type</param>
         public SerializedTypeInfo(ObjectTypes type) : base() => ObjectType = type;
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace wan24.StreamSerializerExtensions
                 {
                     if (ClrType != null) return true;
                     if ((ClrType = TypeHelper.Instance.GetType(ToString())) == null) return false;
-                    Cache.TryAdd(ClrType!.GetHashCode(), this);
+                    Cache.TryAdd(ClrType.GetHashCode(), this);
                     return true;
                 }
                 catch
@@ -159,13 +159,13 @@ namespace wan24.StreamSerializerExtensions
         /// Determine if the type is serializable
         /// </summary>
         [NoValidation]
-        public bool IsSerializable => IsKnown && StreamSerializer.IsTypeAllowed(ToClrType());
+        public bool IsSerializable => IsKnown && StreamSerializer.IsTypeAllowed(ClrType!);
 
         /// <summary>
         /// Determine if the type information if for a basic type (will serialize to only one byte)
         /// </summary>
         [NoValidation]
-        public bool IsBasicType => Name == null && ElementType == null && GenericParameters.Count == 0 && !IsGenericTypeDefinition;
+        public bool IsBasicType => Name == null && ElementType == null && !IsGenericTypeDefinition && GenericParameters.Count == 0;
 
         /// <summary>
         /// Get as CLR type
@@ -173,7 +173,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>CLR type</returns>
         public Type ToClrType()
         {
-            ClrType ??= TypeHelper.Instance.GetType(ToString()) ?? throw new TypeLoadException($"{ToString()} is not available");
+            ClrType ??= TypeHelper.Instance.GetType(ToString()) ?? throw new TypeLoadException($"{AsString} is not available");
             Cache.TryAdd(ClrType.GetHashCode(), this);
             return ClrType;
         }
@@ -188,7 +188,9 @@ namespace wan24.StreamSerializerExtensions
                 ? ClrType = StreamSerializer.LoadType(ToString())
                 : StreamSerializer.IsTypeAllowed(ClrType)
                     ? ClrType
-                    : throw new SerializerException($"Failed to load type \"{ToString()}\"");
+                    : throw new InvalidOperationException(
+                        $"\"{ToString()}\" is not an allowed deserializable type (see {nameof(StreamSerializer)}.{nameof(StreamSerializer.AllowedTypes)})"
+                        );
             Cache.TryAdd(res.GetHashCode(), this);
             return res;
         }
@@ -259,7 +261,7 @@ namespace wan24.StreamSerializerExtensions
             }
             if (type.IsGenericType)
             {
-                if (Recursion >= 32) throw new InvalidOperationException("Type information branches too deep and won't be deserializable");
+                if (Recursion >= SerializerContextBase.MaxRecursion) throw new InvalidOperationException("Type information branches too deep and won't be deserializable");
                 IsGenericTypeDefinition = type.IsGenericTypeDefinition;
                 if (IsGenericTypeDefinition)
                 {
@@ -275,7 +277,7 @@ namespace wan24.StreamSerializerExtensions
             }
             else if (type.IsArray)
             {
-                if (Recursion >= 32) throw new InvalidOperationException("Type information branches too deep and won't be deserializable");
+                if (Recursion >= SerializerContextBase.MaxRecursion) throw new InvalidOperationException("Type information branches too deep and won't be deserializable");
                 ElementType = new(type.GetElementType()!) { Recursion = Recursion + 1 };
                 ArrayRank = type.GetArrayRank();
             }

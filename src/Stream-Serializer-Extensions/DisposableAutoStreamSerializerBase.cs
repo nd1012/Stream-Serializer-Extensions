@@ -32,17 +32,15 @@ namespace wan24.StreamSerializerExtensions
         IAutoStreamSerializerConfig IAutoStreamSerializer.AutoStreamSerializerConfig => AutoStreamSerializerConfig;
 
         /// <inheritdoc/>
-        protected override void Serialize(Stream stream) => AutoStreamSerializerConfig.Serialize((T)this, stream);
+        protected override void Serialize(ISerializationContext context) => AutoStreamSerializerConfig.Serialize((T)this, context);
 
         /// <inheritdoc/>
-        protected override Task SerializeAsync(Stream stream, CancellationToken cancellationToken)
-            => AutoStreamSerializerConfig.SerializeAsync((T)this, stream, cancellationToken);
+        protected override Task SerializeAsync(ISerializationContext context) => AutoStreamSerializerConfig.SerializeAsync((T)this, context);
 
         /// <inheritdoc/>
-        protected override void Deserialize(Stream stream, int version) => AutoStreamSerializerConfig.Deserialize((T)this, stream, version);
+        protected override void Deserialize(IDeserializationContext context) => AutoStreamSerializerConfig.Deserialize((T)this, context);
 
         /// <inheritdoc/>
-        protected override Task DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken)
-            => AutoStreamSerializerConfig.DeserializeAsync((T)this, stream, version, cancellationToken);
+        protected override Task DeserializeAsync(IDeserializationContext context) => AutoStreamSerializerConfig.DeserializeAsync((T)this, context);
     }
 }

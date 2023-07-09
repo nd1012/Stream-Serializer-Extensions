@@ -1,6 +1,4 @@
-﻿using System.Buffers;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -11,298 +9,237 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Read an item using a specified serializer
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="nullable">Nullable?</param>
-        /// <param name="serializer">Serializer type</param>
-        /// <param name="type">Type</param>
-        /// <param name="pool">Array pool</param>
-        /// <param name="options">Serializer options</param>
-        /// <param name="syncDeserializer">Synchronous deserializer</param>
-        /// <returns>Stream</returns>
+        /// <param name="context">Context</param>
+        /// <returns>Item</returns>
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static dynamic? ReadItem(
-            Stream stream,
-            int version,
-            bool nullable,
-            SerializerTypes serializer,
-            Type? type = null,
-            ArrayPool<byte>? pool = null,
-            ISerializerOptions? options = null,
-            StreamSerializer.Deserialize_Delegate? syncDeserializer = null
-            )
+        public static dynamic? ReadItem(ItemDeserializerContext context)
         {
-            if (!nullable)
+            IDeserializationContext dc = context.Context;
+            Type? type = context.ItemType;
+            if (!context.Nullable)
             {
-                switch (serializer)
+                switch (context.ItemSerializer)
                 {
-                    case SerializerTypes.StreamSerializer: return ReadSerializedObject(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version);
+                    case SerializerTypes.StreamSerializer: return ReadSerializedObject(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc);
                     case SerializerTypes.Serializer:
                         {
-                            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(syncDeserializer), syncDeserializer));
-                            return SerializerException.Wrap(() => syncDeserializer!(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, options))
+                            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(context), context.ItemSyncDeserializer, "Missing serializer"));
+                            return SerializerException.Wrap(() => context.ItemSyncDeserializer!(dc, SerializerHelper.EnsureNotNull(type, nameof(type))))
                                 ?? throw new SerializerException($"{type} deserialized to NULL");
                         }
-                    case SerializerTypes.Any: return ReadAny(stream, version, options);
-                    case SerializerTypes.AnyObject: return ReadAnyObject(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version);
-                    case SerializerTypes.Bool: return ReadBool(stream, version, pool);
-                    case SerializerTypes.Number: return ReadNumber(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool);
-                    case SerializerTypes.Enum: return ReadEnum(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool);
-                    case SerializerTypes.String: return ReadString(stream, version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
-                    case SerializerTypes.String16: return ReadString16(stream, version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
-                    case SerializerTypes.String32: return ReadString32(stream, version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
-                    case SerializerTypes.Bytes: return ReadBytes(stream, version, buffer: null, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue).Value;
-                    case SerializerTypes.Array: return ReadArray(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, options?.ValueOptions);
-                    case SerializerTypes.List: return ReadList(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, options?.ValueOptions);
-                    case SerializerTypes.Dictionary: return ReadDict(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, options?.KeyOptions, options?.ValueOptions);
+                    case SerializerTypes.Any: return ReadAny(dc.Stream, dc);
+                    case SerializerTypes.AnyObject: return ReadAnyObject(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc);
+                    case SerializerTypes.Bool: return ReadBool(dc.Stream, dc);
+                    case SerializerTypes.Number: return ReadNumber(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc);
+                    case SerializerTypes.Enum: return ReadEnum(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc);
+                    case SerializerTypes.String: return ReadString(dc.Stream, dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
+                    case SerializerTypes.String16: return ReadString16(dc.Stream, dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
+                    case SerializerTypes.String32: return ReadString32(dc.Stream, dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
+                    case SerializerTypes.Bytes: return ReadBytes(dc.Stream, dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue).Value;
+                    case SerializerTypes.Array: return ReadArray(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
+                    case SerializerTypes.List: return ReadList(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
+                    case SerializerTypes.Dictionary: return ReadDict(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
                     case SerializerTypes.Struct:
-                        return ReadStructMethod.MakeGenericMethod(SerializerHelper.EnsureNotNull(type, nameof(type))).InvokeAuto(obj: null, stream, version, null, pool)
+                        return ReadStructMethod.MakeGenericMethod(SerializerHelper.EnsureNotNull(type, nameof(type))).InvokeAuto(obj: null, dc.Stream, dc)
                             ?? throw new SerializerException($"{nameof(ReadStruct)} serialized {type} to NULL");
-                    case SerializerTypes.Stream: return ReadStream(stream, SerializerHelper.EnsureNotNull(options?.Attribute?.GetStream(null, null, stream, version), nameof(ISerializerOptions.Attribute)), version, pool, maxBufferSize: null, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(long.MaxValue) ?? long.MaxValue);
-                    default: throw SerializerException.From(new ArgumentException($"Unknown serializer type {serializer}", nameof(serializer)));
+                    case SerializerTypes.Stream: return ReadStream(dc.Stream, SerializerHelper.EnsureNotNull(dc.Options?.Attribute?.GetStream(null, null, dc), nameof(ISerializerOptions.Attribute)), dc, maxBufferSize: null, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(long.MaxValue) ?? long.MaxValue);
+                    case SerializerTypes.Type: return ReadType(dc.Stream, dc);
+                    default: throw SerializerException.From(new ArgumentException($"Unknown serializer type {context.ItemSerializer}", nameof(context)));
                 }
             }
-            switch (serializer)
+            switch (context.ItemSerializer)
             {
-                case SerializerTypes.StreamSerializer: return ReadSerializedObjectNullable(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version);
+                case SerializerTypes.StreamSerializer: return ReadSerializedObjectNullable(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc);
                 case SerializerTypes.Serializer:
                     {
-                        if (!ReadBool(stream, version, pool)) return null;
-                        SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(syncDeserializer), syncDeserializer));
-                        return SerializerException.Wrap(() => syncDeserializer!(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, options))
+                        if (!ReadBool(dc.Stream, dc)) return null;
+                        SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(context), context.ItemSyncDeserializer, "Missing serializer"));
+                        return SerializerException.Wrap(() => context.ItemSyncDeserializer!(dc, SerializerHelper.EnsureNotNull(type, nameof(type))))
                             ?? throw new SerializerException($"{type} deserialized to NULL");
                     }
-                case SerializerTypes.Any: return ReadAnyNullable(stream, version, options);
-                case SerializerTypes.AnyObject: return ReadAnyObjectNullable(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version);
-                case SerializerTypes.Bool: return ReadBoolNullable(stream, version, pool);
-                case SerializerTypes.Number: return ReadNumberNullable(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool);
-                case SerializerTypes.Enum: return ReadEnumNullable(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool);
-                case SerializerTypes.String: return ReadStringNullable(stream, version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
-                case SerializerTypes.String16: return ReadString16Nullable(stream, version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
-                case SerializerTypes.String32: return ReadString32Nullable(stream, version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
-                case SerializerTypes.Bytes: return ReadBytesNullable(stream, version, buffer: null, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue)?.Value;
-                case SerializerTypes.Array: return ReadArrayNullable(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, options?.ValueOptions);
-                case SerializerTypes.List: return ReadListNullable(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, options?.ValueOptions);
-                case SerializerTypes.Dictionary: return ReadDictNullable(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, options?.KeyOptions, options?.ValueOptions);
-                case SerializerTypes.Struct: return ReadStructNullableMethod.MakeGenericMethod(SerializerHelper.EnsureNotNull(type, nameof(type))).InvokeAuto(obj: null, stream, version, null, pool);
-                case SerializerTypes.Stream: return ReadStreamNullable(stream, SerializerHelper.EnsureNotNull(options?.Attribute?.GetStream(null, null, stream, version), nameof(ISerializerOptions.Attribute)), version, pool, maxBufferSize: null, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(long.MaxValue) ?? long.MaxValue);
-                default: throw SerializerException.From(new ArgumentException($"Unknown serializer type {serializer}", nameof(serializer)));
+                case SerializerTypes.Any: return ReadAnyNullable(dc.Stream, dc);
+                case SerializerTypes.AnyObject: return ReadAnyObjectNullable(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc);
+                case SerializerTypes.Bool: return ReadBoolNullable(dc.Stream, dc);
+                case SerializerTypes.Number: return ReadNumberNullable(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc);
+                case SerializerTypes.Enum: return ReadEnumNullable(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc);
+                case SerializerTypes.String: return ReadStringNullable(dc.Stream, dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
+                case SerializerTypes.String16: return ReadString16Nullable(dc.Stream, dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
+                case SerializerTypes.String32: return ReadString32Nullable(dc.Stream, dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
+                case SerializerTypes.Bytes: return ReadBytesNullable(dc.Stream, dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue)?.Value;
+                case SerializerTypes.Array: return ReadArrayNullable(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
+                case SerializerTypes.List: return ReadListNullable(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
+                case SerializerTypes.Dictionary: return ReadDictNullable(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue);
+                case SerializerTypes.Struct: return ReadStructNullableMethod.MakeGenericMethod(SerializerHelper.EnsureNotNull(type, nameof(type))).InvokeAuto(obj: null, dc.Stream, dc);
+                case SerializerTypes.Stream: return ReadStreamNullable(dc.Stream, SerializerHelper.EnsureNotNull(dc.Options?.Attribute?.GetStream(null, null, dc), nameof(ISerializerOptions.Attribute)), dc, maxBufferSize: null, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(long.MaxValue) ?? long.MaxValue);
+                case SerializerTypes.Type: return ReadTypeNullable(dc.Stream, dc);
+                default: throw SerializerException.From(new ArgumentException($"Unknown serializer type {context.ItemSerializer}", nameof(context)));
             }
         }
 
         /// <summary>
         /// Read an item using a specified serializer
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="nullable">Nullable?</param>
-        /// <param name="serializer">Serializer type</param>
-        /// <param name="type">Type</param>
-        /// <param name="pool">Array pool</param>
-        /// <param name="options">Serializer options</param>
-        /// <param name="syncDeserializer">Synchronous deserializer</param>
-        /// <param name="asyncDeserializer">Asynchronous deserializer</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>Stream</returns>
+        /// <param name="context">Context</param>
+        /// <returns>Item</returns>
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task<dynamic?> ReadItemAsync(
-            Stream stream,
-            int version,
-            bool nullable,
-            SerializerTypes serializer,
-            Type? type = null,
-            ArrayPool<byte>? pool = null,
-            ISerializerOptions? options = null,
-            StreamSerializer.Deserialize_Delegate? syncDeserializer = null,
-            StreamSerializer.AsyncDeserialize_Delegate? asyncDeserializer = null,
-            CancellationToken cancellationToken = default
-            )
+        public static async Task<dynamic?> ReadItemAsync(ItemDeserializerContext context)
         {
-            if (!nullable)
+            IDeserializationContext dc = context.Context;
+            Type? type = context.ItemType;
+            if (!context.Nullable)
             {
-                switch (serializer)
+                switch (context.ItemSerializer)
                 {
-                    case SerializerTypes.StreamSerializer: return await ReadSerializedObjectAsync(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, cancellationToken).DynamicContext();
+                    case SerializerTypes.StreamSerializer: return await ReadSerializedObjectAsync(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc).DynamicContext();
                     case SerializerTypes.Serializer:
                         {
-                            if (asyncDeserializer == null)
+                            if (context.ItemAsyncDeserializer == null)
                             {
-                                SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(syncDeserializer), syncDeserializer));
-                                return SerializerException.Wrap(() => syncDeserializer!(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, options))
+                                SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(context.ItemSyncDeserializer), context, "Missng serializer"));
+                                return SerializerException.Wrap(() => context.ItemSyncDeserializer!(dc, SerializerHelper.EnsureNotNull(type, nameof(type))))
                                     ?? throw new SerializerException($"{type} deserialized to NULL");
                             }
                             else
                             {
-                                Task task = SerializerException.WrapAsync(() => asyncDeserializer!(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, options, cancellationToken));
+                                Task task = SerializerException.WrapAsync(() => context.ItemAsyncDeserializer!(dc, SerializerHelper.EnsureNotNull(type, nameof(type))));
                                 await task.DynamicContext();
                                 return task.GetResult(type!);
                             }
                         }
-                    case SerializerTypes.Any: return await ReadAnyAsync(stream, version, options, cancellationToken).DynamicContext();
-                    case SerializerTypes.AnyObject: return await ReadAnyObjectAsync(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, cancellationToken).DynamicContext();
-                    case SerializerTypes.Bool: return await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext();
-                    case SerializerTypes.Number: return await ReadNumberAsync(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool, cancellationToken).DynamicContext();
-                    case SerializerTypes.Enum: return await ReadEnumAsync(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool, cancellationToken).DynamicContext();
-                    case SerializerTypes.String: return await ReadStringAsync(stream, version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, cancellationToken).DynamicContext();
-                    case SerializerTypes.String16: return await ReadString16Async(stream, version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, cancellationToken).DynamicContext();
-                    case SerializerTypes.String32: return await ReadString32Async(stream, version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, cancellationToken).DynamicContext();
-                    case SerializerTypes.Bytes: return (await ReadBytesAsync(stream, version, buffer: null, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, cancellationToken).DynamicContext()).Value;
-                    case SerializerTypes.Array: return await ReadArrayAsync(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, options?.ValueOptions, cancellationToken: cancellationToken).DynamicContext();
-                    case SerializerTypes.List: return await ReadListAsync(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, options?.ValueOptions, cancellationToken: cancellationToken).DynamicContext();
-                    case SerializerTypes.Dictionary: return await ReadDictAsync(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, options?.KeyOptions, options?.ValueOptions, cancellationToken: cancellationToken).DynamicContext();
+                    case SerializerTypes.Any: return await ReadAnyAsync(dc.Stream, dc).DynamicContext();
+                    case SerializerTypes.AnyObject: return await ReadAnyObjectAsync(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc).DynamicContext();
+                    case SerializerTypes.Bool: return await ReadBoolAsync(dc.Stream, dc).DynamicContext();
+                    case SerializerTypes.Number: return await ReadNumberAsync(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc).DynamicContext();
+                    case SerializerTypes.Enum: return await ReadEnumAsync(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc).DynamicContext();
+                    case SerializerTypes.String: return await ReadStringAsync(dc.Stream, dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue).DynamicContext();
+                    case SerializerTypes.String16: return await ReadString16Async(dc.Stream, dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue).DynamicContext();
+                    case SerializerTypes.String32: return await ReadString32Async(dc.Stream, dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue).DynamicContext();
+                    case SerializerTypes.Bytes: return (await ReadBytesAsync(dc.Stream, dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue).DynamicContext()).Value;
+                    case SerializerTypes.Array: return await ReadArrayAsync(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue).DynamicContext();
+                    case SerializerTypes.List: return await ReadListAsync(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue).DynamicContext();
+                    case SerializerTypes.Dictionary: return await ReadDictAsync(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue).DynamicContext();
                     case SerializerTypes.Struct:
-                        return ReadStructMethod.MakeGenericMethod(SerializerHelper.EnsureNotNull(type, nameof(type))).InvokeAuto(obj: null, stream, version, null, pool)
+                        return ReadStructMethod.MakeGenericMethod(SerializerHelper.EnsureNotNull(type, nameof(type))).InvokeAuto(obj: null, dc.Stream, dc)
                             ?? throw new SerializerException($"{nameof(ReadStruct)} serialized {type} to NULL");
-                    case SerializerTypes.Stream: return await ReadStreamAsync(stream, SerializerHelper.EnsureNotNull(options?.Attribute?.GetStream(null, null, stream, version, cancellationToken), nameof(ISerializerOptions.Attribute)), version, pool, maxBufferSize: null, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(long.MaxValue) ?? long.MaxValue, cancellationToken).DynamicContext();
-                    default: throw SerializerException.From(new ArgumentException($"Unknown serializer type {serializer}", nameof(serializer)));
+                    case SerializerTypes.Stream: return await ReadStreamAsync(dc.Stream, SerializerHelper.EnsureNotNull(dc.Options?.Attribute?.GetStream(null, null, dc), nameof(ISerializerOptions.Attribute)), dc, maxBufferSize: null, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(long.MaxValue) ?? long.MaxValue).DynamicContext();
+                    case SerializerTypes.Type: return await ReadTypeAsync(dc.Stream, dc).DynamicContext();
+                    default: throw SerializerException.From(new ArgumentException($"Unknown serializer type {context.ItemSerializer}", nameof(context)));
                 }
             }
-            switch (serializer)
+            switch (context.ItemSerializer)
             {
-                case SerializerTypes.StreamSerializer: return await ReadSerializedObjectNullableAsync(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, cancellationToken).DynamicContext();
+                case SerializerTypes.StreamSerializer: return await ReadSerializedObjectNullableAsync(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc).DynamicContext();
                 case SerializerTypes.Serializer:
                     {
-                        if (!await ReadBoolAsync(stream, version, pool, cancellationToken: cancellationToken).DynamicContext()) return null;
-                        if (asyncDeserializer == null)
+                        if (!await ReadBoolAsync(dc.Stream, dc).DynamicContext()) return null;
+                        if (context.ItemAsyncDeserializer == null)
                         {
-                            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(syncDeserializer), syncDeserializer));
-                            return SerializerException.Wrap(() => syncDeserializer!(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, options))
+                            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(context), context.ItemSyncDeserializer, "Missing serializer"));
+                            return SerializerException.Wrap(() => context.ItemSyncDeserializer!(dc, SerializerHelper.EnsureNotNull(type, nameof(type))))
                                 ?? throw new SerializerException($"{type} deserialized to NULL");
                         }
                         else
                         {
-                            Task task = SerializerException.WrapAsync(() => asyncDeserializer!(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, options, cancellationToken));
+                            Task task = SerializerException.WrapAsync(() => context.ItemAsyncDeserializer(dc, SerializerHelper.EnsureNotNull(type, nameof(type))));
                             await task.DynamicContext();
                             return task.GetResult(type!);
                         }
                     }
-                case SerializerTypes.Any: return await ReadAnyNullableAsync(stream, version, options, cancellationToken).DynamicContext();
-                case SerializerTypes.AnyObject: return await ReadAnyObjectNullableAsync(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, cancellationToken).DynamicContext();
-                case SerializerTypes.Bool: return await ReadBoolNullableAsync(stream, version, pool, cancellationToken).DynamicContext();
-                case SerializerTypes.Number: return await ReadNumberNullableAsync(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool, cancellationToken).DynamicContext();
-                case SerializerTypes.Enum: return await ReadEnumNullableAsync(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool, cancellationToken).DynamicContext();
-                case SerializerTypes.String: return await ReadStringNullableAsync(stream, version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, cancellationToken).DynamicContext();
-                case SerializerTypes.String16: return await ReadString16NullableAsync(stream, version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, cancellationToken).DynamicContext();
-                case SerializerTypes.String32: return await ReadString32NullableAsync(stream, version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, cancellationToken).DynamicContext();
-                case SerializerTypes.Bytes: return (await ReadBytesNullableAsync(stream, version, buffer: null, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, cancellationToken).DynamicContext())?.Value;
-                case SerializerTypes.Array: return await ReadArrayNullableAsync(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, options?.ValueOptions, cancellationToken: cancellationToken).DynamicContext();
-                case SerializerTypes.List: return await ReadListNullableAsync(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, options?.ValueOptions, cancellationToken: cancellationToken).DynamicContext();
-                case SerializerTypes.Dictionary: return await ReadDictNullableAsync(stream, SerializerHelper.EnsureNotNull(type, nameof(type)), version, pool, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(int.MaxValue) ?? int.MaxValue, options?.KeyOptions, options?.ValueOptions, cancellationToken: cancellationToken).DynamicContext();
+                case SerializerTypes.Any: return await ReadAnyNullableAsync(dc.Stream, dc).DynamicContext();
+                case SerializerTypes.AnyObject: return await ReadAnyObjectNullableAsync(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc).DynamicContext();
+                case SerializerTypes.Bool: return await ReadBoolNullableAsync(dc.Stream, dc).DynamicContext();
+                case SerializerTypes.Number: return await ReadNumberNullableAsync(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc).DynamicContext();
+                case SerializerTypes.Enum: return await ReadEnumNullableAsync(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc).DynamicContext();
+                case SerializerTypes.String: return await ReadStringNullableAsync(dc.Stream, dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue).DynamicContext();
+                case SerializerTypes.String16: return await ReadString16NullableAsync(dc.Stream, dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue).DynamicContext();
+                case SerializerTypes.String32: return await ReadString32NullableAsync(dc.Stream, dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue).DynamicContext();
+                case SerializerTypes.Bytes: return (await ReadBytesNullableAsync(dc.Stream, dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue).DynamicContext())?.Value;
+                case SerializerTypes.Array: return await ReadArrayNullableAsync(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue).DynamicContext();
+                case SerializerTypes.List: return await ReadListNullableAsync(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue).DynamicContext();
+                case SerializerTypes.Dictionary: return await ReadDictNullableAsync(dc.Stream, SerializerHelper.EnsureNotNull(type, nameof(type)), dc, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(int.MaxValue) ?? int.MaxValue).DynamicContext();
                 case SerializerTypes.Struct:
-                    return ReadStructNullableMethod.MakeGenericMethod(SerializerHelper.EnsureNotNull(type, nameof(type))).InvokeAuto(obj: null, stream, version, null, pool)
+                    return ReadStructNullableMethod.MakeGenericMethod(SerializerHelper.EnsureNotNull(type, nameof(type))).InvokeAuto(obj: null, dc.Stream, dc)
                         ?? throw new SerializerException($"{nameof(ReadStructNullable)} serialized {type} to NULL");
-                case SerializerTypes.Stream: return await ReadStreamNullableAsync(stream, SerializerHelper.EnsureNotNull(options?.Attribute?.GetStream(null, null, stream, version, cancellationToken), nameof(ISerializerOptions.Attribute)), version, pool, maxBufferSize: null, options?.GetMinLen(0) ?? 0, options?.GetMaxLen(long.MaxValue) ?? long.MaxValue, cancellationToken).DynamicContext();
-                default: throw SerializerException.From(new ArgumentException($"Unknown serializer type {serializer}", nameof(serializer)));
+                case SerializerTypes.Stream: return await ReadStreamNullableAsync(dc.Stream, SerializerHelper.EnsureNotNull(dc.Options?.Attribute?.GetStream(null, null, dc), nameof(ISerializerOptions.Attribute)), dc, maxBufferSize: null, dc.Options?.GetMinLen(0) ?? 0, dc.Options?.GetMaxLen(long.MaxValue) ?? long.MaxValue).DynamicContext();
+                case SerializerTypes.Type: return await ReadTypeNullableAsync(dc.Stream, dc).DynamicContext();
+                default: throw SerializerException.From(new ArgumentException($"Unknown serializer type {context.ItemSerializer}", nameof(context)));
             }
         }
 
         /// <summary>
         /// Read an item header, if the final item type is not specified
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="elementType">Item element type</param>
+        /// <param name="context">Context</param>
         /// <param name="index">Item index</param>
-        /// <param name="typeCache">Type cache</param>
-        /// <param name="objectCache">Object cache</param>
-        /// <param name="objType">Object type</param>
-        /// <param name="lastObjType">Last object type</param>
-        /// <param name="itemType">Item type</param>
-        /// <param name="itemSerializer">Item serializer type</param>
-        /// <param name="itemSyncDeserializer">Synchronous item deserializer</param>
+        /// <param name="elementType">Element type</param>
         /// <returns>Cached object</returns>
-        public static object? ReadAnyItemHeader(
-            Stream stream,
-            int version,
-            Type elementType,
-            int index,
-            Span<Type> typeCache,
-            ReadOnlySpan<object> objectCache,
-            ref ObjectTypes objType,
-            ref ObjectTypes lastObjType,
-            ref Type? itemType,
-            ref SerializerTypes itemSerializer,
-            ref StreamSerializer.Deserialize_Delegate? itemSyncDeserializer
-            )
+        public static object? ReadAnyItemHeader(ItemDeserializerContext context, int index, Type elementType)
         {
+            IDeserializationContext dc = context.Context;
             bool requireType;
             // Read the object type
-            objType = (ObjectTypes)ReadOneByte(stream, version);
-            Logging.WriteInfo($"\tRED OBJECT TYPE {objType}");
-            if (objType == ObjectTypes.Null) return null;
+            context.ObjectType = (ObjectTypes)ReadOneByte(dc.Stream, dc);
+            if (context.ObjectType == ObjectTypes.Null) return null;
             // Use the object cache
-            if (objType == ObjectTypes.Cached)
+            if (context.ObjectType == ObjectTypes.Cached)
             {
-                Logging.WriteInfo("\t\tUSING CACHE");
-                int objIndex = ReadOneByte(stream, version);
-                Logging.WriteInfo($"\t\tCACHE INDEX {objIndex}");
-                object? res = objectCache[objIndex] ?? throw new SerializerException($"Invalid object cache index #{objIndex}", new InvalidDataException());
-                itemType = res.GetType();
-                Logging.WriteInfo($"\t\tCACHED TYPE {itemType} {res}");
-                objType = res.GetObjectSerializerInfo().ObjectType;
-                (itemSerializer, itemSyncDeserializer, _) = itemType.GetItemDeserializerInfo(isAsync: false);
-                lastObjType = objType;
+                object res = context.GetCachedObject(ReadOneByte(dc.Stream, dc));
+                context.ItemType = res.GetType();
+                context.ObjectType = res.GetObjectSerializerInfo().ObjectType;
+                (context.ItemSerializer, context.ItemSyncDeserializer, _) = context.ItemType.GetItemDeserializerInfo(context.ObjectType, isAsync: false);
+                context.LastObjectType = context.ObjectType;
                 return res;
             }
             // Prepare the deserialization
-            if (objType == ObjectTypes.LastItemType)
+            if (context.ObjectType == ObjectTypes.LastItemType)
             {
-                Logging.WriteInfo($"\t\tUSING LAST OBJ TYPE {lastObjType}");
                 // Use the last object type
-                if (index == 0) throw new SerializerException($"Invalid object type {objType} for item #{index}", new InvalidDataException());
+                if (index == 0) throw new SerializerException($"Invalid object type {context.ObjectType} for item #{index}", new InvalidDataException());
                 requireType = false;
             }
             else
             {
-                Logging.WriteInfo("\t\tGETTING TYPE");
                 // Ensure correct deserializer informations
-                lastObjType = objType.RequiresObjectWriting() ? objType : default;
-                requireType = objType.RequiresTypeName();
-                Logging.WriteInfo($"\t\tREQUIRE TYPE {requireType}");
+                context.LastObjectType = context.ObjectType.RequiresObjectWriting() ? context.ObjectType : default;
+                requireType = context.ObjectType.RequiresType();
                 if (requireType)
                 {
                     // An object type is required
-                    if (objType.IsBasicTypeInfo())
+                    if (context.ObjectType.IsBasicTypeInfo())
                     {
-                        Logging.WriteInfo($"\t\tUSING BASIC TYPE INFO");
                         // Read a basic type information
-                        itemType = new SerializedTypeInfo((ObjectTypes)stream.ReadOneByte(version)).ToSerializableType();
-                        objType &= ~ObjectTypes.BasicTypeInfo;
+                        context.ItemType = new SerializedTypeInfo((ObjectTypes)dc.Stream.ReadOneByte(dc)).ToSerializableType();
+                        context.ObjectType &= ~ObjectTypes.BasicTypeInfo;
                     }
-                    if (objType.IsCached())
+                    if (context.ObjectType.IsCached())
                     {
-                        Logging.WriteInfo("\t\tUSING CACHE");
                         // Use a previously cached object type
-                        int typeIndex = ReadOneByte(stream, version);
-                        itemType = typeCache[typeIndex] ?? throw new SerializerException($"No type at cache index #{typeIndex}", new InvalidDataException());
-                        objType &= ~ObjectTypes.Cached;
+                        context.ItemType = context.GetCachedType(ReadOneByte(dc.Stream, dc));
+                        context.ObjectType &= ~ObjectTypes.Cached;
                     }
                     else
                     {
                         // Read the object type
-                        Logging.WriteInfo("\t\tREADING TYPE");
-                        itemType = ReadSerializableType(stream, version);
-                        Logging.WriteInfo($"\t\tRED TYPE {itemType}");
-                        if (!elementType.IsAssignableFrom(itemType) || itemType.IsAbstract || itemType.IsInterface || itemType == typeof(object))
-                            throw new SerializerException($"Invalid item type {itemType} for item #{index} ({elementType})", new InvalidCastException());
-                        int typeIndex = typeCache.AsReadOnly().IndexOf(null!);
-                        if (typeIndex != -1) typeCache[typeIndex] = itemType;
+                        context.ItemType = ReadSerializableType(dc.Stream, dc);
+                        if (!elementType.IsAssignableFrom(context.ItemType) || context.ItemType.IsAbstract || context.ItemType.IsInterface || context.ItemType == typeof(object))
+                            throw new SerializerException($"Invalid item type {context.ItemType} for item #{index} ({elementType})", new InvalidCastException());
+                        context.AddType(context.ItemType);
                     }
-                    (itemSerializer, itemSyncDeserializer, _) = itemType.GetItemDeserializerInfo(isAsync: false);
+                    (context.ItemSerializer, context.ItemSyncDeserializer, _) = context.ItemType.GetItemDeserializerInfo(context.ObjectType, isAsync: false);
                 }
                 else
                 {
                     // No object type is required
-                    itemType = null;
-                    itemSerializer = SerializerTypes.Any;
+                    context.ItemType = null;
+                    context.ItemSerializer = SerializerTypes.Any;
                 }
             }
             // Ensure having a valid type serializer configuration
-            if (requireType && itemType == null)
+            if (requireType && context.ItemType == null)
                 throw new SerializerException($"Serialized type name expected for item #{index}", new InvalidDataException());
             return null;
         }
@@ -310,107 +247,77 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Read an item header, if the final item type is not specified
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="elementType">Item element type</param>
+        /// <param name="context">Context</param>
         /// <param name="index">Item index</param>
-        /// <param name="typeCache">Type cache</param>
-        /// <param name="objectCache">Object cache</param>
-        /// <param name="lastObjType">Last object type</param>
-        /// <param name="itemType">Item type</param>
-        /// <param name="itemSerializer">Item serializer type</param>
-        /// <param name="itemSyncDeserializer">Synchronous item deserializer</param>
-        /// <param name="itemAsyncDeserializer">Asynchronous item deserializer</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="elementType">Item element type</param>
         /// <returns>Item informations</returns>
-        public static async Task<(
-            object? Object,
-            ObjectTypes ObjectType,
-            ObjectTypes LastObjType,
-            Type? ItemType,
-            SerializerTypes ItemSerializer,
-            StreamSerializer.Deserialize_Delegate? ItemSyncDesSerializer,
-            StreamSerializer.AsyncDeserialize_Delegate? ItemAsyncDeserializer
-            )> ReadAnyItemHeaderAsync(
-            Stream stream,
-            int version,
-            Type elementType,
-            int index,
-            Memory<Type> typeCache,
-            ReadOnlyMemory<object> objectCache,
-            ObjectTypes lastObjType,
-            Type? itemType,
-            SerializerTypes itemSerializer,
-            StreamSerializer.Deserialize_Delegate? itemSyncDeserializer,
-            StreamSerializer.AsyncDeserialize_Delegate? itemAsyncDeserializer,
-            CancellationToken cancellationToken
-            )
+        public static async Task<object?> ReadAnyItemHeaderAsync(ItemDeserializerContext context, int index, Type elementType)
         {
+            IDeserializationContext dc = context.Context;
             bool requireType;
             // Read the object type
-            ObjectTypes objType = (ObjectTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
-            if (objType == ObjectTypes.Null) return (Object: null, objType, lastObjType, itemType, itemSerializer, itemSyncDeserializer, itemAsyncDeserializer);
+            context.ObjectType = (ObjectTypes)await ReadOneByteAsync(dc.Stream, dc).DynamicContext();
+            if (context.ObjectType == ObjectTypes.Null) return null;
             // Use the object cache
-            if (objType == ObjectTypes.Cached)
+            if (context.ObjectType == ObjectTypes.Cached)
             {
-                int objIndex = await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
-                object? res = objectCache.Span[objIndex] ?? throw new SerializerException($"Invalid object cache index #{objIndex}", new InvalidDataException());
-                itemType = res.GetType();
-                objType = res.GetObjectSerializerInfo().ObjectType;
-                (itemSerializer, itemSyncDeserializer, itemAsyncDeserializer) = itemType.GetItemDeserializerInfo(isAsync: false);
-                lastObjType = objType;
-                return (res, objType, lastObjType, itemType, itemSerializer, itemSyncDeserializer, itemAsyncDeserializer);
+                object res = context.GetCachedObject(ReadOneByte(dc.Stream, dc));
+                context.ItemType = res.GetType();
+                context.ObjectType = res.GetObjectSerializerInfo().ObjectType;
+                (context.ItemSerializer, context.ItemSyncDeserializer, context.ItemAsyncDeserializer) =
+                    context.ItemType.GetItemDeserializerInfo(context.ObjectType, isAsync: true);
+                context.LastObjectType = context.ObjectType;
+                return res;
             }
             // Prepare the deserialization
-            if (objType == ObjectTypes.LastItemType)
+            if (context.ObjectType == ObjectTypes.LastItemType)
             {
                 // Use the last object type
-                if (index == 0) throw new SerializerException($"Invalid object type {objType} for item #{index}", new InvalidDataException());
+                if (index == 0) throw new SerializerException($"Invalid object type {context.ObjectType} for item #{index}", new InvalidDataException());
                 requireType = false;
             }
             else
             {
                 // Ensure correct deserializer informations
-                lastObjType = objType.RequiresObjectWriting() ? objType : default;
-                requireType = objType.RequiresTypeName();
+                context.LastObjectType = context.ObjectType.RequiresObjectWriting() ? context.ObjectType : default;
+                requireType = context.ObjectType.RequiresType();
                 if (requireType)
                 {
-                    // An object type (name) is required
-                    if (objType.IsBasicTypeInfo())
+                    // An object type is required
+                    if (context.ObjectType.IsBasicTypeInfo())
                     {
                         // Read a basic type information
-                        itemType = new SerializedTypeInfo((ObjectTypes)await stream.ReadOneByteAsync(version, cancellationToken).DynamicContext()).ToSerializableType();
-                        objType &= ~ObjectTypes.BasicTypeInfo;
+                        context.ItemType = new SerializedTypeInfo((ObjectTypes)await dc.Stream.ReadOneByteAsync(dc).DynamicContext()).ToSerializableType();
+                        context.ObjectType &= ~ObjectTypes.BasicTypeInfo;
                     }
-                    else if (objType.IsCached())
+                    if (context.ObjectType.IsCached())
                     {
                         // Use a previously cached object type
-                        int typeIndex = await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
-                        itemType = typeCache.Span[typeIndex] ?? throw new SerializerException($"No type at cache index #{typeIndex}", new InvalidDataException());
-                        objType &= ~ObjectTypes.Cached;
+                        context.ItemType = context.GetCachedType(await ReadOneByteAsync(dc.Stream, dc).DynamicContext());
+                        context.ObjectType &= ~ObjectTypes.Cached;
                     }
                     else
                     {
-                        // Read the object type name
-                        itemType = await ReadSerializableTypeAsync(stream, version, cancellationToken).DynamicContext();
-                        if (!elementType.IsAssignableFrom(itemType) || itemType.IsAbstract || itemType.IsInterface || itemType == typeof(object))
-                            throw new SerializerException($"Invalid item type {itemType} for item #{index} ({elementType})", new InvalidCastException());
-                        int typeIndex = typeCache.AsReadOnly().IndexOf(null!);
-                        if (typeIndex != -1) typeCache.Span[typeIndex] = itemType;
+                        // Read the object type
+                        context.ItemType = await ReadSerializableTypeAsync(dc.Stream, dc).DynamicContext();
+                        if (!elementType.IsAssignableFrom(context.ItemType) || context.ItemType.IsAbstract || context.ItemType.IsInterface || context.ItemType == typeof(object))
+                            throw new SerializerException($"Invalid item type {context.ItemType} for item #{index} ({elementType})", new InvalidCastException());
+                        context.AddType(context.ItemType);
                     }
-                    (itemSerializer, itemSyncDeserializer, itemAsyncDeserializer) = itemType.GetItemDeserializerInfo(isAsync: true);
+                    (context.ItemSerializer, context.ItemSyncDeserializer, context.ItemAsyncDeserializer) =
+                        context.ItemType.GetItemDeserializerInfo(context.ObjectType, isAsync: true);
                 }
                 else
                 {
-                    // No object type name is required
-                    itemType = null;
-                    itemSerializer = SerializerTypes.Any;
+                    // No object type is required
+                    context.ItemType = null;
+                    context.ItemSerializer = SerializerTypes.Any;
                 }
             }
             // Ensure having a valid type serializer configuration
-            if (requireType && itemType == null)
-                throw new SerializerException($"Serialized type expected for item #{index}", new InvalidDataException());
-            return (Object: null, objType, lastObjType, itemType, itemSerializer, itemSyncDeserializer, itemAsyncDeserializer);
+            if (requireType && context.ItemType == null)
+                throw new SerializerException($"Serialized type name expected for item #{index}", new InvalidDataException());
+            return null;
         }
     }
 }

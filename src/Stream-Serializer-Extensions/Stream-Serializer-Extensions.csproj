@@ -25,6 +25,7 @@
     <DebugType>embedded</DebugType>
     <EmbedAllSources>true</EmbedAllSources>
     <Configurations>Debug;Release;Trunk</Configurations>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Trunk|AnyCPU'">

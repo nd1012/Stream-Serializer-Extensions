@@ -1,5 +1,4 @@
-﻿using System.Buffers;
-using System.Runtime;
+﻿using System.Runtime;
 using System.Runtime.CompilerServices;
 using wan24.Core;
 
@@ -14,12 +13,12 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Just a method adapter")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Stream WriteFixedArray<T>(this Stream stream, Span<T> value, bool valuesNullable = false)
-            => WriteFixedArray(stream, (ReadOnlySpan<T>)value, valuesNullable);
+        public static Stream WriteFixedArray<T>(this Stream stream, Span<T> value, ISerializationContext context)
+            => WriteFixedArray(stream, (ReadOnlySpan<T>)value, context);
 
         /// <summary>
         /// Write
@@ -27,71 +26,48 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Stream WriteFixedArray<T>(this Stream stream, ReadOnlySpan<T> value, bool valuesNullable = false)
+        public static Stream WriteFixedArray<T>(this Stream stream, ReadOnlySpan<T> value, ISerializationContext context)
         {
             try
             {
+                using ContextRecursion cr = new(context);
                 Type elementType = typeof(T);
-                (SerializerTypes serializer, StreamSerializer.Serialize_Delegate? syncSerializer, _) = elementType.GetItemSerializerInfo(isAsync: false);
-                if (serializer == SerializerTypes.Any)
+                using ItemSerializerContext itemContext = new(context);
+                (itemContext.ItemSerializer, itemContext.ItemSyncSerializer, _) = elementType.GetItemSerializerInfo(ObjectTypes.Null, isAsync: false);
+                if (itemContext.ItemSerializer == SerializerTypes.Any)
                 {
-                    ObjectTypes objType = default;
-                    Type? lastItemType = null;
-                    Type itemType;
                     T? item;
-                    SerializerTypes itemSerializer = default;
-                    StreamSerializer.Serialize_Delegate? itemSyncSerializer = null;
-                    bool writeObject = false;
-                    int[] cache = ArrayPool<int>.Shared.RentClean(byte.MaxValue << 1);
-                    try
+                    Type itemType;
+                    for (int i = 0, len = value.Length; i < len; i++)
                     {
-                        Span<int> typeCache = cache.AsSpan(0, byte.MaxValue),
-                            objectCache = cache.AsSpan(byte.MaxValue, byte.MaxValue);
-                        for (int i = 0, len = value.Length; i < len; i++)
+                        item = value[i];
+                        if (item == null)
                         {
-                            item = value[i];
-                            if (item == null)
-                            {
-                                Write(stream, (byte)ObjectTypes.Null);
-                                continue;
-                            }
-                            itemType = item!.GetType();
-                            WriteAnyItemHeader(
-                                stream,
-                                item,
-                                itemType,
-                                typeCache,
-                                objectCache,
-                                ref lastItemType,
-                                ref itemSerializer,
-                                ref itemSyncSerializer,
-                                ref objType,
-                                ref writeObject
-                                );
-                            if (writeObject && objType != ObjectTypes.Cached)
-                                if (itemSerializer == SerializerTypes.Serializer)
-                                {
-                                    WriteItem(stream, item, nullable: false, itemSerializer, itemSyncSerializer);
-                                }
-                                else
-                                {
-                                    WriteAny(stream, item, objType, writeObject);
-                                }
+                            if (!context.Nullable) throw new SerializerException($"Found NULL item at #{i}", new InvalidDataException());
+                            Write(context.Stream, (byte)ObjectTypes.Null, context);
+                            continue;
                         }
-                    }
-                    finally
-                    {
-                        ArrayPool<int>.Shared.Return(cache);
+                        itemType = item.GetType();
+                        WriteAnyItemHeader(itemContext, item, itemType);
+                        if (itemContext.WriteObject && itemContext.ObjectType != ObjectTypes.Cached)
+                            if (itemContext.ItemSerializer == SerializerTypes.Serializer)
+                            {
+                                WriteItem(itemContext, item);
+                            }
+                            else
+                            {
+                                WriteAny(stream, item, itemContext.ObjectType, itemContext.WriteObject, context);
+                            }
                     }
                 }
                 else
                 {
-                    for (int i = 0, len = value.Length; i < len; WriteItem(stream, value[i]!, valuesNullable, serializer, syncSerializer), i++) ;
+                    for (int i = 0, len = value.Length; i < len; WriteItem(itemContext, value[i]!), i++) ;
                 }
                 return stream;
             }
@@ -110,75 +86,47 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Stream WriteFixedArray(this Stream stream, Array value, bool valuesNullable = false)
+        public static Stream WriteFixedArray(this Stream stream, Array value, ISerializationContext context)
             => SerializerException.Wrap(() =>
             {
+                using ContextRecursion cr = new(context);
                 Type elementType = value.GetType().GetElementType()!;
-                (SerializerTypes serializer, StreamSerializer.Serialize_Delegate? syncSerializer, _) = elementType.GetItemSerializerInfo(isAsync: false);
-                if (serializer == SerializerTypes.Any)
+                using ItemSerializerContext itemContext = new(context);
+                (itemContext.ItemSerializer, itemContext.ItemSyncSerializer, _) = elementType.GetItemSerializerInfo(ObjectTypes.Null, isAsync: false);
+                if (itemContext.ItemSerializer == SerializerTypes.Any)
                 {
-                    ObjectTypes objType = default;
-                    Type? lastItemType = null;
-                    Type itemType;
                     object? item;
-                    SerializerTypes itemSerializer = default;
-                    StreamSerializer.Serialize_Delegate? itemSyncSerializer = null;
-                    bool writeObject = false,
-                        isComplete;
-                    int[] cache = ArrayPool<int>.Shared.RentClean(byte.MaxValue << 1);
-                    try
+                    Type itemType;
+                    for (int i = 0, len = value.Length; i < len; i++)
                     {
-                        Span<int> typeCache = cache.AsSpan(0, byte.MaxValue),
-                            objectCache = cache.AsSpan(byte.MaxValue, byte.MaxValue);
-                        for (int i = 0, len = value.Length; i < len; i++)
+                        item = value.GetValue(i);
+                        if (item == null)
                         {
-                            item = value.GetValue(i);
-                            if (item == null)
-                            {
-                                Write(stream, (byte)ObjectTypes.Null);
-                                continue;
-                            }
-                            itemType = item.GetType();
-                            isComplete = WriteAnyItemHeader(
-                                stream,
-                                item,
-                                itemType,
-                                typeCache,
-                                objectCache,
-                                ref lastItemType,
-                                ref itemSerializer,
-                                ref itemSyncSerializer,
-                                ref objType,
-                                ref writeObject
-                                );
-                            Logging.WriteInfo($"WRITE {i} {stream.Position} {objType} {(int)objType} {itemType}");
-                            if (!isComplete)
-                            {
-                                if (itemSerializer == SerializerTypes.Serializer)
-                                {
-                                    WriteItem(stream, item, nullable: false, itemSerializer, itemSyncSerializer);
-                                }
-                                else
-                                {
-                                    WriteAny(stream, item, objType, writeObject);
-                                }
-                                Logging.WriteInfo($"\t\tWROTE {stream.Position}");
-                            }
+                            if (!context.Nullable) throw new SerializerException($"Found NULL item at #{i}", new InvalidDataException());
+                            Write(context.Stream, (byte)ObjectTypes.Null, context);
+                            continue;
                         }
-                    }
-                    finally
-                    {
-                        ArrayPool<int>.Shared.Return(cache);
+                        itemType = item.GetType();
+                        WriteAnyItemHeader(itemContext, item, itemType);
+                        if (itemContext.WriteObject && itemContext.ObjectType != ObjectTypes.Cached)
+                            if (itemContext.ItemSerializer == SerializerTypes.Serializer)
+                            {
+                                WriteItem(itemContext, item);
+                            }
+                            else
+                            {
+                                WriteAny(stream, item, itemContext.ObjectType, itemContext.WriteObject, context);
+                            }
                     }
                 }
                 else
                 {
-                    for (int i = 0, len = value.Length; i < len; WriteItem(stream, value.GetValue(i)!, valuesNullable, serializer, syncSerializer), i++) ;
+                    for (int i = 0, len = value.Length; i < len; WriteItem(itemContext, value.GetValue(i)!), i++) ;
                 }
                 return stream;
             });
@@ -189,13 +137,12 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Just a method adapter")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteFixedArrayAsync<T>(this Stream stream, Memory<T> value, bool valuesNullable = false, CancellationToken cancellationToken = default)
-            => WriteFixedArrayAsync(stream, (ReadOnlyMemory<T>)value, valuesNullable, cancellationToken);
+        public static Task<Stream> WriteFixedArrayAsync<T>(this Stream stream, Memory<T> value, ISerializationContext context)
+            => WriteFixedArrayAsync(stream, (ReadOnlyMemory<T>)value, context);
 
         /// <summary>
         /// Write
@@ -203,13 +150,12 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Just a method adapter")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteFixedArrayAsync<T>(this Task<Stream> stream, Memory<T> value, bool valuesNullable = false, CancellationToken cancellationToken = default)
-            => AsyncHelper.FluentAsync(stream, value, valuesNullable, cancellationToken, WriteFixedArrayAsync);
+        public static Task<Stream> WriteFixedArrayAsync<T>(this Task<Stream> stream, Memory<T> value, ISerializationContext context)
+            => AsyncHelper.FluentAsync(stream, value, context, WriteFixedArrayAsync);
 
         /// <summary>
         /// Write
@@ -217,80 +163,48 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task<Stream> WriteFixedArrayAsync<T>(this Stream stream, ReadOnlyMemory<T> value, bool valuesNullable = false, CancellationToken cancellationToken = default)
+        public static Task<Stream> WriteFixedArrayAsync<T>(this Stream stream, ReadOnlyMemory<T> value, ISerializationContext context)
             => SerializerException.WrapAsync(async () =>
             {
+                using ContextRecursion cr = new(context);
                 Type elementType = typeof(T);
-                (SerializerTypes serializer, StreamSerializer.Serialize_Delegate? syncSerializer, StreamSerializer.AsyncSerialize_Delegate? asyncSerializer) =
-                    elementType.GetItemSerializerInfo(isAsync: true);
-                if (serializer == SerializerTypes.Any)
+                using ItemSerializerContext itemContext = new(context);
+                (itemContext.ItemSerializer, itemContext.ItemSyncSerializer, itemContext.ItemAsyncSerializer) = 
+                    elementType.GetItemSerializerInfo(ObjectTypes.Null, isAsync: true);
+                if (itemContext.ItemSerializer == SerializerTypes.Any)
                 {
-                    ObjectTypes objType = default;
-                    Type? lastItemType = null;
-                    Type itemType;
                     T? item;
-                    SerializerTypes itemSerializer = default;
-                    StreamSerializer.Serialize_Delegate? itemSyncSerializer = null;
-                    StreamSerializer.AsyncSerialize_Delegate? itemAsyncSerializer = null;
-                    bool writeObject = false,
-                        isComplete;
-                    int[] cache = ArrayPool<int>.Shared.RentClean(byte.MaxValue << 1);
-                    try
+                    Type itemType;
+                    for (int i = 0, len = value.Length; i < len; i++)
                     {
-                        Memory<int> typeCache = cache.AsMemory(0, byte.MaxValue),
-                            objectCache = cache.AsMemory(byte.MaxValue, byte.MaxValue);
-                        for (int i = 0, len = value.Length; i < len; i++)
+                        item = value.Span[i];
+                        if (item == null)
                         {
-                            item = value.Span[i];
-                            if (item == null)
-                            {
-                                await WriteAsync(stream, (byte)ObjectTypes.Null, cancellationToken).DynamicContext();
-                                continue;
-                            }
-                            itemType = item.GetType();
-                            (isComplete, lastItemType, itemSerializer, itemSyncSerializer, itemAsyncSerializer, objType, writeObject) = await WriteAnyItemHeaderAsync(
-                                stream,
-                                item,
-                                itemType,
-                                typeCache,
-                                objectCache,
-                                lastItemType,
-                                itemSerializer,
-                                itemSyncSerializer,
-                                itemAsyncSerializer,
-                                objType,
-                                writeObject,
-                                cancellationToken
-                                ).DynamicContext();
-                            if (!isComplete && writeObject)
-                                if (itemSerializer == SerializerTypes.Serializer)
-                                {
-                                    await WriteItemAsync(stream, item, nullable: false, itemSerializer, itemSyncSerializer, itemAsyncSerializer, cancellationToken).DynamicContext();
-                                }
-                                else
-                                {
-                                    await WriteAnyAsync(stream, item, objType, writeObject, cancellationToken).DynamicContext();
-                                }
+                            if (!context.Nullable) throw new SerializerException($"Found NULL item at #{i}", new InvalidDataException());
+                            await WriteAsync(context.Stream, (byte)ObjectTypes.Null, context).DynamicContext();
+                            continue;
                         }
-                    }
-                    finally
-                    {
-                        ArrayPool<int>.Shared.Return(cache);
+                        itemType = item.GetType();
+                        await WriteAnyItemHeaderAsync(itemContext, item, itemType).DynamicContext();
+                        if (itemContext.WriteObject && itemContext.ObjectType != ObjectTypes.Cached)
+                            if (itemContext.ItemSerializer == SerializerTypes.Serializer)
+                            {
+                                await WriteItemAsync(itemContext, item).DynamicContext();
+                            }
+                            else
+                            {
+                                await WriteAnyAsync(stream, item, itemContext.ObjectType, itemContext.WriteObject, context).DynamicContext();
+                            }
                     }
                 }
                 else
                 {
-                    for (
-                        int i = 0, len = value.Length;
-                        i < len;
-                        await WriteItemAsync(stream, value.Span[i]!, valuesNullable, serializer, syncSerializer, asyncSerializer, cancellationToken).DynamicContext(), i++
-                        ) ;
+                    for (int i = 0, len = value.Length; i < len; await WriteItemAsync(itemContext, value.Span[i]!).DynamicContext(), i++) ;
                 }
                 return stream;
             });
@@ -301,98 +215,64 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<Stream> WriteFixedArrayAsync<T>(
             this Task<Stream> stream,
             ReadOnlyMemory<T> value,
-            bool valuesNullable = false,
-            CancellationToken cancellationToken = default
+            ISerializationContext context
             )
-            => AsyncHelper.FluentAsync(stream, value, valuesNullable, cancellationToken, WriteFixedArrayAsync);
+            => AsyncHelper.FluentAsync(stream, value, context, WriteFixedArrayAsync);
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task<Stream> WriteFixedArrayAsync(this Stream stream, Array value, bool valuesNullable = false, CancellationToken cancellationToken = default)
+        public static Task<Stream> WriteFixedArrayAsync(this Stream stream, Array value, ISerializationContext context)
             => SerializerException.WrapAsync(async () =>
             {
+                using ContextRecursion cr = new(context);
                 Type elementType = value.GetType().GetElementType()!;
-                (SerializerTypes serializer, StreamSerializer.Serialize_Delegate? syncSerializer, StreamSerializer.AsyncSerialize_Delegate? asyncSerializer) =
-                    elementType.GetItemSerializerInfo(isAsync: true);
-                if (serializer == SerializerTypes.Any)
+                using ItemSerializerContext itemContext = new(context);
+                (itemContext.ItemSerializer, itemContext.ItemSyncSerializer, itemContext.ItemAsyncSerializer) = 
+                    elementType.GetItemSerializerInfo(ObjectTypes.Null, isAsync: true);
+                if (itemContext.ItemSerializer == SerializerTypes.Any)
                 {
-                    ObjectTypes objType = default;
-                    Type? lastItemType = null;
-                    Type itemType;
                     object? item;
-                    SerializerTypes itemSerializer = default;
-                    StreamSerializer.Serialize_Delegate? itemSyncSerializer = null;
-                    StreamSerializer.AsyncSerialize_Delegate? itemAsyncSerializer = null;
-                    bool writeObject = false,
-                        isComplete;
-                    int[] cache = ArrayPool<int>.Shared.RentClean(byte.MaxValue << 1);
-                    try
+                    Type itemType;
+                    for (int i = 0, len = value.Length; i < len; i++)
                     {
-                        Memory<int> typeCache = cache.AsMemory(0, byte.MaxValue),
-                            objectCache = cache.AsMemory(byte.MaxValue, byte.MaxValue);
-                        for (int i = 0, len = value.Length; i < len; i++)
+                        item = value.GetValue(i);
+                        if (item == null)
                         {
-                            item = value.GetValue(i);
-                            if (item == null)
-                            {
-                                await WriteAsync(stream, (byte)ObjectTypes.Null, cancellationToken).DynamicContext();
-                                continue;
-                            }
-                            itemType = item.GetType();
-                            (isComplete, lastItemType, itemSerializer, itemSyncSerializer, itemAsyncSerializer, objType, writeObject) = await WriteAnyItemHeaderAsync(
-                                stream,
-                                item,
-                                itemType,
-                                typeCache,
-                                objectCache,
-                                lastItemType,
-                                itemSerializer,
-                                itemSyncSerializer,
-                                itemAsyncSerializer,
-                                objType,
-                                writeObject,
-                                cancellationToken
-                                ).DynamicContext();
-                            if (!isComplete && writeObject)
-                                if (itemSerializer == SerializerTypes.Serializer)
-                                {
-                                    await WriteItemAsync(stream, item, nullable: false, itemSerializer, itemSyncSerializer, itemAsyncSerializer, cancellationToken).DynamicContext();
-                                }
-                                else
-                                {
-                                    await WriteAnyAsync(stream, item, objType, writeObject, cancellationToken).DynamicContext();
-                                }
+                            if (!context.Nullable) throw new SerializerException($"Found NULL item at #{i}", new InvalidDataException());
+                            await WriteAsync(context.Stream, (byte)ObjectTypes.Null, context).DynamicContext();
+                            continue;
                         }
-                    }
-                    finally
-                    {
-                        ArrayPool<int>.Shared.Return(cache);
+                        itemType = item.GetType();
+                        await WriteAnyItemHeaderAsync(itemContext, item, itemType).DynamicContext();
+                        if (itemContext.WriteObject && itemContext.ObjectType != ObjectTypes.Cached)
+                            if (itemContext.ItemSerializer == SerializerTypes.Serializer)
+                            {
+                                await WriteItemAsync(itemContext, item).DynamicContext();
+                            }
+                            else
+                            {
+                                await WriteAnyAsync(stream, item, itemContext.ObjectType, itemContext.WriteObject, context).DynamicContext();
+                            }
                     }
                 }
                 else
                 {
-                    for (
-                        int i = 0, len = value.Length;
-                        i < len;
-                        await WriteItemAsync(stream, value.GetValue(i)!, valuesNullable, serializer, syncSerializer, asyncSerializer, cancellationToken).DynamicContext(), i++
-                        ) ;
+                    for (int i = 0, len = value.Length; i < len; await WriteItemAsync(itemContext, value.GetValue(i)!).DynamicContext(), i++) ;
                 }
                 return stream;
             });
@@ -402,12 +282,11 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteFixedArrayAsync(this Task<Stream> stream, Array value, bool valuesNullable = false, CancellationToken cancellationToken = default)
-            => AsyncHelper.FluentAsync(stream, value, valuesNullable, cancellationToken, WriteFixedArrayAsync);
+        public static Task<Stream> WriteFixedArrayAsync(this Task<Stream> stream, Array value, ISerializationContext context)
+            => AsyncHelper.FluentAsync(stream, value, context, WriteFixedArrayAsync);
     }
 }

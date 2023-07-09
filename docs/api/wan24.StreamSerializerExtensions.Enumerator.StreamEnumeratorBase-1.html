@@ -79,93 +79,20 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">wan24.Core.DisposableBase</span></div>
-    <div class="level2"><span class="xref">StreamEnumeratorBase&lt;T&gt;</span></div>
-      <div class="level3"><a class="xref" href="wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator-1.html">StreamNumberEnumerator&lt;T&gt;</a></div>
-      <div class="level3"><a class="xref" href="wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator-1.html">StreamSerializerEnumerator&lt;T&gt;</a></div>
-      <div class="level3"><a class="xref" href="wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.html">StreamStringEnumerator</a></div>
+    <div class="level1"><span class="xref">StreamEnumeratorBase&lt;T&gt;</span></div>
+      <div class="level2"><a class="xref" href="wan24.StreamSerializerExtensions.Enumerator.StreamNumberEnumerator-1.html">StreamNumberEnumerator&lt;T&gt;</a></div>
+      <div class="level2"><a class="xref" href="wan24.StreamSerializerExtensions.Enumerator.StreamSerializerEnumerator-1.html">StreamSerializerEnumerator&lt;T&gt;</a></div>
+      <div class="level2"><a class="xref" href="wan24.StreamSerializerExtensions.Enumerator.StreamStringEnumerator.html">StreamStringEnumerator</a></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><span class="xref">wan24.Core.IDisposableObject</span></div>
-    <div><span class="xref">System.IDisposable</span></div>
-    <div><span class="xref">System.IAsyncDisposable</span></div>
     <div><span class="xref">System.Collections.IEnumerator</span>&lt;T&gt;</div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">wan24.Core.DisposableBase.DisposeSyncObject</span>
-    </div>
-    <div>
-      <span class="xref">wan24.Core.DisposableBase.EnsureUndisposed(System.Boolean, System.Boolean)</span>
-    </div>
-    <div>
-      <span class="xref">wan24.Core.DisposableBase.IfUndisposed&lt;T&gt;(T, System.Boolean)</span>
-    </div>
-    <div>
-      <span class="xref">wan24.Core.DisposableBase.IfUndisposed(System.Action, System.Boolean)</span>
-    </div>
-    <div>
-      <span class="xref">wan24.Core.DisposableBase.IfUndisposed&lt;T&gt;(System.Func&lt;T&gt;, System.Boolean)</span>
-    </div>
-    <div>
-      <span class="xref">wan24.Core.DisposableBase.IfUndisposedNullable&lt;T&gt;(System.Func&lt;T&gt;, System.Boolean)</span>
-    </div>
-    <div>
-      <span class="xref">wan24.Core.DisposableBase.DisposeCore()</span>
-    </div>
-    <div>
-      <span class="xref">wan24.Core.DisposableBase.DisposeAttributes()</span>
-    </div>
-    <div>
-      <span class="xref">wan24.Core.DisposableBase.DisposeAttributesAsync()</span>
-    </div>
-    <div>
-      <span class="xref">wan24.Core.DisposableBase.Dispose()</span>
-    </div>
-    <div>
-      <span class="xref">wan24.Core.DisposableBase.DisposeAsync()</span>
-    </div>
-    <div>
-      <span class="xref">wan24.Core.DisposableBase.IsDisposing</span>
-    </div>
-    <div>
-      <span class="xref">wan24.Core.DisposableBase.IsDisposed</span>
-    </div>
-    <div>
-      <span class="xref">wan24.Core.DisposableBase.OnDisposing</span>
-    </div>
-    <div>
-      <span class="xref">wan24.Core.DisposableBase.OnDisposed</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="wan24.StreamSerializerExtensions.Enumerator.html">wan24.StreamSerializerExtensions.Enumerator</a></h6>
   <h6><strong>Assembly</strong>: StreamSerializerExtensions.dll</h6>
   <h5 id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class StreamEnumeratorBase&lt;T&gt; : DisposableBase, IDisposableObject, IDisposable, IAsyncDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class StreamEnumeratorBase&lt;T&gt; : DisposableBase</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -187,19 +114,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1__ctor_Stream_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase%601.%23ctor(Stream%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1__ctor_wan24_StreamSerializerExtensions_IDeserializationContext_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase%601.%23ctor(wan24.StreamSerializerExtensions.IDeserializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L34">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L29">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1__ctor_" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.#ctor*"></a>
-  <h4 id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1__ctor_Stream_System_Nullable_System_Int32__" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.#ctor(Stream,System.Nullable{System.Int32})">StreamEnumeratorBase(Stream, Nullable&lt;Int32&gt;)</h4>
+  <h4 id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1__ctor_wan24_StreamSerializerExtensions_IDeserializationContext_" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.#ctor(wan24.StreamSerializerExtensions.IDeserializationContext)">StreamEnumeratorBase(IDeserializationContext)</h4>
   <div class="markdown level1 summary"><p>Constructor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected StreamEnumeratorBase(Stream stream, int? version = null)</code></pre>
+    <pre><code class="lang-csharp hljs">protected StreamEnumeratorBase(IDeserializationContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -212,15 +139,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><span class="parametername">stream</span></td>
-        <td><p>Stream</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
-        <td><span class="parametername">version</span></td>
-        <td><p>Serializer version</p>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.IDeserializationContext.html">IDeserializationContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Context</p>
 </td>
       </tr>
     </tbody>
@@ -232,7 +153,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1__Current.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase%601._Current%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L27">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L23">View Source</a>
   </span>
   <h4 id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1__Current" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1._Current">_Current</h4>
   <div class="markdown level1 summary"><p>Current object</p>
@@ -259,18 +180,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_SerializerVersion.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase%601.SerializerVersion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Context.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase%601.Context%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L19">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L15">View Source</a>
   </span>
-  <h4 id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_SerializerVersion" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.SerializerVersion">SerializerVersion</h4>
-  <div class="markdown level1 summary"><p>Serializer version</p>
+  <h4 id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Context" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Context">Context</h4>
+  <div class="markdown level1 summary"><p>Stream</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected readonly int SerializerVersion</code></pre>
+    <pre><code class="lang-csharp hljs">protected readonly IDeserializationContext Context</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -282,7 +203,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.IDeserializationContext.html">IDeserializationContext</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -292,7 +213,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_StartPosition.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase%601.StartPosition%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L23">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L19">View Source</a>
   </span>
   <h4 id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_StartPosition" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.StartPosition">StartPosition</h4>
   <div class="markdown level1 summary"><p>Stream start position</p>
@@ -317,36 +238,6 @@
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Stream.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase%601.Stream%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L15">View Source</a>
-  </span>
-  <h4 id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Stream" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Stream">Stream</h4>
-  <div class="markdown level1 summary"><p>Stream</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected readonly Stream Stream</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Stream</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
@@ -354,7 +245,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Current.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase%601.Current%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L42">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L36">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Current_" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Current*"></a>
   <h4 id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Current" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Current">Current</h4>
@@ -386,7 +277,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase%601.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L85">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L79">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Dispose_" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Dispose*"></a>
   <h4 id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Dispose_System_Boolean_" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Dispose(System.Boolean)">Dispose(Boolean)</h4>
@@ -413,23 +304,21 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">wan24.Core.DisposableBase.Dispose(System.Boolean)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Enumerate__1_Stream_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase%601.Enumerate%60%601(Stream%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Enumerate__1_wan24_StreamSerializerExtensions_IDeserializationContext_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase%601.Enumerate%60%601(wan24.StreamSerializerExtensions.IDeserializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L94">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L87">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Enumerate_" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Enumerate*"></a>
-  <h4 id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Enumerate__1_Stream_System_Nullable_System_Int32__" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Enumerate``1(Stream,System.Nullable{System.Int32})">Enumerate&lt;tEnumerator&gt;(Stream, Nullable&lt;Int32&gt;)</h4>
+  <h4 id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Enumerate__1_wan24_StreamSerializerExtensions_IDeserializationContext_" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Enumerate``1(wan24.StreamSerializerExtensions.IDeserializationContext)">Enumerate&lt;tEnumerator&gt;(IDeserializationContext)</h4>
   <div class="markdown level1 summary"><p>Enumerate</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;T&gt; Enumerate&lt;tEnumerator&gt;(Stream stream, int? version = null)
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;T&gt; Enumerate&lt;tEnumerator&gt;(IDeserializationContext context)
     where tEnumerator : StreamEnumeratorBase&lt;T&gt;</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -443,15 +332,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><span class="parametername">stream</span></td>
-        <td><p>Stream</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
-        <td><span class="parametername">version</span></td>
-        <td><p>Serializer version</p>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.IDeserializationContext.html">IDeserializationContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Context</p>
 </td>
       </tr>
     </tbody>
@@ -493,7 +376,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_MoveNext.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase%601.MoveNext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L48">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L42">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_MoveNext_" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.MoveNext*"></a>
   <h4 id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_MoveNext" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.MoveNext">MoveNext()</h4>
@@ -523,7 +406,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_ReadObject.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase%601.ReadObject%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L82">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L76">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_ReadObject_" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.ReadObject*"></a>
   <h4 id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_ReadObject" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.ReadObject">ReadObject()</h4>
@@ -555,7 +438,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Reset.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase%601.Reset%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L70">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L64">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Reset_" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Reset*"></a>
   <h4 id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_Reset" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.Reset">Reset()</h4>
@@ -572,7 +455,7 @@
     <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_System_Collections_IEnumerator_Current.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase%601.System%23Collections%23IEnumerator%23Current%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L45">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/Enumerator/StreamEnumeratorBase.cs/#L39">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_System_Collections_IEnumerator_Current_" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.System#Collections#IEnumerator#Current*"></a>
   <h4 id="wan24_StreamSerializerExtensions_Enumerator_StreamEnumeratorBase_1_System_Collections_IEnumerator_Current" data-uid="wan24.StreamSerializerExtensions.Enumerator.StreamEnumeratorBase`1.System#Collections#IEnumerator#Current">IEnumerator.Current</h4>
@@ -599,18 +482,12 @@
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">wan24.Core.IDisposableObject</span>
-  </div>
-  <div>
-      <span class="xref">System.IDisposable</span>
-  </div>
-  <div>
-      <span class="xref">System.IAsyncDisposable</span>
-  </div>
-  <div>
       <span class="xref">System.Collections.IEnumerator&lt;&gt;</span>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ValidateDeserializedObject__1___0_">SerializerHelper.ValidateDeserializedObject&lt;T&gt;(T)</a>
+  </div>
   <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetNumberType__1___0_System_Boolean_">SerializerHelper.GetNumberType&lt;T&gt;(T, Boolean)</a>
   </div>
@@ -619,9 +496,6 @@
   </div>
   <div>
       <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetObjectSerializerInfo_System_Object_">SerializerHelper.GetObjectSerializerInfo(Object)</a>
-  </div>
-  <div>
-      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ValidateDeserializedObject__1___0_">SerializerHelper.ValidateDeserializedObject&lt;T&gt;(T)</a>
   </div>
 </article>
           </div>

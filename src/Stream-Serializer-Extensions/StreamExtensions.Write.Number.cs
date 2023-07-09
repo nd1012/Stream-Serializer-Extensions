@@ -13,72 +13,81 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Number type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
-        public static Stream WriteNumber<T>(this Stream stream, T value) where T : struct, IConvertible
-            => WriteNumberInt(stream, value, type: null);
+#pragma warning disable // Remove unused argument
+        public static Stream WriteNumber<T>(this Stream stream, T value, ISerializationContext context) where T : struct, IConvertible
+#pragma warning restore IDE0060 // Remove unused argument
+            => WriteNumberInt(context, value, type: null);
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
-        public static Stream WriteNumber(this Stream stream, object value) => WriteNumberInt(stream, value, type: null);
+#pragma warning disable IDE0060 // Remove unused argument
+        public static Stream WriteNumber(this Stream stream, object value, ISerializationContext context) => WriteNumberInt(context, value, type: null);
+#pragma warning restore IDE0060 // Remove unused argument
 
         /// <summary>
         /// Write
         /// </summary>
-        /// <param name="stream">Stream</param>
+        /// <param name="context">Context</param>
         /// <param name="value">Value to write</param>
         /// <param name="type">Number type</param>
         /// <returns>Stream</returns>
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        private static Stream WriteNumberInt(Stream stream, object value, NumberTypes? type)
+        public static Stream WriteNumberInt(ISerializationContext context, object value, NumberTypes? type, bool writeType = true)
             => SerializerException.Wrap(() =>
             {
                 if (type == null) (_, type) = value.GetNumberAndType();
-                using RentedArray<byte> poolData = new(1, clean: false);
-                poolData[0] = (byte)type;
-                stream.Write(poolData.Span);
+                using RentedArrayStruct<byte> poolData = new(1, clean: false);
+                if (writeType)
+                {
+                    poolData[0] = (byte)type;
+                    context.Stream.Write(poolData.Span);
+                }
                 if (!type.Value.IsZero() && !type.Value.HasValueFlags())
                     switch (type)
                     {
                         case NumberTypes.Byte:
                         case NumberTypes.Byte | NumberTypes.Unsigned:
                             poolData[0] = value.ConvertType<byte>();
-                            stream.Write(poolData.Span);
+                            context.Stream.Write(poolData.Span);// Compatibility with serializer version 2
                             break;
                         case NumberTypes.Short:
-                            Write(stream, value.ConvertType<short>());
+                            Write(context.Stream, value.ConvertType<short>(), context);// Compatibility with serializer version 2
                             break;
                         case NumberTypes.Short | NumberTypes.Unsigned:
-                            Write(stream, value.ConvertType<ushort>());
+                            Write(context.Stream, value.ConvertType<ushort>(), context);// Compatibility with serializer version 2
                             break;
                         case NumberTypes.Int:
-                            Write(stream, value.ConvertType<int>());
+                            Write(context.Stream, value.ConvertType<int>(), context);
                             break;
                         case NumberTypes.Int | NumberTypes.Unsigned:
-                            Write(stream, value.ConvertType<uint>());
+                            Write(context.Stream, value.ConvertType<uint>(), context);
                             break;
                         case NumberTypes.Long:
-                            Write(stream, value.ConvertType<long>());
+                            Write(context.Stream, value.ConvertType<long>(), context);
                             break;
                         case NumberTypes.Long | NumberTypes.Unsigned:
-                            Write(stream, value.ConvertType<ulong>());
+                            Write(context.Stream, value.ConvertType<ulong>(), context);
                             break;
                         case NumberTypes.Float:
-                            Write(stream, value.ConvertType<float>());
+                            Write(context.Stream, value.ConvertType<float>(), context);
                             break;
                         case NumberTypes.Double:
-                            Write(stream, value.ConvertType<double>());
+                            Write(context.Stream, value.ConvertType<double>(), context);
                             break;
                         case NumberTypes.Decimal:
-                            Write(stream, value.ConvertType<decimal>());
+                            Write(context.Stream, value.ConvertType<decimal>(), context);
                             break;
                     }
-                return stream;
+                return context.Stream;
             });
 
         /// <summary>
@@ -87,10 +96,10 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Number type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
-        public static Task<Stream> WriteNumberAsync<T>(this Stream stream, T value, CancellationToken cancellationToken = default) where T : struct, IConvertible
-            => WriteNumberIntAsync(stream, value, type: null, cancellationToken);
+        public static Task<Stream> WriteNumberAsync<T>(this Stream stream, T value, ISerializationContext context) where T : struct, IConvertible
+            => WriteNumberIntAsync(context, value, type: null);
 
         /// <summary>
         /// Write
@@ -98,90 +107,92 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Number type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteNumberAsync<T>(this Task<Stream> stream, T value, CancellationToken cancellationToken = default) where T : struct, IConvertible
-            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteNumberAsync);
+        public static Task<Stream> WriteNumberAsync<T>(this Task<Stream> stream, T value, ISerializationContext context) where T : struct, IConvertible
+            => AsyncHelper.FluentAsync(stream, value, context, WriteNumberAsync);
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
-        public static Task<Stream> WriteNumberAsync(this Stream stream, object value, CancellationToken cancellationToken = default)
-            => WriteNumberIntAsync(stream, value, type: null, cancellationToken);
+        public static Task<Stream> WriteNumberAsync(this Stream stream, object value, ISerializationContext context)
+            => WriteNumberIntAsync(context, value, type: null);
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteNumberAsync(this Task<Stream> stream, object value, CancellationToken cancellationToken = default)
-            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteNumberAsync);
+        public static Task<Stream> WriteNumberAsync(this Task<Stream> stream, object value, ISerializationContext context)
+            => AsyncHelper.FluentAsync(stream, value, context, WriteNumberAsync);
 
         /// <summary>
         /// Write
         /// </summary>
-        /// <param name="stream">Stream</param>
+        /// <param name="context">Context</param>
         /// <param name="value">Value to write</param>
         /// <param name="type">Number type</param>
-        /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Stream</returns>
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        private static Task<Stream> WriteNumberIntAsync(Stream stream, object value, NumberTypes? type, CancellationToken cancellationToken)
+        public static Task<Stream> WriteNumberIntAsync(ISerializationContext context, object value, NumberTypes? type, bool writeType = true)
             => SerializerException.WrapAsync(async () =>
             {
                 if (type == null) (_, type) = value.GetNumberAndType();
-                using RentedArray<byte> poolData = new(1, clean: false);
-                poolData[0] = (byte)type;
-                await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
+                using RentedArrayStruct<byte> poolData = new(1, clean: false);
+                if (writeType)
+                {
+                    poolData[0] = (byte)type;
+                    await context.Stream.WriteAsync(poolData.Memory, context.Cancellation).DynamicContext();
+                }
                 if (!type.Value.IsZero() && !type.Value.HasValueFlags())
                     switch (type)
                     {
                         case NumberTypes.Byte:
                         case NumberTypes.Byte | NumberTypes.Unsigned:
                             poolData[0] = value.ConvertType<byte>();
-                            await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
+                            await context.Stream.WriteAsync(poolData.Memory, context.Cancellation).DynamicContext();// Compatibility with serializer version 2
                             break;
                         case NumberTypes.Short:
-                            await WriteAsync(stream, value.ConvertType<short>(), cancellationToken).DynamicContext();
+                            await WriteAsync(context.Stream, value.ConvertType<short>(), context).DynamicContext();// Compatibility with serializer version 2
                             break;
                         case NumberTypes.Short | NumberTypes.Unsigned:
-                            await WriteAsync(stream, value.ConvertType<ushort>(), cancellationToken).DynamicContext();
+                            await WriteAsync(context.Stream, value.ConvertType<ushort>(), context).DynamicContext();// Compatibility with serializer version 2
                             break;
                         case NumberTypes.Int:
-                            await WriteAsync(stream, value.ConvertType<int>(), cancellationToken).DynamicContext();
+                            await WriteAsync(context.Stream, value.ConvertType<int>(), context).DynamicContext();
                             break;
                         case NumberTypes.Int | NumberTypes.Unsigned:
-                            await WriteAsync(stream, value.ConvertType<uint>(), cancellationToken).DynamicContext();
+                            await WriteAsync(context.Stream, value.ConvertType<uint>(), context).DynamicContext();
                             break;
                         case NumberTypes.Long:
-                            await WriteAsync(stream, value.ConvertType<long>(), cancellationToken).DynamicContext();
+                            await WriteAsync(context.Stream, value.ConvertType<long>(), context).DynamicContext();
                             break;
                         case NumberTypes.Long | NumberTypes.Unsigned:
-                            await WriteAsync(stream, value.ConvertType<ulong>(), cancellationToken).DynamicContext();
+                            await WriteAsync(context.Stream, value.ConvertType<ulong>(), context).DynamicContext();
                             break;
                         case NumberTypes.Float:
-                            await WriteAsync(stream, value.ConvertType<float>(), cancellationToken).DynamicContext();
+                            await WriteAsync(context.Stream, value.ConvertType<float>(), context).DynamicContext();
                             break;
                         case NumberTypes.Double:
-                            await WriteAsync(stream, value.ConvertType<double>(), cancellationToken).DynamicContext();
+                            await WriteAsync(context.Stream, value.ConvertType<double>(), context).DynamicContext();
                             break;
                         case NumberTypes.Decimal:
-                            await WriteAsync(stream, value.ConvertType<decimal>(), cancellationToken).DynamicContext();
+                            await WriteAsync(context.Stream, value.ConvertType<decimal>(), context).DynamicContext();
                             break;
                     }
-                return stream;
+                return context.Stream;
             });
 
         /// <summary>
@@ -190,26 +201,28 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Number type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Stream WriteNumberNullable<T>(this Stream stream, T? value) where T : struct, IConvertible
-            => value == null ? Write(stream, (byte)NumberTypes.Null) : WriteNumber(stream, value.Value);
+        public static Stream WriteNumberNullable<T>(this Stream stream, T? value, ISerializationContext context) where T : struct, IConvertible
+            => value == null ? Write(stream, (byte)NumberTypes.IsNull, context) : WriteNumber(stream, value.Value, context);
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Stream WriteNumberNullable(this Stream stream, object? value)
-            => value == null ? Write(stream, (byte)NumberTypes.Null) : WriteNumber(stream, value);
+        public static Stream WriteNumberNullable(this Stream stream, object? value, ISerializationContext context)
+            => value == null ? Write(stream, (byte)NumberTypes.IsNull, context) : WriteNumber(stream, value, context);
 
         /// <summary>
         /// Write
@@ -217,17 +230,17 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Number type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task<Stream> WriteNumberNullableAsync<T>(this Stream stream, T? value, CancellationToken cancellationToken = default)
+        public static Task<Stream> WriteNumberNullableAsync<T>(this Stream stream, T? value, ISerializationContext context)
             where T : struct, IConvertible
             => value == null
-                ? WriteAsync(stream, (byte)NumberTypes.Null, cancellationToken)
-                : WriteNumberAsync(stream, value.Value, cancellationToken);
+                ? WriteAsync(stream, (byte)NumberTypes.IsNull, context)
+                : WriteNumberAsync(stream, value.Value, context);
 
         /// <summary>
         /// Write
@@ -235,40 +248,40 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Number type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteNumberNullableAsync<T>(this Task<Stream> stream, T? value, CancellationToken cancellationToken = default)
+        public static Task<Stream> WriteNumberNullableAsync<T>(this Task<Stream> stream, T? value, ISerializationContext context)
             where T : struct, IConvertible
-            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteNumberNullableAsync);
+            => AsyncHelper.FluentAsync(stream, value, context, WriteNumberNullableAsync);
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Task<Stream> WriteNumberNullableAsync(this Stream stream, object? value, CancellationToken cancellationToken = default)
+        public static Task<Stream> WriteNumberNullableAsync(this Stream stream, object? value, ISerializationContext context)
             => value == null
-                ? WriteAsync(stream, (byte)NumberTypes.Null, cancellationToken)
-                : WriteNumberAsync(stream, value, cancellationToken);
+                ? WriteAsync(stream, (byte)NumberTypes.IsNull, context)
+                : WriteNumberAsync(stream, value, context);
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<Stream> WriteNumberNullableAsync(this Task<Stream> stream, object? value, CancellationToken cancellationToken = default)
-            => AsyncHelper.FluentAsync(stream, value, cancellationToken, WriteNumberNullableAsync);
+        public static Task<Stream> WriteNumberNullableAsync(this Task<Stream> stream, object? value, ISerializationContext context)
+            => AsyncHelper.FluentAsync(stream, value, context, WriteNumberNullableAsync);
     }
 }

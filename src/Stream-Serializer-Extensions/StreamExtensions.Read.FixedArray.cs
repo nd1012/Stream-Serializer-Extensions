@@ -1,6 +1,4 @@
-﻿using System.Buffers;
-using System.Diagnostics;
-using System.Runtime;
+﻿using System.Runtime;
 using System.Runtime.CompilerServices;
 using wan24.Core;
 
@@ -15,23 +13,13 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="arr">Array</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="valueOptions">Value deserializer options</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="pool">Array pool</param>
+        /// <param name="context">Context</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T[] ReadFixedArray<T>(
-            this Stream stream, 
-            T[] arr, 
-            int? version = null, 
-            ISerializerOptions? valueOptions = null, 
-            bool valuesNullable = false,
-            ArrayPool<byte>? pool = null
-            )
+        public static T[] ReadFixedArray<T>(this Stream stream, T[] arr, IDeserializationContext context)
         {
-            ReadFixedArray(stream, arr.AsSpan(), version, valueOptions, valuesNullable, pool);
+            ReadFixedArray(stream, arr.AsSpan(), context);
             return arr;
         }
 
@@ -41,113 +29,68 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="arr">Array</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="valueOptions">Value deserializer options</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="pool">Array pool</param>
+        /// <param name="context">Context</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Span<T> ReadFixedArray<T>(
-            this Stream stream, 
-            Span<T> arr, 
-            int? version = null, 
-            ISerializerOptions? valueOptions = null,
-            bool valuesNullable = false,
-            ArrayPool<byte>? pool = null
-            )
+        public static Span<T> ReadFixedArray<T>(this Stream stream, Span<T> arr, IDeserializationContext context)
         {
+            using ContextRecursion cr = new(context);
             try
             {
-                switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
+                switch (context.SerializerVersion)// Serializer version switch
                 {
                     case 1:
                     case 2:
                         {
-                            for (int i = 0, len = arr.Length; i < len; arr[i] = ReadObject<T>(stream, version, valueOptions), i++) ;
+                            for (int i = 0, len = arr.Length; i < len; arr[i] = ReadObject<T>(stream, context), i++) ;
                             return arr;
                         }
                     default:
+                        try
                         {
                             Type type = typeof(T);
-                            (SerializerTypes serializer, StreamSerializer.Deserialize_Delegate? syncDeserializer, _) = type.GetItemDeserializerInfo(isAsync: false);
-                            if (valueOptions != null && !valuesNullable) valuesNullable = valueOptions.IsNullable;
-                            if (serializer == SerializerTypes.Any)
+                            using ItemDeserializerContext itemContext = new(context)
                             {
-                                Type? itemType = null;
-                                ObjectTypes objType = default,
-                                    lastObjType = default;
-                                SerializerTypes itemSerializer = default;
-                                StreamSerializer.Deserialize_Delegate? itemSyncDeserializer = null;
-                                Type[]? typeCache = null;
-                                object[]? objectCache = null;
-                                Span<Type> typeCacheSpan;
-                                ReadOnlySpan<object> objectCacheSpan;
+                                Nullable = context.Options?.IsNullable ?? context.Nullable
+                            };
+                            (itemContext.ItemSerializer, itemContext.ItemSyncDeserializer, _) = type.GetItemDeserializerInfo(ObjectTypes.Null, isAsync: false);
+                            if (itemContext.ItemSerializer == SerializerTypes.Any)
+                            {
                                 object? obj;
-                                int objIndex;
-                                try
+                                for (int i = 0, len = arr.Length; i < len; i++)
                                 {
-                                    typeCache = ArrayPool<Type>.Shared.RentClean(byte.MaxValue);
-                                    typeCacheSpan = typeCache.AsSpan(0, byte.MaxValue);
-                                    objectCache = ArrayPool<object>.Shared.RentClean(byte.MaxValue);
-                                    objectCacheSpan = objectCache.AsSpan(0, byte.MaxValue);
-                                    for (int i = 0, len = arr.Length; i < len; i++)
+                                    obj = ReadAnyItemHeader(itemContext, i, type);
+                                    Logging.WriteInfo($"READ {i} {stream.Position} {itemContext.ObjectType} {(int)itemContext.ObjectType} {itemContext.ItemType} {obj}");
+                                    if (obj == null && itemContext.ObjectType == ObjectTypes.Null)
                                     {
-                                        obj = ReadAnyItemHeader(
-                                            stream,
-                                            version.Value,
-                                            type,
-                                            i,
-                                            typeCache,
-                                            objectCache,
-                                            ref objType,
-                                            ref lastObjType,
-                                            ref itemType,
-                                            ref itemSerializer,
-                                            ref itemSyncDeserializer
-                                            );
-                                        Logging.WriteInfo($"READ {i} {stream.Position} {objType} {(int)objType} {itemType} {obj}");
-                                        if (obj == null && objType == ObjectTypes.Null)
-                                        {
-                                            if (!valuesNullable) throw new SerializerException($"Deserialized NULL value #{i}", new InvalidDataException());
-                                            arr[i] = (T?)obj!;
-                                        }
-                                        else if (obj == null)
-                                        {
-                                            arr[i] = (itemSerializer == SerializerTypes.Serializer
-                                                ? (T?)(obj = ReadItem(stream, version.Value, nullable: false, itemSerializer, itemType, pool, valueOptions, itemSyncDeserializer))
-                                                : (T?)(obj = ReadAnyInt(stream, version.Value, objType, itemType, valueOptions)))!;
-                                            if (obj!.GetObjectSerializerInfo().WriteObject)
-                                            {
-                                                objIndex = objectCache.IndexOf(null);
-                                                if (objIndex != -1) objectCache[objIndex] = obj!;
-                                                Logging.WriteInfo($"\t\tRED {obj} {stream.Position} {objIndex}");
-                                            }
-                                            else
-                                            {
-                                                Logging.WriteInfo($"\t\tRED {obj} {stream.Position}");
-                                            }
-                                        }
-                                        else
-                                        {
-                                            arr[i] = (T)obj;
-                                        }
+                                        if (!itemContext.Nullable) throw new SerializerException($"Deserialized NULL value #{i}", new InvalidDataException());
+                                        arr[i] = (T?)obj!;
                                     }
-                                }
-                                finally
-                                {
-                                    if (typeCache != null) ArrayPool<Type>.Shared.Return(typeCache);
-                                    if (objectCache != null) ArrayPool<object>.Shared.Return(objectCache);
+                                    else if (obj == null)
+                                    {
+                                        arr[i] = (itemContext.ItemSerializer == SerializerTypes.Serializer
+                                            ? (T?)(obj = ReadItem(itemContext))
+                                            : (T?)(obj = ReadAnyInt(context, itemContext.ObjectType, itemContext.ItemType)))!;
+                                        if (itemContext.ObjectType.RequiresObjectWriting()) itemContext.AddObject(obj);
+                                    }
+                                    else
+                                    {
+                                        arr[i] = (T)obj;
+                                    }
                                 }
                             }
                             else
                             {
-                                for (int i = 0, len = arr.Length; i < len; i++)
-                                    arr[i] = (T)ReadItem(stream, version.Value, valuesNullable, serializer, type, pool, valueOptions, syncDeserializer)!;
+                                for (int i = 0, len = arr.Length; i < len; arr[i] = (T)ReadItem(itemContext)!, i++) ;
                             }
                             return arr;
+                        }
+                        finally
+                        {
+                            context.WithoutOptions();
                         }
                 }
             }
@@ -166,104 +109,66 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="arr">Array</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="valueOptions">Value deserializer options</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="pool">Array pool</param>
+        /// <param name="context">Context</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static Array ReadFixedArray(
-            this Stream stream, 
-            Array arr, 
-            int? version = null, 
-            ISerializerOptions? valueOptions = null,
-            bool valuesNullable = false,
-            ArrayPool<byte>? pool = null
-            )
+        public static Array ReadFixedArray(this Stream stream, Array arr, IDeserializationContext context)
         {
+            using ContextRecursion cr = new(context);
             Type elementType = arr.GetType().GetElementType()!;
-            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
+            switch (context.SerializerVersion)// Serializer version switch
             {
                 case 1:
                 case 2:
                     {
-                        for (int i = 0, len = arr.Length; i < len; arr.SetValue(ReadObject(stream, elementType, version, valueOptions), i), i++) ;
+                        for (int i = 0, len = arr.Length; i < len; arr.SetValue(ReadObject(stream, elementType, context), i), i++) ;
                         return arr;
                     }
                 default:
+                    try
                     {
                         Type type = arr.GetType().GetElementType()!;
-                        (SerializerTypes serializer, StreamSerializer.Deserialize_Delegate? syncDeserializer, _) = type.GetItemDeserializerInfo(isAsync: false);
-                        if (valueOptions != null && !valuesNullable) valuesNullable = valueOptions.IsNullable;
-                        if (serializer == SerializerTypes.Any)
+                        using ItemDeserializerContext itemContext = new(context)
                         {
-                            Type? itemType = null;
-                            ObjectTypes objType = default,
-                                lastObjType = default;
-                            SerializerTypes itemSerializer = default;
-                            StreamSerializer.Deserialize_Delegate? itemSyncDeserializer = null;
-                            Type[]? typeCache = null;
-                            object[]? objectCache = null;
-                            Span<Type> typeCacheSpan;
-                            ReadOnlySpan<object> objectCacheSpan;
+                            Nullable = context.Options?.IsNullable ?? context.Nullable
+                        };
+                        (itemContext.ItemSerializer, itemContext.ItemSyncDeserializer, _) = type.GetItemDeserializerInfo(ObjectTypes.Null, isAsync: false);
+                        if (itemContext.ItemSerializer == SerializerTypes.Any)
+                        {
                             object? obj;
-                            int objIndex;
-                            try
+                            for (int i = 0, len = arr.Length; i < len; i++)
                             {
-                                typeCache = ArrayPool<Type>.Shared.RentClean(byte.MaxValue);
-                                typeCacheSpan = typeCache.AsSpan(0, byte.MaxValue);
-                                objectCache = ArrayPool<object>.Shared.RentClean(byte.MaxValue);
-                                objectCacheSpan = objectCache.AsSpan(0, byte.MaxValue);
-                                for (int i = 0, len = arr.Length; i < len; i++)
+                                obj = ReadAnyItemHeader(itemContext, i, type);
+                                if (obj == null && itemContext.ObjectType == ObjectTypes.Null)
                                 {
-                                    obj = ReadAnyItemHeader(
-                                        stream, 
-                                        version.Value, 
-                                        type, 
-                                        i, 
-                                        typeCache,
-                                        objectCache,
-                                        ref objType,
-                                        ref lastObjType, 
-                                        ref itemType, 
-                                        ref itemSerializer, 
-                                        ref itemSyncDeserializer
-                                        );
-                                    if (obj == null && objType == ObjectTypes.Null)
-                                    {
-                                        if (!valuesNullable) throw new SerializerException($"Deserialized NULL value #{i}", new InvalidDataException());
-                                        arr.SetValue(null, i);
-                                    }
-                                    else if (obj == null)
-                                    {
-                                        arr.SetValue(obj = itemSerializer == SerializerTypes.Serializer
-                                            ? ReadItem(stream, version.Value, nullable: false, itemSerializer, itemType, pool, valueOptions, itemSyncDeserializer)
-                                            : ReadAnyInt(stream, version.Value, objType, itemType, valueOptions),
-                                            i);
-                                        objIndex = objectCache.IndexOf(null);
-                                        if (objIndex != -1) objectCache[objIndex] = obj!;
-                                    }
-                                    else
-                                    {
-                                        arr.SetValue(obj, i);
-                                    }
+                                    if (!itemContext.Nullable) throw new SerializerException($"Deserialized NULL value #{i}", new InvalidDataException());
+                                    arr.SetValue(obj, i);
                                 }
-                            }
-                            finally
-                            {
-                                if (typeCache != null) ArrayPool<Type>.Shared.Return(typeCache);
-                                if (objectCache != null) ArrayPool<object>.Shared.Return(objectCache);
+                                else if (obj == null)
+                                {
+                                    arr.SetValue((itemContext.ItemSerializer == SerializerTypes.Serializer
+                                        ? obj = ReadItem(itemContext)
+                                        : obj = ReadAnyInt(context, itemContext.ObjectType, itemContext.ItemType))!, i);
+                                    if (itemContext.ObjectType.RequiresObjectWriting()) itemContext.AddObject(obj);
+                                }
+                                else
+                                {
+                                    arr.SetValue(obj, i);
+                                }
                             }
                         }
                         else
                         {
-                            for (int i = 0, len = arr.Length; i < len; i++)
-                                arr.SetValue(ReadItem(stream, version.Value, valuesNullable, serializer, type, pool, valueOptions, syncDeserializer)!, i);
+                            for (int i = 0, len = arr.Length; i < len; arr.SetValue(ReadItem(itemContext), i), i++) ;
                         }
                         return arr;
+                    }
+                    finally
+                    {
+                        context.WithoutOptions();
                     }
             }
         }
@@ -274,25 +179,13 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="arr">Array</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="valueOptions">Value deserializer options</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="pool">Array pool</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async Task<T[]> ReadFixedArrayAsync<T>(
-            this Stream stream,
-            T[] arr,
-            int? version = null,
-            ISerializerOptions? valueOptions = null,
-            bool valuesNullable = false,
-            ArrayPool<byte>? pool = null,
-            CancellationToken cancellationToken = default
-            )
+        public static async Task<T[]> ReadFixedArrayAsync<T>(this Stream stream, T[] arr, IDeserializationContext context)
         {
-            await ReadFixedArrayAsync(stream, arr.AsMemory(), version, valueOptions, valuesNullable, pool, cancellationToken).DynamicContext();
+            await ReadFixedArrayAsync(stream, arr.AsMemory(), context).DynamicContext();
             return arr;
         }
 
@@ -302,139 +195,72 @@ namespace wan24.StreamSerializerExtensions
         /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="arr">Array</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="valueOptions">Value deserializer options</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="pool">Array pool</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task<Memory<T>> ReadFixedArrayAsync<T>(
-            this Stream stream,
-            Memory<T> arr,
-            int? version = null,
-            ISerializerOptions? valueOptions = null,
-            bool valuesNullable = false,
-            ArrayPool<byte>? pool = null,
-            CancellationToken cancellationToken = default
-            )
+        public static async Task<Memory<T>> ReadFixedArrayAsync<T>(this Stream stream, Memory<T> arr, IDeserializationContext context)
         {
+            using ContextRecursion cr = new(context);
             T? item;
-            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
+            switch (context.SerializerVersion)// Serializer version switch
             {
                 case 1:
                 case 2:
                     {
                         for (int i = 0, len = arr.Length; i < len; i++)
                         {
-                            item = await ReadObjectAsync<T>(stream, version, valueOptions, cancellationToken).DynamicContext();
+                            item = await ReadObjectAsync<T>(stream, context).DynamicContext();
                             arr.Span[i] = item;
                         }
                         return arr;
                     }
                 default:
+                    try
                     {
                         Type type = typeof(T);
-                        (SerializerTypes serializer, StreamSerializer.Deserialize_Delegate? syncDeserializer, StreamSerializer.AsyncDeserialize_Delegate? asyncDeserializer) =
-                            type.GetItemDeserializerInfo(isAsync: true);
-                        if (valueOptions != null && !valuesNullable) valuesNullable = valueOptions.IsNullable;
-                        if (serializer == SerializerTypes.Any)
+                        using ItemDeserializerContext itemContext = new(context)
                         {
-                            Type? itemType = null;
-                            ObjectTypes objType = default,
-                                lastObjType = default;
-                            SerializerTypes itemSerializer = default;
-                            StreamSerializer.Deserialize_Delegate? itemSyncDeserializer = null;
-                            StreamSerializer.AsyncDeserialize_Delegate? itemAsyncDeserializer = null;
-                            Type[]? typeCache = null;
-                            object[]? objectCache = null;
-                            Memory<Type> typeCacheMem;
-                            ReadOnlyMemory<object> objectCacheMem;
+                            Nullable = context.Options?.IsNullable ?? context.Nullable
+                        };
+                        (itemContext.ItemSerializer, itemContext.ItemSyncDeserializer, itemContext.ItemAsyncDeserializer) = 
+                            type.GetItemDeserializerInfo(ObjectTypes.Null, isAsync: true);
+                        if (itemContext.ItemSerializer == SerializerTypes.Any)
+                        {
                             object? obj;
-                            int objIndex;
-                            try
+                            for (int i = 0, len = arr.Length; i < len; i++)
                             {
-                                typeCache = ArrayPool<Type>.Shared.RentClean(byte.MaxValue);
-                                typeCacheMem = typeCache.AsMemory(0, byte.MaxValue);
-                                objectCache = ArrayPool<object>.Shared.RentClean(byte.MaxValue);
-                                objectCacheMem = objectCache.AsMemory(0, byte.MaxValue);
-                                for (int i = 0, len = arr.Length; i < len; i++)
+                                obj = await ReadAnyItemHeaderAsync(itemContext, i, type).DynamicContext();
+                                if (obj == null && itemContext.ObjectType == ObjectTypes.Null)
                                 {
-                                    (obj, objType, lastObjType, itemType, itemSerializer, itemSyncDeserializer, itemAsyncDeserializer) =
-                                        await ReadAnyItemHeaderAsync(
-                                            stream,
-                                            version.Value,
-                                            type,
-                                            i,
-                                            typeCacheMem,
-                                            objectCacheMem,
-                                            lastObjType,
-                                            itemType,
-                                            itemSerializer,
-                                            itemSyncDeserializer,
-                                            itemAsyncDeserializer,
-                                            cancellationToken
-                                            ).DynamicContext();
-                                    if (obj == null && objType == ObjectTypes.Null)
-                                    {
-                                        if (!valuesNullable) throw new SerializerException($"Deserialized NULL value #{i}", new InvalidDataException());
-                                        item = default;
-                                    }
-                                    else if (obj == null)
-                                    {
-                                        item = (itemSerializer == SerializerTypes.Serializer
-                                            ? (T?)await ReadItemAsync(
-                                                stream,
-                                                version.Value,
-                                                nullable: false,
-                                                itemSerializer,
-                                                itemType,
-                                                pool,
-                                                valueOptions,
-                                                itemSyncDeserializer,
-                                                itemAsyncDeserializer,
-                                                cancellationToken
-                                                ).DynamicContext()
-                                            : (T?)await ReadAnyIntAsync(stream, version.Value, lastObjType, itemType, valueOptions, cancellationToken).DynamicContext())!;
-                                        objIndex = objectCache.IndexOf(null);
-                                        if (objIndex != -1) objectCache[objIndex] = item!;
-                                    }
-                                    else
-                                    {
-                                        item = (T)obj;
-                                    }
-                                    arr.Span[i] = item!;
+                                    if (!itemContext.Nullable) throw new SerializerException($"Deserialized NULL value #{i}", new InvalidDataException());
+                                    arr.Span[i] = (T?)obj!;
                                 }
-                            }
-                            finally
-                            {
-                                if (typeCache != null) ArrayPool<Type>.Shared.Return(typeCache);
-                                if (objectCache != null) ArrayPool<object>.Shared.Return(objectCache);
+                                else if (obj == null)
+                                {
+                                    obj = itemContext.ItemSerializer == SerializerTypes.Serializer
+                                        ? await ReadItemAsync(itemContext).DynamicContext()
+                                        : await ReadAnyIntAsync(context, itemContext.ObjectType, itemContext.ItemType).DynamicContext();
+                                    arr.Span[i] = (T?)obj!;
+                                    if (itemContext.ObjectType.RequiresObjectWriting()) itemContext.AddObject(obj);
+                                }
+                                else
+                                {
+                                    arr.Span[i] = (T)obj;
+                                }
                             }
                         }
                         else
                         {
-                            for (int i = 0, len = arr.Length; i < len; i++)
-                            {
-                                item = (T)(await ReadItemAsync(
-                                    stream,
-                                    version.Value,
-                                    valuesNullable,
-                                    serializer,
-                                    type,
-                                    pool,
-                                    valueOptions,
-                                    syncDeserializer,
-                                    asyncDeserializer,
-                                    cancellationToken
-                                    ).DynamicContext())!;
-                                arr.Span[i] = item;
-                            }
+                            for (int i = 0, len = arr.Length; i < len; item = (T)(await ReadItemAsync(itemContext).DynamicContext())!, arr.Span[i] = item, i++) ;
                         }
                         return arr;
+                    }
+                    finally
+                    {
+                        context.WithoutOptions();
                     }
             }
         }
@@ -444,28 +270,17 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="arr">Array</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="valueOptions">Value deserializer options</param>
-        /// <param name="valuesNullable">Are the values nullable?</param>
-        /// <param name="pool">Array pool</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
 #if !NO_INLINE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
-        public static async Task<Array> ReadFixedArrayAsync(
-            this Stream stream,
-            Array arr,
-            int? version = null,
-            ISerializerOptions? valueOptions = null,
-            bool valuesNullable = false,
-            ArrayPool<byte>? pool = null,
-            CancellationToken cancellationToken = default
-            )
+        public static async Task<Array> ReadFixedArrayAsync(this Stream stream, Array arr, IDeserializationContext context)
         {
+            using ContextRecursion cr = new(context);
             Type elementType = arr.GetType().GetElementType()!;
-            switch ((version ??= StreamSerializer.Version) & byte.MaxValue)// Serializer version switch
+            switch (context.SerializerVersion)// Serializer version switch
             {
                 case 1:
                 case 2:
@@ -473,107 +288,53 @@ namespace wan24.StreamSerializerExtensions
                         for (
                             int i = 0, len = arr.Length;
                             i < len;
-                            arr.SetValue(await ReadObjectAsync(stream, elementType, version, valueOptions, cancellationToken).DynamicContext(), i), i++
+                            arr.SetValue(await ReadObjectAsync(stream, elementType, context).DynamicContext(), i), i++
                             ) ;
                         return arr;
                     }
                 default:
+                    try
                     {
                         Type type = arr.GetType().GetElementType()!;
-                        (SerializerTypes serializer, StreamSerializer.Deserialize_Delegate? syncDeserializer, StreamSerializer.AsyncDeserialize_Delegate? asyncDeserializer) =
-                            type.GetItemDeserializerInfo(isAsync: true);
-                        if (valueOptions != null && !valuesNullable) valuesNullable = valueOptions.IsNullable;
-                        if (serializer == SerializerTypes.Any)
+                        using ItemDeserializerContext itemContext = new(context)
                         {
-                            Type? itemType = null;
-                            ObjectTypes objType = default,
-                                lastObjType = default;
-                            SerializerTypes itemSerializer = default;
-                            StreamSerializer.Deserialize_Delegate? itemSyncDeserializer = null;
-                            StreamSerializer.AsyncDeserialize_Delegate? itemAsyncDeserializer = null;
-                            Type[]? typeCache = null;
-                            object[]? objectCache = null;
-                            Memory<Type> typeCacheMem;
-                            ReadOnlyMemory<object> objectCacheMem;
+                            Nullable = context.Options?.IsNullable ?? context.Nullable
+                        };
+                        (itemContext.ItemSerializer, itemContext.ItemSyncDeserializer, itemContext.ItemAsyncDeserializer) = 
+                            type.GetItemDeserializerInfo(ObjectTypes.Null, isAsync: true);
+                        if (itemContext.ItemSerializer == SerializerTypes.Any)
+                        {
                             object? obj;
-                            int objIndex;
-                            try
+                            for (int i = 0, len = arr.Length; i < len; i++)
                             {
-                                typeCache = ArrayPool<Type>.Shared.RentClean(byte.MaxValue);
-                                typeCacheMem = typeCache.AsMemory(0, byte.MaxValue);
-                                objectCache = ArrayPool<object>.Shared.RentClean(byte.MaxValue);
-                                objectCacheMem = objectCache.AsMemory(0, byte.MaxValue);
-                                for (int i = 0, len = arr.Length; i < len; i++)
+                                obj = await ReadAnyItemHeaderAsync(itemContext, i, type).DynamicContext();
+                                if (obj == null && itemContext.ObjectType == ObjectTypes.Null)
                                 {
-                                    (obj, objType, lastObjType, itemType, itemSerializer, itemSyncDeserializer, itemAsyncDeserializer) =
-                                        await ReadAnyItemHeaderAsync(
-                                            stream,
-                                            version.Value,
-                                            type,
-                                            i,
-                                            typeCacheMem,
-                                            objectCacheMem,
-                                            lastObjType,
-                                            itemType,
-                                            itemSerializer,
-                                            itemSyncDeserializer,
-                                            itemAsyncDeserializer,
-                                            cancellationToken
-                                            ).DynamicContext();
-                                    if (obj == null && objType == ObjectTypes.Null)
-                                    {
-                                        if (!valuesNullable) throw new SerializerException($"Deserialized NULL value #{i}", new InvalidDataException());
-                                        arr.SetValue(null, i);
-                                    }
-                                    else if (obj == null)
-                                    {
-                                        arr.SetValue(obj = itemSerializer == SerializerTypes.Serializer
-                                            ? await ReadItemAsync(
-                                                stream,
-                                                version.Value,
-                                                nullable: false,
-                                                itemSerializer,
-                                                itemType,
-                                                pool,
-                                                valueOptions,
-                                                itemSyncDeserializer,
-                                                itemAsyncDeserializer,
-                                                cancellationToken
-                                                ).DynamicContext()
-                                            : await ReadAnyIntAsync(stream, version.Value, objType, itemType, valueOptions, cancellationToken).DynamicContext(),
-                                            i);
-                                        objIndex = objectCache.IndexOf(null);
-                                        if (objIndex != -1) objectCache[objIndex] = obj!;
-                                    }
-                                    else
-                                    {
-                                        arr.SetValue(obj, i);
-                                    }
+                                    if (!itemContext.Nullable) throw new SerializerException($"Deserialized NULL value #{i}", new InvalidDataException());
+                                    arr.SetValue(obj, i);
                                 }
-                            }
-                            finally
-                            {
-                                if (typeCache != null) ArrayPool<Type>.Shared.Return(typeCache);
-                                if (objectCache != null) ArrayPool<object>.Shared.Return(objectCache);
+                                else if (obj == null)
+                                {
+                                    arr.SetValue((itemContext.ItemSerializer == SerializerTypes.Serializer
+                                        ? obj = await ReadItemAsync(itemContext).DynamicContext()
+                                        : obj = await ReadAnyIntAsync(context, itemContext.ObjectType, itemContext.ItemType).DynamicContext()), i);
+                                    if (itemContext.ObjectType.RequiresObjectWriting()) itemContext.AddObject(obj);
+                                }
+                                else
+                                {
+                                    arr.SetValue(obj, i);
+                                }
                             }
                         }
                         else
                         {
-                            for (int i = 0, len = arr.Length; i < len; i++)
-                                arr.SetValue(await ReadItemAsync(
-                                    stream,
-                                    version.Value,
-                                    valuesNullable,
-                                    serializer,
-                                    type,
-                                    pool,
-                                    valueOptions,
-                                    syncDeserializer,
-                                    asyncDeserializer,
-                                    cancellationToken
-                                    ).DynamicContext(), i);
+                            for (int i = 0, len = arr.Length; i < len; arr.SetValue(await ReadItemAsync(itemContext).DynamicContext(), i), i++) ;
                         }
                         return arr;
+                    }
+                    finally
+                    {
+                        context.WithoutOptions();
                     }
             }
         }

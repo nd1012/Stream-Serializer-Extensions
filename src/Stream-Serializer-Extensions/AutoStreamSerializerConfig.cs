@@ -56,14 +56,15 @@ namespace wan24.StreamSerializerExtensions
         /// Serialize
         /// </summary>
         /// <param name="obj">Object</param>
-        /// <param name="stream">Stream</param>
-        public void Serialize(T obj, Stream stream)
+        /// <param name="context">Context</param>
+        public void Serialize(T obj, ISerializationContext context)
         {
+            using ContextRecursion cr = new(context);
             (PropertyInfoExt[] properties, List<string>? usedDefaultValue, byte[]? defaultValueBits, int? defaultValueBitsLength) = PrepareSerialization(obj);
             if (defaultValueBits != null)
                 try
                 {
-                    stream.Write(defaultValueBits.AsSpan()[..defaultValueBitsLength!.Value]);
+                    context.Stream.Write(defaultValueBits.AsSpan()[..defaultValueBitsLength!.Value]);
                 }
                 finally
                 {
@@ -74,7 +75,7 @@ namespace wan24.StreamSerializerExtensions
                 if (usedDefaultValue?.Contains(pi.Property.Name) ?? false) continue;
                 if (!Infos.TryGetValue(pi.Property.Name, out AutoStreamSerializerInfo? info))
                     throw new SerializerException($"Missing auto stream serializer information for {obj.GetType()}.{pi.Property.Name}", new InvalidProgramException());
-                info.Serialize(this, obj, stream);
+                info.Serialize(this, obj, context);
             }
         }
 
@@ -82,15 +83,15 @@ namespace wan24.StreamSerializerExtensions
         /// Serialize
         /// </summary>
         /// <param name="obj">Object</param>
-        /// <param name="stream">Stream</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        public async Task SerializeAsync(T obj, Stream stream, CancellationToken cancellationToken)
+        /// <param name="context">Context</param>
+        public async Task SerializeAsync(T obj, ISerializationContext context)
         {
+            using ContextRecursion cr = new(context);
             (PropertyInfoExt[] properties, List<string>? usedDefaultValue, byte[]? defaultValueBits, int? defaultValueBitsLength) = PrepareSerialization(obj);
             if (defaultValueBits != null)
                 try
                 {
-                    await stream.WriteAsync(defaultValueBits.AsMemory()[..defaultValueBitsLength!.Value], cancellationToken).DynamicContext();
+                    await context.Stream.WriteAsync(defaultValueBits.AsMemory()[..defaultValueBitsLength!.Value], context.Cancellation).DynamicContext();
                 }
                 finally
                 {
@@ -101,7 +102,7 @@ namespace wan24.StreamSerializerExtensions
                 if (usedDefaultValue?.Contains(pi.Property.Name) ?? false) continue;
                 if (!Infos.TryGetValue(pi.Property.Name, out AutoStreamSerializerInfo? info))
                     throw new SerializerException($"Missing auto stream serializer information for {obj.GetType()}.{pi.Property.Name}", new InvalidProgramException());
-                await info.SerializeAsync(this, obj, stream, cancellationToken).DynamicContext();
+                await info.SerializeAsync(this, obj, context).DynamicContext();
             }
         }
 
@@ -109,42 +110,11 @@ namespace wan24.StreamSerializerExtensions
         /// Deserialize
         /// </summary>
         /// <param name="obj">Object</param>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        public void Deserialize(T obj, Stream stream, int version)
+        /// <param name="context">Context</param>
+        public void Deserialize(T obj, IDeserializationContext context)
         {
-            PropertyInfoExt[] properties = StreamSerializerAttribute.GetReadProperties(obj.GetType(), version).ToArray();
-            List<string>? usedDefaultValue = null;
-            if (DefaultValues != null)
-            {
-                PropertyInfoExt[] props = properties
-                    .Where(p => DefaultValues.ContainsKey(p.Property.Name) && Infos[p.Property.Name].Attribute.GetUseDefaultValue(Attribute.Version!.Value))
-                    .ToArray();
-                usedDefaultValue = PrepareDeserialization(
-                    obj, 
-                    props, 
-                    StreamExtensions.ReadSerializedData(stream, (int)Math.Ceiling((decimal)props.Length / 8), StreamSerializer.BufferPool)
-                    );
-            }
-            foreach (PropertyInfoExt pi in properties)
-            {
-                if (usedDefaultValue?.Contains(pi.Property.Name) ?? false) continue;
-                if (!Infos.TryGetValue(pi.Property.Name, out AutoStreamSerializerInfo? info))
-                    throw new SerializerException($"Missing auto stream serializer information for {obj.GetType()}.{pi.Property.Name}", new InvalidProgramException());
-                info.Deserialize(this, obj, stream, version);
-            }
-        }
-
-        /// <summary>
-        /// Deserialize
-        /// </summary>
-        /// <param name="obj">Object</param>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        public async Task DeserializeAsync(T obj, Stream stream, int version, CancellationToken cancellationToken)
-        {
-            PropertyInfoExt[] properties = StreamSerializerAttribute.GetReadProperties(obj.GetType(), version).ToArray();
+            using ContextRecursion cr = new(context);
+            PropertyInfoExt[] properties = StreamSerializerAttribute.GetReadProperties(obj.GetType(), context.Version).ToArray();
             List<string>? usedDefaultValue = null;
             if (DefaultValues != null)
             {
@@ -154,7 +124,37 @@ namespace wan24.StreamSerializerExtensions
                 usedDefaultValue = PrepareDeserialization(
                     obj,
                     props,
-                    await StreamExtensions.ReadSerializedDataAsync(stream, (int)Math.Ceiling((decimal)props.Length / 8), StreamSerializer.BufferPool, cancellationToken)
+                    StreamExtensions.ReadSerializedData(context.Stream, (int)Math.Ceiling((decimal)props.Length / 8), context)
+                    );
+            }
+            foreach (PropertyInfoExt pi in properties)
+            {
+                if (usedDefaultValue?.Contains(pi.Property.Name) ?? false) continue;
+                if (!Infos.TryGetValue(pi.Property.Name, out AutoStreamSerializerInfo? info))
+                    throw new SerializerException($"Missing auto stream serializer information for {obj.GetType()}.{pi.Property.Name}", new InvalidProgramException());
+                info.Deserialize(this, obj, context);
+            }
+        }
+
+        /// <summary>
+        /// Deserialize
+        /// </summary>
+        /// <param name="obj">Object</param>
+        /// <param name="context">Context</param>
+        public async Task DeserializeAsync(T obj, IDeserializationContext context)
+        {
+            using ContextRecursion cr = new(context);
+            PropertyInfoExt[] properties = StreamSerializerAttribute.GetReadProperties(obj.GetType(), context.Version).ToArray();
+            List<string>? usedDefaultValue = null;
+            if (DefaultValues != null)
+            {
+                PropertyInfoExt[] props = properties
+                    .Where(p => DefaultValues.ContainsKey(p.Property.Name) && Infos[p.Property.Name].Attribute.GetUseDefaultValue(Attribute.Version!.Value))
+                    .ToArray();
+                usedDefaultValue = PrepareDeserialization(
+                    obj,
+                    props,
+                    await StreamExtensions.ReadSerializedDataAsync(context.Stream, (int)Math.Ceiling((decimal)props.Length / 8), context)
                         .DynamicContext()
                     );
             }
@@ -163,7 +163,7 @@ namespace wan24.StreamSerializerExtensions
                 if (usedDefaultValue?.Contains(pi.Name) ?? false) continue;
                 if (!Infos.TryGetValue(pi.Name, out AutoStreamSerializerInfo? info))
                     throw new SerializerException($"Missing auto stream serializer information for {obj.GetType()}.{pi.Name}", new InvalidProgramException());
-                await info.DeserializeAsync(this, obj, stream, version, cancellationToken).DynamicContext();
+                await info.DeserializeAsync(this, obj, context).DynamicContext();
             }
         }
 
