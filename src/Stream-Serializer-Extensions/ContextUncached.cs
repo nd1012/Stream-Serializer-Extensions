@@ -1,9 +1,9 @@
 ﻿namespace wan24.StreamSerializerExtensions
 {
     /// <summary>
-    /// Context recursion
+    /// Disable caching in context temporary (if caching)
     /// </summary>
-    public readonly record struct ContextRecursion : IDisposable
+    public readonly record struct ContextUncached : IDisposable
     {
         /// <summary>
         /// Dispose action
@@ -14,15 +14,15 @@
         /// Constructor
         /// </summary>
         /// <param name="context">Context</param>
-        public ContextRecursion(ISerializerContext context)
+        public ContextUncached(ISerializerContext context)
         {
-            context.RecursionLevel++;
-            bool disposed = false;
+            bool enable = context.DisableCache(),
+                disposed = false;
             DisposeAction = () =>
             {
                 if (disposed) return;
                 disposed = true;
-                context.RecursionLevel--;
+                if (enable) context.EnableCache();
             };
         }
 

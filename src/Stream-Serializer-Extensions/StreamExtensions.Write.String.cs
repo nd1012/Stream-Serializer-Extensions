@@ -226,15 +226,12 @@ namespace wan24.StreamSerializerExtensions
         [SkipLocalsInit]
         private static Stream WriteString(ISerializationContext context, string value, int lenShift, StringWriter_Delegate action)
         {
-            if (value.Length == 0)
-            {
-                Write(context.Stream, (byte)NumberTypes.Zero, context);
-                return context.Stream;
-            }
-            int len = value.Length << lenShift;
+            int len = value == null ? 0 : value.Length << lenShift;
             if (len <= Settings.StackAllocBorder)
             {
-                Span<byte> buffer = stackalloc byte[len];
+                Span<byte> buffer = (value?.Length ?? 0) == 0 ? Array.Empty<byte>() : stackalloc byte[len];
+                len = value == null ? 0 : action(buffer);
+                if (context.TryWriteCachedCountable(value, value == null ? null : len)) return context.Stream;
                 context.Stream.Write(buffer[..action(buffer)]);
                 return context.Stream;
             }
@@ -244,13 +241,13 @@ namespace wan24.StreamSerializerExtensions
                 try
                 {
                     len = action(data);
-                    WriteNumber(context.Stream, len, context);
-                    return WriteSerializedData(context, data, len);
+                    return context.TryWriteCachedCountable(value, len)
+                        ? context.Stream
+                        : WriteSerializedData(context, data, len);
                 }
-                catch
+                finally
                 {
                     StreamSerializer.BufferPool.Return(data);
-                    throw;
                 }
             }
         }
@@ -268,18 +265,16 @@ namespace wan24.StreamSerializerExtensions
 #endif
         private static async Task<Stream> WriteStringAsync(ISerializationContext context, string value, int lenShift, StringWriter_Delegate action)
         {
-            if (value.Length == 0) return await WriteAsync(context.Stream, (byte)NumberTypes.Zero, context).DynamicContext();
-            byte[] data = StreamSerializer.BufferPool.Rent(value.Length << lenShift);
+            byte[] data = (value?.Length ?? 0) == 0 ? Array.Empty<byte>() : StreamSerializer.BufferPool.Rent(value!.Length << lenShift);
             try
             {
-                int len = action(data);
-                await WriteNumberAsync(context.Stream, len, context).DynamicContext();
+                int len = value == null ? 0 : action(data);
+                if (await context.TryWriteCachedCountableAsync(value, value == null ? null : len).DynamicContext()) return context.Stream;
                 await WriteSerializedDataAsync(context, data, len).DynamicContext();
             }
-            catch
+            finally
             {
-                StreamSerializer.BufferPool.Return(data);
-                throw;
+                if (data.Length != 0) StreamSerializer.BufferPool.Return(data);
             }
             return context.Stream;
         }
@@ -298,21 +293,13 @@ namespace wan24.StreamSerializerExtensions
         [SkipLocalsInit]
         private static Stream WriteNullableString(ISerializationContext context, string? value, int lenShift, StringWriter_Delegate action)
         {
-            if (value == null)
-            {
-                Write(context.Stream, (byte)NumberTypes.IsNull, context);
-                return context.Stream;
-            }
-            if (value.Length == 0)
-            {
-                Write(context.Stream, (byte)NumberTypes.Zero, context);
-                return context.Stream;
-            }
-            int len = value.Length << lenShift;
+            int len = value == null ? 0 : value.Length << lenShift;
             if (len <= Settings.StackAllocBorder)
             {
-                Span<byte> buffer = stackalloc byte[len];
-                context.Stream.Write(buffer[..action(buffer)]);
+                Span<byte> buffer = (value?.Length ?? 0) == 0 ? Array.Empty<byte>() : stackalloc byte[len];
+                len = value == null ? 0 : action(buffer);
+                if (context.TryWriteCachedCountable(value, value == null ? null : len)) return context.Stream;
+                context.Stream.Write(buffer[..len]);
                 return context.Stream;
             }
             else
@@ -320,13 +307,14 @@ namespace wan24.StreamSerializerExtensions
                 byte[] data = StreamSerializer.BufferPool.Rent(len);
                 try
                 {
-                    WriteNumber(context.Stream, len, context);
-                    return WriteSerializedData(context, data, action(data));
+                    len = action(data);
+                    return context.TryWriteCachedCountable(value, len)
+                        ? context.Stream
+                        : WriteSerializedData(context, data, len);
                 }
-                catch
+                finally
                 {
                     StreamSerializer.BufferPool.Return(data);
-                    throw;
                 }
             }
         }
@@ -344,19 +332,16 @@ namespace wan24.StreamSerializerExtensions
 #endif
         private static async Task<Stream> WriteNullableStringAsync(ISerializationContext context, string? value, int lenShift, StringWriter_Delegate action)
         {
-            if (value == null) return await WriteAsync(context.Stream, (byte)NumberTypes.IsNull, context).DynamicContext();
-            if (value.Length == 0) return await WriteAsync(context.Stream, (byte)NumberTypes.Zero, context).DynamicContext();
-            byte[] data = StreamSerializer.BufferPool.Rent(value.Length << lenShift);
+            byte[] data = (value?.Length ?? 0) == 0 ? Array.Empty<byte>() : StreamSerializer.BufferPool.Rent(value!.Length << lenShift);
             try
             {
-                int len = action(data);
-                await WriteNumberAsync(context.Stream, len, context).DynamicContext();
+                int len = (value?.Length ?? 0) == 0 ? 0 : action(data);
+                if (await context.TryWriteCachedCountableAsync(value, value == null ? null : len).DynamicContext()) return context.Stream;
                 await WriteSerializedDataAsync(context, data, len).DynamicContext();
             }
-            catch
+            finally
             {
-                StreamSerializer.BufferPool.Return(data);
-                throw;
+                if (data.Length != 0) StreamSerializer.BufferPool.Return(data);
             }
             return context.Stream;
         }

@@ -1,5 +1,4 @@
-﻿using wan24.Core;
-using wan24.StreamSerializerExtensions;
+﻿using wan24.StreamSerializerExtensions;
 
 namespace Stream_Serializer_Extensions_Tests
 {
@@ -9,54 +8,56 @@ namespace Stream_Serializer_Extensions_Tests
         public void String_Tests()
         {
             using MemoryStream ms = new();
+            using SerializerContext sc = new(ms);
+            using DeserializerContext dc = new(ms);
 
             string str = "abcdef";
-            ms.WriteString(str);
+            ms.WriteString(str, sc);
             Assert.AreEqual((long)str.Length + 2, ms.Length);
             ms.Position = 0;
-            Assert.AreEqual(str, ms.ReadString());
+            Assert.AreEqual(str, ms.ReadString(dc));
             Assert.AreEqual(ms.Length, ms.Position);
 
             ms.SetLength(0);
             ms.Position = 0;
             str = "abcdefäüöß";
-            ms.WriteString(str);
+            ms.WriteString(str, sc);
             ms.Position = 0;
-            Assert.AreEqual(str, ms.ReadString());
+            Assert.AreEqual(str, ms.ReadString(dc));
             Assert.AreEqual(ms.Length, ms.Position);
 
             ms.SetLength(0);
             ms.Position = 0;
             str = "abcdefäüöß";
-            ms.WriteString16(str);
+            ms.WriteString16(str, sc);
             Assert.AreEqual(((long)str.Length << 1) + 2, ms.Length);
             ms.Position = 0;
-            Assert.AreEqual(str, ms.ReadString16());
+            Assert.AreEqual(str, ms.ReadString16(dc));
             Assert.AreEqual(ms.Length, ms.Position);
 
             ms.SetLength(0);
             ms.Position = 0;
             str = "abcdefäüöß\U0001F642";
-            ms.WriteString32(str);
+            ms.WriteString32(str, sc);
             ms.Position = 0;
-            Assert.AreEqual(str, ms.ReadString32());
+            Assert.AreEqual(str, ms.ReadString32(dc));
             Assert.AreEqual(ms.Length, ms.Position);
 
             ms.SetLength(0);
             ms.Position = 0;
             str = "abcdef";
-            ms.WriteStringNullable(str);
+            ms.WriteStringNullable(str, sc);
             Assert.AreEqual((long)str.Length + 2, ms.Length);
             ms.Position = 0;
-            Assert.AreEqual(str, ms.ReadStringNullable());
+            Assert.AreEqual(str, ms.ReadStringNullable(dc));
             Assert.AreEqual(ms.Length, ms.Position);
 
             ms.SetLength(0);
             ms.Position = 0;
-            ms.WriteStringNullable(null);
+            ms.WriteStringNullable(null, sc);
             Assert.AreEqual(1, ms.Length);
             ms.Position = 0;
-            Assert.IsNull(ms.ReadStringNullable());
+            Assert.IsNull(ms.ReadStringNullable(dc));
             Assert.AreEqual(ms.Length, ms.Position);
         }
 
@@ -64,50 +65,52 @@ namespace Stream_Serializer_Extensions_Tests
         public async Task StringAsync_Tests()
         {
             using MemoryStream ms = new();
+            using SerializerContext sc = new(ms);
+            using DeserializerContext dc = new(ms);
 
             string str = "abcdef";
-            await ms.WriteStringAsync(str);
+            await ms.WriteStringAsync(str, sc);
             Assert.AreEqual((long)str.Length + 2, ms.Length);
             ms.Position = 0;
-            Assert.AreEqual(str, await ms.ReadStringAsync());
+            Assert.AreEqual(str, await ms.ReadStringAsync(dc));
 
             ms.SetLength(0);
             ms.Position = 0;
             str = "abcdefäüöß";
-            await ms.WriteStringAsync(str);
+            await ms.WriteStringAsync(str, sc);
             ms.Position = 0;
-            Assert.AreEqual(str, await ms.ReadStringAsync());
+            Assert.AreEqual(str, await ms.ReadStringAsync(dc));
 
             ms.SetLength(0);
             ms.Position = 0;
             str = "abcdefäüöß";
-            await ms.WriteString16Async(str);
+            await ms.WriteString16Async(str, sc);
             Assert.AreEqual(((long)str.Length << 1) + 2, ms.Length);
             ms.Position = 0;
-            Assert.AreEqual(str, await ms.ReadString16Async());
+            Assert.AreEqual(str, await ms.ReadString16Async(dc));
 
             ms.SetLength(0);
             ms.Position = 0;
             str = "abcdefäüöß\U0001F642";
-            await ms.WriteString32Async(str);
+            await ms.WriteString32Async(str, sc);
             ms.Position = 0;
-            Assert.AreEqual(str, await ms.ReadString32Async());
+            Assert.AreEqual(str, await ms.ReadString32Async(dc));
 
             ms.SetLength(0);
             ms.Position = 0;
             str = "abcdef";
-            await ms.WriteStringNullableAsync(str);
+            await ms.WriteStringNullableAsync(str, sc);
             Assert.AreEqual((long)str.Length + 2, ms.Length);
             ms.Position = 0;
-            Assert.AreEqual(str, await ms.ReadStringNullableAsync());
+            Assert.AreEqual(str, await ms.ReadStringNullableAsync(dc));
             Assert.AreEqual(ms.Length, ms.Position);
 
             ms.SetLength(0);
             ms.Position = 0;
-            await ms.WriteStringNullableAsync(null);
+            await ms.WriteStringNullableAsync(null, sc);
             Assert.AreEqual(1, ms.Length);
             ms.Position = 0;
-            Assert.IsNull(await ms.ReadStringNullableAsync());
+            Assert.IsNull(await ms.ReadStringNullableAsync(dc));
             Assert.AreEqual(ms.Length, ms.Position);
         }
     }

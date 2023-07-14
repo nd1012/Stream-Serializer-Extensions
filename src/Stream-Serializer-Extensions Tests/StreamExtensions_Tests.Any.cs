@@ -13,6 +13,8 @@ namespace Stream_Serializer_Extensions_Tests
             try
             {
                 using MemoryStream ms = new();
+                using SerializerContext sc = new(ms);
+                using DeserializerContext dc = new(ms);
                 using MemoryStream test = new();
                 test.Write(new byte[] { 1, 2, 3 });
                 test.Position = 0;
@@ -67,21 +69,21 @@ namespace Stream_Serializer_Extensions_Tests
                 {
                     var info = data[i];
                     Logging.WriteInfo(info.Object.GetType().ToString());
-                    ms.WriteAny(info.Object);
+                    ms.WriteAny(info.Object, sc);
                     ms.Position = 0;
-                    b = ms.ReadAny();
+                    b = ms.ReadAny(dc);
                     info.Comparer(info.Object, b);
                     ms.SetLength(0);
                     ms.Position = 0;
                 }
-                ms.WriteAnyNullable(true);
+                ms.WriteAnyNullable(true, sc);
                 ms.Position = 0;
-                Assert.AreEqual(true, ms.ReadAnyNullable());
+                Assert.AreEqual(true, ms.ReadAnyNullable(dc));
                 ms.SetLength(0);
                 ms.Position = 0;
-                ms.WriteAnyNullable(null);
+                ms.WriteAnyNullable(null, sc);
                 ms.Position = 0;
-                Assert.IsNull(ms.ReadAnyNullable());
+                Assert.IsNull(ms.ReadAnyNullable(dc));
             }
             finally
             {
@@ -96,6 +98,8 @@ namespace Stream_Serializer_Extensions_Tests
             try
             {
                 using MemoryStream ms = new();
+                using SerializerContext sc = new(ms);
+                using DeserializerContext dc = new(ms);
                 using MemoryStream test = new();
                 test.Write(new byte[] { 1, 2, 3 });
                 test.Position = 0;
@@ -150,21 +154,21 @@ namespace Stream_Serializer_Extensions_Tests
                 {
                     var info = data[i];
                     Logging.WriteInfo(info.Object.GetType().ToString());
-                    await ms.WriteAnyAsync(info.Object);
+                    await ms.WriteAnyAsync(info.Object, sc);
                     ms.Position = 0;
-                    b = await ms.ReadAnyAsync();
+                    b = await ms.ReadAnyAsync(dc);
                     info.Comparer(info.Object, b);
                     ms.SetLength(0);
                     ms.Position = 0;
                 }
-                await ms.WriteAnyNullableAsync(true);
+                await ms.WriteAnyNullableAsync(true, sc);
                 ms.Position = 0;
-                Assert.AreEqual(true, await ms.ReadAnyNullableAsync());
+                Assert.AreEqual(true, await ms.ReadAnyNullableAsync(dc));
                 ms.SetLength(0);
                 ms.Position = 0;
-                await ms.WriteAnyNullableAsync(null);
+                await ms.WriteAnyNullableAsync(null, sc);
                 ms.Position = 0;
-                Assert.IsNull(await ms.ReadAnyNullableAsync());
+                Assert.IsNull(await ms.ReadAnyNullableAsync(dc));
             }
             finally
             {

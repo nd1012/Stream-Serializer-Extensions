@@ -75,5 +75,11 @@
         /// <param name="readType">Read the type flags?</param>
         /// <returns>If succeed and the number</returns>
         Task<(bool Succeed, T? Object)> TryReadCachedNumberAsync<T>(bool readType = false) where T : struct, IConvertible;
+        /// <summary>
+        /// Create a temporary instance which uses another serializer version
+        /// </summary>
+        /// <param name="version">New serializer version</param>
+        /// <returns>Temporary instance (don't forget to dispose!)</returns>
+        IDeserializationContext WithSerializerVersion(int version);
     }
 }

@@ -88,7 +88,7 @@ namespace wan24.StreamSerializerExtensions
         public static byte[] ToBytes(this IStreamSerializer obj, bool includeSerializerVersion = true)
         {
             using MemoryStream ms = new();
-            using SerializerContext context = new(ms);
+            using SerializerContext<MemoryStream> context = new(ms);
             if (includeSerializerVersion) ms.WriteSerializerVersion(context);
             ms.WriteSerialized(obj, context);
             return ms.ToArray();
@@ -108,9 +108,11 @@ namespace wan24.StreamSerializerExtensions
         public static T ToObject<T>(this byte[] bytes, bool includesSerializerVersion = true) where T : class, IStreamSerializer, new()
         {
             using MemoryStream ms = new(bytes);
-            using DeserializerContext context = new(ms);
+            using DeserializerContext<MemoryStream> context = new(ms);
             int version = includesSerializerVersion ? ms.ReadSerializerVersion(context) : StreamSerializer.Version;
-            using DeserializerContext objContext = includesSerializerVersion && version != StreamSerializer.Version ? new(ms, version) : context;
+            using DeserializerContext<MemoryStream> objContext = includesSerializerVersion && version != StreamSerializer.Version 
+                ? context.WithSerializerVersion(version) 
+                : context;
             return ms.ReadSerialized<T>(context);
         }
     }

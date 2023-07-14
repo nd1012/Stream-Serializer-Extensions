@@ -13,6 +13,10 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         Stream Stream { get; }
         /// <summary>
+        /// Stream type
+        /// </summary>
+        Type StreamType { get; }
+        /// <summary>
         /// Serializer version
         /// </summary>
         int Version { get; }

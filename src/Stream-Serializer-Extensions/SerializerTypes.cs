@@ -6,15 +6,15 @@
     public enum SerializerTypes
     {
         /// <summary>
-        /// Any type serializer
+        /// Any type serializer (uses <see cref="StreamExtensions.WriteAny(System.IO.Stream, object, ISerializationContext)"/>)
         /// </summary>
         Any,
         /// <summary>
-        /// Any object
+        /// Any object (uses <see cref="StreamExtensions.WriteAnyObject(System.IO.Stream, object, ISerializationContext)"/>)
         /// </summary>
         AnyObject,
         /// <summary>
-        /// Registered serializer
+        /// Registered serializer (<see cref="StreamSerializer.SyncSerializer"/> f.e.)
         /// </summary>
         Serializer,
         /// <summary>
@@ -70,7 +70,7 @@
         /// </summary>
         Stream,
         /// <summary>
-        /// CLR type
+        /// CLR type (using <see cref="SerializedTypeInfo"/>)
         /// </summary>
         Type
     }

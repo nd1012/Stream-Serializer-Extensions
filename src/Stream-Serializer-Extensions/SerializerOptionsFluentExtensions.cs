@@ -19,6 +19,18 @@
         }
 
         /// <summary>
+        /// Remove key serializer options
+        /// </summary>
+        /// <typeparam name="T">Options type</typeparam>
+        /// <param name="options">Options</param>
+        /// <returns>Options</returns>
+        public static T WithoutKeyOptions<T>(this T options) where T : ISerializerOptions
+        {
+            options.KeyOptions = null;
+            return options;
+        }
+
+        /// <summary>
         /// Configure value serializer options
         /// </summary>
         /// <typeparam name="T">Options type</typeparam>
@@ -28,6 +40,18 @@
         public static T WithValueOptions<T>(this T options, ISerializerOptions? valueOptions) where T : ISerializerOptions
         {
             options.ValueOptions = valueOptions;
+            return options;
+        }
+
+        /// <summary>
+        /// Remove value serializer options
+        /// </summary>
+        /// <typeparam name="T">Options type</typeparam>
+        /// <param name="options">Options</param>
+        /// <returns>Options</returns>
+        public static T WithoutValueOptions<T>(this T options) where T : ISerializerOptions
+        {
+            options.ValueOptions = null;
             return options;
         }
     }

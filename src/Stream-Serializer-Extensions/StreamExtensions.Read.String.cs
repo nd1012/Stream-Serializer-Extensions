@@ -176,9 +176,16 @@ namespace wan24.StreamSerializerExtensions
         [SkipLocalsInit]
         private static string ReadString(IDeserializationContext context, int minLen, int maxLen, StringReader_Delegate action)
         {
-            int len = ReadNumber<int>(context.Stream, context);
+            if (context.TryReadCachedObjectCountable(out string? res, out long l))
+                //FIXME How to validate the correct length in this case?
+                return res ?? throw new SerializerException("Non-nullable string expected, but NULL deserialized", new InvalidDataException());
+            int len = (int)l;
             SerializerHelper.EnsureValidLength(len, minLen, maxLen);
-            if (len == 0) return string.Empty;
+            if (len == 0)
+            {
+                if (context.SerializerVersion > 2) throw new SerializerException($"Deserialized empty string", new InvalidDataException());
+                return string.Empty;// Compatibility with serializer version 2
+            }
             if (len <= Settings.StackAllocBorder)
             {
                 Span<byte> buffer = stackalloc byte[len];
@@ -212,9 +219,15 @@ namespace wan24.StreamSerializerExtensions
 #endif
         private static async Task<string> ReadStringAsync(IDeserializationContext context, int minLen, int maxLen, StringReader_Delegate action)
         {
-            int len = await ReadNumberAsync<int>(context.Stream, context).DynamicContext();
+            (bool cached, string? res, long l) = await context.TryReadCachedObjectCountableAsync<string>().DynamicContext();
+            if (cached) return res ?? throw new SerializerException("Non-nullable string expected, but NULL deserialized", new InvalidDataException());
+            int len = (int)l;
             SerializerHelper.EnsureValidLength(len, minLen, maxLen);
-            if (len == 0) return string.Empty;
+            if (len == 0)
+            {
+                if (context.SerializerVersion > 2) throw new SerializerException($"Deserialized empty string", new InvalidDataException());
+                return string.Empty;// Compatibility with serializer version 2
+            }
             byte[] buffer = await ReadSerializedDataAsync(context.Stream, len, context).DynamicContext();
             try
             {
@@ -240,7 +253,7 @@ namespace wan24.StreamSerializerExtensions
         [SkipLocalsInit]
         private static string? ReadNullableString(IDeserializationContext context, int minLen, int maxLen, StringReader_Delegate action)
         {
-            int? len;
+            int len;
             switch (context.SerializerVersion)// Serializer version switch
             {
                 case 1:
@@ -252,25 +265,29 @@ namespace wan24.StreamSerializerExtensions
                     break;
                 default:
                     {
-                        len = ReadNumberNullable<int>(context.Stream, context);
-                        if (len == null) return null;
+                        if (context.TryReadCachedObjectCountable(out string? res, out long l)) return res;
+                        len = (int)l;
                     }
                     break;
             }
-            SerializerHelper.EnsureValidLength(len.Value, minLen, maxLen);
-            if (len == 0) return string.Empty;
+            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+            if (len == 0)
+            {
+                if (context.SerializerVersion > 2) throw new SerializerException($"Deserialized empty string", new InvalidDataException());
+                return string.Empty;// Compatibility with serializer version 2
+            }
             if (len <= Settings.StackAllocBorder)
             {
-                Span<byte> buffer = stackalloc byte[len.Value];
+                Span<byte> buffer = stackalloc byte[len];
                 if (context.Stream.Read(buffer) != len) throw new SerializerException($"Failed to read {len} bytes serialized data", new IOException());
                 return action(buffer);
             }
             else
             {
-                byte[] buffer = ReadSerializedData(context.Stream, len.Value, context);
+                byte[] buffer = ReadSerializedData(context.Stream, len, context);
                 try
                 {
-                    return action(buffer.AsSpan(0, len.Value));
+                    return action(buffer.AsSpan(0, len));
                 }
                 finally
                 {
@@ -292,7 +309,7 @@ namespace wan24.StreamSerializerExtensions
 #endif
         private static async Task<string?> ReadNullableStringAsync(IDeserializationContext context, int minLen, int maxLen, StringReader_Delegate action)
         {
-            int? len;
+            int len;
             switch (context.SerializerVersion)// Serializer version switch
             {
                 case 1:
@@ -304,17 +321,22 @@ namespace wan24.StreamSerializerExtensions
                     break;
                 default:
                     {
-                        len = await ReadNumberNullableAsync<int>(context.Stream, context).DynamicContext();
-                        if (len == null) return null;
+                        (bool cached, string? res, long l) = await context.TryReadCachedObjectCountableAsync<string>().DynamicContext();
+                        if (cached) return res;
+                        len = (int)l;
                     }
                     break;
             }
-            SerializerHelper.EnsureValidLength(len.Value, minLen, maxLen);
-            if (len == 0) return string.Empty;
-            byte[] buffer = await ReadSerializedDataAsync(context.Stream, len.Value, context).DynamicContext();
+            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+            if (len == 0)
+            {
+                if (context.SerializerVersion > 2) throw new SerializerException($"Deserialized empty string", new InvalidDataException());
+                return string.Empty;// Compatibility with serializer version 2
+            }
+            byte[] buffer = await ReadSerializedDataAsync(context.Stream, len, context).DynamicContext();
             try
             {
-                return action(buffer.AsSpan(0, len.Value));
+                return action(buffer.AsSpan(0, len));
             }
             finally
             {

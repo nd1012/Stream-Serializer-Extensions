@@ -261,7 +261,7 @@ namespace wan24.StreamSerializerExtensions
             }
             if (type.IsGenericType)
             {
-                if (Recursion >= SerializerContextBase.MaxRecursion) throw new InvalidOperationException("Type information branches too deep and won't be deserializable");
+                if (Recursion >= SerializerContext.MaxRecursion) throw new InvalidOperationException("Type information branches too deep and won't be deserializable");
                 IsGenericTypeDefinition = type.IsGenericTypeDefinition;
                 if (IsGenericTypeDefinition)
                 {
@@ -277,8 +277,9 @@ namespace wan24.StreamSerializerExtensions
             }
             else if (type.IsArray)
             {
-                if (Recursion >= SerializerContextBase.MaxRecursion) throw new InvalidOperationException("Type information branches too deep and won't be deserializable");
-                ElementType = new(type.GetElementType()!) { Recursion = Recursion + 1 };
+                if (Recursion >= SerializerContext.MaxRecursion) throw new InvalidOperationException("Type information branches too deep and won't be deserializable");
+                ElementType = From(type.GetElementType()!);
+                ElementType.Recursion = Recursion + 1;
                 ArrayRank = type.GetArrayRank();
             }
             Cache.TryAdd(type.GetHashCode(), this);

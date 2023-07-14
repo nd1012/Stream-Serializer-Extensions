@@ -46,7 +46,9 @@ namespace wan24.StreamSerializerExtensions
 #endif
         public static int ReadSerializerVersion(this Stream stream, IDeserializationContext context)
         {
-            int res = ReadNumber<int>(stream, context);
+            // The serializer version number sequence is fixed to serializer version #2
+            using DeserializerContext versionContext = new(stream, version: 2, cacheSize: 0, context.Cancellation);
+            int res = ReadNumber<int>(stream, versionContext);
             if (res < 1 || (res & byte.MaxValue) > StreamSerializer.VERSION)
                 throw new SerializerException($"Invalid or unsupported stream serializer version #{res}", new InvalidDataException());
             return res;
@@ -64,7 +66,9 @@ namespace wan24.StreamSerializerExtensions
 #endif
         public static async Task<int> ReadSerializerVersionAsync(this Stream stream, IDeserializationContext context)
         {
-            int res = await ReadNumberAsync<int>(stream, context).DynamicContext();
+            // The serializer version number sequence is fixed to serializer version #2
+            using DeserializerContext versionContext = new(stream, version: 2, cacheSize: 0, context.Cancellation);
+            int res = await ReadNumberAsync<int>(stream, versionContext).DynamicContext();
             if (res < 1 || (res & byte.MaxValue) > StreamSerializer.VERSION)
                 throw new SerializerException($"Invalid or unsupported stream serializer version #{res}", new InvalidDataException());
             return res;

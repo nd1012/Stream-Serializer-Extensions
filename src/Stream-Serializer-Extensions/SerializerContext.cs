@@ -5,7 +5,24 @@ namespace wan24.StreamSerializerExtensions
     /// <summary>
     /// Stream serializer writing context
     /// </summary>
-    public class SerializerContext : SerializerContextBase, ISerializationContext
+    public class SerializerContext : SerializerContext<Stream>
+    {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="stream">Stream (won't be disposed)</param>
+        /// <param name="cacheSize">Cache size</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        public SerializerContext(Stream stream, int? cacheSize = null, CancellationToken cancellationToken = default)
+            : base(stream, cacheSize, cancellationToken)
+        { }
+    }
+
+    /// <summary>
+    /// Stream serializer writing context
+    /// </summary>
+    /// <typeparam name="T">Stream type</typeparam>
+    public class SerializerContext<T> : SerializerContextBase<T>, ISerializationContext where T : Stream
     {
         /// <summary>
         /// Cache
@@ -18,7 +35,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream (won't be disposed)</param>
         /// <param name="cacheSize">Cache size</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        public SerializerContext(Stream stream, int? cacheSize = null, CancellationToken cancellationToken = default)
+        public SerializerContext(T stream, int? cacheSize = null, CancellationToken cancellationToken = default)
             : base(stream, StreamSerializer.Version, cacheSize, cancellationToken)
         {
             _Cache = _CacheSize > 0 ? StreamSerializer.HashCodeCachePool.RentClean(_CacheSize) : Array.Empty<int>();
@@ -72,7 +89,7 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <inheritdoc/>
-        public bool TryWriteCached<T>(T? obj)
+        public bool TryWriteCached<tObject>(tObject? obj)
         {
             EnsureUndisposed();
             // Ensure using the cache
@@ -97,7 +114,7 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <inheritdoc/>
-        public async Task<bool> TryWriteCachedAsync<T>(T? obj)
+        public async Task<bool> TryWriteCachedAsync<tObject>(tObject? obj)
         {
             EnsureUndisposed();
             // Ensure using the cache
@@ -122,7 +139,7 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <inheritdoc/>
-        public bool TryWriteCached<T>(T? obj, ObjectTypes? objType, bool writeType = false)
+        public bool TryWriteCached<tObject>(tObject? obj, ObjectTypes? objType, bool writeType = false)
         {
             EnsureUndisposed();
             // Ensure using the cache
@@ -201,7 +218,7 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <inheritdoc/>
-        public async Task<bool> TryWriteCachedAsync<T>(T? obj, ObjectTypes? objType, bool writeType = false)
+        public async Task<bool> TryWriteCachedAsync<tObject>(tObject? obj, ObjectTypes? objType, bool writeType = false)
         {
             EnsureUndisposed();
             // Ensure using the cache
@@ -280,7 +297,7 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <inheritdoc/>
-        public bool TryWriteCachedCountable<T>(T? obj, long? len, bool writeType = false)
+        public bool TryWriteCachedCountable<tObject>(tObject? obj, long? len, bool writeType = false)
         {
             EnsureUndisposed();
             // Ensure using the cache
@@ -355,7 +372,7 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <inheritdoc/>
-        public async Task<bool> TryWriteCachedCountableAsync<T>(T? obj, long? len, bool writeType = false)
+        public async Task<bool> TryWriteCachedCountableAsync<tObject>(tObject? obj, long? len, bool writeType = false)
         {
             EnsureUndisposed();
             // Ensure using the cache
@@ -430,7 +447,7 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <inheritdoc/>
-        public bool TryWriteCached<T>(T? num, NumberTypes? numberType, bool writeType = false) where T : struct, IConvertible
+        public bool TryWriteCached<tObject>(tObject? num, NumberTypes? numberType, bool writeType = false) where tObject : struct, IConvertible
         {
             EnsureUndisposed();
             // Ensure using the cache
@@ -510,7 +527,7 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <inheritdoc/>
-        public async Task<bool> TryWriteCachedAsync<T>(T? num, NumberTypes? numberType, bool writeType = false) where T : struct, IConvertible
+        public async Task<bool> TryWriteCachedAsync<tObject>(tObject? num, NumberTypes? numberType, bool writeType = false) where tObject : struct, IConvertible
         {
             EnsureUndisposed();
             // Ensure using the cache
@@ -652,6 +669,7 @@ namespace wan24.StreamSerializerExtensions
         /// <inheritdoc/>
         protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
             if (_Cache.Length != 0) StreamSerializer.HashCodeCachePool.Return(_Cache);
         }
     }

@@ -8,21 +8,21 @@ namespace Stream_Serializer_Extensions_Tests
     {
         public TestObject2() : base(1) { }
 
-        public TestObject2(Stream stream, int version) : base(stream, version, 1) { }
+        public TestObject2(IDeserializationContext context) : base(context, 1) { }
 
         public bool Value { get; set; }
 
         public virtual bool CompareWith(ITestObject other) => other is TestObject2 obj && Value == obj.Value;
 
-        protected override void Serialize(Stream stream) => stream.Write(Value);
+        protected override void Serialize(ISerializationContext context) => context.Stream.Write(Value, context);
 
-        protected override async Task SerializeAsync(Stream stream, CancellationToken cancellationToken)
-            => await stream.WriteAsync(Value, cancellationToken).DynamicContext();
+        protected override async Task SerializeAsync(ISerializationContext context)
+            => await context.Stream.WriteAsync(Value, context).DynamicContext();
 
-        protected override void Deserialize(Stream stream, int version)
-            => Value = stream.ReadBool(version);
+        protected override void Deserialize(IDeserializationContext context)
+            => Value = context.Stream.ReadBool(context);
 
-        protected override async Task DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken)
-            => Value = await stream.ReadBoolAsync(version, cancellationToken: cancellationToken).DynamicContext();
+        protected override async Task DeserializeAsync(IDeserializationContext context)
+            => Value = await context.Stream.ReadBoolAsync(context).DynamicContext();
     }
 }

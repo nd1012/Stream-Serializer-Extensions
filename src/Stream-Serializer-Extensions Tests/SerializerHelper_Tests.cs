@@ -1,7 +1,8 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using wan24.Core;
 using wan24.StreamSerializerExtensions;
+
+//TODO Add more tests
 
 namespace Stream_Serializer_Extensions_Tests
 {

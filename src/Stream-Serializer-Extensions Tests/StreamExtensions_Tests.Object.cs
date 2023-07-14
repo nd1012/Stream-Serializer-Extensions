@@ -13,6 +13,8 @@ namespace Stream_Serializer_Extensions_Tests
             try
             {
                 using MemoryStream ms = new();
+                using SerializerContext sc = new(ms);
+                using DeserializerContext dc = new(ms);
                 using MemoryStream test = new();
                 test.Write(new byte[] { 1, 2, 3 });
                 test.Position = 0;
@@ -66,21 +68,21 @@ namespace Stream_Serializer_Extensions_Tests
                 {
                     var info = data[i];
                     Logging.WriteInfo(info.Object.GetType().ToString());
-                    ms.WriteObject(info.Object);
+                    ms.WriteObject(info.Object, sc);
                     ms.Position = 0;
-                    b = ms.ReadObject(info.Object.GetType());
+                    b = ms.ReadObject(info.Object.GetType(), dc);
                     info.Comparer(info.Object, b);
                     ms.SetLength(0);
                     ms.Position = 0;
                 }
-                ms.WriteObjectNullable(true);
+                ms.WriteObjectNullable(true, sc);
                 ms.Position = 0;
-                Assert.AreEqual(true, ms.ReadObjectNullable<bool>());
+                Assert.AreEqual(true, ms.ReadObjectNullable<bool>(dc));
                 ms.SetLength(0);
                 ms.Position = 0;
-                ms.WriteObjectNullable(null);
+                ms.WriteObjectNullable(null, sc);
                 ms.Position = 0;
-                Assert.IsNull(ms.ReadObjectNullable(typeof(bool)));
+                Assert.IsNull(ms.ReadObjectNullable(typeof(bool), dc));
             }
             finally
             {
@@ -95,6 +97,8 @@ namespace Stream_Serializer_Extensions_Tests
             try
             {
                 using MemoryStream ms = new();
+                using SerializerContext sc = new(ms);
+                using DeserializerContext dc = new(ms);
                 using MemoryStream test = new();
                 test.Write(new byte[] { 1, 2, 3 });
                 test.Position = 0;
@@ -148,21 +152,21 @@ namespace Stream_Serializer_Extensions_Tests
                 {
                     var info = data[i];
                     Logging.WriteInfo(info.Object.GetType().ToString());
-                    await ms.WriteObjectAsync(info.Object);
+                    await ms.WriteObjectAsync(info.Object, sc);
                     ms.Position = 0;
-                    b = await ms.ReadObjectAsync(info.Object.GetType());
+                    b = await ms.ReadObjectAsync(info.Object.GetType(), dc);
                     info.Comparer(info.Object, b);
                     ms.SetLength(0);
                     ms.Position = 0;
                 }
-                await ms.WriteObjectNullableAsync(true);
+                await ms.WriteObjectNullableAsync(true, sc);
                 ms.Position = 0;
-                Assert.AreEqual(true, await ms.ReadObjectNullableAsync<bool>());
+                Assert.AreEqual(true, await ms.ReadObjectNullableAsync<bool>(dc));
                 ms.SetLength(0);
                 ms.Position = 0;
-                await ms.WriteObjectNullableAsync(null);
+                await ms.WriteObjectNullableAsync(null, sc);
                 ms.Position = 0;
-                Assert.IsNull(await ms.ReadObjectNullableAsync(typeof(bool)));
+                Assert.IsNull(await ms.ReadObjectNullableAsync(typeof(bool), dc));
             }
             finally
             {

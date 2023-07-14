@@ -9,6 +9,8 @@ namespace Stream_Serializer_Extensions_Tests
         public void Type_Tests()
         {
             using MemoryStream ms = new();
+            using SerializerContext sc = new(ms);
+            using DeserializerContext dc = new(ms);
             foreach (Type type in new Type[]
             {
                 typeof(bool),
@@ -27,10 +29,10 @@ namespace Stream_Serializer_Extensions_Tests
                 Logging.WriteInfo($"Type {type} ({SerializedTypeInfo.From(type)})");
                 ms.SetLength(0);
                 ms.Position = 0;
-                ms.Write(type);
+                ms.Write(type, sc);
                 Logging.WriteInfo($"\tSerialized to {ms.Length} bytes");
                 ms.Position = 0;
-                Assert.AreEqual(type, ms.ReadType());
+                Assert.AreEqual(type, ms.ReadType(dc));
             }
             foreach (Type? type in new Type?[]
             {
@@ -41,10 +43,10 @@ namespace Stream_Serializer_Extensions_Tests
                 Logging.WriteInfo($"Type {type?.ToString() ?? "NULL"}");
                 ms.SetLength(0);
                 ms.Position = 0;
-                ms.WriteNullable(type);
+                ms.WriteNullable(type, sc);
                 Logging.WriteInfo($"\tSerialized to {ms.Length} bytes");
                 ms.Position = 0;
-                Assert.AreEqual(type, ms.ReadTypeNullable());
+                Assert.AreEqual(type, ms.ReadTypeNullable(dc));
             }
         }
 
@@ -52,6 +54,8 @@ namespace Stream_Serializer_Extensions_Tests
         public async Task TypeAsync_Tests()
         {
             using MemoryStream ms = new();
+            using SerializerContext sc = new(ms);
+            using DeserializerContext dc = new(ms);
             foreach (Type type in new Type[]
             {
                 typeof(bool),
@@ -70,10 +74,10 @@ namespace Stream_Serializer_Extensions_Tests
                 Logging.WriteInfo($"Type {type} ({SerializedTypeInfo.From(type)})");
                 ms.SetLength(0);
                 ms.Position = 0;
-                await ms.WriteAsync(type);
+                await ms.WriteAsync(type, sc);
                 Logging.WriteInfo($"\tSerialized to {ms.Length} bytes");
                 ms.Position = 0;
-                Assert.AreEqual(type, await ms.ReadTypeAsync());
+                Assert.AreEqual(type, await ms.ReadTypeAsync(dc));
             }
             foreach (Type? type in new Type?[]
             {
@@ -84,10 +88,10 @@ namespace Stream_Serializer_Extensions_Tests
                 Logging.WriteInfo($"Type {type?.ToString() ?? "NULL"}");
                 ms.SetLength(0);
                 ms.Position = 0;
-                await ms.WriteNullableAsync(type);
+                await ms.WriteNullableAsync(type, sc);
                 Logging.WriteInfo($"\tSerialized to {ms.Length} bytes");
                 ms.Position = 0;
-                Assert.AreEqual(type, await ms.ReadTypeNullableAsync());
+                Assert.AreEqual(type, await ms.ReadTypeNullableAsync(dc));
             }
         }
     }

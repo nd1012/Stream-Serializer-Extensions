@@ -12,9 +12,11 @@ namespace Stream_Serializer_Extensions_Tests
             try
             {
                 using MemoryStream ms = new();
-                ms.WriteSerializerVersion();
+                using SerializerContext sc = new(ms);
+                using DeserializerContext dc = new(ms);
+                ms.WriteSerializerVersion(sc);
                 ms.Position = 0;
-                int temp = ms.ReadSerializerVersion();
+                int temp = ms.ReadSerializerVersion(dc);
                 Assert.AreEqual(StreamSerializer.Version, temp);
                 Assert.AreEqual(1, temp >> 8);
             }
@@ -31,9 +33,11 @@ namespace Stream_Serializer_Extensions_Tests
             try
             {
                 using MemoryStream ms = new();
-                await ms.WriteSerializerVersionAsync();
+                using SerializerContext sc = new(ms);
+                using DeserializerContext dc = new(ms);
+                await ms.WriteSerializerVersionAsync(sc);
                 ms.Position = 0;
-                int temp = await ms.ReadSerializerVersionAsync();
+                int temp = await ms.ReadSerializerVersionAsync(dc);
                 Assert.AreEqual(StreamSerializer.Version, temp);
                 Assert.AreEqual(1, temp >> 8);
             }

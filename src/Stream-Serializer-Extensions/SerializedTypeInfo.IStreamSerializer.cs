@@ -136,7 +136,7 @@ namespace wan24.StreamSerializerExtensions
             }
             if (ObjectType.IsGeneric())
             {
-                if (Recursion >= SerializerContextBase.MaxRecursion)
+                if (Recursion >= SerializerContext.MaxRecursion)
                     throw new SerializerException($"Avoided possible endless recursion (possibly manipulated byte sequence)", new StackOverflowException());
                 int len = context.Stream.ReadOneSByte(context);
                 IsGenericTypeDefinition = len < 0;
@@ -148,6 +148,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 else
                 {
+                    using ContextRecursion cr = new(context);
                     List<SerializedTypeInfo> list = new(len);
                     SerializedTypeInfo info;
                     for (int i = 0; i < len; i++)
@@ -164,8 +165,9 @@ namespace wan24.StreamSerializerExtensions
             }
             else if (ObjectType.IsArray())
             {
-                if (Recursion >= SerializerContextBase.MaxRecursion)
+                if (Recursion >= SerializerContext.MaxRecursion)
                     throw new SerializerException($"Avoided possible endless recursion (possibly manipulated byte sequence)", new StackOverflowException());
+                using ContextRecursion cr = new(context);
                 ElementType = new()
                 {
                     Recursion = Recursion + 1
@@ -227,7 +229,7 @@ namespace wan24.StreamSerializerExtensions
             }
             if (ObjectType.IsGeneric())
             {
-                if (Recursion >= SerializerContextBase.MaxRecursion)
+                if (Recursion >= SerializerContext.MaxRecursion)
                     throw new SerializerException($"Avoided possible endless recursion (possibly manipulated byte sequence)", new StackOverflowException());
                 int len = await context.Stream.ReadOneSByteAsync(context).DynamicContext();
                 IsGenericTypeDefinition = len < 0;
@@ -239,6 +241,7 @@ namespace wan24.StreamSerializerExtensions
                 }
                 else
                 {
+                    using ContextRecursion cr = new(context);
                     List<SerializedTypeInfo> list = new(len);
                     SerializedTypeInfo info;
                     for (int i = 0; i < len; i++)
@@ -255,8 +258,9 @@ namespace wan24.StreamSerializerExtensions
             }
             else if (ObjectType.IsArray())
             {
-                if (Recursion >= SerializerContextBase.MaxRecursion)
+                if (Recursion >= SerializerContext.MaxRecursion)
                     throw new SerializerException($"Avoided possible endless recursion (possibly manipulated byte sequence)", new StackOverflowException());
+                using ContextRecursion cr = new(context);
                 ElementType = new()
                 {
                     Recursion = Recursion + 1

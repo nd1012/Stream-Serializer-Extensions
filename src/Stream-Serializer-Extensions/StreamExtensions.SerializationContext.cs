@@ -9,18 +9,21 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Create a serialization context for writing to the stream
         /// </summary>
+        /// <typeparam name="T">Stream type</typeparam>
         /// <param name="stream">Stream (won't be disposed)</param>
         /// <param name="cacheSize">Cache size</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Context (don't forget to dispose!)</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ISerializationContext CreateSerializationContext(this Stream stream, int? cacheSize = null, CancellationToken cancellationToken = default)
-            => new SerializerContext(stream, cacheSize, cancellationToken);
+        public static SerializerContext<T> CreateSerializationContext<T>(this T stream, int? cacheSize = null, CancellationToken cancellationToken = default)
+            where T : Stream
+            => new(stream, cacheSize, cancellationToken);
 
         /// <summary>
         /// Create a deserialization context for reading from the stream
         /// </summary>
+        /// <typeparam name="T">Stream type</typeparam>
         /// <param name="stream">Stream (won't be disposed)</param>
         /// <param name="version">Serializer version</param>
         /// <param name="cacheSize">Cache size</param>
@@ -28,12 +31,13 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Context (don't forget to dispose!)</returns>
         [TargetedPatchingOptOut("Tiny method")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IDeserializationContext CreateDeserializationContext(
-            this Stream stream, 
-            int? version = null, 
-            int? cacheSize = null, 
+        public static DeserializerContext<T> CreateDeserializationContext<T>(
+            this T stream,
+            int? version = null,
+            int? cacheSize = null,
             CancellationToken cancellationToken = default
             )
-            => new DeserializerContext(stream, version, cacheSize, cancellationToken);
+            where T : Stream
+            => new(stream, version, cacheSize, cancellationToken);
     }
 }

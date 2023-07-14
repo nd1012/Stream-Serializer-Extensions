@@ -14,28 +14,30 @@ namespace Stream_Serializer_Extensions_Tests
                 asyncSerializer = 0,
                 syncDeserializer = 0;
             AsyncDeserializer = 0;
-            StreamSerializer.SyncSerializer[typeof(TestObject)] = (s, v) =>
+            StreamSerializer.SyncSerializer[typeof(TestObject)] = (c, v) =>
             {
                 syncSerializer++;
-                s.Write(((TestObject)v!).Value);
+                c.Stream.Write(((TestObject)v!).Value, c);
             };
-            StreamSerializer.AsyncSerializer[typeof(TestObject)] = async (s, v, ct) =>
+            StreamSerializer.AsyncSerializer[typeof(TestObject)] = async (c, v) =>
             {
                 asyncSerializer++;
-                await s.WriteAsync(((TestObject)v!).Value, ct);
+                await c.Stream.WriteAsync(((TestObject)v!).Value, c);
             };
-            StreamSerializer.SyncDeserializer[typeof(TestObject)] = (s, t, v, o) =>
+            StreamSerializer.SyncDeserializer[typeof(TestObject)] = (c, t) =>
             {
                 syncDeserializer++;
-                return new TestObject() { Value = s.ReadBool() };
+                return new TestObject() { Value = c.Stream.ReadBool(c) };
             };
             StreamSerializer.AsyncDeserializer[typeof(TestObject)] = DeserializeTestObject;
             try
             {
                 using MemoryStream ms = new();
-                ms.WriteObject(new TestObject() { Value = true });
+                using SerializerContext sc = new(ms);
+                using DeserializerContext dc = new(ms);
+                ms.WriteObject(new TestObject() { Value = true }, sc);
                 ms.Position = 0;
-                Assert.IsTrue(ms.ReadObject<TestObject>().Value);
+                Assert.IsTrue(ms.ReadObject<TestObject>(dc).Value);
                 Assert.AreEqual(1, syncSerializer);
                 Assert.AreEqual(0, asyncSerializer);
                 Assert.AreEqual(1, syncDeserializer);
@@ -57,28 +59,30 @@ namespace Stream_Serializer_Extensions_Tests
                 asyncSerializer = 0,
                 syncDeserializer = 0;
             AsyncDeserializer = 0;
-            StreamSerializer.SyncSerializer[typeof(TestObject)] = (s, v) =>
+            StreamSerializer.SyncSerializer[typeof(TestObject)] = (c, v) =>
             {
                 syncSerializer++;
-                s.Write(((TestObject)v!).Value);
+                c.Stream.Write(((TestObject)v!).Value, c);
             };
-            StreamSerializer.AsyncSerializer[typeof(TestObject)] = async (s, v, ct) =>
+            StreamSerializer.AsyncSerializer[typeof(TestObject)] = async (c, v) =>
             {
                 asyncSerializer++;
-                await s.WriteAsync(((TestObject)v!).Value, ct);
+                await c.Stream.WriteAsync(((TestObject)v!).Value, c);
             };
-            StreamSerializer.SyncDeserializer[typeof(TestObject)] = (s, t, v, o) =>
+            StreamSerializer.SyncDeserializer[typeof(TestObject)] = (c, t) =>
             {
                 syncDeserializer++;
-                return new TestObject() { Value = s.ReadBool() };
+                return new TestObject() { Value = c.Stream.ReadBool(c) };
             };
             StreamSerializer.AsyncDeserializer[typeof(TestObject)] = DeserializeTestObject;
             try
             {
                 using MemoryStream ms = new();
-                await ms.WriteObjectAsync(new TestObject() { Value = true });
+                using SerializerContext sc = new(ms);
+                using DeserializerContext dc = new(ms);
+                await ms.WriteObjectAsync(new TestObject() { Value = true },sc);
                 ms.Position = 0;
-                Assert.IsTrue((await ms.ReadObjectAsync<TestObject>()).Value);
+                Assert.IsTrue((await ms.ReadObjectAsync<TestObject>(dc)).Value);
                 Assert.AreEqual(0, syncSerializer);
                 Assert.AreEqual(1, asyncSerializer);
                 Assert.AreEqual(0, syncDeserializer);
@@ -93,10 +97,10 @@ namespace Stream_Serializer_Extensions_Tests
             }
         }
 
-        private async Task<TestObject> DeserializeTestObject(Stream stream, Type type, int version, ISerializerOptions? options, CancellationToken cancellationToken)
+        private async Task<TestObject> DeserializeTestObject(IDeserializationContext context, Type type)
         {
             AsyncDeserializer++;
-            return new TestObject() { Value = await stream.ReadBoolAsync(version, cancellationToken: cancellationToken) };
+            return new TestObject() { Value = await context.Stream.ReadBoolAsync(context) };
         }
     }
 }

@@ -8,56 +8,60 @@ namespace Stream_Serializer_Extensions_Tests
         public void Bool_Tests()
         {
             using MemoryStream ms = new();
-            ms.Write(true);
+            using SerializerContext sc = new(ms);
+            using DeserializerContext dc = new(ms);
+            ms.Write(true, sc);
             Assert.AreEqual(1L, ms.Position);
             ms.Position = 0;
-            Assert.IsTrue(ms.ReadBool());
+            Assert.IsTrue(ms.ReadBool(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            ms.Write(false);
+            ms.Write(false, sc);
             Assert.AreEqual(1L, ms.Position);
             ms.Position = 0;
-            Assert.IsFalse(ms.ReadBool());
+            Assert.IsFalse(ms.ReadBool(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            ms.WriteNullable((bool?)null);
+            ms.WriteNullable((bool?)null, sc);
             Assert.AreEqual(1L, ms.Position);
             ms.Position = 0;
-            Assert.IsNull(ms.ReadBoolNullable());
+            Assert.IsNull(ms.ReadBoolNullable(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            ms.WriteNullable(true);
+            ms.WriteNullable(true, sc);
             Assert.AreEqual(1L, ms.Position);
             ms.Position = 0;
-            Assert.IsTrue(ms.ReadBoolNullable());
+            Assert.IsTrue(ms.ReadBoolNullable(dc));
         }
 
         [TestMethod]
         public async Task BoolAsync_Tests()
         {
             using MemoryStream ms = new();
-            await ms.WriteAsync(true);
+            using SerializerContext sc = new(ms);
+            using DeserializerContext dc = new(ms);
+            await ms.WriteAsync(true, sc);
             Assert.AreEqual(1L, ms.Position);
             ms.Position = 0;
-            Assert.IsTrue(await ms.ReadBoolAsync());
+            Assert.IsTrue(await ms.ReadBoolAsync(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            await ms.WriteAsync(false);
+            await ms.WriteAsync(false, sc);
             Assert.AreEqual(1L, ms.Position);
             ms.Position = 0;
-            Assert.IsFalse(await ms.ReadBoolAsync());
+            Assert.IsFalse(await ms.ReadBoolAsync(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            await ms.WriteNullableAsync((bool?)null);
+            await ms.WriteNullableAsync((bool?)null, sc);
             Assert.AreEqual(1L, ms.Position);
             ms.Position = 0;
-            Assert.IsNull(await ms.ReadBoolNullableAsync());
+            Assert.IsNull(await ms.ReadBoolNullableAsync(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            await ms.WriteNullableAsync(true);
+            await ms.WriteNullableAsync(true, sc);
             Assert.AreEqual(1L, ms.Position);
             ms.Position = 0;
-            Assert.IsTrue(await ms.ReadBoolNullableAsync());
+            Assert.IsTrue(await ms.ReadBoolNullableAsync(dc));
         }
     }
 }

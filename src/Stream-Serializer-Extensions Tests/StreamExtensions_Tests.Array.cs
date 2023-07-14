@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Primitives;
-using System.Collections;
+﻿using System.Collections;
 using System.Security.Cryptography;
 using wan24.Core;
 using wan24.StreamSerializerExtensions;
@@ -12,32 +11,36 @@ namespace Stream_Serializer_Extensions_Tests
         public void Array_Tests()
         {
             using MemoryStream ms = new();
+            using SerializerContext sc = new(ms);
+            using DeserializerContext dc = new(ms);
             {
                 bool[] arr = new bool[] { true, false };
-                ms.WriteArray(arr);
+                ms.WriteArray(arr, sc);
                 Assert.AreEqual(4L, ms.Length);
                 ms.Position = 0;
-                CompareArray(arr, ms.ReadArray<bool>());
+                CompareArray(arr, ms.ReadArray<bool>(dc));
                 arr = Array.Empty<bool>();
                 ms.SetLength(0);
                 ms.Position = 0;
-                ms.WriteArray(arr);
+                ms.WriteArray(arr, sc);
                 Assert.AreEqual(1L, ms.Length);
                 ms.SetLength(0);
                 ms.Position = 0;
-                ms.WriteArrayNullable(null);
+                ms.WriteArrayNullable(null, sc);
                 Assert.AreEqual(1L, ms.Length);
                 ms.Position = 0;
-                Assert.IsNull(ms.ReadArrayNullable<bool>());
+                Assert.IsNull(ms.ReadArrayNullable<bool>(dc));
                 ms.SetLength(0);
                 ms.Position = 0;
-                ms.WriteArrayNullable(arr);
+                ms.WriteArrayNullable(arr, sc);
                 Assert.AreEqual(1L, ms.Length);
                 ms.Position = 0;
-                Assert.IsNotNull(ms.ReadArrayNullable<bool>());
+                Assert.IsNotNull(ms.ReadArrayNullable<bool>(dc));
             }
             foreach (bool nullable in new bool[] { false, true })
             {
+                sc.Nullable = nullable;
+                dc.Nullable = nullable;
                 Logging.WriteInfo($"Nullable values: {nullable}");
                 using TestObject5 test = new();
                 using MemoryStream testMs = new();
@@ -84,9 +87,9 @@ namespace Stream_Serializer_Extensions_Tests
                 {
                     ms.SetLength(0);
                     ms.Position = 0;
-                    ms.WriteArray(arr, valuesNullable: nullable);
+                    ms.WriteArray(arr, sc);
                     ms.Position = 0;
-                    CompareArray(arr, ms.ReadArray<object>(valuesNullable: nullable));
+                    CompareArray(arr, ms.ReadArray<object>(dc));
                 }
                 finally
                 {
@@ -99,28 +102,30 @@ namespace Stream_Serializer_Extensions_Tests
         public async Task ArrayAsync_Tests()
         {
             using MemoryStream ms = new();
+            using SerializerContext sc = new(ms);
+            using DeserializerContext dc = new(ms);
             bool[] arr = new bool[] { true, false };
-            await ms.WriteArrayAsync(arr);
+            await ms.WriteArrayAsync(arr, sc);
             Assert.AreEqual(4L, ms.Length);
             ms.Position = 0;
-            CompareArray(arr, await ms.ReadArrayAsync<bool>());
+            CompareArray(arr, await ms.ReadArrayAsync<bool>(dc));
             arr = Array.Empty<bool>();
             ms.SetLength(0);
             ms.Position = 0;
-            await ms.WriteArrayAsync(arr);
+            await ms.WriteArrayAsync(arr, sc);
             Assert.AreEqual(1L, ms.Length);
             ms.SetLength(0);
             ms.Position = 0;
-            await ms.WriteArrayNullableAsync(null);
+            await ms.WriteArrayNullableAsync(null, sc);
             Assert.AreEqual(1L, ms.Length);
             ms.Position = 0;
-            Assert.IsNull(await ms.ReadArrayNullableAsync<bool>());
+            Assert.IsNull(await ms.ReadArrayNullableAsync<bool>(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            await ms.WriteArrayNullableAsync(arr);
+            await ms.WriteArrayNullableAsync(arr, sc);
             Assert.AreEqual(1L, ms.Length);
             ms.Position = 0;
-            Assert.IsNotNull(await ms.ReadArrayNullableAsync<bool>());
+            Assert.IsNotNull(await ms.ReadArrayNullableAsync<bool>(dc));
         }
 
         private static void CompareArray(Array a, Array b)

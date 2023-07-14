@@ -5,8 +5,47 @@ namespace wan24.StreamSerializerExtensions
     /// <summary>
     /// Stream deserializer context
     /// </summary>
-    public class DeserializerContext : SerializerContextBase, IDeserializationContext
+    public class DeserializerContext : DeserializerContext<Stream>, IDeserializationContext
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="stream">Stream (won't be disposed)</param>
+        /// <param name="version">Serializer version</param>
+        /// <param name="cacheSize">Cache size</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        public DeserializerContext(Stream stream, int? version = null, int? cacheSize = null, CancellationToken cancellationToken = default)
+            : base(stream, version, cacheSize, cancellationToken)
+        { }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="baseContext">Base deserializer context</param>
+        /// <param name="version">Serializer version</param>
+        public DeserializerContext(DeserializerContext baseContext, int version) : base(baseContext, version) { }
+
+        /// <summary>
+        /// Create a temporary instance which uses another serializer version
+        /// </summary>
+        /// <param name="version">New serializer version</param>
+        /// <returns>Temporary instance (don't forget to dispose!)</returns>
+        new public DeserializerContext WithSerializerVersion(int version) => new(this, version);
+
+        /// <inheritdoc/>
+        IDeserializationContext IDeserializationContext.WithSerializerVersion(int version) => WithSerializerVersion(version);
+    }
+
+    /// <summary>
+    /// Stream deserializer context
+    /// </summary>
+    /// <typeparam name="T">Stream type</typeparam>
+    public class DeserializerContext<T> : SerializerContextBase<T>, IDeserializationContext where T : Stream
+    {
+        /// <summary>
+        /// Base context
+        /// </summary>
+        protected readonly DeserializerContext<T>? _BaseContext = null;
         /// <summary>
         /// Cache
         /// </summary>
@@ -19,11 +58,22 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="version">Serializer version</param>
         /// <param name="cacheSize">Cache size</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        public DeserializerContext(Stream stream, int? version = null, int? cacheSize = null, CancellationToken cancellationToken = default)
+        public DeserializerContext(T stream, int? version = null, int? cacheSize = null, CancellationToken cancellationToken = default)
             : base(stream, version, cacheSize, cancellationToken)
         {
             _Cache = _CacheSize > 0 ? StreamSerializer.ObjectCachePool.RentClean(_CacheSize) : Array.Empty<object>();
             CacheIndexSize = _CacheSize > byte.MaxValue ? 2 : 1;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="baseContext">Base deserializer context</param>
+        /// <param name="version">Serializer version</param>
+        public DeserializerContext(DeserializerContext<T> baseContext, int version) : base(baseContext, version)
+        {
+            _BaseContext = baseContext;
+            _Cache = baseContext._Cache;
         }
 
         /// <summary>
@@ -49,6 +99,15 @@ namespace wan24.StreamSerializerExtensions
             {
                 EnsureUndisposed();
                 if (value == _CacheSize) return;
+                if (_BaseContext != null)
+                {
+                    _BaseContext.CacheSize = value;
+                    _CacheSize = _BaseContext._CacheSize;
+                    RealCacheSize = _BaseContext.RealCacheSize;
+                    CacheIndexSize = _BaseContext.CacheIndexSize;
+                    _Cache = _BaseContext._Cache;
+                    return;
+                }
                 if (value < 1)
                 {
                     _CacheSize = value;
@@ -76,7 +135,7 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <inheritdoc/>
-        public T AddToCache<T>(T obj)
+        public tObject AddToCache<tObject>(tObject obj)
         {
             int index = CacheOffset;
             if (index >= _CacheSize) return obj;
@@ -86,7 +145,7 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <inheritdoc/>
-        public bool TryReadCached<T>(out T? obj)
+        public bool TryReadCached<tObject>(out tObject? obj)
         {
             EnsureUndisposed();
             obj = default;
@@ -99,14 +158,14 @@ namespace wan24.StreamSerializerExtensions
                 case SequenceTypes.Cached:
                     int index = CacheIndexSize == 1 || st.ContainsAllFlags(SequenceTypes.SmallIndex) ? Stream.ReadOneByte(this) : Stream.ReadUShort(this);
                     if (index < 0 || index >= CacheOffset) throw new SerializerException($"Invalid cache index #{index}", new InvalidDataException());
-                    obj = SerializerException.Wrap(() => (T)_Cache[index]);
+                    obj = SerializerException.Wrap(() => (tObject)_Cache[index]);
                     return true;
                 default: throw new SerializerException($"Invalid sequence type {st}", new InvalidDataException());
             }
         }
 
         /// <inheritdoc/>
-        public async Task<(bool Succeed, T? Object)> TryReadCachedAsync<T>()
+        public async Task<(bool Succeed, tObject? Object)> TryReadCachedAsync<tObject>()
         {
             EnsureUndisposed();
             if (!IsCacheEnabled) return (false, default);
@@ -120,13 +179,13 @@ namespace wan24.StreamSerializerExtensions
                         ? await Stream.ReadOneByteAsync(this).DynamicContext()
                         : await Stream.ReadUShortAsync(this).DynamicContext();
                     if (index < 0 || index >= CacheOffset) throw new SerializerException($"Invalid cache index #{index}", new InvalidDataException());
-                    return (true, SerializerException.Wrap(() => (T)_Cache[index]));
+                    return (true, SerializerException.Wrap(() => (tObject)_Cache[index]));
                 default: throw new SerializerException($"Invalid sequence type {st}", new InvalidDataException());
             }
         }
 
         /// <inheritdoc/>
-        public bool TryReadCachedObject<T>(out T? obj, bool readType = false)
+        public bool TryReadCachedObject<tObject>(out tObject? obj, bool readType = false)
         {
             EnsureUndisposed();
             obj = default;
@@ -163,7 +222,7 @@ namespace wan24.StreamSerializerExtensions
                 case SequenceTypes.Cached:
                     int index = CacheIndexSize == 1 || st.ContainsAllFlags(SequenceTypes.SmallIndex) ? Stream.ReadOneByte(this) : Stream.ReadUShort(this);
                     if (index < 0 || index >= CacheOffset) throw new SerializerException($"Invalid cache index #{index}", new InvalidDataException());
-                    obj = SerializerException.Wrap(() => (T)_Cache[index]);
+                    obj = SerializerException.Wrap(() => (tObject)_Cache[index]);
                     if (readType) LastObjectType = obj!.GetObjectSerializerInfo().ObjectType;
                     return true;
                 default: throw new SerializerException($"Invalid sequence type {st}", new InvalidDataException());
@@ -171,7 +230,7 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <inheritdoc/>
-        public async Task<(bool Succeed, T? Object)> TryReadCachedObjectAsync<T>(bool readType = false)
+        public async Task<(bool Succeed, tObject? Object)> TryReadCachedObjectAsync<tObject>(bool readType = false)
         {
             EnsureUndisposed();
             if (!IsCacheEnabled) return (false, default);
@@ -211,7 +270,7 @@ namespace wan24.StreamSerializerExtensions
                         ? await Stream.ReadOneByteAsync(this).DynamicContext()
                         : await Stream.ReadUShortAsync(this).DynamicContext();
                     if (index < 0 || index >= CacheOffset) throw new SerializerException($"Invalid cache index #{index}", new InvalidDataException());
-                    T obj = SerializerException.Wrap(() => (T)_Cache[index])!;
+                    tObject obj = SerializerException.Wrap(() => (tObject)_Cache[index])!;
                     if (readType) LastObjectType = obj.GetObjectSerializerInfo().ObjectType;
                     return (true, obj);
                 default: throw new SerializerException($"Invalid sequence type {st}", new InvalidDataException());
@@ -219,7 +278,7 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <inheritdoc/>
-        public bool TryReadCachedObjectCountable<T>(out T? obj, out long len, bool readType = false)
+        public bool TryReadCachedObjectCountable<tObject>(out tObject? obj, out long len, bool readType = false)
         {
             EnsureUndisposed();
             obj = default;
@@ -245,7 +304,7 @@ namespace wan24.StreamSerializerExtensions
                 case SequenceTypes.Cached:
                     int index = CacheIndexSize == 1 || st.ContainsAllFlags(SequenceTypes.SmallIndex) ? Stream.ReadOneByte(this) : Stream.ReadUShort(this);
                     if (index < 0 || index >= CacheOffset) throw new SerializerException($"Invalid cache index #{index}", new InvalidDataException());
-                    obj = SerializerException.Wrap(() => (T)_Cache[index]);
+                    obj = SerializerException.Wrap(() => (tObject)_Cache[index]);
                     LastObjectType = obj!.GetObjectSerializerInfo().ObjectType;
                     return true;
                 default: throw new SerializerException($"Invalid sequence type {st}", new InvalidDataException());
@@ -253,7 +312,7 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <inheritdoc/>
-        public async Task<(bool Succeed, T? Object, long Length)> TryReadCachedObjectCountableAsync<T>(bool readType = false)
+        public async Task<(bool Succeed, tObject? Object, long Length)> TryReadCachedObjectCountableAsync<tObject>(bool readType = false)
         {
             EnsureUndisposed();
             if (!IsCacheEnabled) return (false, default, 0);
@@ -279,13 +338,13 @@ namespace wan24.StreamSerializerExtensions
                         ? await Stream.ReadOneByteAsync(this).DynamicContext()
                         : await Stream.ReadUShortAsync(this).DynamicContext();
                     if (index < 0 || index >= CacheOffset) throw new SerializerException($"Invalid cache index #{index}", new InvalidDataException());
-                    return (true, SerializerException.Wrap(() => (T)_Cache[index]), 0);
+                    return (true, SerializerException.Wrap(() => (tObject)_Cache[index]), 0);
                 default: throw new SerializerException($"Invalid sequence type {st}", new InvalidDataException());
             }
         }
 
         /// <inheritdoc/>
-        public bool TryReadCachedNumber<T>(out T? obj, bool readType = false) where T : struct, IConvertible
+        public bool TryReadCachedNumber<tObject>(out tObject? obj, bool readType = false) where tObject : struct, IConvertible
         {
             EnsureUndisposed();
             obj = default;
@@ -322,7 +381,7 @@ namespace wan24.StreamSerializerExtensions
                 case SequenceTypes.Cached:
                     int index = CacheIndexSize == 1 || st.ContainsAllFlags(SequenceTypes.SmallIndex) ? Stream.ReadOneByte(this) : Stream.ReadUShort(this);
                     if (index < 0 || index >= CacheOffset) throw new SerializerException($"Invalid cache index #{index}", new InvalidDataException());
-                    obj = SerializerException.Wrap(() => (T)_Cache[index]);
+                    obj = SerializerException.Wrap(() => (tObject)_Cache[index]);
                     LastNumberType = obj.GetNumberType();
                     return true;
                 default: throw new SerializerException($"Invalid sequence type {st}", new InvalidDataException());
@@ -330,7 +389,7 @@ namespace wan24.StreamSerializerExtensions
         }
 
         /// <inheritdoc/>
-        public async Task<(bool Succeed, T? Object)> TryReadCachedNumberAsync<T>(bool readType = false) where T : struct, IConvertible
+        public async Task<(bool Succeed, tObject? Object)> TryReadCachedNumberAsync<tObject>(bool readType = false) where tObject : struct, IConvertible
         {
             EnsureUndisposed();
             if (!IsCacheEnabled) return (false, default);
@@ -368,17 +427,29 @@ namespace wan24.StreamSerializerExtensions
                         ? await Stream.ReadOneByteAsync(this).DynamicContext()
                         : await Stream.ReadUShortAsync(this).DynamicContext();
                     if (index < 0 || index >= CacheOffset) throw new SerializerException($"Invalid cache index #{index}", new InvalidDataException());
-                    T num = SerializerException.Wrap(() => (T)_Cache[index]);
+                    tObject num = SerializerException.Wrap(() => (tObject)_Cache[index]);
                     LastNumberType = num.GetNumberType();
                     return (true, num);
                 default: throw new SerializerException($"Invalid sequence type {st}", new InvalidDataException());
             }
         }
 
+        /// <summary>
+        /// Create a temporary instance which uses another serializer version
+        /// </summary>
+        /// <param name="version">New serializer version</param>
+        /// <returns>Temporary instance (don't forget to dispose!)</returns>
+        public DeserializerContext<T> WithSerializerVersion(int version) => new(this, version);
+
+        /// <inheritdoc/>
+        IDeserializationContext IDeserializationContext.WithSerializerVersion(int version) => WithSerializerVersion(version);
+
         /// <inheritdoc/>
         protected override void Dispose(bool disposing)
         {
-            if (_Cache.Length != 0) StreamSerializer.ObjectCachePool.Return(_Cache);
+            base.Dispose(disposing);
+            if (_BaseContext == null && _Cache.Length != 0)
+                StreamSerializer.ObjectCachePool.Return(_Cache);
         }
     }
 }

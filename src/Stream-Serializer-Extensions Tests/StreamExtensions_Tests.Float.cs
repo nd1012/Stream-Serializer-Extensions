@@ -8,80 +8,84 @@ namespace Stream_Serializer_Extensions_Tests
         public void Float_Tests()
         {
             using MemoryStream ms = new();
-            ms.Write((float)-123456);
+            using SerializerContext sc = new(ms);
+            using DeserializerContext dc = new(ms);
+            ms.Write((float)-123456, sc);
             Assert.AreEqual(4L, ms.Length);
             ms.Position = 0;
-            Assert.AreEqual((float)-123456, ms.ReadFloat());
+            Assert.AreEqual((float)-123456, ms.ReadFloat(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            ms.WriteNullable((float)-123456);
+            ms.WriteNullable((float)-123456, sc);
             Assert.AreEqual(5L, ms.Length);
             ms.Position = 0;
-            Assert.AreEqual((float)-123456, ms.ReadFloatNullable());
+            Assert.AreEqual((float)-123456, ms.ReadFloatNullable(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            ms.WriteNullable((float?)null);
+            ms.WriteNullable((float?)null, sc);
             Assert.AreEqual(1L, ms.Length);
             ms.Position = 0;
-            Assert.IsNull(ms.ReadFloatNullable());
+            Assert.IsNull(ms.ReadFloatNullable(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            ms.WriteNullable(float.MinValue);
+            ms.WriteNullable(float.MinValue, sc);
             Assert.AreEqual(1L, ms.Length);
             ms.Position = 0;
-            Assert.AreEqual(float.MinValue, ms.ReadFloatNullable());
+            Assert.AreEqual(float.MinValue, ms.ReadFloatNullable(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            ms.WriteNullable(float.MaxValue);
+            ms.WriteNullable(float.MaxValue, sc);
             Assert.AreEqual(1L, ms.Length);
             ms.Position = 0;
-            Assert.AreEqual(float.MaxValue, ms.ReadFloatNullable());
+            Assert.AreEqual(float.MaxValue, ms.ReadFloatNullable(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            ms.WriteNullable((float)0);
+            ms.WriteNullable((float)0, sc);
             Assert.AreEqual(1L, ms.Length);
             ms.Position = 0;
-            Assert.AreEqual((float)0, ms.ReadFloatNullable());
+            Assert.AreEqual((float)0, ms.ReadFloatNullable(dc));
         }
 
         [TestMethod]
         public async Task FloatAsync_Tests()
         {
             using MemoryStream ms = new();
-            await ms.WriteAsync((float)-123456);
+            using SerializerContext sc = new(ms);
+            using DeserializerContext dc = new(ms);
+            await ms.WriteAsync((float)-123456, sc);
             Assert.AreEqual(4L, ms.Length);
             ms.Position = 0;
-            Assert.AreEqual((float)-123456, await ms.ReadFloatAsync());
+            Assert.AreEqual((float)-123456, await ms.ReadFloatAsync(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            await ms.WriteNullableAsync((float)-123456);
+            await ms.WriteNullableAsync((float)-123456, sc);
             Assert.AreEqual(5L, ms.Length);
             ms.Position = 0;
-            Assert.AreEqual((float)-123456, await ms.ReadFloatNullableAsync());
+            Assert.AreEqual((float)-123456, await ms.ReadFloatNullableAsync(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            await ms.WriteNullableAsync((float?)null);
+            await ms.WriteNullableAsync((float?)null, sc);
             Assert.AreEqual(1L, ms.Length);
             ms.Position = 0;
-            Assert.IsNull(await ms.ReadFloatNullableAsync());
+            Assert.IsNull(await ms.ReadFloatNullableAsync(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            await ms.WriteNullableAsync(float.MinValue);
+            await ms.WriteNullableAsync(float.MinValue, sc);
             Assert.AreEqual(1L, ms.Length);
             ms.Position = 0;
-            Assert.AreEqual(float.MinValue, await ms.ReadFloatNullableAsync());
+            Assert.AreEqual(float.MinValue, await ms.ReadFloatNullableAsync(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            await ms.WriteNullableAsync(float.MaxValue);
+            await ms.WriteNullableAsync(float.MaxValue, sc);
             Assert.AreEqual(1L, ms.Length);
             ms.Position = 0;
-            Assert.AreEqual(float.MaxValue, await ms.ReadFloatNullableAsync());
+            Assert.AreEqual(float.MaxValue, await ms.ReadFloatNullableAsync(dc));
             ms.SetLength(0);
             ms.Position = 0;
-            await ms.WriteNullableAsync((float)0);
+            await ms.WriteNullableAsync((float)0, sc);
             Assert.AreEqual(1L, ms.Length);
             ms.Position = 0;
-            Assert.AreEqual((float)0, await ms.ReadFloatNullableAsync());
+            Assert.AreEqual((float)0, await ms.ReadFloatNullableAsync(dc));
         }
     }
 }

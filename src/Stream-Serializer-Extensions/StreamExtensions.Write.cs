@@ -40,6 +40,7 @@ namespace wan24.StreamSerializerExtensions
 #endif
         public static Stream WriteSerializerVersion(this Stream stream, ISerializationContext context)
         {
+            // The serializer version number sequence is fixed to serializer version #2
             (object n, NumberTypes nt) = StreamSerializer.Version.GetNumberAndType();
             Write(stream, (byte)nt, context);
             switch (n)
@@ -66,6 +67,7 @@ namespace wan24.StreamSerializerExtensions
 #endif
         public static async Task<Stream> WriteSerializerVersionAsync(this Stream stream, ISerializationContext context)
         {
+            // The serializer version number sequence is fixed to serializer version #2
             (object n, NumberTypes nt) = StreamSerializer.Version.GetNumberAndType();
             await WriteAsync(stream, (byte)nt, context).DynamicContext();
             switch (n)
