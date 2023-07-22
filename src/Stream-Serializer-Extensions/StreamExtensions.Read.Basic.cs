@@ -656,8 +656,10 @@ namespace wan24.StreamSerializerExtensions
                     break;
                 default:
                     {
-                        if (size > 2 && context.TryReadCachedNumber(out T? res)) return res;
-                        switch (size > 2 && context.IsCacheEnabled ? context.LastNumberType!.Value : (NumberTypes)ReadOneByte(context.Stream, context))
+                        if (size > 2 && context.TryReadCachedNumber(out T? res, readType: true)) return res;
+                        switch (size > 2 && context.IsCacheEnabled 
+                            ? context.LastNumberType!.Value 
+                            : (NumberTypes)ReadOneByte(context.Stream, context))
                         {
                             case NumberTypes.IsNull: return null;
                             case NumberTypes.MinValue: return min;
@@ -700,10 +702,12 @@ namespace wan24.StreamSerializerExtensions
                     {
                         if (size > 2)
                         {
-                            (bool cached, T? res) = await context.TryReadCachedNumberAsync<T>().DynamicContext();
+                            (bool cached, T? res) = await context.TryReadCachedNumberAsync<T>(readType: true).DynamicContext();
                             if (cached) return res;
                         }
-                        switch (size > 2 && context.IsCacheEnabled ? context.LastNumberType!.Value : (NumberTypes)await ReadOneByteAsync(context.Stream, context).DynamicContext())
+                        switch (size > 2 && context.IsCacheEnabled 
+                            ? context.LastNumberType!.Value 
+                            : (NumberTypes)await ReadOneByteAsync(context.Stream, context).DynamicContext())
                         {
                             case NumberTypes.IsNull: return null;
                             case NumberTypes.MinValue: return min;
