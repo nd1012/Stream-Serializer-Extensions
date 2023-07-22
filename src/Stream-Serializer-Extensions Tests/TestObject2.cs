@@ -4,29 +4,25 @@ using wan24.StreamSerializerExtensions;
 namespace Stream_Serializer_Extensions_Tests
 {
     // Testing StreamSerializerBase
-    internal class TestObject2 : StreamSerializerBase
+    internal class TestObject2 : StreamSerializerBase, ITestObject
     {
         public TestObject2() : base(1) { }
 
-        public TestObject2(Stream stream, int version) : base(stream, version, 1) { }
+        public TestObject2(IDeserializationContext context) : base(context, 1) { }
 
         public bool Value { get; set; }
 
-        protected override void Serialize(Stream stream) => stream.Write(Value);
+        public virtual bool CompareWith(ITestObject other) => other is TestObject2 obj && Value == obj.Value;
 
-        protected override async Task SerializeAsync(Stream stream, CancellationToken cancellationToken)
-            => await stream.WriteAsync(Value, cancellationToken).DynamicContext();
+        protected override void Serialize(ISerializationContext context) => context.Stream.Write(Value, context);
 
-        protected override void Deserialize(Stream stream, int version)
-        {
-            if (((IStreamSerializerVersion)this).SerializedObjectVersion != 1) throw new SerializerException("Invalid serialized object version");
-            Value = stream.ReadBool(version);
-        }
+        protected override async Task SerializeAsync(ISerializationContext context)
+            => await context.Stream.WriteAsync(Value, context).DynamicContext();
 
-        protected override async Task DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken)
-        {
-            if (((IStreamSerializerVersion)this).SerializedObjectVersion != 1) throw new SerializerException("Invalid serialized object version");
-            Value = await stream.ReadBoolAsync(version, cancellationToken: cancellationToken).DynamicContext();
-        }
+        protected override void Deserialize(IDeserializationContext context)
+            => Value = context.Stream.ReadBool(context);
+
+        protected override async Task DeserializeAsync(IDeserializationContext context)
+            => Value = await context.Stream.ReadBoolAsync(context).DynamicContext();
     }
 }

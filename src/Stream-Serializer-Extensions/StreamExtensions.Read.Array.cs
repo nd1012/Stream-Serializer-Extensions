@@ -1,5 +1,5 @@
-﻿using System.Buffers;
-using System.Runtime;
+﻿using System.Runtime;
+using System.Runtime.CompilerServices;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -12,148 +12,158 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="pool">Array pool</param>
+        /// <param name="context">Context</param>
         /// <param name="minLen">Minimum length</param>
         /// <param name="maxLen">Maximum length</param>
-        /// <param name="valueOptions">Value serializer options</param>
-        /// <returns>Value</returns>
-        public static T[] ReadArray<T>(this Stream stream, int? version = null, ArrayPool<byte>? pool = null, int minLen = 0, int maxLen = int.MaxValue, ISerializerOptions? valueOptions = null)
-        {
-            if (typeof(T) == typeof(byte)) return (ReadBytes(stream, version, buffer: null, pool, minLen, maxLen) as T[])!;
-            try
-            {
-                int len = ReadNumber<int>(stream, version, pool);
-                SerializerHelper.EnsureValidLength(len, minLen, maxLen);
-                T[] res = new T[len];
-                for (int i = 0; i < len; res[i] = ReadObject<T>(stream, version, valueOptions), i++) ;
-                return res;
-            }
-            catch (SerializerException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-        }
-
-        /// <summary>
-        /// Read
-        /// </summary>
-        /// <typeparam name="T">Element type</typeparam>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="pool">Array pool</param>
-        /// <param name="minLen">Minimum length</param>
-        /// <param name="maxLen">Maximum length</param>
-        /// <param name="valueOptions">Value serializer options</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>Value</returns>
-        public static async Task<T[]> ReadArrayAsync<T>(
-            this Stream stream,
-            int? version = null,
-            ArrayPool<byte>? pool = null,
-            int minLen = 0,
-            int maxLen = int.MaxValue,
-            ISerializerOptions? valueOptions = null,
-            CancellationToken cancellationToken = default
-            )
-        {
-            if (typeof(T) == typeof(byte))
-                return (await ReadBytesAsync(stream, version, buffer: null, pool, minLen, maxLen, cancellationToken).DynamicContext() as T[])!;
-            try
-            {
-                int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
-                SerializerHelper.EnsureValidLength(len, minLen, maxLen);
-                T[] res = new T[len];
-                for (int i = 0; i < len; res[i] = await ReadObjectAsync<T>(stream, version, valueOptions, cancellationToken).DynamicContext(), i++) ;
-                return res;
-            }
-            catch (SerializerException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-        }
-
-        /// <summary>
-        /// Read
-        /// </summary>
-        /// <typeparam name="T">Element type</typeparam>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="pool">Array pool</param>
-        /// <param name="minLen">Minimum length</param>
-        /// <param name="maxLen">Maximum length</param>
-        /// <param name="valueOptions">Value serializer options</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static T[]? ReadArrayNullable<T>(
-            this Stream stream,
-            int? version = null,
-            ArrayPool<byte>? pool = null,
-            int minLen = 0,
-            int maxLen = int.MaxValue,
-            ISerializerOptions? valueOptions = null
-            )
-#pragma warning disable IDE0034 // default expression can be simplified
-            => ReadBool(stream, version, pool) ? ReadArray<T>(stream, version, pool, minLen, maxLen, valueOptions) : default(T[]?);
-#pragma warning restore IDE0034 // default expression can be simplified
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static T[] ReadArray<T>(this Stream stream, IDeserializationContext context, int minLen = 0, int maxLen = int.MaxValue)
+        {
+            int len = ReadNumber<int>(stream, context);
+            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+            if (len == 0) return Array.Empty<T>();
+            T[] res = new T[len];
+            return ReadFixedArray(stream, res, context);
+        }
 
         /// <summary>
         /// Read
         /// </summary>
-        /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="pool">Array pool</param>
+        /// <param name="type">Array type</param>
+        /// <param name="context">Context</param>
         /// <param name="minLen">Minimum length</param>
         /// <param name="maxLen">Maximum length</param>
-        /// <param name="valueOptions">Value serializer options</param>
-        /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Value</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<T[]?> ReadArrayNullableAsync<T>(
-            this Stream stream,
-            int? version = null,
-            ArrayPool<byte>? pool = null,
-            int minLen = 0,
-            int maxLen = int.MaxValue,
-            ISerializerOptions? valueOptions = null,
-            CancellationToken cancellationToken = default
-            )
-            => await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext()
-                ? await ReadArrayAsync<T>(stream, version, pool, minLen, maxLen, valueOptions, cancellationToken).DynamicContext()
-                : default(T[]?);
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static Array ReadArray(this Stream stream, Type type, IDeserializationContext context, int minLen = 0, int maxLen = int.MaxValue)
+        {
+            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(type), type.IsArray, () => "Not an array type"));
+            int len = ReadNumber<int>(stream, context);
+            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+            Type elementType = type.GetElementType()!;
+            Array res = Array.CreateInstance(elementType, len);
+            return ReadFixedArray(stream, res, context);
+        }
 
         /// <summary>
         /// Read
         /// </summary>
         /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
-        /// <param name="arr">Array</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="valueOptions">Value serializer options</param>
+        /// <param name="context">Context</param>
+        /// <param name="minLen">Minimum length</param>
+        /// <param name="maxLen">Maximum length</param>
         /// <returns>Value</returns>
-        public static T[] ReadFixedArray<T>(this Stream stream, T[] arr, int? version = null, ISerializerOptions? valueOptions = null)
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<T[]> ReadArrayAsync<T>(this Stream stream, IDeserializationContext context, int minLen = 0, int maxLen = int.MaxValue)
         {
-            try
+            int len = await ReadNumberAsync<int>(stream, context).DynamicContext();
+            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+            if (len == 0) return Array.Empty<T>();
+            T[] res = new T[len];
+            return await ReadFixedArrayAsync(stream, res, context).DynamicContext();
+        }
+
+        /// <summary>
+        /// Read
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="type">Array type</param>
+        /// <param name="context">Context</param>
+        /// <param name="minLen">Minimum length</param>
+        /// <param name="maxLen">Maximum length</param>
+        /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<Array> ReadArrayAsync(this Stream stream, Type type, IDeserializationContext context, int minLen = 0, int maxLen = int.MaxValue)
+        {
+            SerializerException.Wrap(() => ArgumentValidationHelper.EnsureValidArgument(nameof(type), type.IsArray, () => "Not an array type"));
+            int len = await ReadNumberAsync<int>(stream, context).DynamicContext();
+            SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+            Type elementType = type.GetElementType()!;
+            Array res = Array.CreateInstance(elementType, len);
+            return await ReadFixedArrayAsync(stream, res, context).DynamicContext();
+        }
+
+        /// <summary>
+        /// Read
+        /// </summary>
+        /// <typeparam name="T">Element type</typeparam>
+        /// <param name="stream">Stream</param>
+        /// <param name="context">Context</param>
+        /// <param name="minLen">Minimum length</param>
+        /// <param name="maxLen">Maximum length</param>
+        /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static T[]? ReadArrayNullable<T>(this Stream stream, IDeserializationContext context, int minLen = 0, int maxLen = int.MaxValue)
+        {
+            switch (context.SerializerVersion)// Serializer version switch
             {
-                for (int i = 0; i < arr.Length; arr[i] = ReadObject<T>(stream, version, valueOptions), i++) ;
-                return arr;
+                case 1:
+                case 2:
+                    {
+                        return ReadBool(stream, context) ? ReadArray<T>(stream, context, minLen, maxLen) : null;
+                    }
+                default:
+                    {
+                        if (ReadNumberNullable<int>(stream, context) is not int len) return null;
+                        SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+                        if (len == 0) return Array.Empty<T>();
+                        T[] res = new T[len];
+                        ReadFixedArray(stream, res.AsSpan(), context);
+                        return res;
+                    }
             }
-            catch (SerializerException)
+        }
+
+        /// <summary>
+        /// Read
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="type">Array type</param>
+        /// <param name="context">Context</param>
+        /// <param name="minLen">Minimum length</param>
+        /// <param name="maxLen">Maximum length</param>
+        /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static Array? ReadArrayNullable(this Stream stream, Type type, IDeserializationContext context, int minLen = 0, int maxLen = int.MaxValue)
+        {
+            switch (context.SerializerVersion)// Serializer version switch
             {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
+                case 1:
+                case 2:
+                    {
+                        return ReadBool(stream, context) ? ReadArray(stream, type, context, minLen, maxLen) : null;
+                    }
+                default:
+                    {
+                        if (ReadNumberNullable<int>(stream, context) is not int len) return null;
+                        return len < 1
+                            ? Array.CreateInstance(type.GetElementType()!, length: 0)
+                            : ReadFixedArray(
+                                stream,
+                                Array.CreateInstance(type.GetElementType()!, SerializerHelper.EnsureValidLength(len, minLen, maxLen)),
+                                context
+                                );
+                    }
             }
         }
 
@@ -162,31 +172,72 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <typeparam name="T">Element type</typeparam>
         /// <param name="stream">Stream</param>
-        /// <param name="arr">Array</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="valueOptions">Value serializer options</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
+        /// <param name="minLen">Minimum length</param>
+        /// <param name="maxLen">Maximum length</param>
         /// <returns>Value</returns>
-        public static async Task<T[]> ReadFixedArrayAsync<T>(
-            this Stream stream,
-            T[] arr,
-            int? version = null,
-            ISerializerOptions? valueOptions = null,
-            CancellationToken cancellationToken = default
-            )
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<T[]?> ReadArrayNullableAsync<T>(this Stream stream, IDeserializationContext context, int minLen = 0, int maxLen = int.MaxValue)
         {
-            try
+            switch (context.SerializerVersion)// Serializer version switch
             {
-                for (int i = 0; i < arr.Length; arr[i] = await ReadObjectAsync<T>(stream, version, valueOptions, cancellationToken).DynamicContext(), i++) ;
-                return arr;
+                case 1:
+                case 2:
+                    {
+                        return await ReadBoolAsync(stream, context).DynamicContext()
+                            ? await ReadArrayAsync<T>(stream, context, minLen, maxLen).DynamicContext()
+                            : null;
+                    }
+                default:
+                    {
+                        if (await ReadNumberNullableAsync<int>(stream, context).DynamicContext() is not int len) return null;
+                        SerializerHelper.EnsureValidLength(len, minLen, maxLen);
+                        if (len == 0) return Array.Empty<T>();
+                        T[] res = new T[len];
+                        await ReadFixedArrayAsync(stream, res.AsMemory(), context).DynamicContext();
+                        return res;
+                    }
             }
-            catch (SerializerException)
+        }
+
+        /// <summary>
+        /// Read
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="type">Array type</param>
+        /// <param name="context">Context</param>
+        /// <param name="minLen">Minimum length</param>
+        /// <param name="maxLen">Maximum length</param>
+        /// <returns>Value</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<Array?> ReadArrayNullableAsync(this Stream stream, Type type, IDeserializationContext context, int minLen = 0, int maxLen = int.MaxValue)
+        {
+            switch (context.SerializerVersion)// Serializer version switch
             {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
+                case 1:
+                case 2:
+                    {
+                        return await ReadBoolAsync(stream, context).DynamicContext()
+                            ? await ReadArrayAsync(stream, type, context, minLen, maxLen).DynamicContext()
+                            : null;
+                    }
+                default:
+                    {
+                        if (await ReadNumberNullableAsync<int>(stream, context).DynamicContext() is not int len) return null;
+                        return len < 1
+                            ? Array.CreateInstance(type.GetElementType()!, length: 0)
+                            : await ReadFixedArrayAsync(
+                                stream,
+                                Array.CreateInstance(type.GetElementType()!, SerializerHelper.EnsureValidLength(len, minLen, maxLen)),
+                                context
+                                ).DynamicContext();
+                    }
             }
         }
     }

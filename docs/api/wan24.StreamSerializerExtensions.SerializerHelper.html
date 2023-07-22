@@ -115,20 +115,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_EnsureNotNull_System_Object_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.EnsureNotNull(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_EnsureCorrectObjectType_wan24_StreamSerializerExtensions_ObjectTypes_PropertyInfoExt_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.EnsureCorrectObjectType(wan24.StreamSerializerExtensions.ObjectTypes%2CPropertyInfoExt)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L510">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L309">View Source</a>
   </span>
-  <a id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureNotNull_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureNotNull*"></a>
-  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureNotNull_System_Object_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureNotNull(System.Object)">EnsureNotNull(Object)</h4>
-  <div class="markdown level1 summary"><p>Ensure a non-null value</p>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureCorrectObjectType_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureCorrectObjectType*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureCorrectObjectType_wan24_StreamSerializerExtensions_ObjectTypes_PropertyInfoExt_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureCorrectObjectType(wan24.StreamSerializerExtensions.ObjectTypes,PropertyInfoExt)">EnsureCorrectObjectType(ObjectTypes, PropertyInfoExt)</h4>
+  <div class="markdown level1 summary"><p>Ensure a correct object type, based on additional serializer options for a property</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
-public static object EnsureNotNull(object value)</code></pre>
+    <pre><code class="lang-csharp hljs">public static ObjectTypes EnsureCorrectObjectType(this ObjectTypes objType, PropertyInfoExt pi)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -141,9 +140,15 @@ public static object EnsureNotNull(object value)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
-        <td><span class="parametername">value</span></td>
-        <td><p>Value</p>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">objType</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">PropertyInfoExt</span></td>
+        <td><span class="parametername">pi</span></td>
+        <td><p>Property</p>
 </td>
       </tr>
     </tbody>
@@ -158,18 +163,203 @@ public static object EnsureNotNull(object value)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
-        <td><p>Non-null value</p>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><p>Object type</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_EnsureValidLength_System_Int32_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength(System.Int32%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_EnsureCorrectObjectType_wan24_StreamSerializerExtensions_ObjectTypes_wan24_StreamSerializerExtensions_ISerializerOptions_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.EnsureCorrectObjectType(wan24.StreamSerializerExtensions.ObjectTypes%2Cwan24.StreamSerializerExtensions.ISerializerOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L524">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L320">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureCorrectObjectType_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureCorrectObjectType*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureCorrectObjectType_wan24_StreamSerializerExtensions_ObjectTypes_wan24_StreamSerializerExtensions_ISerializerOptions_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureCorrectObjectType(wan24.StreamSerializerExtensions.ObjectTypes,wan24.StreamSerializerExtensions.ISerializerOptions)">EnsureCorrectObjectType(ObjectTypes, ISerializerOptions)</h4>
+  <div class="markdown level1 summary"><p>Ensure a correct object type, based on additional serializer options</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ObjectTypes EnsureCorrectObjectType(this ObjectTypes objType, ISerializerOptions options)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">objType</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ISerializerOptions.html">ISerializerOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Options</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_EnsureCorrectObjectType_wan24_StreamSerializerExtensions_ObjectTypes_wan24_StreamSerializerExtensions_StreamSerializerAttribute_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.EnsureCorrectObjectType(wan24.StreamSerializerExtensions.ObjectTypes%2Cwan24.StreamSerializerExtensions.StreamSerializerAttribute)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L346">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureCorrectObjectType_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureCorrectObjectType*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureCorrectObjectType_wan24_StreamSerializerExtensions_ObjectTypes_wan24_StreamSerializerExtensions_StreamSerializerAttribute_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureCorrectObjectType(wan24.StreamSerializerExtensions.ObjectTypes,wan24.StreamSerializerExtensions.StreamSerializerAttribute)">EnsureCorrectObjectType(ObjectTypes, StreamSerializerAttribute)</h4>
+  <div class="markdown level1 summary"><p>Ensure a correct object type, based on additional serializer options</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ObjectTypes EnsureCorrectObjectType(this ObjectTypes objType, StreamSerializerAttribute attr)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">objType</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerAttribute.html">StreamSerializerAttribute</a></td>
+        <td><span class="parametername">attr</span></td>
+        <td><p>Attribute</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_EnsureNotNull__1___0_System_String_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.EnsureNotNull%60%601(%60%600%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L22">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureNotNull_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureNotNull*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureNotNull__1___0_System_String_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureNotNull``1(``0,System.String)">EnsureNotNull&lt;T&gt;(T, String)</h4>
+  <div class="markdown level1 summary"><p>Ensure a non-null value</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static T EnsureNotNull&lt;T&gt;(T value, string name = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>Value</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>Argument value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>Non-null value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Value type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_EnsureValidLength_System_Int32_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength(System.Int32%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L34">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureValidLength_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength*"></a>
   <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureValidLength_System_Int32_System_Int32_System_Int32_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength(System.Int32,System.Int32,System.Int32)">EnsureValidLength(Int32, Int32, Int32)</h4>
@@ -229,10 +419,10 @@ public static int EnsureValidLength(int len, int min = 0, int max = 2147483647)<
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_EnsureValidLength_System_Int64_System_Int64_System_Int64_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength(System.Int64%2CSystem.Int64%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_EnsureValidLength_System_Int64_System_Int64_System_Int64_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength(System.Int64%2CSystem.Int64%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L538">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L49">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureValidLength_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength*"></a>
   <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_EnsureValidLength_System_Int64_System_Int64_System_Int64_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.EnsureValidLength(System.Int64,System.Int64,System.Int64)">EnsureValidLength(Int64, Int64, Int64)</h4>
@@ -292,20 +482,19 @@ public static long EnsureValidLength(long len, long min = 0L, long max = 9223372
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_GetKeySerializerOptions_System_Reflection_PropertyInfo_Stream_System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.GetKeySerializerOptions(System.Reflection.PropertyInfo%2CStream%2CSystem.Int32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_FindDeserializer_Type_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.FindDeserializer(Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L609">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.Type.cs/#L19">View Source</a>
   </span>
-  <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetKeySerializerOptions_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetKeySerializerOptions*"></a>
-  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetKeySerializerOptions_System_Reflection_PropertyInfo_Stream_System_Int32_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetKeySerializerOptions(System.Reflection.PropertyInfo,Stream,System.Int32,CancellationToken)">GetKeySerializerOptions(PropertyInfo, Stream, Int32, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Get the key serializer options</p>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_FindDeserializer_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.FindDeserializer*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_FindDeserializer_Type_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.FindDeserializer(Type)">FindDeserializer(Type)</h4>
+  <div class="markdown level1 summary"><p>Find type deserializers</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
-public static ISerializerOptions GetKeySerializerOptions(this PropertyInfo pi, Stream stream, int version, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public static (StreamSerializer.Deserializer_Delegate Deserializer, StreamSerializer.AsyncDeserializer_Delegate AsyncDeserializer) FindDeserializer(this Type type)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -318,27 +507,290 @@ public static ISerializerOptions GetKeySerializerOptions(this PropertyInfo pi, S
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Reflection.PropertyInfo</span></td>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.Deserializer_Delegate.html">StreamSerializer.Deserializer_Delegate</a>, <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.AsyncDeserializer_Delegate.html">StreamSerializer.AsyncDeserializer_Delegate</a>&gt;</td>
+        <td><p>Synchronous and asynchronous deserializers</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_FindSerializer_Type_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.FindSerializer(Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.Type.cs/#L11">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_FindSerializer_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.FindSerializer*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_FindSerializer_Type_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.FindSerializer(Type)">FindSerializer(Type)</h4>
+  <div class="markdown level1 summary"><p>Find type serializers</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static (StreamSerializer.Serializer_Delegate Serializer, StreamSerializer.AsyncSerializer_Delegate AsyncSerializer) FindSerializer(this Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.Serializer_Delegate.html">StreamSerializer.Serializer_Delegate</a>, <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.AsyncSerializer_Delegate.html">StreamSerializer.AsyncSerializer_Delegate</a>&gt;</td>
+        <td><p>Synchronous and asynchronous serializers</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_GetClrType_wan24_StreamSerializerExtensions_NumberTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.GetClrType(wan24.StreamSerializerExtensions.NumberTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.NumberTypes.cs/#L345">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetClrType_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetClrType*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetClrType_wan24_StreamSerializerExtensions_NumberTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetClrType(wan24.StreamSerializerExtensions.NumberTypes)">GetClrType(NumberTypes)</h4>
+  <div class="markdown level1 summary"><p>Get the CLR type of a number type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type GetClrType(this NumberTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.NumberTypes.html">NumberTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Number type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><p>CLR type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_GetItemDeserializerInfo_Type_wan24_StreamSerializerExtensions_ObjectTypes_System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.GetItemDeserializerInfo(Type%2Cwan24.StreamSerializerExtensions.ObjectTypes%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.SerializerTypes.cs/#L49">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetItemDeserializerInfo_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetItemDeserializerInfo*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetItemDeserializerInfo_Type_wan24_StreamSerializerExtensions_ObjectTypes_System_Boolean_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetItemDeserializerInfo(Type,wan24.StreamSerializerExtensions.ObjectTypes,System.Boolean)">GetItemDeserializerInfo(Type, ObjectTypes, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Get item deserialization informations from a type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static (SerializerTypes Type, StreamSerializer.Deserializer_Delegate Deserializer, StreamSerializer.AsyncDeserializer_Delegate AsyncDeserializer) GetItemDeserializerInfo(this Type type, ObjectTypes objType, bool isAsync)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Item type</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">objType</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">isAsync</span></td>
+        <td><p>Is an asynchronous context?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<a class="xref" href="wan24.StreamSerializerExtensions.SerializerTypes.html">SerializerTypes</a>, <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.Deserializer_Delegate.html">StreamSerializer.Deserializer_Delegate</a>, <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.AsyncDeserializer_Delegate.html">StreamSerializer.AsyncDeserializer_Delegate</a>&gt;</td>
+        <td><p>Serializer type, synchronous deserializer and asynchronous deserializer</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_GetItemSerializerInfo_Type_wan24_StreamSerializerExtensions_ObjectTypes_System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.GetItemSerializerInfo(Type%2Cwan24.StreamSerializerExtensions.ObjectTypes%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.SerializerTypes.cs/#L16">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetItemSerializerInfo_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetItemSerializerInfo*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetItemSerializerInfo_Type_wan24_StreamSerializerExtensions_ObjectTypes_System_Boolean_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetItemSerializerInfo(Type,wan24.StreamSerializerExtensions.ObjectTypes,System.Boolean)">GetItemSerializerInfo(Type, ObjectTypes, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Get item serialization informations from a type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static (SerializerTypes Type, StreamSerializer.Serializer_Delegate Serializer, StreamSerializer.AsyncSerializer_Delegate AsyncSerializer) GetItemSerializerInfo(this Type type, ObjectTypes objType, bool isAsync)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Item type</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">objType</span></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">isAsync</span></td>
+        <td><p>Is an asynchronous context?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<a class="xref" href="wan24.StreamSerializerExtensions.SerializerTypes.html">SerializerTypes</a>, <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.Serializer_Delegate.html">StreamSerializer.Serializer_Delegate</a>, <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.AsyncSerializer_Delegate.html">StreamSerializer.AsyncSerializer_Delegate</a>&gt;</td>
+        <td><p>Serializer type, synchronous serializer and asynchronous serializer</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_GetKeySerializerOptions_PropertyInfoExt_wan24_StreamSerializerExtensions_ISerializerContext_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.GetKeySerializerOptions(PropertyInfoExt%2Cwan24.StreamSerializerExtensions.ISerializerContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.Reflection.cs/#L28">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetKeySerializerOptions_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetKeySerializerOptions*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetKeySerializerOptions_PropertyInfoExt_wan24_StreamSerializerExtensions_ISerializerContext_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetKeySerializerOptions(PropertyInfoExt,wan24.StreamSerializerExtensions.ISerializerContext)">GetKeySerializerOptions(PropertyInfoExt, ISerializerContext)</h4>
+  <div class="markdown level1 summary"><p>Get the key serializer options</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static ISerializerOptions GetKeySerializerOptions(this PropertyInfoExt pi, ISerializerContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PropertyInfoExt</span></td>
         <td><span class="parametername">pi</span></td>
         <td><p>Property</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><span class="parametername">stream</span></td>
-        <td><p>Stream</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">version</span></td>
-        <td><p>Serializer version</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>Cancellation token</p>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ISerializerContext.html">ISerializerContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Context</p>
 </td>
       </tr>
     </tbody>
@@ -361,19 +813,19 @@ public static ISerializerOptions GetKeySerializerOptions(this PropertyInfo pi, S
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_GetNumberAndType_System_Object_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.GetNumberAndType(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_GetNumberAndType__1___0_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.GetNumberAndType%60%601(%60%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L222">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.NumberTypes.cs/#L199">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetNumberAndType_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetNumberAndType*"></a>
-  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetNumberAndType_System_Object_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetNumberAndType(System.Object)">GetNumberAndType(Object)</h4>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetNumberAndType__1___0_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetNumberAndType``1(``0)">GetNumberAndType&lt;T&gt;(T)</h4>
   <div class="markdown level1 summary"><p>Get the best matching number type</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static (object Number, NumberTypes Type) GetNumberAndType(this object number)</code></pre>
+    <pre><code class="lang-csharp hljs">public static (object Number, NumberTypes Type) GetNumberAndType&lt;T&gt;(this T number)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -386,7 +838,7 @@ public static ISerializerOptions GetKeySerializerOptions(this PropertyInfo pi, S
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
+        <td><span class="xref">T</span></td>
         <td><span class="parametername">number</span></td>
         <td><p>Number</p>
 </td>
@@ -409,21 +861,37 @@ public static ISerializerOptions GetKeySerializerOptions(this PropertyInfo pi, S
       </tr>
     </tbody>
   </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Number type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_GetNumberType_System_Object_System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.GetNumberType(System.Object%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_GetNumberType__1___0_System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.GetNumberType%60%601(%60%600%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L116">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.NumberTypes.cs/#L92">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetNumberType_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetNumberType*"></a>
-  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetNumberType_System_Object_System_Boolean_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetNumberType(System.Object,System.Boolean)">GetNumberType(Object, Boolean)</h4>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetNumberType__1___0_System_Boolean_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetNumberType``1(``0,System.Boolean)">GetNumberType&lt;T&gt;(T, Boolean)</h4>
   <div class="markdown level1 summary"><p>Get the type of a number</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static NumberTypes GetNumberType(this object number, bool useFlags = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public static NumberTypes GetNumberType&lt;T&gt;(this T number, bool useFlags = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -436,7 +904,7 @@ public static ISerializerOptions GetKeySerializerOptions(this PropertyInfo pi, S
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
+        <td><span class="xref">T</span></td>
         <td><span class="parametername">number</span></td>
         <td><p>Number</p>
 </td>
@@ -465,12 +933,28 @@ public static ISerializerOptions GetKeySerializerOptions(this PropertyInfo pi, S
       </tr>
     </tbody>
   </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Number type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_GetObjectSerializerInfo_System_Object_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.GetObjectSerializerInfo(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_GetObjectSerializerInfo_System_Object_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.GetObjectSerializerInfo(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L374">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L174">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetObjectSerializerInfo_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetObjectSerializerInfo*"></a>
   <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetObjectSerializerInfo_System_Object_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetObjectSerializerInfo(System.Object)">GetObjectSerializerInfo(Object)</h4>
@@ -517,20 +1001,70 @@ public static ISerializerOptions GetKeySerializerOptions(this PropertyInfo pi, S
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_GetSerializerOptions_System_Reflection_PropertyInfo_Stream_System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.GetSerializerOptions(System.Reflection.PropertyInfo%2CStream%2CSystem.Int32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_GetObjectType_Type_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.GetObjectType(Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L597">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.Type.cs/#L27">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetObjectType_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetObjectType*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetObjectType_Type_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetObjectType(Type)">GetObjectType(Type)</h4>
+  <div class="markdown level1 summary"><p>Get the object type of a type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ObjectTypes GetObjectType(this Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><p>Object type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_GetSerializerOptions_PropertyInfoExt_wan24_StreamSerializerExtensions_ISerializerContext_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.GetSerializerOptions(PropertyInfoExt%2Cwan24.StreamSerializerExtensions.ISerializerContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.Reflection.cs/#L17">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetSerializerOptions_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetSerializerOptions*"></a>
-  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetSerializerOptions_System_Reflection_PropertyInfo_Stream_System_Int32_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetSerializerOptions(System.Reflection.PropertyInfo,Stream,System.Int32,CancellationToken)">GetSerializerOptions(PropertyInfo, Stream, Int32, CancellationToken)</h4>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetSerializerOptions_PropertyInfoExt_wan24_StreamSerializerExtensions_ISerializerContext_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetSerializerOptions(PropertyInfoExt,wan24.StreamSerializerExtensions.ISerializerContext)">GetSerializerOptions(PropertyInfoExt, ISerializerContext)</h4>
   <div class="markdown level1 summary"><p>Get the serializer options</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
-public static ISerializerOptions GetSerializerOptions(this PropertyInfo pi, Stream stream, int version, CancellationToken cancellationToken)</code></pre>
+public static ISerializerOptions GetSerializerOptions(this PropertyInfoExt pi, ISerializerContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -543,27 +1077,15 @@ public static ISerializerOptions GetSerializerOptions(this PropertyInfo pi, Stre
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Reflection.PropertyInfo</span></td>
+        <td><span class="xref">PropertyInfoExt</span></td>
         <td><span class="parametername">pi</span></td>
         <td><p>Property</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><span class="parametername">stream</span></td>
-        <td><p>Stream</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">version</span></td>
-        <td><p>Serializer version</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>Cancellation token</p>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ISerializerContext.html">ISerializerContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Context</p>
 </td>
       </tr>
     </tbody>
@@ -586,20 +1108,20 @@ public static ISerializerOptions GetSerializerOptions(this PropertyInfo pi, Stre
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_GetValueSerializerOptions_System_Reflection_PropertyInfo_Stream_System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.GetValueSerializerOptions(System.Reflection.PropertyInfo%2CStream%2CSystem.Int32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_GetValueSerializerOptions_PropertyInfoExt_wan24_StreamSerializerExtensions_ISerializerContext_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.GetValueSerializerOptions(PropertyInfoExt%2Cwan24.StreamSerializerExtensions.ISerializerContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L621">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.Reflection.cs/#L39">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_GetValueSerializerOptions_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetValueSerializerOptions*"></a>
-  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetValueSerializerOptions_System_Reflection_PropertyInfo_Stream_System_Int32_CancellationToken_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetValueSerializerOptions(System.Reflection.PropertyInfo,Stream,System.Int32,CancellationToken)">GetValueSerializerOptions(PropertyInfo, Stream, Int32, CancellationToken)</h4>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_GetValueSerializerOptions_PropertyInfoExt_wan24_StreamSerializerExtensions_ISerializerContext_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.GetValueSerializerOptions(PropertyInfoExt,wan24.StreamSerializerExtensions.ISerializerContext)">GetValueSerializerOptions(PropertyInfoExt, ISerializerContext)</h4>
   <div class="markdown level1 summary"><p>Get the value serializer options</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
-public static ISerializerOptions GetValueSerializerOptions(this PropertyInfo pi, Stream stream, int version, CancellationToken cancellationToken)</code></pre>
+public static ISerializerOptions GetValueSerializerOptions(this PropertyInfoExt pi, ISerializerContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -612,27 +1134,15 @@ public static ISerializerOptions GetValueSerializerOptions(this PropertyInfo pi,
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Reflection.PropertyInfo</span></td>
+        <td><span class="xref">PropertyInfoExt</span></td>
         <td><span class="parametername">pi</span></td>
         <td><p>Property</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><span class="parametername">stream</span></td>
-        <td><p>Stream</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">version</span></td>
-        <td><p>Serializer version</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>Cancellation token</p>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ISerializerContext.html">ISerializerContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Context</p>
 </td>
       </tr>
     </tbody>
@@ -655,10 +1165,10 @@ public static ISerializerOptions GetValueSerializerOptions(this PropertyInfo pi,
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_HasValueFlags_wan24_StreamSerializerExtensions_NumberTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.HasValueFlags(wan24.StreamSerializerExtensions.NumberTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_HasValueFlags_wan24_StreamSerializerExtensions_NumberTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.HasValueFlags(wan24.StreamSerializerExtensions.NumberTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L67">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.NumberTypes.cs/#L81">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_HasValueFlags_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.HasValueFlags*"></a>
   <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_HasValueFlags_wan24_StreamSerializerExtensions_NumberTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.HasValueFlags(wan24.StreamSerializerExtensions.NumberTypes)">HasValueFlags(NumberTypes)</h4>
@@ -706,10 +1216,265 @@ public static bool HasValueFlags(this NumberTypes type)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsEmpty_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsEmpty(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsArray_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsArray(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L83">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L80">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsArray_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsArray*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsArray_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsArray(wan24.StreamSerializerExtensions.ObjectTypes)">IsArray(ObjectTypes)</h4>
+  <div class="markdown level1 summary"><p>Is an array?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static bool IsArray(this ObjectTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>An array?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsBasicTypeInfo_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsBasicTypeInfo(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L107">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsBasicTypeInfo_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsBasicTypeInfo*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsBasicTypeInfo_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsBasicTypeInfo(wan24.StreamSerializerExtensions.ObjectTypes)">IsBasicTypeInfo(ObjectTypes)</h4>
+  <div class="markdown level1 summary"><p>Is a basic type info?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static bool IsBasicTypeInfo(this ObjectTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Is a basic type info?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsBreak_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsBreak(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L71">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsBreak_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsBreak*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsBreak_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsBreak(wan24.StreamSerializerExtensions.ObjectTypes)">IsBreak(ObjectTypes)</h4>
+  <div class="markdown level1 summary"><p>Is enumeration break?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static bool IsBreak(this ObjectTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Break?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsCached_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsCached(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L53">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsCached_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsCached*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsCached_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsCached(wan24.StreamSerializerExtensions.ObjectTypes)">IsCached(ObjectTypes)</h4>
+  <div class="markdown level1 summary"><p>Is cached?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static bool IsCached(this ObjectTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Cached?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsCachedSerializable_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsCachedSerializable(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L98">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsCachedSerializable_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsCachedSerializable*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsCachedSerializable_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsCachedSerializable(wan24.StreamSerializerExtensions.ObjectTypes)">IsCachedSerializable(ObjectTypes)</h4>
+  <div class="markdown level1 summary"><p>Is a cached serializable type?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static bool IsCachedSerializable(this ObjectTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Is cached serializable?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsEmpty_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsEmpty(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L26">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsEmpty_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsEmpty*"></a>
   <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsEmpty_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsEmpty(wan24.StreamSerializerExtensions.ObjectTypes)">IsEmpty(ObjectTypes)</h4>
@@ -757,10 +1522,61 @@ public static bool IsEmpty(this ObjectTypes type)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsMaxValue_wan24_StreamSerializerExtensions_NumberTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsMaxValue(wan24.StreamSerializerExtensions.NumberTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsGeneric_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsGeneric(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L51">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L62">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsGeneric_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsGeneric*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsGeneric_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsGeneric(wan24.StreamSerializerExtensions.ObjectTypes)">IsGeneric(ObjectTypes)</h4>
+  <div class="markdown level1 summary"><p>Is generic?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static bool IsGeneric(this ObjectTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Generic?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsMaxValue_wan24_StreamSerializerExtensions_NumberTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsMaxValue(wan24.StreamSerializerExtensions.NumberTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.NumberTypes.cs/#L52">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsMaxValue_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsMaxValue*"></a>
   <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsMaxValue_wan24_StreamSerializerExtensions_NumberTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsMaxValue(wan24.StreamSerializerExtensions.NumberTypes)">IsMaxValue(NumberTypes)</h4>
@@ -808,10 +1624,10 @@ public static bool IsMaxValue(this NumberTypes type)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsMinValue_wan24_StreamSerializerExtensions_NumberTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsMinValue(wan24.StreamSerializerExtensions.NumberTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsMinValue_wan24_StreamSerializerExtensions_NumberTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsMinValue(wan24.StreamSerializerExtensions.NumberTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L43">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.NumberTypes.cs/#L43">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsMinValue_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsMinValue*"></a>
   <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsMinValue_wan24_StreamSerializerExtensions_NumberTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsMinValue(wan24.StreamSerializerExtensions.NumberTypes)">IsMinValue(NumberTypes)</h4>
@@ -859,10 +1675,61 @@ public static bool IsMinValue(this NumberTypes type)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsNumber_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsNumber(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsNotRanked_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsNotRanked(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L99">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L89">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsNotRanked_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsNotRanked*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsNotRanked_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsNotRanked(wan24.StreamSerializerExtensions.ObjectTypes)">IsNotRanked(ObjectTypes)</h4>
+  <div class="markdown level1 summary"><p>Is not ranked?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static bool IsNotRanked(this ObjectTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Not ranked?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsNumber_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsNumber(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L116">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsNumber_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsNumber*"></a>
   <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsNumber_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsNumber(wan24.StreamSerializerExtensions.ObjectTypes)">IsNumber(ObjectTypes)</h4>
@@ -871,7 +1738,8 @@ public static bool IsMinValue(this NumberTypes type)</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsNumber(this ObjectTypes type)</code></pre>
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static bool IsNumber(this ObjectTypes type)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -909,10 +1777,67 @@ public static bool IsMinValue(this NumberTypes type)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsUnsigned_wan24_StreamSerializerExtensions_NumberTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsUnsigned(wan24.StreamSerializerExtensions.NumberTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsSerializerConstructor_System_Reflection_ConstructorInfo_System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsSerializerConstructor(System.Reflection.ConstructorInfo%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L35">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.Reflection.cs/#L50">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsSerializerConstructor_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsSerializerConstructor*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsSerializerConstructor_System_Reflection_ConstructorInfo_System_Boolean_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsSerializerConstructor(System.Reflection.ConstructorInfo,System.Boolean)">IsSerializerConstructor(ConstructorInfo, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Determine if the constructor is the serializer constructor</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static bool IsSerializerConstructor(this ConstructorInfo ci, bool requireAttribute = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.ConstructorInfo</span></td>
+        <td><span class="parametername">ci</span></td>
+        <td><p>Constructor</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">requireAttribute</span></td>
+        <td><p>Require the <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerAttribute.html">StreamSerializerAttribute</a>?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Is the serializer constructor?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsUnsigned_wan24_StreamSerializerExtensions_NumberTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsUnsigned(wan24.StreamSerializerExtensions.NumberTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.NumberTypes.cs/#L34">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsUnsigned_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsUnsigned*"></a>
   <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsUnsigned_wan24_StreamSerializerExtensions_NumberTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsUnsigned(wan24.StreamSerializerExtensions.NumberTypes)">IsUnsigned(NumberTypes)</h4>
@@ -960,10 +1885,10 @@ public static bool IsUnsigned(this NumberTypes type)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsUnsigned_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsUnsigned(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsUnsigned_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsUnsigned(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L91">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L44">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsUnsigned_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsUnsigned*"></a>
   <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsUnsigned_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsUnsigned(wan24.StreamSerializerExtensions.ObjectTypes)">IsUnsigned(ObjectTypes)</h4>
@@ -1011,10 +1936,10 @@ public static bool IsUnsigned(this ObjectTypes type)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsZero_wan24_StreamSerializerExtensions_NumberTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsZero(wan24.StreamSerializerExtensions.NumberTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsZero_wan24_StreamSerializerExtensions_NumberTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsZero(wan24.StreamSerializerExtensions.NumberTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L59">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.NumberTypes.cs/#L61">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsZero_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsZero*"></a>
   <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsZero_wan24_StreamSerializerExtensions_NumberTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsZero(wan24.StreamSerializerExtensions.NumberTypes)">IsZero(NumberTypes)</h4>
@@ -1062,10 +1987,61 @@ public static bool IsZero(this NumberTypes type)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_RemoveFlags_wan24_StreamSerializerExtensions_NumberTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.RemoveFlags(wan24.StreamSerializerExtensions.NumberTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_IsZero_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.IsZero(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L19">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L35">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_IsZero_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsZero*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_IsZero_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.IsZero(wan24.StreamSerializerExtensions.ObjectTypes)">IsZero(ObjectTypes)</h4>
+  <div class="markdown level1 summary"><p>Is zero?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static bool IsZero(this ObjectTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Zero?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_RemoveFlags_wan24_StreamSerializerExtensions_NumberTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.RemoveFlags(wan24.StreamSerializerExtensions.NumberTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.NumberTypes.cs/#L16">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_RemoveFlags_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RemoveFlags*"></a>
   <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_RemoveFlags_wan24_StreamSerializerExtensions_NumberTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RemoveFlags(wan24.StreamSerializerExtensions.NumberTypes)">RemoveFlags(NumberTypes)</h4>
@@ -1113,10 +2089,10 @@ public static NumberTypes RemoveFlags(this NumberTypes type)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_RemoveFlags_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.RemoveFlags(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_RemoveFlags_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.RemoveFlags(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L75">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L17">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_RemoveFlags_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RemoveFlags*"></a>
   <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_RemoveFlags_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RemoveFlags(wan24.StreamSerializerExtensions.ObjectTypes)">RemoveFlags(ObjectTypes)</h4>
@@ -1164,10 +2140,10 @@ public static ObjectTypes RemoveFlags(this ObjectTypes type)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_RemoveValueFlags_wan24_StreamSerializerExtensions_NumberTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.RemoveValueFlags(wan24.StreamSerializerExtensions.NumberTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_RemoveValueFlags_wan24_StreamSerializerExtensions_NumberTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.RemoveValueFlags(wan24.StreamSerializerExtensions.NumberTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L27">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.NumberTypes.cs/#L25">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_RemoveValueFlags_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RemoveValueFlags*"></a>
   <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_RemoveValueFlags_wan24_StreamSerializerExtensions_NumberTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RemoveValueFlags(wan24.StreamSerializerExtensions.NumberTypes)">RemoveValueFlags(NumberTypes)</h4>
@@ -1215,10 +2191,163 @@ public static NumberTypes RemoveValueFlags(this NumberTypes type)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_ToBytes_wan24_StreamSerializerExtensions_IStreamSerializer_System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.ToBytes(wan24.StreamSerializerExtensions.IStreamSerializer%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_RequiresObjectWriting_wan24_StreamSerializerExtensions_NumberTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.RequiresObjectWriting(wan24.StreamSerializerExtensions.NumberTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L566">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.NumberTypes.cs/#L70">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_RequiresObjectWriting_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RequiresObjectWriting*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_RequiresObjectWriting_wan24_StreamSerializerExtensions_NumberTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RequiresObjectWriting(wan24.StreamSerializerExtensions.NumberTypes)">RequiresObjectWriting(NumberTypes)</h4>
+  <div class="markdown level1 summary"><p>Does the type require to write the serialized object?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static bool RequiresObjectWriting(this NumberTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.NumberTypes.html">NumberTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Is required?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_RequiresObjectWriting_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.RequiresObjectWriting(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L157">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_RequiresObjectWriting_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RequiresObjectWriting*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_RequiresObjectWriting_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RequiresObjectWriting(wan24.StreamSerializerExtensions.ObjectTypes)">RequiresObjectWriting(ObjectTypes)</h4>
+  <div class="markdown level1 summary"><p>Does the type require to write the serialized object?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static bool RequiresObjectWriting(this ObjectTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Is required?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_RequiresType_wan24_StreamSerializerExtensions_ObjectTypes_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.RequiresType(wan24.StreamSerializerExtensions.ObjectTypes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.ObjectTypes.cs/#L137">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_RequiresType_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RequiresType*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_RequiresType_wan24_StreamSerializerExtensions_ObjectTypes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.RequiresType(wan24.StreamSerializerExtensions.ObjectTypes)">RequiresType(ObjectTypes)</h4>
+  <div class="markdown level1 summary"><p>Determine if a type is required</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static bool RequiresType(this ObjectTypes type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Is required?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_ToBytes_wan24_StreamSerializerExtensions_IStreamSerializer_System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.ToBytes(wan24.StreamSerializerExtensions.IStreamSerializer%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L84">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_ToBytes_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.ToBytes*"></a>
   <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_ToBytes_wan24_StreamSerializerExtensions_IStreamSerializer_System_Boolean_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.ToBytes(wan24.StreamSerializerExtensions.IStreamSerializer,System.Boolean)">ToBytes(IStreamSerializer, Boolean)</h4>
@@ -1227,7 +2356,8 @@ public static NumberTypes RemoveValueFlags(this NumberTypes type)</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static byte[] ToBytes(this IStreamSerializer obj, bool includeSerializerVersion = true)</code></pre>
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static byte[] ToBytes(this IStreamSerializer obj, bool includeSerializerVersion = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1271,10 +2401,10 @@ public static NumberTypes RemoveValueFlags(this NumberTypes type)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_ToObject__1_System_Byte___System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.ToObject%60%601(System.Byte%5B%5D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_ToObject__1_System_Byte___System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.ToObject%60%601(System.Byte%5B%5D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L581">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L104">View Source</a>
   </span>
   <a id="wan24_StreamSerializerExtensions_SerializerHelper_ToObject_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.ToObject*"></a>
   <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_ToObject__1_System_Byte___System_Boolean_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.ToObject``1(System.Byte[],System.Boolean)">ToObject&lt;T&gt;(Byte[], Boolean)</h4>
@@ -1283,7 +2413,8 @@ public static NumberTypes RemoveValueFlags(this NumberTypes type)</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static T ToObject&lt;T&gt;(this byte[] bytes, bool includesSerializerVersion = true)
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static T ToObject&lt;T&gt;(this byte[] bytes, bool includesSerializerVersion = true)
     where T : class, IStreamSerializer, new()</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1344,19 +2475,20 @@ public static NumberTypes RemoveValueFlags(this NumberTypes type)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_ValidateObject__1___0_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.ValidateObject%60%601(%60%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper_ValidateDeserializedObject__1___0_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper.ValidateDeserializedObject%60%601(%60%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L551">View Source</a>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L64">View Source</a>
   </span>
-  <a id="wan24_StreamSerializerExtensions_SerializerHelper_ValidateObject_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.ValidateObject*"></a>
-  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_ValidateObject__1___0_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.ValidateObject``1(``0)">ValidateObject&lt;T&gt;(T)</h4>
+  <a id="wan24_StreamSerializerExtensions_SerializerHelper_ValidateDeserializedObject_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.ValidateDeserializedObject*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_SerializerHelper_ValidateDeserializedObject__1___0_" data-uid="wan24.StreamSerializerExtensions.SerializerHelper.ValidateDeserializedObject``1(``0)">ValidateDeserializedObject&lt;T&gt;(T)</h4>
   <div class="markdown level1 summary"><p>Validate an object and throw an exception, if the validation failed</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static T ValidateObject&lt;T&gt;(this T value)</code></pre>
+    <pre><code class="lang-csharp hljs">[TargetedPatchingOptOut(&quot;Tiny method&quot;)]
+public static T ValidateDeserializedObject&lt;T&gt;(this T value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1408,6 +2540,22 @@ public static NumberTypes RemoveValueFlags(this NumberTypes type)</code></pre>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.SerializerException.html">SerializerException</a></td>
+        <td><p>If the validation failed</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
@@ -1416,10 +2564,10 @@ public static NumberTypes RemoveValueFlags(this NumberTypes type)</code></pre>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/v2/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_SerializerHelper.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.SerializerHelper%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/v2/src/Stream-Serializer-Extensions/SerializerHelper.cs/#L12" class="contribution-link">View Source</a>
+                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/SerializerHelper.Type.cs/#L4" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

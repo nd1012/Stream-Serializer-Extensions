@@ -6,13 +6,13 @@ namespace wan24.StreamSerializerExtensions
     /// <summary>
     /// Attribute for stream serializable classes and properties
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Property | AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Constructor)]
     public class StreamSerializerAttribute : Attribute
     {
         /// <summary>
         /// Structure fields which require endianess conversion
         /// </summary>
-        protected List<FieldInfo>? StructureFields = null;
+        protected List<FieldInfo>? NumericStructureFields = null;
 
         /// <summary>
         /// Constructor (used for a type)
@@ -22,7 +22,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="skipPropertyNameChecksum">Skip the property name checksum?</param>
         public StreamSerializerAttribute(StreamSerializerModes mode = StreamSerializerModes.OptOut, int version = 0, bool skipPropertyNameChecksum = false) : base()
         {
-            if (mode == StreamSerializerModes.Auto) throw new ArgumentException($"Type serializer mode can't be {StreamSerializerModes.Auto}", nameof(mode));
+            ArgumentValidationHelper.EnsureValidArgument(nameof(mode), mode != StreamSerializerModes.Auto, () => $"Type serializer mode can't be {StreamSerializerModes.Auto}");
             Mode = mode;
             Version = version == 0 ? null : version;
             SkipPropertyNameChecksum = skipPropertyNameChecksum;
@@ -102,6 +102,11 @@ namespace wan24.StreamSerializerExtensions
         public long? MaxLen { get; set; }
 
         /// <summary>
+        /// Use the cache? (this is being applied on the type only)
+        /// </summary>
+        public bool UseCache { get; set; } = true;
+
+        /// <summary>
         /// Stream factory
         /// </summary>
         public StreamFactory_Delegate? StreamFactory { get; set; }
@@ -162,18 +167,21 @@ namespace wan24.StreamSerializerExtensions
         public string? ValueSerializerOptionsFactoryMethod { get; set; }
 
         /// <summary>
+        /// Serializer type
+        /// </summary>
+        public SerializerTypes? Serializer { get; set; }
+
+        /// <summary>
         /// Get a stream from the stream factory for deserializing an embedded stream
         /// </summary>
         /// <param name="obj">Deserializing object</param>
         /// <param name="property">Target property</param>
-        /// <param name="stream">Source stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream to use for deserializing an embedded stream</returns>
-        public virtual Stream? GetStream(object? obj, PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken = default)
+        public virtual Stream? GetStream(object? obj, PropertyInfo? property, IDeserializationContext context)
         {
-            if (obj == null && property != null) throw new ArgumentNullException(nameof(obj));
-            if (obj != null && property == null) throw new ArgumentNullException(nameof(property));
+            if (obj == null) ArgumentValidationHelper.EnsureValidArgument(nameof(obj), property == null);
+            if (property == null) ArgumentValidationHelper.EnsureValidArgument(nameof(property), obj == null);
             if (StreamFactory == null)
             {
                 if (StreamFactoryType == null) return null;
@@ -184,7 +192,7 @@ namespace wan24.StreamSerializerExtensions
                             : $"{obj.GetType()}.{property!.Name} stream serializer attribute defines a stream factory type, but no method"
                         , new InvalidProgramException()
                         );
-                MethodInfo delegateInfo = typeof(StreamFactory_Delegate).GetMethod(nameof(StreamFactory_Delegate.Invoke), BindingFlags.Public)!,
+                MethodInfo delegateInfo = typeof(StreamFactory_Delegate).GetMethodCached(nameof(StreamFactory_Delegate.Invoke), BindingFlags.Public)!,
                     mi = StreamFactoryType.GetMethod(
                         StreamFactoryMethod,
                         BindingFlags.Public | BindingFlags.Static,
@@ -192,7 +200,7 @@ namespace wan24.StreamSerializerExtensions
                         genericArgumentCount: null,
                         exactTypes: false,
                         delegateInfo.ReturnType,
-                        delegateInfo.GetParameters().Select(p => p.ParameterType).ToArray()
+                        delegateInfo.GetParametersCached().Select(p => p.ParameterType).ToArray()
                         ) ??
                         throw new SerializerException(
                             obj == null
@@ -202,18 +210,16 @@ namespace wan24.StreamSerializerExtensions
                             );
                 StreamFactory = mi.CreateDelegate<StreamFactory_Delegate>();
             }
-            return StreamFactory(obj, property, this, stream, version, cancellationToken);
+            return StreamFactory(obj, property, this, context);
         }
 
         /// <summary>
         /// Get serializer options from the serializer options factory, or the default
         /// </summary>
         /// <param name="property">Target property</param>
-        /// <param name="stream">Source stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Serializer options</returns>
-        public virtual ISerializerOptions GetSerializerOptions(PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken = default)
+        public virtual ISerializerOptions GetSerializerOptions(PropertyInfoExt? property, ISerializerContext context)
         {
             try
             {
@@ -226,15 +232,15 @@ namespace wan24.StreamSerializerExtensions
                             : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defines a serializer options factory type, but no method",
                         new InvalidProgramException()
                         );
-                MethodInfo delegateInfo = typeof(SerializerOptionsFactory_Delegate).GetMethod("Invoke")!,
+                MethodInfo delegateInfo = typeof(SerializerOptionsFactory_Delegate).GetMethodCached("Invoke")!,
                     mi = SerializerOptionsFactoryType.GetMethod(
                         SerializerOptionsFactoryMethod,
-                        BindingFlags.Public|BindingFlags.Static,
+                        BindingFlags.Public | BindingFlags.Static,
                         filter: null,
                         genericArgumentCount: null,
                         exactTypes: false,
                         delegateInfo.ReturnType,
-                        delegateInfo.GetParameters().Select(p => p.ParameterType).ToArray()
+                        delegateInfo.GetParametersCached().Select(p => p.ParameterType).ToArray()
                         ) ??
                         throw new SerializerException(
                             property == null
@@ -242,12 +248,12 @@ namespace wan24.StreamSerializerExtensions
                                 : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defined serializer options factory {SerializerOptionsFactoryType}.{SerializerOptionsFactoryMethod} not found",
                             new InvalidProgramException()
                             );
-                return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, stream, version, cancellationToken })!;
+                return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, context })!;
             }
             finally
             {
-                KeySerializerOptions ??= GetKeySerializerOptions(property, stream, version, cancellationToken);
-                ValueSerializerOptions ??= GetValueSerializerOptions(property, stream, version, cancellationToken);
+                KeySerializerOptions ??= GetKeySerializerOptions(property, context);
+                ValueSerializerOptions ??= GetValueSerializerOptions(property, context);
             }
         }
 
@@ -255,11 +261,9 @@ namespace wan24.StreamSerializerExtensions
         /// Get key serializer options from the serializer options factory, or the default
         /// </summary>
         /// <param name="property">Target property</param>
-        /// <param name="stream">Source stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Serializer options</returns>
-        public virtual ISerializerOptions GetKeySerializerOptions(PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken = default)
+        public virtual ISerializerOptions GetKeySerializerOptions(PropertyInfoExt? property, ISerializerContext context)
         {
             if (KeySerializerOptions != null) return KeySerializerOptions;
             if (KeySerializerOptionsFactoryType == null) return KeySerializerOptions ??= CreateSerializerOptions(KeyOptionsType, property);
@@ -270,7 +274,7 @@ namespace wan24.StreamSerializerExtensions
                         : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defines a key serializer options factory type, but no method",
                     new InvalidProgramException()
                     );
-            MethodInfo delegateInfo = typeof(SerializerOptionsFactory_Delegate).GetMethod("Invoke")!,
+            MethodInfo delegateInfo = typeof(SerializerOptionsFactory_Delegate).GetMethodCached("Invoke")!,
                 mi = KeySerializerOptionsFactoryType.GetMethod(
                     KeySerializerOptionsFactoryMethod,
                     BindingFlags.Public | BindingFlags.Static,
@@ -278,7 +282,7 @@ namespace wan24.StreamSerializerExtensions
                     genericArgumentCount: null,
                     exactTypes: false,
                     delegateInfo.ReturnType,
-                    delegateInfo.GetParameters().Select(p => p.ParameterType).ToArray()
+                    delegateInfo.GetParametersCached().Select(p => p.ParameterType).ToArray()
                     ) ??
                     throw new SerializerException(
                         property == null
@@ -286,18 +290,16 @@ namespace wan24.StreamSerializerExtensions
                             : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defined serializer options factory {KeySerializerOptionsFactoryType}.{KeySerializerOptionsFactoryMethod} not found",
                         new InvalidProgramException()
                         );
-            return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, stream, version, cancellationToken })!;
+            return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, context })!;
         }
 
         /// <summary>
         /// Get value serializer options from the serializer options factory, or the default
         /// </summary>
         /// <param name="property">Target property</param>
-        /// <param name="stream">Source stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Serializer options</returns>
-        public virtual ISerializerOptions GetValueSerializerOptions(PropertyInfo? property, Stream stream, int version, CancellationToken cancellationToken = default)
+        public virtual ISerializerOptions GetValueSerializerOptions(PropertyInfoExt? property, ISerializerContext context)
         {
             if (ValueSerializerOptions != null) return ValueSerializerOptions;
             if (ValueSerializerOptionsFactoryType == null) return ValueSerializerOptions ??= CreateSerializerOptions(ValueOptionsType, property);
@@ -308,7 +310,7 @@ namespace wan24.StreamSerializerExtensions
                         : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defines a value serializer options factory type, but no method",
                     new InvalidProgramException()
                     );
-            MethodInfo delegateInfo = typeof(SerializerOptionsFactory_Delegate).GetMethod("Invoke")!,
+            MethodInfo delegateInfo = typeof(SerializerOptionsFactory_Delegate).GetMethodCached("Invoke")!,
                 mi = ValueSerializerOptionsFactoryType.GetMethod(
                     ValueSerializerOptionsFactoryMethod,
                     BindingFlags.Public | BindingFlags.Static,
@@ -316,7 +318,7 @@ namespace wan24.StreamSerializerExtensions
                     genericArgumentCount: null,
                     exactTypes: false,
                     delegateInfo.ReturnType,
-                    delegateInfo.GetParameters().Select(p => p.ParameterType).ToArray()
+                    delegateInfo.GetParametersCached().Select(p => p.ParameterType).ToArray()
                     ) ??
                     throw new SerializerException(
                         property == null
@@ -324,7 +326,7 @@ namespace wan24.StreamSerializerExtensions
                             : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defined serializer options factory {ValueSerializerOptionsFactoryType}.{ValueSerializerOptionsFactoryMethod} not found",
                         new InvalidProgramException()
                         );
-            return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, stream, version, cancellationToken })!;
+            return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, context })!;
         }
 
         /// <summary>
@@ -335,7 +337,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value is included?</returns>
         public virtual bool IsIncluded(StreamSerializerModes mode, int version)
         {
-            if (mode == StreamSerializerModes.Auto) throw new ArgumentException($"Type stream serializer mode can't be {StreamSerializerModes.Auto}", nameof(mode));
+            ArgumentValidationHelper.EnsureValidArgument(nameof(mode), mode != StreamSerializerModes.Auto, () => $"Type serializer mode can't be {StreamSerializerModes.Auto}");
             return (version == 0 || (FromVersion == null && Version == null) || (FromVersion == null || version >= FromVersion) && (Version == null || version <= Version)) &&
                 (
                     (mode == StreamSerializerModes.OptOut && Mode.In(StreamSerializerModes.OptOut, StreamSerializerModes.Auto)) ||
@@ -355,13 +357,13 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="type">Structure type</param>
         /// <returns>Fields</returns>
-        public virtual List<FieldInfo> GetStructureFields(Type type)
+        public virtual List<FieldInfo> GetNumericStructureFields(Type type)
         {
-            if (!type.IsValueType) throw new ArgumentException("Structure type required", nameof(type));
-            return StructureFields ??= new(from fi in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                                           where !fi.IsStatic &&
-                                              fi.GetCustomAttribute<StreamSerializerAttribute>() is not null
-                                           select fi);
+            ArgumentValidationHelper.EnsureValidArgument(nameof(type), type.IsValueType, () => "Structure type required");
+            return NumericStructureFields ??= new(from fi in type.GetFieldsCached(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                                                  where !fi.IsStatic &&
+                                                     fi.GetCustomAttributeCached<StreamSerializerAttribute>() is not null
+                                                  select fi);
         }
 
         /// <summary>
@@ -370,7 +372,7 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="type">Custom serializer options type</param>
         /// <param name="property">Property</param>
         /// <returns>Serializer options</returns>
-        protected virtual ISerializerOptions CreateSerializerOptions(Type? type, PropertyInfo? property)
+        protected virtual ISerializerOptions CreateSerializerOptions(Type? type, PropertyInfoExt? property)
             => type == null ? new DefaultSerializerOptions(property, this) : type.ConstructAuto(usePrivate: true, property, this) as ISerializerOptions
                 ?? throw new SerializerException($"Invalid serializer options type {type} (must implement {typeof(ISerializerOptions)})", new InvalidProgramException());
 
@@ -380,18 +382,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="obj">Deserializing object</param>
         /// <param name="property">Target property</param>
         /// <param name="attr">Stream serializer attribute</param>
-        /// <param name="stream">Source stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream to use for deserializing an embedded stream</returns>
-        public delegate Stream StreamFactory_Delegate(
-            object? obj,
-            PropertyInfo? property,
-            StreamSerializerAttribute attr,
-            Stream stream,
-            int version,
-            CancellationToken cancellationToken = default
-            );
+        public delegate Stream StreamFactory_Delegate(object? obj, PropertyInfo? property, StreamSerializerAttribute attr, IDeserializationContext context);
 
         /// <summary>
         /// Delegate for a serializer options factory
@@ -399,18 +392,9 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="obj">Deserializing object</param>
         /// <param name="property">Target property</param>
         /// <param name="attr">Stream serializer attribute</param>
-        /// <param name="stream">Source stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Serializer options</returns>
-        public delegate ISerializerOptions SerializerOptionsFactory_Delegate(
-            object? obj,
-            PropertyInfo? property,
-            StreamSerializerAttribute attr,
-            Stream stream,
-            int version,
-            CancellationToken cancellationToken = default
-            );
+        public delegate ISerializerOptions SerializerOptionsFactory_Delegate(object? obj, PropertyInfo? property, StreamSerializerAttribute attr, ISerializerContext context);
 
         /// <summary>
         /// Delegate for a stream factory
@@ -418,19 +402,10 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="obj">Deserializing object</param>
         /// <param name="property">Target property</param>
         /// <param name="attr">Stream serializer attribute</param>
-        /// <param name="stream">Source stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream to use for deserializing an embedded stream</returns>
 #pragma warning disable IDE0060 // Remove unused parameter
-        public static Stream MemoryStreamFactory(
-            object? obj,
-            PropertyInfo? property,
-            StreamSerializerAttribute attr,
-            Stream stream,
-            int version,
-            CancellationToken cancellationToken = default
-            )
+        public static Stream MemoryStreamFactory(object? obj, PropertyInfo? property, StreamSerializerAttribute attr, IDeserializationContext context)
 #pragma warning restore IDE0060 // Remove unused parameter
             => new MemoryStream();
 
@@ -440,28 +415,29 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="type">Type</param>
         /// <param name="version">Object version</param>
         /// <returns>Properties</returns>
-        public static IEnumerable<PropertyInfo> GetWriteProperties(Type type, int? version = null)
+        public static IEnumerable<PropertyInfoExt> GetWriteProperties(Type type, int? version = null)
         {
-            StreamSerializerAttribute? attr = type.GetCustomAttribute<StreamSerializerAttribute>();
+            //TODO Use a cache
+            StreamSerializerAttribute? attr = type.GetCustomAttributeCached<StreamSerializerAttribute>();
             StreamSerializerModes mode = attr?.Mode ?? StreamSerializerModes.OptOut;
             version ??= attr?.Version ?? 0;
             return mode switch
             {
-                StreamSerializerModes.OptIn => from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                               where (pi.GetMethod?.IsPublic ?? false) &&
-                                                (pi.SetMethod?.IsPublic ?? false) &&
-                                                pi.GetCustomAttribute<StreamSerializerAttribute>() is StreamSerializerAttribute objAttr &&
+                StreamSerializerModes.OptIn => from pi in type.GetPropertiesCached(BindingFlags.Instance | BindingFlags.Public)
+                                               where (pi.Property.GetMethod?.IsPublic ?? false) &&
+                                                (pi.Property.SetMethod?.IsPublic ?? false) &&
+                                                pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>() is StreamSerializerAttribute objAttr &&
                                                 objAttr.IsIncluded(mode, version.Value)
-                                               orderby pi.GetCustomAttribute<StreamSerializerAttribute>()!.Position, pi.Name
+                                               orderby pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()!.Position, pi.Property.Name
                                                select pi,
-                StreamSerializerModes.OptOut => from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                                where (pi.GetMethod?.IsPublic ?? false) &&
-                                                 (pi.SetMethod?.IsPublic ?? false) &&
+                StreamSerializerModes.OptOut => from pi in type.GetPropertiesCached(BindingFlags.Instance | BindingFlags.Public)
+                                                where (pi.Property.GetMethod?.IsPublic ?? false) &&
+                                                 (pi.Property.SetMethod?.IsPublic ?? false) &&
                                                  (
-                                                     pi.GetCustomAttribute<StreamSerializerAttribute>() is not StreamSerializerAttribute objAttr ||
+                                                     pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>() is not StreamSerializerAttribute objAttr ||
                                                      objAttr.IsIncluded(mode, version.Value)
                                                  )
-                                                orderby pi.GetCustomAttribute<StreamSerializerAttribute>()?.Position, pi.Name
+                                                orderby pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()?.Position, pi.Property.Name
                                                 select pi,
                 _ => throw new InvalidProgramException($"Type serializer mode can't be {StreamSerializerModes.Auto}")
             };
@@ -473,28 +449,29 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="type">Type</param>
         /// <param name="version">Object version</param>
         /// <returns>Properties</returns>
-        public static IEnumerable<PropertyInfo> GetReadProperties(Type type, int? version)
+        public static IEnumerable<PropertyInfoExt> GetReadProperties(Type type, int? version)
         {
-            StreamSerializerAttribute? attr = type.GetCustomAttribute<StreamSerializerAttribute>();
+            //TODO Use a cache
+            StreamSerializerAttribute? attr = type.GetCustomAttributeCached<StreamSerializerAttribute>();
             StreamSerializerModes mode = attr?.Mode ?? StreamSerializerModes.OptOut;
             version = attr?.Version ?? 0;
             return mode switch
             {
-                StreamSerializerModes.OptIn => from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                               where (pi.GetMethod?.IsPublic ?? false) &&
-                                                (pi.SetMethod?.IsPublic ?? false) &&
-                                                pi.GetCustomAttribute<StreamSerializerAttribute>() is StreamSerializerAttribute objAttr &&
+                StreamSerializerModes.OptIn => from pi in type.GetPropertiesCached(BindingFlags.Instance | BindingFlags.Public)
+                                               where (pi.Property.GetMethod?.IsPublic ?? false) &&
+                                                (pi.Property.SetMethod?.IsPublic ?? false) &&
+                                                pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>() is StreamSerializerAttribute objAttr &&
                                                 objAttr.IsIncluded(mode, version.Value)
-                                               orderby pi.GetCustomAttribute<StreamSerializerAttribute>()?.Position ?? 0, pi.Name
+                                               orderby pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()?.Position ?? 0, pi.Property.Name
                                                select pi,
-                StreamSerializerModes.OptOut => from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                                where (pi.GetMethod?.IsPublic ?? false) &&
-                                                 (pi.SetMethod?.IsPublic ?? false) &&
+                StreamSerializerModes.OptOut => from pi in type.GetPropertiesCached(BindingFlags.Instance | BindingFlags.Public)
+                                                where (pi.Property.GetMethod?.IsPublic ?? false) &&
+                                                 (pi.Property.SetMethod?.IsPublic ?? false) &&
                                                  (
-                                                     pi.GetCustomAttribute<StreamSerializerAttribute>() is not StreamSerializerAttribute objAttr ||
+                                                     pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>() is not StreamSerializerAttribute objAttr ||
                                                      objAttr.IsIncluded(mode, version.Value)
                                                  )
-                                                orderby pi.GetCustomAttribute<StreamSerializerAttribute>()?.Position ?? 0, pi.Name
+                                                orderby pi.Property.GetCustomAttributeCached<StreamSerializerAttribute>()?.Position ?? 0, pi.Property.Name
                                                 select pi,
                 _ => throw new InvalidProgramException($"Type serializer mode can't be {StreamSerializerModes.Auto}")
             };

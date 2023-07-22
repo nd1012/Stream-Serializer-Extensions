@@ -77,6 +77,9 @@
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
   </h3>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions..html">wan24.StreamSerializerExtensions.</a></h4>
+      <section><p>Context recursion (should only be disposed once!)</p>
+</section>
       <h4><a class="xref" href="wan24.StreamSerializerExtensions.AutoStreamSerializerBase-1.html">AutoStreamSerializerBase&lt;T&gt;</a></h4>
       <section><p>Base class for an automatic serializable type</p>
 </section>
@@ -89,11 +92,32 @@
       <h4><a class="xref" href="wan24.StreamSerializerExtensions.DefaultSerializerOptions.html">DefaultSerializerOptions</a></h4>
       <section><p>Default serializer options</p>
 </section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.DeserializerContext.html">DeserializerContext</a></h4>
+      <section><p>Stream deserializer context</p>
+</section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.DeserializerContextFluentExtensions.html">DeserializerContextFluentExtensions</a></h4>
+      <section><p><a class="xref" href="wan24.StreamSerializerExtensions.IDeserializationContext.html">IDeserializationContext</a> fluent extensions</p>
+</section>
       <h4><a class="xref" href="wan24.StreamSerializerExtensions.DisposableAutoStreamSerializerBase-1.html">DisposableAutoStreamSerializerBase&lt;T&gt;</a></h4>
       <section><p>Base class for an automatic serializable type</p>
 </section>
       <h4><a class="xref" href="wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.html">DisposableStreamSerializerBase</a></h4>
-      <section><p>Base class for a disposable stream serializing type</p>
+      <section><p>Base class for a stream serializing type</p>
+</section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.ItemDeserializerContext.html">ItemDeserializerContext</a></h4>
+      <section><p>Item deserializer context</p>
+</section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.ItemSerializerContext.html">ItemSerializerContext</a></h4>
+      <section><p>Item serializer context</p>
+</section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.SerializedTypeInfo.html">SerializedTypeInfo</a></h4>
+      <section><p>Serialized type informations</p>
+</section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.SerializerContext.html">SerializerContext</a></h4>
+      <section><p>Stream serializer writing context</p>
+</section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.SerializerContextBase.html">SerializerContextBase</a></h4>
+      <section><p>Base class for a stream serializer context</p>
 </section>
       <h4><a class="xref" href="wan24.StreamSerializerExtensions.SerializerEventArgs-1.html">SerializerEventArgs&lt;T&gt;</a></h4>
       <section><p>Serializer event arguments</p>
@@ -106,6 +130,9 @@
 </section>
       <h4><a class="xref" href="wan24.StreamSerializerExtensions.SerializerOptionsBase.html">SerializerOptionsBase</a></h4>
       <section><p>Base class for serializer options</p>
+</section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.SerializerOptionsFluentExtensions.html">SerializerOptionsFluentExtensions</a></h4>
+      <section><p><a class="xref" href="wan24.StreamSerializerExtensions.ISerializerOptions.html">ISerializerOptions</a> fluent extensions</p>
 </section>
       <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamExtensions.html">StreamExtensions</a></h4>
       <section><p>Stream extensions</p>
@@ -133,6 +160,15 @@
       <h4><a class="xref" href="wan24.StreamSerializerExtensions.IAutoStreamSerializerConfig.html">IAutoStreamSerializerConfig</a></h4>
       <section><p>Interface for an auto stream serializer configuration</p>
 </section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.IDeserializationContext.html">IDeserializationContext</a></h4>
+      <section><p>Interface for a stream deserialization context</p>
+</section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.ISerializationContext.html">ISerializationContext</a></h4>
+      <section><p>Interface for a stream serializer writing context</p>
+</section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.ISerializerContext.html">ISerializerContext</a></h4>
+      <section><p>Interface for a serializer context</p>
+</section>
       <h4><a class="xref" href="wan24.StreamSerializerExtensions.ISerializerOptions.html">ISerializerOptions</a></h4>
       <section><p>Interface for serializer options</p>
 </section>
@@ -149,6 +185,12 @@
 </section>
       <h4><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></h4>
       <section><p>Object types</p>
+</section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.SequenceTypes.html">SequenceTypes</a></h4>
+      <section><p>Binary sequence types</p>
+</section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.SerializerTypes.html">SerializerTypes</a></h4>
+      <section><p>Serializer types enumeration</p>
 </section>
       <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerModes.html">StreamSerializerModes</a></h4>
       <section><p>Stream serializer modes</p>
@@ -167,13 +209,25 @@
       <h4><a class="xref" href="wan24.StreamSerializerExtensions.AutoStreamSerializerInfo.Serializer_Delegate.html">AutoStreamSerializerInfo.Serializer_Delegate</a></h4>
       <section><p>Delegate for a serializer</p>
 </section>
-      <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.AsyncDeserialize_Delegate.html">StreamSerializer.AsyncDeserialize_Delegate</a></h4>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamExtensions.AsyncNullableWriter_Delegate.html">StreamExtensions.AsyncNullableWriter_Delegate</a></h4>
+      <section><p>Delegate for a nullable writer</p>
+</section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamExtensions.AsyncStreamNullableWiter_Delegate.html">StreamExtensions.AsyncStreamNullableWiter_Delegate</a></h4>
+      <section><p>Delegate for a nullable writer, which uses a stream</p>
+</section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamExtensions.NullableWriter_Delegate.html">StreamExtensions.NullableWriter_Delegate</a></h4>
+      <section><p>Delegate for a nullable writer</p>
+</section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamExtensions.StreamNullableWiter_Delegate.html">StreamExtensions.StreamNullableWiter_Delegate</a></h4>
+      <section><p>Delegate for a nullable writer, which uses a stream</p>
+</section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.AsyncDeserializer_Delegate.html">StreamSerializer.AsyncDeserializer_Delegate</a></h4>
       <section><p>Deserializer delegate</p>
 </section>
-      <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.AsyncSerialize_Delegate.html">StreamSerializer.AsyncSerialize_Delegate</a></h4>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.AsyncSerializer_Delegate.html">StreamSerializer.AsyncSerializer_Delegate</a></h4>
       <section><p>Serializer delegate</p>
 </section>
-      <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.Deserialize_Delegate.html">StreamSerializer.Deserialize_Delegate</a></h4>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.Deserializer_Delegate.html">StreamSerializer.Deserializer_Delegate</a></h4>
       <section><p>Deserializer delegate</p>
 </section>
       <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.FindAsyncDeserializer_Delegate.html">StreamSerializer.FindAsyncDeserializer_Delegate</a></h4>
@@ -191,10 +245,13 @@
       <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.Init_Delegate.html">StreamSerializer.Init_Delegate</a></h4>
       <section><p>Delegate for the <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.html#wan24_StreamSerializerExtensions_StreamSerializer_OnInit">OnInit</a> event</p>
 </section>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.InstanceFactory_Delegate.html">StreamSerializer.InstanceFactory_Delegate</a></h4>
+      <section><p>Delegate for an instance factory</p>
+</section>
       <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.LoadType_Delegate.html">StreamSerializer.LoadType_Delegate</a></h4>
       <section><p>Delegate for the <a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.html#wan24_StreamSerializerExtensions_StreamSerializer_OnLoadType">OnLoadType</a> event</p>
 </section>
-      <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.Serialize_Delegate.html">StreamSerializer.Serialize_Delegate</a></h4>
+      <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.Serializer_Delegate.html">StreamSerializer.Serializer_Delegate</a></h4>
       <section><p>Serializer delegate</p>
 </section>
       <h4><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializerAttribute.SerializerOptionsFactory_Delegate.html">StreamSerializerAttribute.SerializerOptionsFactory_Delegate</a></h4>

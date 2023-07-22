@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Reflection;
+using wan24.Core;
 using wan24.ObjectValidation;
 
 namespace wan24.StreamSerializerExtensions
@@ -14,48 +14,62 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="property">Target property</param>
         /// <param name="attr">Stream serializer attribute (required, if <c>property</c> is <see langword="null"/>)</param>
-        protected SerializerOptionsBase(PropertyInfo? property, StreamSerializerAttribute? attr = null) : base()
+        protected SerializerOptionsBase(PropertyInfoExt? property, StreamSerializerAttribute? attr = null) : base()
         {
             Property = property;
             Attribute = attr ??
-                property?.GetCustomAttribute<StreamSerializerAttribute>() ??
-                throw (property == null ? new ArgumentNullException(nameof(attr)) : new ArgumentException($"{typeof(StreamSerializerAttribute)} attribute required", nameof(property)));
+                property?.Property.GetCustomAttributeCached<StreamSerializerAttribute>() ??
+                throw (property == null 
+                    ? new ArgumentNullException(nameof(attr)) 
+                    : new ArgumentException($"{typeof(StreamSerializerAttribute)} attribute required", nameof(property)));
         }
 
         /// <inheritdoc/>
-        public PropertyInfo? Property { get; }
+        public PropertyInfoExt? Property { get; }
 
         /// <inheritdoc/>
         public StreamSerializerAttribute Attribute { get; }
+
+        /// <inheritdoc/>
+        public SerializerTypes? Serializer { get; set; }
+
+        /// <inheritdoc/>
+        public bool IsNullable { get; set; }
+
+        /// <inheritdoc/>
+        public ISerializerOptions? KeyOptions { get; set; }
+
+        /// <inheritdoc/>
+        public ISerializerOptions? ValueOptions { get; set; }
 
         /// <inheritdoc/>
         public virtual int GetMinLen(int defaultValue)
         {
             int? res = (int?)Attribute.MinLen;
             if (res == null && Property != null)
-                if (Property.GetCustomAttribute<RangeAttribute>() is RangeAttribute range)
+                if (Property.GetCustomAttributeCached<RangeAttribute>() is RangeAttribute range)
                 {
                     res = (int)range.Minimum;
                 }
-                else if (Property.GetCustomAttribute<CountLimitAttribute>() is CountLimitAttribute countLimit)
+                else if (Property.GetCustomAttributeCached<CountLimitAttribute>() is CountLimitAttribute countLimit)
                 {
                     res = (int?)countLimit.Min;
                 }
-                else if (Property.GetCustomAttribute<MinLengthAttribute>() is MinLengthAttribute minLength)
+                else if (Property.GetCustomAttributeCached<MinLengthAttribute>() is MinLengthAttribute minLength)
                 {
                     res = minLength.Length;
                 }
                 else if (Property.PropertyType == typeof(string))
                 {
-                    if (Property.GetCustomAttribute<StringLengthAttribute>() is StringLengthAttribute stringLength && stringLength.MinimumLength > 0)
+                    if (Property.GetCustomAttributeCached<StringLengthAttribute>() is StringLengthAttribute stringLength && stringLength.MinimumLength > 0)
                     {
                         res = stringLength.MinimumLength;
                     }
-                    else if (Property.GetCustomAttribute<RequiredAttribute>() != null)
+                    else if (Property.GetCustomAttributeCached<RequiredAttribute>() != null)
                     {
                         res = 1;
                     }
-                    else if (Property.GetCustomAttribute<StringLengthAttribute>() is StringLengthAttribute stringLength2)
+                    else if (Property.GetCustomAttributeCached<StringLengthAttribute>() is StringLengthAttribute stringLength2)
                     {
                         res = stringLength2.MinimumLength;
                     }
@@ -68,19 +82,19 @@ namespace wan24.StreamSerializerExtensions
         {
             int? res = (int?)Attribute.MaxLen;
             if (res == null && Property != null)
-                if (Property.GetCustomAttribute<RangeAttribute>() is RangeAttribute range)
+                if (Property.GetCustomAttributeCached<RangeAttribute>() is RangeAttribute range)
                 {
                     res = (int)range.Maximum;
                 }
-                else if (Property.GetCustomAttribute<CountLimitAttribute>() is CountLimitAttribute countLimit)
+                else if (Property.GetCustomAttributeCached<CountLimitAttribute>() is CountLimitAttribute countLimit)
                 {
                     res = (int)countLimit.Max;
                 }
-                else if (Property.GetCustomAttribute<MaxLengthAttribute>() is MaxLengthAttribute maxLength)
+                else if (Property.GetCustomAttributeCached<MaxLengthAttribute>() is MaxLengthAttribute maxLength)
                 {
                     res = maxLength.Length;
                 }
-                else if (Property.PropertyType == typeof(string) && Property.GetCustomAttribute<StringLengthAttribute>() is StringLengthAttribute stringLength)
+                else if (Property.PropertyType == typeof(string) && Property.GetCustomAttributeCached<StringLengthAttribute>() is StringLengthAttribute stringLength)
                 {
                     res = stringLength.MaximumLength;
                 }
@@ -92,29 +106,29 @@ namespace wan24.StreamSerializerExtensions
         {
             long? res = Attribute.MinLen;
             if (res == null && Property != null)
-                if (Property.GetCustomAttribute<RangeAttribute>() is RangeAttribute range)
+                if (Property.GetCustomAttributeCached<RangeAttribute>() is RangeAttribute range)
                 {
                     res = (long)range.Minimum;
                 }
-                else if (Property.GetCustomAttribute<CountLimitAttribute>() is CountLimitAttribute countLimit)
+                else if (Property.GetCustomAttributeCached<CountLimitAttribute>() is CountLimitAttribute countLimit)
                 {
                     res = countLimit.Min;
                 }
-                else if (Property.GetCustomAttribute<MinLengthAttribute>() is MinLengthAttribute minLength)
+                else if (Property.GetCustomAttributeCached<MinLengthAttribute>() is MinLengthAttribute minLength)
                 {
                     res = minLength.Length;
                 }
                 else if (Property.PropertyType == typeof(string))
                 {
-                    if (Property.GetCustomAttribute<StringLengthAttribute>() is StringLengthAttribute stringLength && stringLength.MinimumLength > 0)
+                    if (Property.GetCustomAttributeCached<StringLengthAttribute>() is StringLengthAttribute stringLength && stringLength.MinimumLength > 0)
                     {
                         res = stringLength.MinimumLength;
                     }
-                    else if (Property.GetCustomAttribute<RequiredAttribute>() != null)
+                    else if (Property.GetCustomAttributeCached<RequiredAttribute>() != null)
                     {
                         res = 1;
                     }
-                    else if (Property.GetCustomAttribute<StringLengthAttribute>() is StringLengthAttribute stringLength2)
+                    else if (Property.GetCustomAttributeCached<StringLengthAttribute>() is StringLengthAttribute stringLength2)
                     {
                         res = stringLength2.MinimumLength;
                     }
@@ -127,19 +141,19 @@ namespace wan24.StreamSerializerExtensions
         {
             long? res = Attribute.MaxLen;
             if (res == null && Property != null)
-                if (Property.GetCustomAttribute<RangeAttribute>() is RangeAttribute range)
+                if (Property.GetCustomAttributeCached<RangeAttribute>() is RangeAttribute range)
                 {
                     res = (long)range.Maximum;
                 }
-                else if (Property.GetCustomAttribute<CountLimitAttribute>() is CountLimitAttribute countLimit)
+                else if (Property.GetCustomAttributeCached<CountLimitAttribute>() is CountLimitAttribute countLimit)
                 {
                     res = countLimit.Max;
                 }
-                else if (Property.GetCustomAttribute<MaxLengthAttribute>() is MaxLengthAttribute maxLength)
+                else if (Property.GetCustomAttributeCached<MaxLengthAttribute>() is MaxLengthAttribute maxLength)
                 {
                     res = maxLength.Length;
                 }
-                else if (Property.PropertyType == typeof(string) && Property.GetCustomAttribute<StringLengthAttribute>() is StringLengthAttribute stringLength)
+                else if (Property.PropertyType == typeof(string) && Property.GetCustomAttributeCached<StringLengthAttribute>() is StringLengthAttribute stringLength)
                 {
                     res = stringLength.MaximumLength;
                 }

@@ -9,15 +9,14 @@
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        public StreamSerializerEnumerator(Stream stream, int? version = null) : base(stream, version) { }
+        /// <param name="context">Context</param>
+        public StreamSerializerEnumerator(IDeserializationContext context) : base(context) { }
 
         /// <summary>
         /// Read object method
         /// </summary>
         /// <returns>Object</returns>
-        protected override T ReadObject() => Stream.ReadSerialized<T>(SerializerVersion);
+        protected override T ReadObject() => Context.Stream.ReadSerialized<T>(Context);
 
         /// <inheritdoc/>
         protected override void Dispose(bool disposing) { }

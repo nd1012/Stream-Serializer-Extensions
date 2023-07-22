@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using wan24.Core;
+﻿using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions.Enumerator
 {
@@ -12,15 +11,7 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         /// <summary>
         /// Stream
         /// </summary>
-        protected readonly Stream Stream;
-        /// <summary>
-        /// Serializer version
-        /// </summary>
-        protected readonly int SerializerVersion;
-        /// <summary>
-        /// Cancellation token
-        /// </summary>
-        protected readonly CancellationToken Cancellation;
+        protected readonly IDeserializationContext Context;
         /// <summary>
         /// Current object
         /// </summary>
@@ -29,15 +20,8 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        protected StreamAsyncEnumeratorBase(Stream stream, int? version = null, CancellationToken cancellationToken = default) : base()
-        {
-            SerializerVersion = version ?? StreamSerializer.VERSION;
-            Cancellation = cancellationToken;
-            Stream = stream;
-        }
+        /// <param name="context">Context</param>
+        protected StreamAsyncEnumeratorBase(IDeserializationContext context) : base() => Context = context;
 
         /// <inheritdoc/>
         public T Current => IfUndisposed(_Current!);
@@ -46,19 +30,19 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         public async ValueTask<bool> MoveNextAsync()
         {
             EnsureUndisposed();
-            if (Stream.CanSeek && Stream.Position == Stream.Length) return false;
+            if (Context.Stream.CanSeek && Context.Stream.Position == Context.Stream.Length) return false;
             try
             {
                 _Current = await ReadObjectAsync().DynamicContext();
             }
             catch (IOException)
             {
-                if (!Stream.CanSeek) return false;
+                if (!Context.Stream.CanSeek) return false;
                 throw;
             }
             catch (SerializerException ex)
             {
-                if (!Stream.CanSeek && ex.InnerException is IOException) return false;
+                if (!Context.Stream.CanSeek && ex.InnerException is IOException) return false;
                 throw;
             }
             return true;
@@ -77,19 +61,17 @@ namespace wan24.StreamSerializerExtensions.Enumerator
         /// Enumerate
         /// </summary>
         /// <typeparam name="tEnumerator">Final enumerator type</typeparam>
-        /// <param name="stream">Stream</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
         /// <returns>Enumerable</returns>
-        public static async IAsyncEnumerable<T> EnumerateAsync<tEnumerator>(Stream stream, int? version = null, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        public static async IAsyncEnumerable<T> EnumerateAsync<tEnumerator>(IDeserializationContext context)
             where tEnumerator : StreamAsyncEnumeratorBase<T>
         {
             Type type = typeof(tEnumerator);
-            if (type.IsAbstract) throw new ArgumentException("Non-abstract type required", nameof(tEnumerator));
-            StreamAsyncEnumeratorBase<T> enumerator = Activator.CreateInstance(type, stream, version, cancellationToken) as StreamAsyncEnumeratorBase<T>
+            ArgumentValidationHelper.EnsureValidArgument(nameof(type), !type.IsAbstract, () => "Non-abstract type required");
+            StreamAsyncEnumeratorBase<T> enumerator = Activator.CreateInstance(type, context) as StreamAsyncEnumeratorBase<T>
                 ?? throw new InvalidProgramException($"Failed to instance {type}");
             await using (enumerator.DynamicContext())
-                while (!cancellationToken.IsCancellationRequested && await enumerator.MoveNextAsync().DynamicContext())
+                while (!context.Cancellation.IsCancellationRequested && await enumerator.MoveNextAsync().DynamicContext())
                     yield return enumerator.Current;
         }
     }

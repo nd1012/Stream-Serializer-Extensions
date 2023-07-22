@@ -4,7 +4,7 @@ namespace Stream_Serializer_Extensions_Tests
 {
     // Testing customized opt-in serialization (object version 1, Field2 should be excluded)
     [StreamSerializer(StreamSerializerModes.OptIn, version: 1)]
-    internal class TestObject4
+    internal class TestObject4 : ITestObject
     {
         public TestObject4() { }
 
@@ -19,5 +19,7 @@ namespace Stream_Serializer_Extensions_Tests
         // Included until object version 2 (excluded from object version 3+)
         [StreamSerializer(0, 2)]
         public bool Field3 { get; set; }
+
+        public virtual bool CompareWith(ITestObject other) => other is TestObject4 obj && Field1 == obj.Field1 && Field2 == obj.Field2 && Field3 == obj.Field3;
     }
 }

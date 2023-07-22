@@ -1,4 +1,5 @@
 ﻿using System.Runtime;
+using System.Runtime.CompilerServices;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -9,115 +10,49 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Write any object
         /// </summary>
-        /// <typeparam name="T">Stream type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
-        public static T WriteAny<T>(this T stream, object obj) where T : Stream
-        {
-            try
-            {
-                (Type type, ObjectTypes objType, bool writeType, bool writeObject) = obj.GetObjectSerializerInfo();
-                using (RentedArray<byte> poolData = new(1))
-                {
-                    poolData[0] = (byte)objType;
-                    stream.Write(poolData.Span);
-                }
-                if (writeType) WriteString(stream, type.ToString());
-                if (writeObject)
-                    if (objType.IsNumber())
-                    {
-                        WriteNumberMethod.MakeGenericMethod(typeof(T), type).InvokeAuto(obj: null, stream, obj);
-                    }
-                    else
-                    {
-                        WriteObjectMethod.MakeGenericMethod(typeof(T), type).InvokeAuto(obj: null, stream, obj);
-                    }
-                return stream;
-            }
-            catch (SerializerException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-        }
+        [TargetedPatchingOptOut("Just a method adapter")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Stream WriteAny(this Stream stream, object obj, ISerializationContext context) => WriteAny(stream, obj, objType: null, writeObject: true, context);
 
         /// <summary>
         /// Write any object
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        public static async Task WriteAnyAsync(this Stream stream, object obj, CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                (Type type, ObjectTypes objType, bool writeType, bool writeObject) = obj.GetObjectSerializerInfo();
-                using (RentedArray<byte> poolData = new(1))
-                {
-                    poolData[0] = (byte)objType;
-                    await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
-                }
-                if (writeType) await WriteStringAsync(stream, type.ToString(), cancellationToken).DynamicContext();
-                if (writeObject)
-                {
-                    Task task;
-                    if (objType.IsNumber())
-                    {
-                        task = (Task)WriteNumberAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, obj, cancellationToken)!;
-                    }
-                    else
-                    {
-                        task = (Task)WriteObjectAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, obj, cancellationToken)!;
-                    }
-                    await task.DynamicContext();
-                }
-            }
-            catch (SerializerException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
-        }
-
-        /// <summary>
-        /// Write any object
-        /// </summary>
-        /// <typeparam name="T">Stream type</typeparam>
-        /// <param name="stream">Stream</param>
-        /// <param name="obj">Object</param>
+        /// <param name="objType">Object type (if not <see langword="null"/>, no header will be written)</param>
+        /// <param name="writeObject">Write the object? (may be overridden, if writing a header)</param>
+        /// <param name="context">Context</param>
         /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static T WriteAnyNullable<T>(this T stream, object? obj) where T : Stream
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static Stream WriteAny(this Stream stream, object obj, ObjectTypes? objType, bool writeObject, ISerializationContext context)
         {
-            try
+            if (objType == null)
             {
-                if (obj == null)
-                {
-                    using RentedArray<byte> poolData = new(1, clean: false);
-                    poolData[0] = (byte)ObjectTypes.Null;
-                    stream.Write(poolData.Span);
-                }
-                else
-                {
-                    WriteAny(stream, obj);
-                }
-                return stream;
+                (Type type, objType, bool writeType, writeObject) = obj.GetObjectSerializerInfo();
+                Write(stream, (byte)objType, context);
+                if (writeType) Write(stream, type, context);
             }
-            catch (SerializerException)
+            if (!writeObject) return stream;
+            return objType.Value switch
             {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
+                ObjectTypes.Byte => Write(stream, (sbyte)obj, context),
+                ObjectTypes.Byte | ObjectTypes.Unsigned => Write(stream, (byte)obj, context),
+                ObjectTypes.Short => Write(stream, (short)obj, context),
+                ObjectTypes.Short | ObjectTypes.Unsigned => Write(stream, (ushort)obj, context),
+                ObjectTypes.String16 => WriteString16(stream, (string)obj, context),
+                ObjectTypes.String32 => WriteString32(stream, (string)obj, context),
+                ObjectTypes.Serializable | ObjectTypes.CachedSerializable => Write(stream, obj.GetHashCode(), context),
+                _ => objType.Value.IsNumber()
+                    ? WriteNumber(stream, obj, context)
+                    : WriteObject(stream, obj, context)
+            };
         }
 
         /// <summary>
@@ -125,31 +60,204 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         /// <param name="stream">Stream</param>
         /// <param name="obj">Object</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="context">Context</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Just a method adapter")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<Stream> WriteAnyAsync(
+            this Stream stream,
+            object obj,
+            ISerializationContext context
+            )
+            => WriteAnyAsync(stream, obj, objType: null, writeObject: true, context);
+
+        /// <summary>
+        /// Write any object
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="obj">Object</param>
+        /// <param name="objType">Object type (if not <see langword="null"/>, no header will be written)</param>
+        /// <param name="writeObject">Write the object? (may be overridden, if writing a header)</param>
+        /// <param name="context">Context</param>
+        /// <returns>Stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task WriteAnyNullableAsync(this Stream stream, object? obj, CancellationToken cancellationToken = default)
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<Stream> WriteAnyAsync(
+            this Stream stream,
+            object obj,
+            ObjectTypes? objType,
+            bool writeObject,
+            ISerializationContext context
+            )
         {
-            try
+            if (objType == null)
             {
-                if (obj == null)
-                {
-                    using RentedArray<byte> poolData = new(1, clean: false);
-                    poolData[0] = (byte)ObjectTypes.Null;
-                    await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
-                }
-                else
-                {
-                    await WriteAnyAsync(stream, obj, cancellationToken).DynamicContext();
-                }
+                (Type type, objType, bool writeType, writeObject) = obj.GetObjectSerializerInfo();
+                await WriteAsync(stream, (byte)objType, context).DynamicContext();
+                if (writeType) await WriteAsync(stream, type, context).DynamicContext();
             }
-            catch (SerializerException)
+            if (!writeObject) return stream;
+            return objType.Value switch
             {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new SerializerException(message: null, ex);
-            }
+                ObjectTypes.Byte => await WriteAsync(stream, (sbyte)obj, context).DynamicContext(),
+                ObjectTypes.Byte | ObjectTypes.Unsigned => await WriteAsync(stream, (byte)obj, context).DynamicContext(),
+                ObjectTypes.Short => await WriteAsync(stream, (short)obj, context).DynamicContext(),
+                ObjectTypes.Short | ObjectTypes.Unsigned => await WriteAsync(stream, (ushort)obj, context).DynamicContext(),
+                ObjectTypes.String16 => await WriteString16Async(stream, (string)obj, context).DynamicContext(),
+                ObjectTypes.String32 => await WriteString32Async(stream, (string)obj, context).DynamicContext(),
+                ObjectTypes.Serializable | ObjectTypes.CachedSerializable => await WriteAsync(stream, obj.GetHashCode(), context).DynamicContext(),
+                _ => objType.Value.IsNumber()
+                    ? await WriteNumberAsync(stream, obj, context).DynamicContext()
+                    : await WriteObjectAsync(stream, obj, context).DynamicContext()
+            };
         }
+
+        /// <summary>
+        /// Write any object
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="obj">Object</param>
+        /// <param name="context">Context</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<Stream> WriteAnyAsync(
+            this Task<Stream> stream,
+            object obj,
+            ISerializationContext context
+            )
+            => AsyncHelper.FluentAsync(stream, obj, context, WriteAnyAsync);
+
+        /// <summary>
+        /// Write any object
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="obj">Object</param>
+        /// <param name="objType">Object type (if not <see langword="null"/>, no header will be written)</param>
+        /// <param name="writeObject">Write the object? (may be overridden, if writing a header)</param>
+        /// <param name="context">Context</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<Stream> WriteAnyAsync(
+            this Task<Stream> stream, 
+            object obj, 
+            ObjectTypes? objType, 
+            bool writeObject, 
+            ISerializationContext context
+            )
+            => AsyncHelper.FluentAsync(stream, obj, objType, writeObject, context, WriteAnyAsync);
+
+        /// <summary>
+        /// Write any object
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="obj">Object</param>
+        /// <param name="context">Context</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static Stream WriteAnyNullable(this Stream stream, object? obj, ISerializationContext context)
+            => obj == null ? Write(stream, (byte)ObjectTypes.Null, context) : WriteAny(stream, obj, context);
+
+        /// <summary>
+        /// Write any object
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="obj">Object</param>
+        /// <param name="objType">Object type (if not <see langword="null"/>, no header will be written)</param>
+        /// <param name="writeObject">Write the object? (may be overridden, if writing a header)</param>
+        /// <param name="context">Context</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static Stream WriteAnyNullable(this Stream stream, object? obj, ObjectTypes? objType, bool writeObject, ISerializationContext context)
+            => obj == null ? Write(stream, (byte)ObjectTypes.Null, context) : WriteAny(stream, obj, objType, writeObject, context);
+
+        /// <summary>
+        /// Write any object
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="obj">Object</param>
+        /// <param name="context">Context</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<Stream> WriteAnyNullableAsync(
+            this Stream stream,
+            object? obj,
+            ISerializationContext context
+            )
+            => obj == null
+                ? await WriteAsync(stream, (byte)ObjectTypes.Null, context).DynamicContext()
+                : await WriteAnyAsync(stream, obj, context).DynamicContext();
+
+        /// <summary>
+        /// Write any object
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="obj">Object</param>
+        /// <param name="objType">Object type (if not <see langword="null"/>, no header will be written)</param>
+        /// <param name="writeObject">Write the object? (may be overridden, if writing a header)</param>
+        /// <param name="context">Context</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static async Task<Stream> WriteAnyNullableAsync(
+            this Stream stream, 
+            object? obj, 
+            ObjectTypes? objType, 
+            bool writeObject, 
+            ISerializationContext context
+            )
+            => obj == null 
+                ? await WriteAsync(stream, (byte)ObjectTypes.Null, context).DynamicContext() 
+                : await WriteAnyAsync(stream, obj, objType, writeObject, context).DynamicContext();
+
+        /// <summary>
+        /// Write any object
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="obj">Object</param>
+        /// <param name="context">Context</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<Stream> WriteAnyNullableAsync(
+            this Task<Stream> stream,
+            object? obj,
+            ISerializationContext context
+            )
+            => AsyncHelper.FluentAsync(stream, obj, context, WriteAnyNullableAsync);
+
+        /// <summary>
+        /// Write any object
+        /// </summary>
+        /// <param name="stream">Stream</param>
+        /// <param name="obj">Object</param>
+        /// <param name="objType">Object type (if not <see langword="null"/>, no header will be written)</param>
+        /// <param name="writeObject">Write the object? (may be overridden, if writing a header)</param>
+        /// <param name="context">Context</param>
+        /// <returns>Stream</returns>
+        [TargetedPatchingOptOut("Tiny method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<Stream> WriteAnyNullableAsync(
+            this Task<Stream> stream, 
+            object? obj, 
+            ObjectTypes? objType, 
+            bool writeObject, 
+            ISerializationContext context
+            )
+            => AsyncHelper.FluentAsync(stream, obj, objType, writeObject, context, WriteAnyNullableAsync);
     }
 }

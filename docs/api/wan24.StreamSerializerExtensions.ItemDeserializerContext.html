@@ -1,0 +1,803 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ItemDeserializerContext
+   | Stream-Serializer-Extensions </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ItemDeserializerContext
+   | Stream-Serializer-Extensions ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext">
+  
+  
+  <h1 id="wan24_StreamSerializerExtensions_ItemDeserializerContext" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext" class="text-break">Class ItemDeserializerContext
+  </h1>
+  <div class="markdown level0 summary"><p>Item deserializer context</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">ItemDeserializerContext</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="wan24.StreamSerializerExtensions.html">wan24.StreamSerializerExtensions</a></h6>
+  <h6><strong>Assembly</strong>: StreamSerializerExtensions.dll</h6>
+  <h5 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class ItemDeserializerContext : DisposableBase</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext__ctor_wan24_StreamSerializerExtensions_IDeserializationContext_System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.%23ctor(wan24.StreamSerializerExtensions.IDeserializationContext%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L36">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext__ctor_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.#ctor*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext__ctor_wan24_StreamSerializerExtensions_IDeserializationContext_System_Boolean_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.#ctor(wan24.StreamSerializerExtensions.IDeserializationContext,System.Boolean)">ItemDeserializerContext(IDeserializationContext, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Constructor</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ItemDeserializerContext(IDeserializationContext context, bool objectCache = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.IDeserializationContext.html">IDeserializationContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Deserializer context</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">objectCache</span></td>
+        <td><p>Create an object cache?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext_Context.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.Context%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L47">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext_Context_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.Context*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_Context" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.Context">Context</h4>
+  <div class="markdown level1 summary"><p>Deserializer context</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IDeserializationContext Context { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.IDeserializationContext.html">IDeserializationContext</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext_ItemAsyncDeserializer.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.ItemAsyncDeserializer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L77">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext_ItemAsyncDeserializer_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.ItemAsyncDeserializer*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_ItemAsyncDeserializer" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.ItemAsyncDeserializer">ItemAsyncDeserializer</h4>
+  <div class="markdown level1 summary"><p>Asynchronous item deserializer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StreamSerializer.AsyncDeserializer_Delegate ItemAsyncDeserializer { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.AsyncDeserializer_Delegate.html">StreamSerializer.AsyncDeserializer_Delegate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext_ItemSerializer.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.ItemSerializer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L67">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext_ItemSerializer_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.ItemSerializer*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_ItemSerializer" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.ItemSerializer">ItemSerializer</h4>
+  <div class="markdown level1 summary"><p>Item serializer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SerializerTypes ItemSerializer { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.SerializerTypes.html">SerializerTypes</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext_ItemSyncDeserializer.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.ItemSyncDeserializer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L72">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext_ItemSyncDeserializer_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.ItemSyncDeserializer*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_ItemSyncDeserializer" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.ItemSyncDeserializer">ItemSyncDeserializer</h4>
+  <div class="markdown level1 summary"><p>Synchronous item deserializer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StreamSerializer.Deserializer_Delegate ItemSyncDeserializer { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.StreamSerializer.Deserializer_Delegate.html">StreamSerializer.Deserializer_Delegate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext_ItemType.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.ItemType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L62">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext_ItemType_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.ItemType*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_ItemType" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.ItemType">ItemType</h4>
+  <div class="markdown level1 summary"><p>Item type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type? ItemType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Type</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext_LastObjectType.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.LastObjectType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L57">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext_LastObjectType_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.LastObjectType*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_LastObjectType" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.LastObjectType">LastObjectType</h4>
+  <div class="markdown level1 summary"><p>Last object type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ObjectTypes LastObjectType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext_Nullable.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.Nullable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L82">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext_Nullable_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.Nullable*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_Nullable" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.Nullable">Nullable</h4>
+  <div class="markdown level1 summary"><p>Nullable?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Nullable { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext_ObjectType.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.ObjectType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L52">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext_ObjectType_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.ObjectType*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_ObjectType" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.ObjectType">ObjectType</h4>
+  <div class="markdown level1 summary"><p>Object type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ObjectTypes ObjectType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext_AddObject__1___0_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.AddObject%60%601(%60%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L110">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext_AddObject_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.AddObject*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_AddObject__1___0_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.AddObject``1(``0)">AddObject&lt;T&gt;(T)</h4>
+  <div class="markdown level1 summary"><p>Add a type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddObject&lt;T&gt;(T obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>Object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext_AddType_Type_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.AddType(Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L88">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext_AddType_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.AddType*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_AddType_Type_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.AddType(Type)">AddType(Type)</h4>
+  <div class="markdown level1 summary"><p>Add a type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddType(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L130">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext_Dispose_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.Dispose*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_Dispose_System_Boolean_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposing)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">disposing</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext_GetCachedObject_System_Int32_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.GetCachedObject(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L122">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext_GetCachedObject_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.GetCachedObject*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_GetCachedObject_System_Int32_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.GetCachedObject(System.Int32)">GetCachedObject(Int32)</h4>
+  <div class="markdown level1 summary"><p>Get a cached object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object GetCachedObject(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>Cache index</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><p>Object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext_GetCachedType_System_Int32_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.GetCachedType(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L100">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext_GetCachedType_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.GetCachedType*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_GetCachedType_System_Int32_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.GetCachedType(System.Int32)">GetCachedType(Int32)</h4>
+  <div class="markdown level1 summary"><p>Get a cached type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type GetCachedType(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>Cache index</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><p>Type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="operators">Operators
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext_op_Implicit_wan24_StreamSerializerExtensions_ItemDeserializerContext__System_Nullable_Type_.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.op_Implicit(wan24.StreamSerializerExtensions.ItemDeserializerContext)~System.Nullable%7BType%7D%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L152">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext_op_Implicit_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.op_Implicit*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_op_Implicit_wan24_StreamSerializerExtensions_ItemDeserializerContext__System_Nullable_Type_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.op_Implicit(wan24.StreamSerializerExtensions.ItemDeserializerContext)~System.Nullable{Type}">Implicit(ItemDeserializerContext to Nullable&lt;Type&gt;)</h4>
+  <div class="markdown level1 summary"><p>Cast as item type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator Type? (ItemDeserializerContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ItemDeserializerContext.html">ItemDeserializerContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p><a class="xref" href="wan24.StreamSerializerExtensions.ItemDeserializerContext.html">ItemDeserializerContext</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Type</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext_op_Implicit_wan24_StreamSerializerExtensions_ItemDeserializerContext__wan24_StreamSerializerExtensions_ObjectTypes.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.op_Implicit(wan24.StreamSerializerExtensions.ItemDeserializerContext)~wan24.StreamSerializerExtensions.ObjectTypes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L140">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext_op_Implicit_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.op_Implicit*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_op_Implicit_wan24_StreamSerializerExtensions_ItemDeserializerContext__wan24_StreamSerializerExtensions_ObjectTypes" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.op_Implicit(wan24.StreamSerializerExtensions.ItemDeserializerContext)~wan24.StreamSerializerExtensions.ObjectTypes">Implicit(ItemDeserializerContext to ObjectTypes)</h4>
+  <div class="markdown level1 summary"><p>Cast as object type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator ObjectTypes(ItemDeserializerContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ItemDeserializerContext.html">ItemDeserializerContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p><a class="xref" href="wan24.StreamSerializerExtensions.ItemDeserializerContext.html">ItemDeserializerContext</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ObjectTypes.html">ObjectTypes</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext_op_Implicit_wan24_StreamSerializerExtensions_ItemDeserializerContext__wan24_StreamSerializerExtensions_SerializerTypes.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext.op_Implicit(wan24.StreamSerializerExtensions.ItemDeserializerContext)~wan24.StreamSerializerExtensions.SerializerTypes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L146">View Source</a>
+  </span>
+  <a id="wan24_StreamSerializerExtensions_ItemDeserializerContext_op_Implicit_" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.op_Implicit*"></a>
+  <h4 id="wan24_StreamSerializerExtensions_ItemDeserializerContext_op_Implicit_wan24_StreamSerializerExtensions_ItemDeserializerContext__wan24_StreamSerializerExtensions_SerializerTypes" data-uid="wan24.StreamSerializerExtensions.ItemDeserializerContext.op_Implicit(wan24.StreamSerializerExtensions.ItemDeserializerContext)~wan24.StreamSerializerExtensions.SerializerTypes">Implicit(ItemDeserializerContext to SerializerTypes)</h4>
+  <div class="markdown level1 summary"><p>Cast as serializer type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator SerializerTypes(ItemDeserializerContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.ItemDeserializerContext.html">ItemDeserializerContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p><a class="xref" href="wan24.StreamSerializerExtensions.ItemDeserializerContext.html">ItemDeserializerContext</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="wan24.StreamSerializerExtensions.SerializerTypes.html">SerializerTypes</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_ValidateDeserializedObject__1___0_">SerializerHelper.ValidateDeserializedObject&lt;T&gt;(T)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetNumberType__1___0_System_Boolean_">SerializerHelper.GetNumberType&lt;T&gt;(T, Boolean)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetNumberAndType__1___0_">SerializerHelper.GetNumberAndType&lt;T&gt;(T)</a>
+  </div>
+  <div>
+      <a class="xref" href="wan24.StreamSerializerExtensions.SerializerHelper.html#wan24_StreamSerializerExtensions_SerializerHelper_GetObjectSerializerInfo_System_Object_">SerializerHelper.GetObjectSerializerInfo(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/new/dev/apiSpec/new?filename=wan24_StreamSerializerExtensions_ItemDeserializerContext.md&amp;value=---%0Auid%3A%20wan24.StreamSerializerExtensions.ItemDeserializerContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/nd1012/Stream-Serializer-Extensions/blob/dev/src/Stream-Serializer-Extensions/ItemDeserializerContext.cs/#L8" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            (c) 2023 Andreas Zimmermann, wan24.de
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,5 +1,5 @@
-﻿using System.Buffers;
-using System.Runtime;
+﻿using System.Runtime;
+using System.Runtime.CompilerServices;
 using wan24.Core;
 
 namespace wan24.StreamSerializerExtensions
@@ -10,287 +10,285 @@ namespace wan24.StreamSerializerExtensions
         /// <summary>
         /// Read a stream
         /// </summary>
-        /// <typeparam name="T">Target stream type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="target">Target stream (the position won't be reset)</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="pool">Array pool</param>
+        /// <param name="context">Context</param>
         /// <param name="maxBufferSize">Maximum buffer size in bytes</param>
         /// <param name="minLen">Minimum stream length</param>
         /// <param name="maxLen">Maximum stream length in bytes</param>
         /// <returns>Target stream</returns>
-        public static T ReadStream<T>(
+#pragma warning disable IDE0060 // Remove unused argument
+        public static Stream ReadStream(
             this Stream stream,
-            T target,
-            int? version = null,
-            ArrayPool<byte>? pool = null,
+            Stream target,
+            IDeserializationContext context,
             int? maxBufferSize = null,
             long minLen = 0,
             long maxLen = long.MaxValue
             )
-            where T : Stream
-            => ReadStreamInt(stream, target, version, pool, maxBufferSize, minLen, maxLen, len: null);
+#pragma warning restore IDE0060 // Remove unused argument
+            => ReadStreamInt(context, target, maxBufferSize, minLen, maxLen, len: null);
 
         /// <summary>
         /// Read a stream
         /// </summary>
-        /// <typeparam name="T">Target stream type</typeparam>
-        /// <param name="stream">Stream</param>
+        /// <param name="context">Context</param>
         /// <param name="target">Target stream (the position won't be reset)</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="pool">Array pool</param>
         /// <param name="maxBufferSize">Maximum buffer size in bytes</param>
         /// <param name="minLen">Minimum stream length</param>
         /// <param name="maxLen">Maximum stream length in bytes</param>
         /// <param name="len">Stream/chunk length in bytes (chunk length is negative)</param>
         /// <returns>Target stream</returns>
-        private static T ReadStreamInt<T>(
-            this Stream stream,
-            T target,
-            int? version,
-            ArrayPool<byte>? pool,
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private static Stream ReadStreamInt(
+            IDeserializationContext context,
+            Stream target,
             int? maxBufferSize,
             long minLen,
             long maxLen,
             long? len
             )
-            where T : Stream
-        {
-            if (!target.CanWrite) throw new ArgumentException("Writable stream required", nameof(target));
-            if (maxBufferSize != null && maxBufferSize.Value < 1) throw new ArgumentOutOfRangeException(nameof(maxBufferSize));
-            if (minLen < 0) throw new ArgumentOutOfRangeException(nameof(minLen));
-            if (maxLen < 0 || maxLen < minLen) throw new ArgumentOutOfRangeException(nameof(maxLen));
-            len ??= stream.ReadNumber<long>(version, pool);
-            if (len == 0)
+            => SerializerException.Wrap(() =>
             {
-                if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
+                ArgumentValidationHelper.EnsureValidArgument(nameof(target), target.CanWrite, () => "Writable stream required");
+                if (maxBufferSize != null) ArgumentValidationHelper.EnsureValidArgument(nameof(maxBufferSize), 1, int.MaxValue, maxBufferSize.Value);
+                ArgumentValidationHelper.EnsureValidArgument(nameof(minLen), 0, long.MaxValue, minLen);
+                ArgumentValidationHelper.EnsureValidArgument(nameof(maxLen), minLen, long.MaxValue, maxLen);
+                len ??= context.Stream.ReadNumber<long>(context);
+                if (len == 0)
+                {
+                    if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
+                    return target;
+                }
+                if (len < 0)
+                {
+                    // Chunked
+                    len = Math.Abs(len.Value);
+                    if (len > int.MaxValue) throw new SerializerException($"Invalid chunk length {len}", new InvalidDataException());
+                    if (len > (maxBufferSize ?? Settings.BufferSize))
+                        throw new SerializerException($"Chunk length of {len} bytes exceeds max. buffer size of {maxBufferSize ?? Settings.BufferSize}", new InvalidDataException());
+                    using RentedArrayStruct<byte> buffer = new((int)len, context.BufferPool, clean: false);
+                    long total = 0;
+                    for (int red = (int)len; red == len; total += red)
+                    {
+                        red = context.Stream.ReadBytes(context, maxLen: buffer.Length).Length;
+                        if (total + red > maxLen) throw new SerializerException($"The embedded stream length exceeds the maximum of {maxLen} bytes", new OverflowException());
+                        if (red < 1) break;
+                        target.Write(buffer.Span[..red]);
+                    }
+                    if (total < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
+                }
+                else
+                {
+                    // Fixed length
+                    if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
+                    if (len > maxLen)
+                        throw new SerializerException($"Embedded stream length of {len} bytes exceeds the maximum stream length of {maxLen} bytes", new OverflowException());
+                    using RentedArrayStruct<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, context.BufferPool, clean: false);
+                    long total = 0;
+                    for (int red = buffer.Length; red == buffer.Length && total < len; total += red)
+                    {
+                        red = context.Stream.Read(buffer.Span[..(int)Math.Min(buffer.Length, len.Value - total)]);
+                        if (red < 1) break;
+                        target.Write(buffer.Span[..red]);
+                    }
+                    if (total != len) throw new SerializerException($"Invalid stream length ({len} bytes proposed, {total} bytes red)", new IOException());
+                }
                 return target;
-            }
-            if (len < 0)
-            {
-                // Chunked
-                len = Math.Abs(len.Value);
-                if (len > int.MaxValue) throw new SerializerException($"Invalid chunk length {len}", new InvalidDataException());
-                if (len > (maxBufferSize ?? Settings.BufferSize))
-                    throw new SerializerException($"Chunk length of {len} bytes exceeds max. buffer size of {maxBufferSize ?? Settings.BufferSize}", new InvalidDataException());
-                using RentedArray<byte> buffer = new((int)len, pool ?? StreamSerializer.BufferPool, clean: false);
-                long total = 0;
-                for (int red = (int)len; red == len; total += red)
-                {
-                    red = stream.ReadBytes(version, buffer.Array, maxLen: buffer.Length).Length;
-                    if (total + red > maxLen) throw new SerializerException($"The embedded stream length exceeds the maximum of {maxLen} bytes", new OverflowException());
-                    if (red < 1) break;
-                    target.Write(buffer.Span[..red]);
-                }
-                if (total < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
-            }
-            else
-            {
-                // Fixed length
-                if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
-                if (len > maxLen)
-                    throw new SerializerException($"Embedded stream length of {len} bytes exceeds the maximum stream length of {maxLen} bytes", new OverflowException());
-                using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool, clean: false);
-                long total = 0;
-                for (int red = buffer.Length; red == buffer.Length && total < len; total += red)
-                {
-                    red = stream.Read(buffer.Span[..(int)Math.Min(buffer.Length, len.Value - total)]);
-                    if (red < 1) break;
-                    target.Write(buffer.Span[..red]);
-                }
-                if (total != len) throw new SerializerException($"Invalid stream length ({len} bytes proposed, {total} bytes red)", new IOException());
-            }
-            return target;
-        }
+            });
 
         /// <summary>
         /// Read a stream
         /// </summary>
-        /// <typeparam name="T">Target stream type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="target">Target stream (the position won't be reset; will be disposed, if the value is <see langword="null"/>)</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="pool">Array pool</param>
+        /// <param name="context">Context</param>
         /// <param name="maxBufferSize">Maximum buffer size in bytes</param>
         /// <param name="minLen">Minimum stream length</param>
         /// <param name="maxLen">Maximum stream length in bytes</param>
         /// <returns>Target stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static T? ReadStreamNullable<T>(
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static Stream? ReadStreamNullable(
             this Stream stream,
-            T target,
-            int? version = null,
-            ArrayPool<byte>? pool = null,
+            Stream target,
+            IDeserializationContext context,
             int? maxBufferSize = null,
             long minLen = 0,
             long maxLen = long.MaxValue
             )
-            where T : Stream
-        {
-            switch (version ?? StreamSerializer.VERSION)
+            => SerializerException.Wrap(() =>
             {
-                case 1:
-                    if (!ReadBool(stream, version, pool))
-                    {
-                        target.Dispose();
-                        return null;
-                    }
-                    return ReadStream(stream, target, version, pool, maxBufferSize, minLen, maxLen);
-                default:
-                    long len = ReadNumber<long>(stream, version, pool);
-                    if (len == long.MinValue)
-                    {
-                        target.Dispose();
-                        return null;
-                    }
-                    return ReadStreamInt(stream, target, version, pool, maxBufferSize, minLen, maxLen, len);
-            }
-        }
+                switch (context.SerializerVersion)// Serializer version switch
+                {
+                    case 1:
+                        {
+                            if (!ReadBool(stream, context))
+                            {
+                                target.Dispose();
+                                return null;
+                            }
+                            return ReadStream(stream, target, context, maxBufferSize, minLen, maxLen);
+                        }
+                    default:
+                        {
+                            long len = ReadNumber<long>(stream, context);
+                            if (len == long.MinValue)
+                            {
+                                target.Dispose();
+                                return null;
+                            }
+                            return ReadStreamInt(context, target, maxBufferSize, minLen, maxLen, len);
+                        }
+                }
+            });
 
         /// <summary>
         /// Read a stream
         /// </summary>
-        /// <typeparam name="T">Target stream type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="target">Target stream (the position won't be reset)</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="pool">Array pool</param>
+        /// <param name="context">Context</param>
         /// <param name="maxBufferSize">Maximum buffer size in bytes</param>
         /// <param name="minLen">Minimum stream length</param>
         /// <param name="maxLen">Maximum stream length in bytes</param>
-        /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Target stream</returns>
-        public static Task<T> ReadStreamAsync<T>(
+        [TargetedPatchingOptOut("Tiny method")]
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+#pragma warning disable IDE0060 // Remove unused argument
+        public static Task<Stream> ReadStreamAsync(
             this Stream stream,
-            T target,
-            int? version = null,
-            ArrayPool<byte>? pool = null,
+            Stream target,
+            IDeserializationContext context,
             int? maxBufferSize = null,
             long minLen = 0,
-            long maxLen = long.MaxValue,
-            CancellationToken cancellationToken = default
+            long maxLen = long.MaxValue
             )
-            where T : Stream
-            => ReadStreamIntAsync(stream, target, version, pool, maxBufferSize, minLen, maxLen, len: null, cancellationToken);
+#pragma warning restore IDE0060 // Remove unused argument
+            => ReadStreamIntAsync(context, target, maxBufferSize, minLen, maxLen, len: null);
 
         /// <summary>
         /// Read a stream
         /// </summary>
-        /// <typeparam name="T">Target stream type</typeparam>
-        /// <param name="stream">Stream</param>
+        /// <param name="context">Context</param>
         /// <param name="target">Target stream (the position won't be reset)</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="pool">Array pool</param>
         /// <param name="maxBufferSize">Maximum buffer size in bytes</param>
         /// <param name="minLen">Minimum stream length</param>
         /// <param name="maxLen">Maximum stream length in bytes</param>
         /// <param name="len">Stream/chunk length in bytes (chunk length is negative)</param>
-        /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Target stream</returns>
-        private static async Task<T> ReadStreamIntAsync<T>(
-            Stream stream,
-            T target,
-            int? version,
-            ArrayPool<byte>? pool,
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private static Task<Stream> ReadStreamIntAsync(
+            IDeserializationContext context,
+            Stream target,
             int? maxBufferSize,
             long minLen,
             long maxLen,
-            long? len,
-            CancellationToken cancellationToken
+            long? len
             )
-            where T : Stream
-        {
-            if (!target.CanWrite) throw new ArgumentException("Writable stream required", nameof(target));
-            if (maxBufferSize != null && maxBufferSize.Value < 1) throw new ArgumentOutOfRangeException(nameof(maxBufferSize));
-            if (minLen < 0) throw new ArgumentOutOfRangeException(nameof(minLen));
-            if (maxLen < 0 || maxLen < minLen) throw new ArgumentOutOfRangeException(nameof(maxLen));
-            len ??= await stream.ReadNumberAsync<long>(version, pool, cancellationToken).DynamicContext();
-            if (len == 0)
+            => SerializerException.WrapAsync(async () =>
             {
-                if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
+                ArgumentValidationHelper.EnsureValidArgument(nameof(target), target.CanWrite, () => "Writable stream required");
+                if (maxBufferSize != null) ArgumentValidationHelper.EnsureValidArgument(nameof(maxBufferSize), 1, int.MaxValue, maxBufferSize.Value);
+                ArgumentValidationHelper.EnsureValidArgument(nameof(minLen), 0, long.MaxValue, minLen);
+                ArgumentValidationHelper.EnsureValidArgument(nameof(maxLen), minLen, long.MaxValue, maxLen);
+                len ??= await context.Stream.ReadNumberAsync<long>(context).DynamicContext();
+                if (len == 0)
+                {
+                    if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
+                    return target;
+                }
+                if (len < 0)
+                {
+                    // Chunked
+                    len = Math.Abs(len.Value);
+                    if (len > int.MaxValue) throw new SerializerException($"Invalid chunk length {len}", new InvalidDataException());
+                    if (len > (maxBufferSize ?? Settings.BufferSize))
+                        throw new SerializerException($"Chunk length of {len} bytes exceeds max. buffer size of {maxBufferSize ?? Settings.BufferSize}", new InvalidDataException());
+                    using RentedArrayStruct<byte> buffer = new((int)len, context.BufferPool, clean: false);
+                    long total = 0;
+                    for (int red = (int)len; red == len; total += red)
+                    {
+                        red = (await context.Stream.ReadBytesAsync(context, maxLen: buffer.Length).DynamicContext()).Length;
+                        if (total + red > maxLen) throw new SerializerException($"The embedded stream length exceeds the maximum of {maxLen} bytes", new OverflowException());
+                        if (red < 1) break;
+                        await target.WriteAsync(buffer.Memory[..red], context.Cancellation).DynamicContext();
+                    }
+                    if (total < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
+                }
+                else
+                {
+                    // Fixed length
+                    if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
+                    if (len > maxLen)
+                        throw new SerializerException($"Embedded stream length of {len} bytes exceeds the maximum stream length of {maxLen} bytes", new OverflowException());
+                    using RentedArrayStruct<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, context.BufferPool, clean: false);
+                    long total = 0;
+                    for (int red = buffer.Length; red == buffer.Length && total < len; total += red)
+                    {
+                        red = await context.Stream.ReadAsync(buffer.Memory[..(int)Math.Min(buffer.Length, len.Value - total)], context.Cancellation).DynamicContext();
+                        if (red < 1) break;
+                        await target.WriteAsync(buffer.Memory[..red], context.Cancellation).DynamicContext();
+                    }
+                    if (total != len) throw new SerializerException($"Invalid stream length ({len} bytes proposed, {total} bytes red)", new IOException());
+                }
                 return target;
-            }
-            if (len < 0)
-            {
-                // Chunked
-                len = Math.Abs(len.Value);
-                if (len > int.MaxValue) throw new SerializerException($"Invalid chunk length {len}", new InvalidDataException());
-                if (len > (maxBufferSize ?? Settings.BufferSize))
-                    throw new SerializerException($"Chunk length of {len} bytes exceeds max. buffer size of {maxBufferSize ?? Settings.BufferSize}", new InvalidDataException());
-                using RentedArray<byte> buffer = new((int)len, pool ?? StreamSerializer.BufferPool, clean: false);
-                long total = 0;
-                for (int red = (int)len; red == len; total += red)
-                {
-                    red = (await stream.ReadBytesAsync(version, buffer.Array, maxLen: buffer.Length, cancellationToken: cancellationToken).DynamicContext()).Length;
-                    if (total + red > maxLen) throw new SerializerException($"The embedded stream length exceeds the maximum of {maxLen} bytes", new OverflowException());
-                    if (red < 1) break;
-                    await target.WriteAsync(buffer.Memory[..red], cancellationToken).DynamicContext();
-                }
-                if (total < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
-            }
-            else
-            {
-                // Fixed length
-                if (len < minLen) throw new SerializerException($"The stream length doesn't fit the minimum length of {minLen} bytes", new InvalidDataException());
-                if (len > maxLen)
-                    throw new SerializerException($"Embedded stream length of {len} bytes exceeds the maximum stream length of {maxLen} bytes", new OverflowException());
-                using RentedArray<byte> buffer = new(maxBufferSize ?? Settings.BufferSize, pool ?? StreamSerializer.BufferPool, clean: false);
-                long total = 0;
-                for (int red = buffer.Length; red == buffer.Length && total < len; total += red)
-                {
-                    red = await stream.ReadAsync(buffer.Memory[..(int)Math.Min(buffer.Length, len.Value - total)], cancellationToken: cancellationToken).DynamicContext();
-                    if (red < 1) break;
-                    await target.WriteAsync(buffer.Memory[..red], cancellationToken).DynamicContext();
-                }
-                if (total != len) throw new SerializerException($"Invalid stream length ({len} bytes proposed, {total} bytes red)", new IOException());
-            }
-            return target;
-        }
+            });
 
         /// <summary>
         /// Read a stream
         /// </summary>
-        /// <typeparam name="T">Target stream type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="target">Target stream (the position won't be reset; will be disposed, if the value is <see langword="null"/>)</param>
-        /// <param name="version">Serializer version</param>
-        /// <param name="pool">Array pool</param>
+        /// <param name="context">Context</param>
         /// <param name="maxBufferSize">Maximum buffer size in bytes</param>
         /// <param name="minLen">Minimum stream length</param>
         /// <param name="maxLen">Maximum stream length in bytes</param>
-        /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Target stream</returns>
         [TargetedPatchingOptOut("Tiny method")]
-        public static async Task<T?> ReadStreamNullableAsync<T>(
+#if !NO_INLINE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public static Task<Stream?> ReadStreamNullableAsync(
             this Stream stream,
-            T target,
-            int? version = null,
-            ArrayPool<byte>? pool = null,
+            Stream target,
+            IDeserializationContext context,
             int? maxBufferSize = null,
             long minLen = 0,
-            long maxLen = long.MaxValue,
-            CancellationToken cancellationToken = default
+            long maxLen = long.MaxValue
             )
-            where T : Stream
-        {
-            switch (version ?? StreamSerializer.VERSION)
+            => SerializerException.WrapAsync(async () =>
             {
-                case 1:
-                    if (!await ReadBoolAsync(stream, version, pool, cancellationToken).DynamicContext())
-                    {
-                        await target.DisposeAsync().DynamicContext();
-                        return null;
-                    }
-                    return await ReadStreamAsync(stream, target, version, pool, maxBufferSize, minLen, maxLen, cancellationToken).DynamicContext();
-                default:
-                    long len = await ReadNumberAsync<long>(stream, version, pool, cancellationToken).DynamicContext();
-                    if (len == long.MinValue)
-                    {
-                        await target.DisposeAsync().DynamicContext();
-                        return null;
-                    }
-                    return await ReadStreamIntAsync(stream, target, version, pool, maxBufferSize, minLen, maxLen, len, cancellationToken).DynamicContext();
-            }
-        }
+                switch (context.SerializerVersion)// Serializer version switch
+                {
+                    case 1:
+                        {
+                            if (!await ReadBoolAsync(stream, context).DynamicContext())
+                            {
+                                await target.DisposeAsync().DynamicContext();
+                                return null;
+                            }
+                            return await ReadStreamAsync(stream, target, context, maxBufferSize, minLen, maxLen).DynamicContext();
+                        }
+                    default:
+                        {
+                            long len = await ReadNumberAsync<long>(stream, context).DynamicContext();
+                            if (len == long.MinValue)
+                            {
+                                await target.DisposeAsync().DynamicContext();
+                                return null;
+                            }
+                            return await ReadStreamIntAsync(context, target, maxBufferSize, minLen, maxLen, len).DynamicContext();
+                        }
+                }
+            });
     }
 }
