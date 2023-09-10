@@ -3,6 +3,7 @@
     /// <summary>
     /// Thrown on serialization errors
     /// </summary>
+    [Serializable]
     public class SerializerException : Exception
     {
         /// <summary>

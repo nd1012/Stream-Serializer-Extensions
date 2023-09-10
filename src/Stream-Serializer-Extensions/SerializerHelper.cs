@@ -524,7 +524,8 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         public static int EnsureValidLength(int len, int min = 0, int max = int.MaxValue)
         {
-            if (len < min || len > max) throw new InvalidDataException($"Invalid length {len}");
+            if (len < min || len > max)
+                throw new InvalidDataException($"Invalid length {len}");
             return len;
         }
 

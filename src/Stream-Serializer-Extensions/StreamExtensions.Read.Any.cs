@@ -108,18 +108,17 @@ namespace wan24.StreamSerializerExtensions
                 case ObjectTypes.Float:
                 case ObjectTypes.Double:
                 case ObjectTypes.Decimal:
-                    return isEmpty ? Activator.CreateInstance(type!)! : ReadNumberMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version)!;
+                    return isEmpty ? Activator.CreateInstance(type!)! : ReadNumberMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version ?? StreamSerializer.Version)!;
                 case ObjectTypes.Array:
                     if (isEmpty) return ArrayEmptyMethod.MakeGenericMethod(type!.GetElementType()!).InvokeAuto(obj: null)!;
                     return ReadArrayMethod.MakeGenericMethod(type!.GetElementType()!)
                         .InvokeAuto(
                             obj: null,
                             stream,
-                            version,
-                            null,
+                            version ?? StreamSerializer.Version,
                             options?.GetMinLen(0) ?? 0,
                             options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
-                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, default)
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.Version, default)
                             )!;
                 case ObjectTypes.List:
                     if (isEmpty) return Activator.CreateInstance(type!)!;
@@ -127,11 +126,10 @@ namespace wan24.StreamSerializerExtensions
                         .InvokeAuto(
                             obj: null,
                             stream,
-                            version,
-                            null,
+                            version ?? StreamSerializer.Version,
                             options?.GetMinLen(0) ?? 0,
                             options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
-                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, default)
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.Version, default)
                             )!;
                 case ObjectTypes.Dict:
                     if (isEmpty) return Activator.CreateInstance(type!)!;
@@ -140,21 +138,20 @@ namespace wan24.StreamSerializerExtensions
                         .InvokeAuto(
                             obj: null,
                             stream,
-                            version,
-                            null,
+                            version ?? StreamSerializer.Version,
                             options?.GetMinLen(0) ?? 0,
                             options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
-                            options?.Attribute.GetKeySerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, default),
-                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, default)
+                            options?.Attribute.GetKeySerializerOptions(property: null, stream, version ?? StreamSerializer.Version, default),
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.Version, default)
                             )!;
                 case ObjectTypes.Object:
-                    return ReadObjectMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version, options)!;
+                    return ReadObjectMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version ?? StreamSerializer.Version, options)!;
                 case ObjectTypes.Struct:
-                    return ReadStructMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version)!;
+                    return ReadStructMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version ?? StreamSerializer.Version)!;
                 case ObjectTypes.Serializable:
                     return ReadSerializedObject(stream, type!, version);
                 case ObjectTypes.Stream:
-                    Stream res = options?.Attribute.GetStream(obj: null, property: null, stream, version ?? StreamSerializer.VERSION, default) ?? new FileStream(
+                    Stream res = options?.Attribute.GetStream(obj: null, property: null, stream, version ?? StreamSerializer.Version, default) ?? new FileStream(
                         Path.Combine(Settings.TempFolder, Guid.NewGuid().ToString()),
                         FileMode.OpenOrCreate,
                         FileAccess.ReadWrite,
@@ -165,7 +162,13 @@ namespace wan24.StreamSerializerExtensions
                     if (objType.IsEmpty()) return res;
                     try
                     {
-                        return ReadStream(stream, res, version, minLen: options?.GetMinLen(0L) ?? 0, maxLen: options?.GetMaxLen(long.MaxValue) ?? long.MaxValue);
+                        return ReadStream(
+                            stream, 
+                            res, 
+                            version, 
+                            minLen: options?.GetMinLen(0L) ?? 0, 
+                            maxLen: options?.GetMaxLen(long.MaxValue) ?? long.MaxValue
+                            );
                     }
                     catch
                     {
@@ -286,7 +289,7 @@ namespace wan24.StreamSerializerExtensions
                 case ObjectTypes.Double:
                 case ObjectTypes.Decimal:
                     if (isEmpty) return Activator.CreateInstance(type!)!;
-                    task = (Task)ReadNumberAsyncMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version, null, cancellationToken)!;
+                    task = (Task)ReadNumberAsyncMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version ?? StreamSerializer.Version, null, cancellationToken)!;
                     break;
                 case ObjectTypes.Array:
                     if (isEmpty) return ArrayEmptyMethod.MakeGenericMethod(type!.GetElementType()!).InvokeAuto(obj: null)!;
@@ -294,11 +297,10 @@ namespace wan24.StreamSerializerExtensions
                         .InvokeAuto(
                             obj: null,
                             stream,
-                            version,
-                            null,
+                            version ?? StreamSerializer.Version,
                             options?.GetMinLen(0) ?? 0,
                             options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
-                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, cancellationToken),
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.Version, cancellationToken),
                             cancellationToken
                             )!;
                     break;
@@ -308,11 +310,10 @@ namespace wan24.StreamSerializerExtensions
                         .InvokeAuto(
                             obj: null,
                             stream,
-                            version,
-                            null,
+                            version ?? StreamSerializer.Version,
                             options?.GetMinLen(0) ?? 0,
                             options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
-                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, cancellationToken),
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.Version, cancellationToken),
                             cancellationToken
                             )!;
                     break;
@@ -323,24 +324,23 @@ namespace wan24.StreamSerializerExtensions
                         .InvokeAuto(
                             obj: null,
                             stream,
-                            version,
-                            null,
+                            version ?? StreamSerializer.Version,
                             options?.GetMinLen(0) ?? 0,
                             options?.GetMaxLen(int.MaxValue) ?? int.MaxValue,
-                            options?.Attribute.GetKeySerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, cancellationToken),
-                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.VERSION, cancellationToken),
+                            options?.Attribute.GetKeySerializerOptions(property: null, stream, version ?? StreamSerializer.Version, cancellationToken),
+                            options?.Attribute.GetValueSerializerOptions(property: null, stream, version ?? StreamSerializer.Version, cancellationToken),
                             cancellationToken)!;
                     break;
                 case ObjectTypes.Object:
-                    task = (Task)ReadObjectAsyncMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version, options, cancellationToken)!;
+                    task = (Task)ReadObjectAsyncMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version ?? StreamSerializer.Version, options, cancellationToken)!;
                     break;
                 case ObjectTypes.Struct:
-                    task = (Task)ReadStructAsyncMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version, cancellationToken)!;
+                    task = (Task)ReadStructAsyncMethod.MakeGenericMethod(type!).InvokeAuto(obj: null, stream, version ?? StreamSerializer.Version, cancellationToken)!;
                     break;
                 case ObjectTypes.Serializable:
                     return await ReadSerializedObjectAsync(stream, type!, version, cancellationToken)!.DynamicContext();
                 case ObjectTypes.Stream:
-                    Stream res = options?.Attribute.GetStream(obj: null, property: null, stream, version ?? StreamSerializer.VERSION, default) ?? new FileStream(
+                    Stream res = options?.Attribute.GetStream(obj: null, property: null, stream, version ?? StreamSerializer.Version, default) ?? new FileStream(
                         Path.Combine(Settings.TempFolder, Guid.NewGuid().ToString()),
                         FileMode.OpenOrCreate,
                         FileAccess.ReadWrite,

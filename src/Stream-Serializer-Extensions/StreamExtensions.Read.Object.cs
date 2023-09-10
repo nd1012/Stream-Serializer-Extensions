@@ -114,7 +114,8 @@ namespace wan24.StreamSerializerExtensions
         public static T ReadAnyObject<T>(this Stream stream, int? version = null) where T : class, new()
         {
             Type type = typeof(T);
-            if (typeof(IStreamSerializer).IsAssignableFrom(type)) return (T)ReadSerializedMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version)!;
+            if (typeof(IStreamSerializer).IsAssignableFrom(type))
+                return (T)ReadSerializedMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version ?? StreamSerializer.Version)!;
             StreamSerializerAttribute? attr = type.GetCustomAttribute<StreamSerializerAttribute>(),
                 objAttr;
             if (AnyObjectAttributeRequired && attr == null) throw new SerializerException($"Deserialization of {typeof(T)} requires the {typeof(StreamSerializerAttribute)}");
@@ -132,8 +133,8 @@ namespace wan24.StreamSerializerExtensions
                 pis[done].SetValue(
                     res,
                     Nullable.GetUnderlyingType(pis[done].PropertyType) == null
-                        ? ReadAnyMethod.InvokeAuto(obj: null, stream, version)
-                        : ReadAnyNullableMethod.InvokeAuto(obj: null, stream, version)
+                        ? ReadAnyMethod.InvokeAuto(obj: null, stream, version ?? StreamSerializer.Version)
+                        : ReadAnyNullableMethod.InvokeAuto(obj: null, stream, version ?? StreamSerializer.Version)
                     );
             }
             List<ValidationResult> results = new();
@@ -156,7 +157,7 @@ namespace wan24.StreamSerializerExtensions
             Task task;
             if (typeof(IStreamSerializer).IsAssignableFrom(type))
             {
-                task = (Task)ReadSerializedAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version, cancellationToken)!;
+                task = (Task)ReadSerializedAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version ?? StreamSerializer.Version, cancellationToken)!;
                 await task.DynamicContext();
                 return task.GetResult<T>();
             }
@@ -177,8 +178,8 @@ namespace wan24.StreamSerializerExtensions
                     throw new SerializerException($"{type}.{pis[done].Name} property name checksum mismatch");
                 isNullable = Nullable.GetUnderlyingType(pis[done].PropertyType) == null;
                 task = (Task)(isNullable
-                        ? ReadAnyAsyncMethod.InvokeAuto(obj: null, stream, version)
-                        : ReadAnyNullableAsyncMethod.InvokeAuto(obj: null, stream, version))!;
+                        ? ReadAnyAsyncMethod.InvokeAuto(obj: null, stream, version ?? StreamSerializer.Version)
+                        : ReadAnyNullableAsyncMethod.InvokeAuto(obj: null, stream, version ?? StreamSerializer.Version))!;
                 await task.DynamicContext();
                 pis[done].SetValue(res, isNullable ? task.GetResultNullable<object>() : task.GetResult<object>());
             }

@@ -158,7 +158,6 @@ namespace wan24.StreamSerializerExtensions
                             obj: null, 
                             s,
                             v,
-                            null,
                             o?.GetMinLen(0)??0,
                             o?.GetMaxLen(int.MaxValue)??int.MaxValue,
                             o?.Attribute.GetValueSerializerOptions(property: null, s, v, default)
@@ -169,7 +168,6 @@ namespace wan24.StreamSerializerExtensions
                             obj : null, 
                             s, 
                             v,
-                            null,
                             o?.GetMinLen(0)??0,
                             o?.GetMaxLen(int.MaxValue)??int.MaxValue,
                             o?.Attribute.GetValueSerializerOptions(property: null, s, v, default)
@@ -182,7 +180,6 @@ namespace wan24.StreamSerializerExtensions
                             obj : null, 
                             s, 
                             v,
-                            null,
                             o?.GetMinLen(0)??0,
                             o?.GetMaxLen(int.MaxValue)??int.MaxValue,
                             o?.Attribute.GetKeySerializerOptions(property: null, s, v, default),
@@ -239,7 +236,6 @@ namespace wan24.StreamSerializerExtensions
                             obj: null, 
                             s,
                             v,
-                            null,
                             o?.GetMinLen(0)??0,
                             o?.GetMaxLen(int.MaxValue)??int.MaxValue,
                             o?.Attribute.GetValueSerializerOptions(property: null, s, v, default),
@@ -251,7 +247,6 @@ namespace wan24.StreamSerializerExtensions
                             obj: null, 
                             s,
                             v,
-                            null,
                             o?.GetMinLen(0)??0,
                             o?.GetMaxLen(int.MaxValue)??int.MaxValue,
                             o?.Attribute.GetValueSerializerOptions(property: null, s, v, default),
@@ -265,7 +260,6 @@ namespace wan24.StreamSerializerExtensions
                             obj : null, 
                             s, 
                             v,
-                            null,
                             o?.GetMinLen(0)??0,
                             o?.GetMaxLen(int.MaxValue)??int.MaxValue,
                             o?.Attribute.GetKeySerializerOptions(property: null, s, v, default),
@@ -274,7 +268,7 @@ namespace wan24.StreamSerializerExtensions
                             )!;
                     }),
                     new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(Enum),(s,t,v,o,ct) =>
-                        (Task)StreamExtensions.ReadEnumAsyncMethod.MakeGenericMethod(t).InvokeAuto(obj : null, s, v, null, ct)!
+                        (Task)StreamExtensions.ReadEnumAsyncMethod.MakeGenericMethod(t).InvokeAuto(obj : null, s, v, ct)!
                     ),
                     new KeyValuePair<Type, AsyncDeserialize_Delegate>(typeof(Stream),(s,t,v,o,ct) => StreamDeserializer(s,t,v,o,ct))
             });

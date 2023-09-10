@@ -48,7 +48,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Object</returns>
         [TargetedPatchingOptOut("Just a method adapter")]
         public static object ReadSerializedObject(this Stream stream, Type type, int? version = null)
-            => ReadSerializedMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version)!;
+            => ReadSerializedMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version ?? StreamSerializer.Version)!;
 
         /// <summary>
         /// Read
@@ -92,7 +92,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Just a method adapter")]
         public static async Task<object> ReadSerializedObjectAsync(this Stream stream, Type type, int? version = null, CancellationToken cancellationToken = default)
         {
-            Task task = (Task)ReadSerializedAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version, cancellationToken)!;
+            Task task = (Task)ReadSerializedAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version ?? StreamSerializer.Version, cancellationToken)!;
             await task.DynamicContext();
             return task.GetResult(type);
         }

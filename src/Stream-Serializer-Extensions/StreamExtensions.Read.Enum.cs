@@ -36,7 +36,13 @@ namespace wan24.StreamSerializerExtensions
                 if ((version ?? StreamSerializer.VERSION) > 1 && numberType == NumberTypes.Default) return default;
                 T res = (T)Enum.ToObject(
                     typeof(T),
-                    ReadNumberIntMethod.MakeGenericMethod(typeof(T).GetEnumUnderlyingType()).InvokeAuto(obj: null, stream, version, numberType, pool)!
+                    ReadNumberIntMethod.MakeGenericMethod(typeof(T).GetEnumUnderlyingType()).InvokeAuto(
+                        obj: null, 
+                        stream, 
+                        version ?? StreamSerializer.Version, 
+                        numberType, 
+                        pool
+                        )!
                     );
                 if (!res.IsValid()) throw new SerializerException($"Unknown enumeration value {res} for {typeof(T)}");
                 return res;
@@ -83,7 +89,14 @@ namespace wan24.StreamSerializerExtensions
                 numberType ??= (NumberTypes)await ReadOneByteAsync(stream, version, cancellationToken).DynamicContext();
                 if ((version ?? StreamSerializer.VERSION) > 1 && numberType == NumberTypes.Default) return default;
                 Type type = typeof(T).GetEnumUnderlyingType();
-                Task task = (Task)ReadNumberIntAsyncMethod.MakeGenericMethod(type).InvokeAuto(obj: null, stream, version, numberType, pool, cancellationToken)!;
+                Task task = (Task)ReadNumberIntAsyncMethod.MakeGenericMethod(type).InvokeAuto(
+                    obj: null, 
+                    stream, 
+                    version ?? StreamSerializer.Version, 
+                    numberType, 
+                    pool, 
+                    cancellationToken
+                    )!;
                 await task.DynamicContext();
                 T res = (T)Enum.ToObject(typeof(T), task.GetResult(type));
                 if (!res.IsValid()) throw new SerializerException($"Unknown enumeration value {res} for {typeof(T)}");
