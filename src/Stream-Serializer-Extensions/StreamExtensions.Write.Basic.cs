@@ -858,6 +858,9 @@ namespace wan24.StreamSerializerExtensions
                 switch (type)
                 {
                     case NumberTypes.Byte:
+                        poolData[0] = (byte)value.ConvertType<sbyte>();
+                        stream.Write(poolData.Span);
+                        break;
                     case NumberTypes.Byte | NumberTypes.Unsigned:
                         poolData[0] = value.ConvertType<byte>();
                         stream.Write(poolData.Span);
@@ -922,6 +925,9 @@ namespace wan24.StreamSerializerExtensions
                 switch (type)
                 {
                     case NumberTypes.Byte:
+                        poolData[0] = (byte)value.ConvertType<sbyte>();
+                        await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
+                        break;
                     case NumberTypes.Byte | NumberTypes.Unsigned:
                         poolData[0] = value.ConvertType<byte>();
                         await stream.WriteAsync(poolData.Memory, cancellationToken).DynamicContext();
