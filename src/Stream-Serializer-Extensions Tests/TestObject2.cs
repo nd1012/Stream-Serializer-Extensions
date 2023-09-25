@@ -19,13 +19,13 @@ namespace Stream_Serializer_Extensions_Tests
 
         protected override void Deserialize(Stream stream, int version)
         {
-            if (((IStreamSerializerVersion)this).SerializedObjectVersion != 1) throw new SerializerException("Invalid serialized object version");
+            if (SerializedObjectVersion != 1) throw new SerializerException("Invalid serialized object version");
             Value = stream.ReadBool(version);
         }
 
         protected override async Task DeserializeAsync(Stream stream, int version, CancellationToken cancellationToken)
         {
-            if (((IStreamSerializerVersion)this).SerializedObjectVersion != 1) throw new SerializerException("Invalid serialized object version");
+            if (SerializedObjectVersion != 1) throw new SerializerException("Invalid serialized object version");
             Value = await stream.ReadBoolAsync(version, cancellationToken: cancellationToken).DynamicContext();
         }
     }

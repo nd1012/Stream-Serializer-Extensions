@@ -46,6 +46,16 @@ namespace wan24.StreamSerializerExtensions
             Deserialize(stream, version);
         }
 
+        /// <summary>
+        /// Serialized object version (if <see langword="null"/>, the object serializer doesn't support object versioning, or the instance wasn't deserialized)
+        /// </summary>
+        protected int? SerializedObjectVersion => IfUndisposed(_SerializedObjectVersion);
+
+        /// <summary>
+        /// Serializer version (if <see langword="null"/>, the instance wasn't deserialized)
+        /// </summary>
+        protected int? SerializerVersion => IfUndisposed(_SerializerVersion);
+
         /// <inheritdoc/>
         int? IStreamSerializerVersion.ObjectVersion => IfUndisposed(_ObjectVersion);
 
