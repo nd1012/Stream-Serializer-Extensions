@@ -743,6 +743,32 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.SerializeAsync
   nameWithType: DisposableStreamSerializerBase.SerializeAsync
+- uid: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.SerializedObjectVersion
+  name: SerializedObjectVersion
+  href: api/wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.html#wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_SerializedObjectVersion
+  commentId: P:wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.SerializedObjectVersion
+  fullName: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.SerializedObjectVersion
+  nameWithType: DisposableStreamSerializerBase.SerializedObjectVersion
+- uid: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.SerializedObjectVersion*
+  name: SerializedObjectVersion
+  href: api/wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.html#wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_SerializedObjectVersion_
+  commentId: Overload:wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.SerializedObjectVersion
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.SerializedObjectVersion
+  nameWithType: DisposableStreamSerializerBase.SerializedObjectVersion
+- uid: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.SerializerVersion
+  name: SerializerVersion
+  href: api/wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.html#wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_SerializerVersion
+  commentId: P:wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.SerializerVersion
+  fullName: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.SerializerVersion
+  nameWithType: DisposableStreamSerializerBase.SerializerVersion
+- uid: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.SerializerVersion*
+  name: SerializerVersion
+  href: api/wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.html#wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_SerializerVersion_
+  commentId: Overload:wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.SerializerVersion
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.SerializerVersion
+  nameWithType: DisposableStreamSerializerBase.SerializerVersion
 - uid: wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializer#Deserialize(Stream,System.Int32)
   name: IStreamSerializer.Deserialize(Stream, Int32)
   href: api/wan24.StreamSerializerExtensions.DisposableStreamSerializerBase.html#wan24_StreamSerializerExtensions_DisposableStreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_Deserialize_Stream_System_Int32_
@@ -7145,6 +7171,32 @@ references:
   isSpec: "True"
   fullName: wan24.StreamSerializerExtensions.StreamSerializerBase.SerializeAsync
   nameWithType: StreamSerializerBase.SerializeAsync
+- uid: wan24.StreamSerializerExtensions.StreamSerializerBase.SerializedObjectVersion
+  name: SerializedObjectVersion
+  href: api/wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_SerializedObjectVersion
+  commentId: P:wan24.StreamSerializerExtensions.StreamSerializerBase.SerializedObjectVersion
+  fullName: wan24.StreamSerializerExtensions.StreamSerializerBase.SerializedObjectVersion
+  nameWithType: StreamSerializerBase.SerializedObjectVersion
+- uid: wan24.StreamSerializerExtensions.StreamSerializerBase.SerializedObjectVersion*
+  name: SerializedObjectVersion
+  href: api/wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_SerializedObjectVersion_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamSerializerBase.SerializedObjectVersion
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamSerializerBase.SerializedObjectVersion
+  nameWithType: StreamSerializerBase.SerializedObjectVersion
+- uid: wan24.StreamSerializerExtensions.StreamSerializerBase.SerializerVersion
+  name: SerializerVersion
+  href: api/wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_SerializerVersion
+  commentId: P:wan24.StreamSerializerExtensions.StreamSerializerBase.SerializerVersion
+  fullName: wan24.StreamSerializerExtensions.StreamSerializerBase.SerializerVersion
+  nameWithType: StreamSerializerBase.SerializerVersion
+- uid: wan24.StreamSerializerExtensions.StreamSerializerBase.SerializerVersion*
+  name: SerializerVersion
+  href: api/wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_SerializerVersion_
+  commentId: Overload:wan24.StreamSerializerExtensions.StreamSerializerBase.SerializerVersion
+  isSpec: "True"
+  fullName: wan24.StreamSerializerExtensions.StreamSerializerBase.SerializerVersion
+  nameWithType: StreamSerializerBase.SerializerVersion
 - uid: wan24.StreamSerializerExtensions.StreamSerializerBase.wan24#StreamSerializerExtensions#IStreamSerializer#Deserialize(Stream,System.Int32)
   name: IStreamSerializer.Deserialize(Stream, Int32)
   href: api/wan24.StreamSerializerExtensions.StreamSerializerBase.html#wan24_StreamSerializerExtensions_StreamSerializerBase_wan24_StreamSerializerExtensions_IStreamSerializer_Deserialize_Stream_System_Int32_
