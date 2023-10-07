@@ -9,7 +9,7 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <PackageId>Stream-Serializer-Extensions</PackageId>
     <Title>Stream-Serializer-Extensions</Title>
-    <Version>2.9.0</Version>
+    <Version>2.10.0</Version>
     <Authors>nd1012</Authors>
     <Company>Andreas Zimmermann, wan24.de</Company>
     <Product>Stream-Serializer-Extensions</Product>
@@ -27,8 +27,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ObjectValidation" Version="1.11.1" />
-    <PackageReference Include="wan24-Core" Version="1.34.0" />
+    <PackageReference Include="ObjectValidation" Version="1.12.0" />
+    <PackageReference Include="wan24-Core" Version="1.36.0" />
   </ItemGroup>
 
   <ItemGroup>
