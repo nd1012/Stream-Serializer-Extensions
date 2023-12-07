@@ -30,7 +30,7 @@ namespace wan24.StreamSerializerExtensions
             // Initialize the default values
             if (Attribute.UseDefaultValues)
             {
-                DefaultValues = new();
+                DefaultValues = [];
                 if (initDefaultValues) InitDefaultValues();
             }
             else
@@ -183,7 +183,7 @@ namespace wan24.StreamSerializerExtensions
             byte[]? defaultValueBits = null;
             int? defaultValueBitsLength = 0;
             if (DefaultValues == null) return (properties, usedDefaultValue, defaultValueBits, defaultValueBitsLength);
-            usedDefaultValue = new();
+            usedDefaultValue = [];
             int byteOffset = 0,
                 bitOffset = 0;
             bool usedDefault;
@@ -220,8 +220,8 @@ namespace wan24.StreamSerializerExtensions
         {
             List<string>? usedDefaultValue = null;
             if (DefaultValues == null) return usedDefaultValue;
-            if (defaultValueBits == null) throw new ArgumentNullException(nameof(defaultValueBits));
-            usedDefaultValue = new();
+            ArgumentNullException.ThrowIfNull(defaultValueBits);
+            usedDefaultValue = [];
             try
             {
                 int byteOffset = 0,

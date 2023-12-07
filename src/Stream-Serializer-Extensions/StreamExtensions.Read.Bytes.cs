@@ -24,7 +24,7 @@ namespace wan24.StreamSerializerExtensions
             {
                 int len = ReadNumber<int>(stream, version, pool);
                 SerializerHelper.EnsureValidLength(len, minLen, maxLen);
-                if (len == 0 && buffer == null) buffer = Array.Empty<byte>();
+                if (len == 0 && buffer == null) buffer = [];
                 rented = buffer == null && pool != null;
                 buffer ??= rented ? pool!.Rent(len) : new byte[len];
                 if (buffer.Length < len) throw new ArgumentException($"Buffer too small ({len} bytes required)", nameof(buffer));
@@ -69,7 +69,7 @@ namespace wan24.StreamSerializerExtensions
             {
                 int len = await ReadNumberAsync<int>(stream, version, pool, cancellationToken).DynamicContext();
                 SerializerHelper.EnsureValidLength(len, minLen, maxLen);
-                if (len == 0 && buffer == null) buffer = Array.Empty<byte>();
+                if (len == 0 && buffer == null) buffer = [];
                 rented = buffer == null && pool != null;
                 buffer ??= rented ? pool!.Rent(len) : new byte[len];
                 if (buffer.Length < len) throw new ArgumentException($"Buffer too small ({len} bytes required)", nameof(buffer));

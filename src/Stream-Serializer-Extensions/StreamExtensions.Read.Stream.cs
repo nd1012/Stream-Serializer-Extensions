@@ -58,7 +58,7 @@ namespace wan24.StreamSerializerExtensions
         {
             if (!target.CanWrite) throw new ArgumentException("Writable stream required", nameof(target));
             if (maxBufferSize != null && maxBufferSize.Value < 1) throw new ArgumentOutOfRangeException(nameof(maxBufferSize));
-            if (minLen < 0) throw new ArgumentOutOfRangeException(nameof(minLen));
+            ArgumentOutOfRangeException.ThrowIfNegative(minLen);
             if (maxLen < 0 || maxLen < minLen) throw new ArgumentOutOfRangeException(nameof(maxLen));
             len ??= stream.ReadNumber<long>(version, pool);
             if (len == 0)
@@ -202,7 +202,7 @@ namespace wan24.StreamSerializerExtensions
         {
             if (!target.CanWrite) throw new ArgumentException("Writable stream required", nameof(target));
             if (maxBufferSize != null && maxBufferSize.Value < 1) throw new ArgumentOutOfRangeException(nameof(maxBufferSize));
-            if (minLen < 0) throw new ArgumentOutOfRangeException(nameof(minLen));
+            ArgumentOutOfRangeException.ThrowIfNegative(minLen);
             if (maxLen < 0 || maxLen < minLen) throw new ArgumentOutOfRangeException(nameof(maxLen));
             len ??= await stream.ReadNumberAsync<long>(version, pool, cancellationToken).DynamicContext();
             if (len == 0)

@@ -242,7 +242,7 @@ namespace wan24.StreamSerializerExtensions
                                 : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defined serializer options factory {SerializerOptionsFactoryType}.{SerializerOptionsFactoryMethod} not found",
                             new InvalidProgramException()
                             );
-                return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, stream, version, cancellationToken })!;
+                return (ISerializerOptions)mi.Invoke(obj: null, [property, this, stream, version, cancellationToken])!;
             }
             finally
             {
@@ -286,7 +286,7 @@ namespace wan24.StreamSerializerExtensions
                             : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defined serializer options factory {KeySerializerOptionsFactoryType}.{KeySerializerOptionsFactoryMethod} not found",
                         new InvalidProgramException()
                         );
-            return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, stream, version, cancellationToken })!;
+            return (ISerializerOptions)mi.Invoke(obj: null, [property, this, stream, version, cancellationToken])!;
         }
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace wan24.StreamSerializerExtensions
                             : $"{property.DeclaringType}.{property!.Name} stream serializer attribute defined serializer options factory {ValueSerializerOptionsFactoryType}.{ValueSerializerOptionsFactoryMethod} not found",
                         new InvalidProgramException()
                         );
-            return (ISerializerOptions)mi.Invoke(obj: null, new object?[] { property, this, stream, version, cancellationToken })!;
+            return (ISerializerOptions)mi.Invoke(obj: null, [property, this, stream, version, cancellationToken])!;
         }
 
         /// <summary>

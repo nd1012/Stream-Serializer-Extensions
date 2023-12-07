@@ -510,7 +510,7 @@ namespace wan24.StreamSerializerExtensions
         [TargetedPatchingOptOut("Tiny method")]
         public static object EnsureNotNull(object? value)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            ArgumentNullException.ThrowIfNull(value);
             return value;
         }
 
@@ -551,7 +551,7 @@ namespace wan24.StreamSerializerExtensions
         /// <returns>Value</returns>
         public static T ValidateObject<T>(this T value) where T : notnull
         {
-            List<ValidationResult> results = new();
+            List<ValidationResult> results = [];
             if (!Validator.TryValidateObject(value, new(value, serviceProvider: null, items: null), results, validateAllProperties: true) ||
                 !Validator.TryValidateObject(value, new(value, serviceProvider: null, items: null), results, validateAllProperties: false))
                 throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");

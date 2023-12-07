@@ -31,9 +31,9 @@ namespace wan24.StreamSerializerExtensions
                                   .FirstOrDefault()
                                   ?? throw new SerializerException($"Failed to find the serializer constructor of type {type}");
             bool serializerConstructor = ci.GetParameters().Length > 0;
-            T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
+            T res = (T)(serializerConstructor ? ci.Invoke([stream, version ?? StreamSerializer.Version]) : ci.Invoke([]));
             if (!serializerConstructor) res.Deserialize(stream, version ?? StreamSerializer.Version);
-            List<ValidationResult> results = new();
+            List<ValidationResult> results = [];
             if (!res.TryValidateObject(results))
                 throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");
             return res;
@@ -73,9 +73,9 @@ namespace wan24.StreamSerializerExtensions
                                   .FirstOrDefault()
                                   ?? throw new SerializerException($"Failed to find the serializer constructor of type {type}");
             bool serializerConstructor = ci.GetParameters().Length > 0;
-            T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
+            T res = (T)(serializerConstructor ? ci.Invoke([stream, version ?? StreamSerializer.Version]) : ci.Invoke([]));
             if (!serializerConstructor) await res.DeserializeAsync(stream, version ?? StreamSerializer.Version, cancellationToken).DynamicContext();
-            List<ValidationResult> results = new();
+            List<ValidationResult> results = [];
             if (!res.TryValidateObject(results))
                 throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");
             return res;
@@ -148,9 +148,9 @@ namespace wan24.StreamSerializerExtensions
                                   .FirstOrDefault()
                                   ?? throw new SerializerException($"Failed to find the serializer constructor of type {type}");
             bool serializerConstructor = ci.GetParameters().Length > 0;
-            T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
+            T res = (T)(serializerConstructor ? ci.Invoke([stream, version ?? StreamSerializer.Version]) : ci.Invoke([]));
             if (!serializerConstructor) res.Deserialize(stream, version ?? StreamSerializer.Version);
-            List<ValidationResult> results = new();
+            List<ValidationResult> results = [];
             if (!res.TryValidateObject(results))
                 throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");
             return res;
@@ -179,9 +179,9 @@ namespace wan24.StreamSerializerExtensions
                                   .FirstOrDefault()
                                   ?? throw new SerializerException($"Failed to find the serializer constructor of type {type}");
             bool serializerConstructor = ci.GetParameters().Length > 0;
-            T res = (T)(serializerConstructor ? ci.Invoke(new object?[] { stream, version ?? StreamSerializer.Version }) : ci.Invoke(Array.Empty<object?>()));
+            T res = (T)(serializerConstructor ? ci.Invoke([stream, version ?? StreamSerializer.Version]) : ci.Invoke([]));
             if (!serializerConstructor) await res.DeserializeAsync(stream, version ?? StreamSerializer.Version, cancellationToken).DynamicContext();
-            List<ValidationResult> results = new();
+            List<ValidationResult> results = [];
             if (!res.TryValidateObject(results))
                 throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");
             return res;

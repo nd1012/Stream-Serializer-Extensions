@@ -137,7 +137,7 @@ namespace wan24.StreamSerializerExtensions
                         : ReadAnyNullableMethod.InvokeAuto(obj: null, stream, version ?? StreamSerializer.Version)
                     );
             }
-            List<ValidationResult> results = new();
+            List<ValidationResult> results = [];
             if (!res.TryValidateObject(results))
                 throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");
             return res;
@@ -183,7 +183,7 @@ namespace wan24.StreamSerializerExtensions
                 await task.DynamicContext();
                 pis[done].SetValue(res, isNullable ? task.GetResultNullable<object>() : task.GetResult<object>());
             }
-            List<ValidationResult> results = new();
+            List<ValidationResult> results = [];
             if (!res.TryValidateObject(results))
                 throw new SerializerException($"The deserialized object contains {results.Count} errors: {results[0].ErrorMessage} ({string.Join(',', results[0].MemberNames)})");
             return res;

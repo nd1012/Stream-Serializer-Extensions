@@ -87,7 +87,7 @@ namespace wan24.StreamSerializerExtensions
                             );
                 case ObjectTypes.Bytes:
                     return isEmpty
-                        ? Array.Empty<byte>()
+                        ? []
                         : ReadBytes(
                             stream,
                             version,
@@ -266,7 +266,7 @@ namespace wan24.StreamSerializerExtensions
                             ).DynamicContext();
                 case ObjectTypes.Bytes:
                     return isEmpty
-                        ? Array.Empty<byte>()
+                        ? []
                         : (await ReadBytesAsync(
                             stream,
                             version,

@@ -160,12 +160,11 @@ namespace wan24.StreamSerializerExtensions
         /// <param name="stream">Stream</param>
         /// <param name="value">Value to write</param>
         /// <param name="cancellationToken">Cancellation token</param>
-#pragma warning disable IDE0060 // Remove unused parameter
         [TargetedPatchingOptOut("Tiny method")]
         public static async Task WriteAsync(this Stream stream, byte value, CancellationToken cancellationToken = default)
-#pragma warning restore IDE0060
         {
             await Task.Yield();
+            cancellationToken.ThrowIfCancellationRequested();
             Write(stream, value);
         }
 

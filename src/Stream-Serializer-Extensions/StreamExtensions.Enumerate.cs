@@ -13,7 +13,7 @@ namespace wan24.StreamSerializerExtensions
         /// Enumerate serialized objects
         /// </summary>
         /// <typeparam name="tObject">Object type</typeparam>
-        /// <typeparam name="tEnumerator">Enumeratortype</typeparam>
+        /// <typeparam name="tEnumerator">Enumerator type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <returns>Enumerable</returns>
@@ -26,7 +26,7 @@ namespace wan24.StreamSerializerExtensions
         /// Enumerate serialized objects
         /// </summary>
         /// <typeparam name="tObject">Object type</typeparam>
-        /// <typeparam name="tEnumerator">Enumeratortype</typeparam>
+        /// <typeparam name="tEnumerator">Enumerator type</typeparam>
         /// <param name="stream">Stream</param>
         /// <param name="version">Serializer version</param>
         /// <param name="cancellationToken">Cancellation token</param>

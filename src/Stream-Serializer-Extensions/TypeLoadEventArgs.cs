@@ -3,17 +3,15 @@
     /// <summary>
     /// Type loader event arguments
     /// </summary>
-    public class TypeLoadEventArgs : EventArgs
+    /// <remarks>
+    /// Constructor
+    /// </remarks>
+    public class TypeLoadEventArgs(string name) : EventArgs()
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public TypeLoadEventArgs(string name) : base() => Name = name;
-
         /// <summary>
         /// Requested type name
         /// </summary>
-        public string Name { get; }
+        public string Name { get; } = name;
 
         /// <summary>
         /// Type
