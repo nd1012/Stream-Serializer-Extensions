@@ -962,7 +962,7 @@ namespace wan24.StreamSerializerExtensions
                             case NumberTypes.Byte | NumberTypes.MaxValue:
                                 return (T)(object)sbyte.MaxValue;
                         }
-                        if (stream.Read(data.AsSpan(0, 1)) != 1) throw new SerializerException("Failed to read serialized data (1 bytes)");
+                        stream.ReadExactly(data.AsSpan(0, 1));
                         return data[0].ConvertType<T>();
                     case NumberTypes.Byte | NumberTypes.Unsigned:
                         switch (type)
@@ -970,7 +970,7 @@ namespace wan24.StreamSerializerExtensions
                             case NumberTypes.Byte | NumberTypes.MaxValue | NumberTypes.Unsigned:
                                 return (T)(object)byte.MaxValue;
                         }
-                        if (stream.Read(data.AsSpan(0, 1)) != 1) throw new SerializerException("Failed to read serialized data (1 bytes)");
+                        stream.ReadExactly(data.AsSpan(0, 1));
                         return data[0].ConvertType<T>();
                     case NumberTypes.Short:
                         return type switch
@@ -1087,8 +1087,7 @@ namespace wan24.StreamSerializerExtensions
                             case NumberTypes.Byte | NumberTypes.MaxValue:
                                 return (T)(object)sbyte.MaxValue;
                         }
-                        if (await stream.ReadAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext() != 1)
-                            throw new SerializerException("Failed to read serialized data (1 bytes)");
+                        await stream.ReadExactlyAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext();
                         return data[0].ConvertType<T>();
                     case NumberTypes.Byte | NumberTypes.Unsigned:
                         switch (type)
@@ -1096,8 +1095,7 @@ namespace wan24.StreamSerializerExtensions
                             case NumberTypes.Byte | NumberTypes.MaxValue | NumberTypes.Unsigned:
                                 return (T)(object)byte.MaxValue;
                         }
-                        if (await stream.ReadAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext() != 1)
-                            throw new SerializerException("Failed to read serialized data (1 bytes)");
+                        await stream.ReadExactlyAsync(data.AsMemory(0, 1), cancellationToken).DynamicContext();
                         return data[0].ConvertType<T>();
                     case NumberTypes.Short:
                         return type switch

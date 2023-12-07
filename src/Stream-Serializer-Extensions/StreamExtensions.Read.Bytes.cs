@@ -28,7 +28,7 @@ namespace wan24.StreamSerializerExtensions
                 rented = buffer == null && pool != null;
                 buffer ??= rented ? pool!.Rent(len) : new byte[len];
                 if (buffer.Length < len) throw new ArgumentException($"Buffer too small ({len} bytes required)", nameof(buffer));
-                if (len != 0 && stream.Read(buffer.AsSpan(0, len)) != len) throw new SerializerException($"Failed to read serialized data ({len} bytes)");
+                if (len != 0) stream.ReadExactly(buffer.AsSpan(0, len));
                 return (buffer, len);
             }
             catch (SerializerException)
@@ -73,8 +73,7 @@ namespace wan24.StreamSerializerExtensions
                 rented = buffer == null && pool != null;
                 buffer ??= rented ? pool!.Rent(len) : new byte[len];
                 if (buffer.Length < len) throw new ArgumentException($"Buffer too small ({len} bytes required)", nameof(buffer));
-                if (len != 0 && await stream.ReadAsync(buffer.AsMemory(0, len), cancellationToken).DynamicContext() != len)
-                    throw new SerializerException($"Failed to read serialized data ({len} bytes)");
+                if (len != 0) await stream.ReadExactlyAsync(buffer.AsMemory(0, len), cancellationToken).DynamicContext();
                 return (buffer, len);
             }
             catch (SerializerException)
