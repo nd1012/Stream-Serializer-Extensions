@@ -9,7 +9,7 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <PackageId>Stream-Serializer-Extensions</PackageId>
     <Title>Stream-Serializer-Extensions</Title>
-    <Version>2.12.0</Version>
+    <Version>3.0.0</Version>
     <Authors>nd1012</Authors>
     <Company>Andreas Zimmermann, wan24.de</Company>
     <Product>Stream-Serializer-Extensions</Product>
