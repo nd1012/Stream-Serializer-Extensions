@@ -50,8 +50,7 @@ namespace wan24.StreamSerializerExtensions
         static StreamSerializer()
         {
             SyncSerializer = new(
-                new KeyValuePair<Type, Serialize_Delegate>[]
-                {
+                [
                     new(typeof(bool),(s, v) => s.Write((bool)SerializerHelper.EnsureNotNull(v))),
                     new(typeof(sbyte),(s, v) => s.Write((sbyte)SerializerHelper.EnsureNotNull(v))),
                     new(typeof(byte),(s, v) => s.Write((byte)SerializerHelper.EnsureNotNull(v))),
@@ -88,11 +87,10 @@ namespace wan24.StreamSerializerExtensions
                         StreamExtensions.WriteEnumMethod.MakeGenericMethod(typeof(Stream),v!.GetType()).InvokeAuto(obj: null, s, v);
                     }),
                     new(typeof(Stream),(s, v) => s.WriteStream((Stream)SerializerHelper.EnsureNotNull(v)))
-                }
+                ]
             );
             AsyncSerializer = new(
-                new KeyValuePair<Type, AsyncSerialize_Delegate>[]
-                {
+                [
                     new(typeof(bool),(s, v, ct) => s.WriteAsync((bool)SerializerHelper.EnsureNotNull(v), ct)),
                     new(typeof(sbyte),(s, v, ct) => s.WriteAsync((sbyte)SerializerHelper.EnsureNotNull(v), ct)),
                     new(typeof(byte),(s, v, ct) => s.WriteAsync((byte)SerializerHelper.EnsureNotNull(v), ct)),
@@ -129,10 +127,10 @@ namespace wan24.StreamSerializerExtensions
                         return (Task)StreamExtensions.WriteEnumAsyncMethod.MakeGenericMethod(v !.GetType()).InvokeAuto(obj : null, s, v, ct)!;
                     }),
                     new(typeof(Stream),(s, v, ct) => s.WriteStreamAsync((Stream)SerializerHelper.EnsureNotNull(v), cancellationToken: ct)),
-                }
+                ]
             );
-            SyncDeserializer = new(new KeyValuePair<Type, Deserialize_Delegate>[]
-            {
+            SyncDeserializer = new(
+                [
                     new(typeof(bool),(s,t,v,o) => s.ReadBool(v)),
                     new(typeof(sbyte),(s,t,v,o) => s.ReadOneSByte(v)),
                     new(typeof(byte),(s,t,v,o) => s.ReadOneByte(v)),
@@ -210,9 +208,9 @@ namespace wan24.StreamSerializerExtensions
                             throw;
                         }
                     })
-            });
-            AsyncDeserializer = new(new KeyValuePair<Type, AsyncDeserialize_Delegate>[]
-            {
+                ]);
+            AsyncDeserializer = new(
+                [
                     new(typeof(bool),(s,t,v,o,ct) => s.ReadBoolAsync(v, cancellationToken: ct)),
                     new(typeof(sbyte),(s,t,v,o,ct) => s.ReadOneSByteAsync(v, ct)),
                     new(typeof(byte),(s,t,v,o,ct) => s.ReadOneByteAsync(v, ct)),
@@ -271,9 +269,9 @@ namespace wan24.StreamSerializerExtensions
                         (Task)StreamExtensions.ReadEnumAsyncMethod.MakeGenericMethod(t).InvokeAuto(obj : null, s, v, ct)!
                     ),
                     new(typeof(Stream),(s,t,v,o,ct) => StreamDeserializer(s,t,v,o,ct))
-            });
-            AllowedTypes = new(new Type[]
-            {
+                ]);
+            AllowedTypes = new(
+            [
                 typeof(bool),
                 typeof(sbyte),
                 typeof(byte),
@@ -288,7 +286,7 @@ namespace wan24.StreamSerializerExtensions
                 typeof(decimal),
                 typeof(string),
                 typeof(char)
-            });
+            ]);
         }
 
         /// <summary>

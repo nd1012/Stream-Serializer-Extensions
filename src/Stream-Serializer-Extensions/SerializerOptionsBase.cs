@@ -7,26 +7,20 @@ namespace wan24.StreamSerializerExtensions
     /// <summary>
     /// Base class for serializer options
     /// </summary>
-    public abstract class SerializerOptionsBase : ISerializerOptions
+    /// <remarks>
+    /// Constructor
+    /// </remarks>
+    /// <param name="property">Target property</param>
+    /// <param name="attr">Stream serializer attribute (required, if <c>property</c> is <see langword="null"/>)</param>
+    public abstract class SerializerOptionsBase(PropertyInfo? property, StreamSerializerAttribute? attr = null) : object(), ISerializerOptions
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="property">Target property</param>
-        /// <param name="attr">Stream serializer attribute (required, if <c>property</c> is <see langword="null"/>)</param>
-        protected SerializerOptionsBase(PropertyInfo? property, StreamSerializerAttribute? attr = null) : base()
-        {
-            Property = property;
-            Attribute = attr ??
-                property?.GetCustomAttribute<StreamSerializerAttribute>() ??
-                throw (property == null ? new ArgumentNullException(nameof(attr)) : new ArgumentException($"{typeof(StreamSerializerAttribute)} attribute required", nameof(property)));
-        }
+        /// <inheritdoc/>
+        public PropertyInfo? Property { get; } = property;
 
         /// <inheritdoc/>
-        public PropertyInfo? Property { get; }
-
-        /// <inheritdoc/>
-        public StreamSerializerAttribute Attribute { get; }
+        public StreamSerializerAttribute Attribute { get; } = attr ??
+            property?.GetCustomAttribute<StreamSerializerAttribute>() ??
+            throw (property == null ? new ArgumentNullException(nameof(attr)) : new ArgumentException($"{typeof(StreamSerializerAttribute)} attribute required", nameof(property)));
 
         /// <inheritdoc/>
         public virtual int GetMinLen(int defaultValue)
