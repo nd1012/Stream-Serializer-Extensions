@@ -13,6 +13,10 @@ namespace wan24.StreamSerializerExtensions
         /// Version number
         /// </summary>
         public const int VERSION = 2;
+        /// <summary>
+        /// Binary serializer name (see <see cref="wan24.Core.ObjectSerializer"/>)
+        /// </summary>
+        public const string BINARY_SERIALIZER_NAME = "BIN";
 
         /// <summary>
         /// Initialized?

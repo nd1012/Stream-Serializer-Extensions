@@ -23,6 +23,20 @@ The built in serializer supports binary serialization of
 It's possible to override the build in serializers, and to add custom type 
 serializers, too.
 
+## How to get it
+
+This library is available as 
+[NuGet package](https://www.nuget.org/packages/Stream-Serializer-Extensions/).
+
+## Initialization
+
+In case you don't use the `wan24-Core` bootstrapper logic, you need to 
+initialize the library first:
+
+```cs
+wan24.StreamSerializerExtensions.Bootstrap.Boot();
+```
+
 ## Methods
 
 The `Write` and `WriteAsync` methods will be extended with supported types, 
@@ -70,6 +84,19 @@ more generic. This is when to choose which method:
 | `*Struct*` | The fixed type is a marshalable structure |
 | `*AnyObject*` | The type uses attributes (or no serializer contract information at all) and doesn't have a specialized serializer |
 | `*Any*` | The dynamic type is unknown when (de)serializing |
+
+## `wan24-Core` object serializer
+
+This library extends the `wan24.Core.ObjectSerializer` with the named 
+(de)serializer `BIN`, which uses `WriteAnyNullable(Async)` and 
+`ReadAnyNullable(Async)` to (de)serialize any object type, which is supported 
+by this library - usage:
+
+```cs
+ObjectSerializer.Serialize(StreamSerializer.BINARY_SERIALIZER_NAME, anyObject, stream);
+stream.Position = 0;
+anyobject = ObjectSerializer.Deserialize<AnyObjectType>(StreamSerializer.BINARY_SERIALIZER_NAME, stream);
+```
 
 ## Number serialization
 
