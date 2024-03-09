@@ -1,6 +1,7 @@
 ﻿using System.Buffers;
 using System.Collections.Concurrent;
 using wan24.Core;
+using static wan24.Core.TranslationHelper;
 
 namespace wan24.StreamSerializerExtensions
 {
@@ -14,7 +15,7 @@ namespace wan24.StreamSerializerExtensions
         /// </summary>
         public const int VERSION = 2;
         /// <summary>
-        /// Binary serializer name (see <see cref="wan24.Core.ObjectSerializer"/>)
+        /// Binary serializer name (see <see cref="ObjectSerializer"/>)
         /// </summary>
         public const string BINARY_SERIALIZER_NAME = "BIN";
 
@@ -302,6 +303,25 @@ namespace wan24.StreamSerializerExtensions
         /// Byte array buffer pool to use
         /// </summary>
         public static ArrayPool<byte> BufferPool { get; set; } = ArrayPool<byte>.Shared;
+
+        /// <summary>
+        /// State
+        /// </summary>
+        public static IEnumerable<Status> State
+        {
+            get
+            {
+                yield return new(__("Version"), VERSION, __("Serializer version number"));
+                yield return new(__("Effective version"), Version, __("Effective serializer version number including optional custom version informations"));
+                yield return new(__("Any attribute required"), StreamExtensions.AnyObjectAttributeRequired, __("If a 'StreamSerializerAttribute' is required when deserializing using 'ReadAnyType'"));
+                foreach (Type type in AllowedTypes)
+                    yield return new(__("Allowed"), type, __("Non-array CLR type which is allowed for (de)serialization"), __("Allowed types"));
+                foreach (Type type in SyncSerializer.Keys.Concat(AsyncSerializer.Keys).Distinct())
+                    yield return new(__("Serializer"), type, __("CLR type which has a serializer defined"), __("Serializers"));
+                foreach (Type type in SyncDeserializer.Keys.Concat(AsyncDeserializer.Keys).Distinct())
+                    yield return new(__("Deserializer"), type, __("CLR type which has a deserializer defined"), __("Deserializers"));
+            }
+        }
 
         /// <summary>
         /// Find a serializer
